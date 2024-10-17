@@ -4,7 +4,7 @@ import { uiStateReducer } from './uiStateReducer';
 
 export const store = configureStore({
     reducer: {
-        state: uiStateReducer
+        uistate: uiStateReducer
     }
 });
 
