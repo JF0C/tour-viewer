@@ -1,5 +1,6 @@
 import { AppBar } from "@mui/material";
 import { FunctionComponent, ReactNode } from "react";
+import { Navbar } from "../navigation/Navbar";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -15,7 +16,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
         </div>
         <div className="flex-1 flex flex-row flex-wrap">
             <div className="hidden md:block w-1/6 border border-solid">
-                
+                <Navbar />
             </div>
             <div className="w-full md:w-4/6 border border-solid">
                 {props.children}

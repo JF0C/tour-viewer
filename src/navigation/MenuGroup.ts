@@ -1,12 +1,11 @@
 export type MenuGroup = {
     displayName: string;
-    groupId: string;
     path: string;
     subGroups?: MenuGroup[];
-    items?: LocationAndDisplayName[]
+    items?: TourItem[]
 }
 
-export type LocationAndDisplayName = {
-    location: string;
+export type TourItem = {
+    tour: string;
     displayName: string;
 }

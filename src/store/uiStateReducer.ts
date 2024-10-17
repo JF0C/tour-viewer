@@ -15,6 +15,9 @@ export const uiStateSlice = createSlice({
     name: 'uiState',
     initialState: initialState,
     reducers: {
+        setTours(state, action: PayloadAction<string[]>) {
+            state.currentTours = action.payload;
+        },
         setRadioGroup(state, action: PayloadAction<{groupId: string, activeItem?: string}>) {
             let entry = state.radioGroups.find(x => x.groupId === action.payload.groupId);
             if (!entry) {
@@ -30,4 +33,4 @@ export const uiStateSlice = createSlice({
 });
 
 export const uiStateReducer = uiStateSlice.reducer;
-export const { setRadioGroup } = uiStateSlice.actions;
+export const { setRadioGroup, setTours: setTours } = uiStateSlice.actions;
