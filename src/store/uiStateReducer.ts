@@ -1,12 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserDto } from "../dtos/userDto";
+import { loginRequest, logoutRequest } from "./loginThunk";
 
 
 export interface IUiState {
+    loading: boolean;
     currentTours: string[];
     radioGroups: { groupId: string, activeItem?: string }[];
+    user?: UserDto;
 }
 
 const initialState: IUiState = {
+    loading: false,
     currentTours: [],
     radioGroups: []
 }
@@ -29,6 +34,29 @@ export const uiStateSlice = createSlice({
             }
             entry.activeItem = action.payload.activeItem;
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(loginRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(loginRequest.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload
+        });
+        builder.addCase(loginRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(logoutRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(logoutRequest.fulfilled, (state) => {
+            state.loading = false;
+            state.user = undefined;
+        });
+        builder.addCase(logoutRequest.rejected, (state) => {
+            state.loading = false;
+        });
     }
 });
 

@@ -2,6 +2,7 @@ import { AppBar } from "@mui/material";
 import { FunctionComponent, ReactNode } from "react";
 import { Navbar } from "../navigation/Navbar";
 import { ImageUpload } from "../components/ImageUpload";
+import { LoginComponent } from "../components/LoginComponent";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -24,6 +25,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             </div>
             <div className="w-full md:w-1/6 border border-solid">
                 <ImageUpload />
+                <LoginComponent />
             </div>
         </div>
     </div>
