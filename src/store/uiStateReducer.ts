@@ -33,4 +33,4 @@ export const uiStateSlice = createSlice({
 });
 
 export const uiStateReducer = uiStateSlice.reducer;
-export const { setRadioGroup, setTours: setTours } = uiStateSlice.actions;
+export const { setRadioGroup, setTours } = uiStateSlice.actions;
