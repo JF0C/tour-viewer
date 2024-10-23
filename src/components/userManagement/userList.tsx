@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadUsersAdmin } from "../../store/adminThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { UserListItem } from "./userListItem";
+import { Button } from "@mui/material";
 
 export const UserList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -15,12 +16,14 @@ export const UserList: FunctionComponent = () => {
     if (adminState.users === undefined && !adminState.loading) {
         loadUsers();
     }
-    if (adminState.users !== undefined) {
-        const user = adminState;
-    }
 
     return (adminState.loading || adminState.users === undefined) ? <LoadingSpinner /> :
         <div>
-            { adminState.users.map(u => <UserListItem key={u.id} user={u}/>) }
+            <div>
+                <Button onClick={loadUsers}>Reload</Button>
+            </div>
+            <div>
+                {adminState.users.map(u => <UserListItem key={u.id} user={u} />)}
+            </div>
         </div>
 }

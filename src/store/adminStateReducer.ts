@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/userDto";
 import { loadUsersAdmin } from "./adminThunk";
 
-
 export interface IAdminState
 {
     users?: UserDto[];

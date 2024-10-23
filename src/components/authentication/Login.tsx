@@ -2,6 +2,8 @@ import { Button, Input } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import { loginRequest, logoutRequest } from "../../store/loginThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { NavLink } from "react-router-dom";
+import { Paths } from "../../constants/Paths";
 
 export const Login: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -32,6 +34,7 @@ export const Login: FunctionComponent = () => {
                     <Input placeholder="email" onChange={e => setEmail(e.target.value)} type="text" />
                     <Input placeholder="password" onChange={e => setPassword(e.target.value)} type="password" />
                     <Button onClick={login}>Login</Button>
+                    <Button><NavLink to={Paths.RegisterPage}>Register</NavLink></Button>
                 </div>
     }
     </div>

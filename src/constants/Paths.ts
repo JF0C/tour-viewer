@@ -7,7 +7,10 @@ export class Paths {
     public static readonly MitDir2022_01Path = '01 - München -> Murner See.gpx'
     public static readonly MitDir2022_02Path = '02 - Murner See -> Schöneck.gpx'
 
-    public static readonly AdminPage = 'admin'
-    public static readonly ToursPage = 'tours'
-    public static readonly LoginPage = 'login'
+    public static readonly HomePage = '/'
+    public static readonly AdminPage = '/admin'
+    public static readonly ToursPage = '/tours'
+    public static readonly LoginPage = '/login'
+    public static readonly RegisterPage = '/register'
+    public static readonly ValiateCodePage = '/validate-code'
 }
