@@ -18,12 +18,31 @@ export const UserList: FunctionComponent = () => {
     }
 
     return (adminState.loading || adminState.users === undefined) ? <LoadingSpinner /> :
-        <div>
-            <div>
-                <Button onClick={loadUsers}>Reload</Button>
-            </div>
-            <div>
+    <div>
+    <div>
+        <Button onClick={loadUsers}>Reload</Button>
+    </div>
+        <table className="text-left">
+            <thead>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Roles
+                </th>
+                <th>
+                    Actions
+                </th>
+            </thead>
+            <tbody>
                 {adminState.users.map(u => <UserListItem key={u.id} user={u} />)}
-            </div>
-        </div>
+            </tbody>
+        </table>
+    </div>
 }

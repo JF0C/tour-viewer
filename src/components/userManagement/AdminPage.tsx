@@ -1,10 +1,15 @@
 import { FunctionComponent } from "react";
 import { UserList } from "./userList";
-import { AuthProvider } from "../authentication/AuthProvider";
+import { useAppSelector } from "../../store/store";
 
 export const AdminPage: FunctionComponent = () => {
-    console.log('admin page');
-    return <AuthProvider>
+    const user = useAppSelector((state) => state.auth.user)
+    if (!user?.roles.includes('admin'))
+    {
+        return <div>Unauthorized</div>
+    }
+    
+    return <div>
         <UserList />
-    </AuthProvider>
+    </div>
 }
