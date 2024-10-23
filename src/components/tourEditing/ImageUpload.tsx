@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { FunctionComponent, useRef } from "react";
-import { useAppDispatch } from "../store/store";
-import { uploadFile } from "../store/filesThunk";
+import { useAppDispatch } from "../../store/store";
+import { uploadFile } from "../../store/filesThunk";
 import { AxiosProgressEvent } from "axios";
 
 export const ImageUpload: FunctionComponent = () => {

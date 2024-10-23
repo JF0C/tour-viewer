@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { uiStateReducer } from './uiStateReducer';
+import { authStateReducer } from './authStateReducer';
+import { adminStateReducer } from './adminStateReducer';
+import { tourStateReducer } from './tourStateReducer';
 
 export const store = configureStore({
     reducer: {
-        uistate: uiStateReducer
+        tour: tourStateReducer,
+        auth: authStateReducer,
+        admin: adminStateReducer
     }
 });
 

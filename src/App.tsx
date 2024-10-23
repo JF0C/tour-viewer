@@ -5,7 +5,7 @@ import './App.scss';
 import theme from './materialUiConfig';
 import { store } from './store/store';
 import { MainLayout } from './layout/MainLayout';
-import { TourView } from './tourView/TourView';
+import { RouterOutlet } from './navigation/RouterOutlet';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <MainLayout>
-            <TourView />
+            <RouterOutlet />
           </MainLayout>
         </BrowserRouter>
       </ThemeProvider>

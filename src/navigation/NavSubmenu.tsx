@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { TourLink } from "./TourLink";
 import { MenuGroup } from "./MenuGroup";
 import { useAppDispatch, useAppSelector } from '../store/store';
-import { setRadioGroup } from '../store/uiStateReducer';
+import { setRadioGroup } from '../store/tourStateReducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,7 +17,7 @@ export const NavSubMenu: FunctionComponent<NavSubMenuProps> = (props) => {
     const color = document.location.pathname.includes(props.data.path) ? 'rgba(124, 148, 150, 0.8)' : 'rgb(50,50,50)';
     const dispatch = useAppDispatch();
     const isExpanded = useAppSelector((state) => {
-        const item = state.uistate.radioGroups.find(r => r.groupId === props.radioGroupId);
+        const item = state.tour.radioGroups.find(r => r.groupId === props.radioGroupId);
         if (!props.radioGroupId) return undefined;
         if (!item) return false;
         return item.activeItem === props.data.path;
@@ -37,16 +37,16 @@ export const NavSubMenu: FunctionComponent<NavSubMenuProps> = (props) => {
     return <Accordion expanded={isExpanded} onChange={(e: any) => radioActivation(e)} sx={{ bgcolor: 'rgb(50,50,50)', color: 'white' }}>
         <AccordionSummary sx={{ bgcolor: color }} expandIcon={<FontAwesomeIcon style={{ color: 'white' }} icon={faChevronDown}/>}>
         <div className='flex flex-row justify-center items-center'>
-            <TourLink displayName={props.data.displayName}
+            <TourLink key={props.data.displayName + 'link'} displayName={props.data.displayName}
                 tours={props.data.items?.map(i => `${props.data.path}/${i.tour}`) ?? []} />
         </div>
         </AccordionSummary>
         <AccordionDetails>
             {
-                props.data.subGroups?.map(s => <NavSubMenu radioGroupId={props.data.path} data={s} onClick={props.onClick} />)
+                props.data.subGroups?.map(s => <NavSubMenu key={s.path} radioGroupId={props.data.path} data={s} onClick={props.onClick} />)
             }
             {
-                props.data.items?.map(i => <TourLink
+                props.data.items?.map(i => <TourLink key={i.displayName}
                     displayName={i.displayName}
                     tours={[`${props.data.path}/${i.tour}`]}
                 />)

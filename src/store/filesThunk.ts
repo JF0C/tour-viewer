@@ -11,7 +11,7 @@ export const uploadFile = createAsyncThunk('upload/file', async (fileUploadDto: 
     if (fileUploadDto.trackId !== undefined) {
         url += '/' + fileUploadDto.trackId;
     }
-    console.log(url);
+    
     const response = await http.post(url, data, {
         headers: {
             'Content-Type': 'multipart/form-data'

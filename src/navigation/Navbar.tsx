@@ -7,6 +7,7 @@ export const Navbar: FunctionComponent = () => {
     const navigations = [];
     for (let node of menuTree) {
         navigations.push(<NavSubMenu
+            key={node.displayName + '-menu'}
             radioGroupId={'toplevel'}
             data={node}
         />);
