@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { useAppDispatch } from "../store/store";
-import { setTours } from "../store/tourStateReducer";
+import { useAppDispatch } from "../../store/store";
+import { setTours } from "../../store/tourStateReducer";
 
 export type TourLinkProps = {
     tours: string[];

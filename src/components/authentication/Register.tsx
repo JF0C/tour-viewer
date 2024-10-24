@@ -5,7 +5,7 @@ import { registerRequest } from "../../store/loginThunk";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { SmallFormLayout } from "../../layout/SmallFormLayout";
+import { SmallFormLayout } from "../layout/SmallFormLayout";
 
 
 export const Register: FunctionComponent = () => {

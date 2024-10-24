@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import './App.scss';
 import theme from './materialUiConfig';
 import { store } from './store/store';
-import { MainLayout } from './layout/MainLayout';
-import { RouterOutlet } from './navigation/RouterOutlet';
+import { MainLayout } from './components/layout/MainLayout';
+import { RouterOutlet } from './components/navigation/RouterOutlet';
 
 function App() {
   return (

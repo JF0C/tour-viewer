@@ -1,4 +1,4 @@
-import { Paths } from "../constants/Paths";
+import { Paths } from "../../constants/Paths";
 import { MenuGroup } from "./MenuGroup";
 
 export const menuTree: MenuGroup[] = [

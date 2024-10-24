@@ -4,7 +4,7 @@ import { NavSubMenu } from './NavSubmenu';
 import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { Paths } from '../constants/Paths';
+import { Paths } from '../../constants/Paths';
 import { NavLink } from 'react-router-dom';
 
 export type NavbarProps = {

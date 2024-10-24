@@ -2,8 +2,8 @@ import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { FunctionComponent } from "react";
 import { TourLink } from "./TourLink";
 import { MenuGroup } from "./MenuGroup";
-import { useAppDispatch, useAppSelector } from '../store/store';
-import { setRadioGroup } from '../store/tourStateReducer';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { setRadioGroup } from '../../store/tourStateReducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 

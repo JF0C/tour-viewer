@@ -5,7 +5,7 @@ import { validateCodeRequest } from "../../store/loginThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
-import { SmallFormLayout } from "../../layout/SmallFormLayout";
+import { SmallFormLayout } from "../layout/SmallFormLayout";
 
 
 export const ValidateCode: FunctionComponent = () => {

@@ -2,8 +2,8 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppBar, Button, SwipeableDrawer } from "@mui/material";
 import { FunctionComponent, ReactNode, useState } from "react";
-import { UserIcon } from "../components/shared/UserIcon";
-import { ImageUpload } from "../components/tourEditing/ImageUpload";
+import { UserIcon } from "../shared/UserIcon";
+import { ImageUpload } from "../tourEditing/ImageUpload";
 import { Navbar } from "../navigation/Navbar";
 
 export type MainLayoutProps = {

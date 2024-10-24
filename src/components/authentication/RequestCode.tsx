@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { SmallFormLayout } from "../../layout/SmallFormLayout";
+import { SmallFormLayout } from "../layout/SmallFormLayout";
 import { Button, Input } from "@mui/material";
 import { accessCodeRequest } from "../../store/loginThunk";
 import { useNavigate } from "react-router-dom";

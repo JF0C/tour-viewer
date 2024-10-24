@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { SmallFormLayout } from "../../layout/SmallFormLayout";
+import { SmallFormLayout } from "../layout/SmallFormLayout";
 
 export const Login: FunctionComponent = () => {
     const dispatch = useAppDispatch();
