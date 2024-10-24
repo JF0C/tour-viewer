@@ -18,7 +18,7 @@
 }
 
 .main-layout {
-  background-color: darkgreen;
+  background-color: darkgoldenrod;
 }
 
 th {
@@ -27,4 +27,21 @@ th {
 
 td {
   padding: 8px;
+}
+
+.user-list-item {
+  cursor: pointer;
+}
+
+.user-list-item:hover {
+  background-color: #31778a;
+}
+
+.user-list-item.selected {
+  background-color: #61dafb;
+}
+
+.Mui-expanded {
+  margin-top: 0px;
+  margin-bottom: 5px;
 }

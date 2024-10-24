@@ -61,3 +61,13 @@ export const validateCodeRequest = createAsyncThunk('validate-code', async (vali
 
     return response.json()
 });
+
+export const accessCodeRequest = createAsyncThunk('request-code', async (email: string): Promise<void> => {
+    await fetch(`${ApiUrls.BaseUrl + ApiUrls.RequestCodeEndpoint}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(email)
+    })
+})

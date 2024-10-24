@@ -5,6 +5,7 @@ import { registerRequest } from "../../store/loginThunk";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { SmallFormLayout } from "../../layout/SmallFormLayout";
 
 
 export const Register: FunctionComponent = () => {
@@ -19,7 +20,6 @@ export const Register: FunctionComponent = () => {
     const register = () => {
         dispatch(registerRequest({ username: username, email: email, password: password }))
             .then((e) => {
-                console.log(e)
                 navigate(`${Paths.ValiateCodePage}?email=${email}`)
             })
     }
@@ -28,10 +28,9 @@ export const Register: FunctionComponent = () => {
         return <LoadingSpinner />
     }
 
-    return <div className="flex flex-col">
+    return <SmallFormLayout buttons={<Button color='success' variant='outlined' onClick={register}>Register</Button>}>
         <Input onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" />
         <Input onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email" />
         <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
-        <Button onClick={register}>Register</Button>
-    </div>
+    </SmallFormLayout>
 }

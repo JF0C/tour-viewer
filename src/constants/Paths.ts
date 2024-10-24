@@ -12,5 +12,6 @@ export class Paths {
     public static readonly ToursPage = '/tours'
     public static readonly LoginPage = '/login'
     public static readonly RegisterPage = '/register'
+    public static readonly RequestCodePage = '/request-code'
     public static readonly ValiateCodePage = '/validate-code'
 }

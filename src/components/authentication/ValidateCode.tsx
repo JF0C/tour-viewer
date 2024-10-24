@@ -5,6 +5,7 @@ import { validateCodeRequest } from "../../store/loginThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
+import { SmallFormLayout } from "../../layout/SmallFormLayout";
 
 
 export const ValidateCode: FunctionComponent = () => {
@@ -32,14 +33,12 @@ export const ValidateCode: FunctionComponent = () => {
 
     if (mail === '') {
         const mailParam = searchParams.get('email')
-        console.log('mail parameter: ' + mailParam)
         if (mailParam) {
             setMail(mailParam)
             setMailByParam(true)
         }
 
         const codeParam = searchParams.get('code')
-        console.log('code parameter: ' + codeParam)
         if (codeParam && mailParam && !loading) {
             validate(mailParam, codeParam)
         }
@@ -49,13 +48,14 @@ export const ValidateCode: FunctionComponent = () => {
         return <LoadingSpinner />
     }
 
-    return <div>
+    return <SmallFormLayout buttons={
+        <Button variant='outlined' color='success' onClick={() => validate(mail, code)}>Validate</Button>
+        }>
         {
             !mailByParam ?
             <Input onChange={(e) => setMail(e.target.value)} type="text" placeholder="Mail" />
             : <></>
         }
         <Input onChange={(e) => setCode(e.target.value)} type="text" placeholder="Code" />
-        <Button onClick={() => validate(mail, code)}>Validate</Button>
-    </div>
+    </SmallFormLayout>
 }

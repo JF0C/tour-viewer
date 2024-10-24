@@ -2,11 +2,14 @@ import { Button, Input } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import { loginRequest, logoutRequest } from "../../store/loginThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { SmallFormLayout } from "../../layout/SmallFormLayout";
 
 export const Login: FunctionComponent = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const loading = useAppSelector((state) => state.auth.loading);
     const loggedIn = useAppSelector((state) => Boolean(state.auth.user));
 
@@ -18,24 +21,39 @@ export const Login: FunctionComponent = () => {
             email: email,
             password: password
         }))
+        .unwrap()
+        .catch()
+        .then(() => navigate(Paths.HomePage))
     }
     const logout = () => {
         dispatch(logoutRequest());
     }
+    const keyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.code === 'Enter') {
+            login();
+        }
+    }
 
-    return <div className="p-12">{
+    return <div>{
         loading ?
-            <div>loading</div>
+            <LoadingSpinner />
             :
-            loggedIn ?
-                <Button onClick={logout}>Logout</Button>
-                :
-                <div className="flex flex-col">
-                    <Input placeholder="email" onChange={e => setEmail(e.target.value)} type="text" />
-                    <Input placeholder="password" onChange={e => setPassword(e.target.value)} type="password" />
-                    <Button onClick={login}>Login</Button>
-                    <Button><NavLink to={Paths.RegisterPage}>Register</NavLink></Button>
-                </div>
+            <SmallFormLayout buttons={
+                loggedIn ? <Button variant='outlined' color='warning' onClick={logout}>Logout</Button> :
+                <>
+                    <Button variant='outlined' color='success' onClick={login}>Login</Button>
+                    <Button variant='outlined' color='primary'><NavLink to={Paths.RegisterPage}>Register</NavLink></Button>
+                    <Button variant='outlined' color='primary'><NavLink to={Paths.RequestCodePage}>Send Code</NavLink></Button>
+                </>
+            }>
+                {
+                    loggedIn ? <></> :
+                        <>
+                            <Input placeholder="email" onKeyUp={keyUp} onChange={e => setEmail(e.target.value)} type="text" />
+                            <Input placeholder="password" onKeyUp={keyUp} onChange={e => setPassword(e.target.value)} type="password" />
+                        </>
+                }
+            </SmallFormLayout>
     }
     </div>
 }

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/userDto";
-import { loadLoggedInUser, loginRequest, logoutRequest, registerRequest, validateCodeRequest } from "./loginThunk";
+import { accessCodeRequest, loadLoggedInUser, loginRequest, logoutRequest, registerRequest, validateCodeRequest } from "./loginThunk";
 
 
 export interface IAuthState {
@@ -75,6 +75,16 @@ export const authStateSlice = createSlice({
             state.user = action.payload;
         })
         builder.addCase(validateCodeRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(accessCodeRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(accessCodeRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(accessCodeRequest.rejected, (state) => {
             state.loading = false;
         })
     }
