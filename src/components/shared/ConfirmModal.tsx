@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactElement } from "react";
-import { BaseModal } from "./BaseModal";
+import { BaseConfirmModal } from "./BaseConfirmModal";
 
 export type ConfirmModalProps = {
     message: string;
@@ -9,7 +9,7 @@ export type ConfirmModalProps = {
 }
 
 export const ConfirmModal: FunctionComponent<ConfirmModalProps> = (props) => {
-    return <BaseModal confirmType='error' onConfirm={props.onConfirm} 
+    return <BaseConfirmModal confirmType='error' onConfirm={props.onConfirm} 
             buttonContent={props.buttonContent} 
-            confirmText="Delete">{props.message}</BaseModal>
+            confirmText="Delete">{props.message}</BaseConfirmModal>
 }

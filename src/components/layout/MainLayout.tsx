@@ -47,7 +47,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             <div className="flex-1 ">
                 {props.children}
             </div>
-            <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''}`}>
+            <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip`}>
                 <ImageUpload />
             </div>
         </div>

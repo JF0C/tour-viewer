@@ -8,7 +8,7 @@ export type SmallFormLayoutProps = {
 export const SmallFormLayout: FunctionComponent<SmallFormLayoutProps> = (props) => {
 
     return <div className="p-4 md:p-12 flex flex-col">
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
             { props.children }
         </div>
         <div className="mt-2 flex flex-col md:flex-row gap-2">

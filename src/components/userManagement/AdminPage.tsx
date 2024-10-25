@@ -5,13 +5,14 @@ import { UserDetail } from "./userDetail";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { loadAvailableRoles, loadUsersAdmin } from "../../store/adminThunk";
 import { Button } from "@mui/material";
+import { Roles } from "../../constants/Rolenames";
 
 export const AdminPage: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.auth.user);
     const adminState = useAppSelector((state) => state.admin);
 
-    if (!user?.roles.includes('admin')) {
+    if (!user?.roles.includes(Roles.Admin)) {
         return <div>Unauthorized</div>
     }
     if (adminState.loading) {
@@ -29,7 +30,7 @@ export const AdminPage: FunctionComponent = () => {
 
     return <div className="flex flex-col w-full">
 
-        <div className="flex flex-row">
+        <div className="flex flex-row flex-wrap">
             <UserList />
             <UserDetail />
         </div>

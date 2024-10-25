@@ -29,8 +29,6 @@ export const UserDetail: FunctionComponent = () => {
         <div className="flex flex-row w-full p-4 items-center">
             <div className="flex-1 font-bold text-center">
                 { selectedUser.username }
-                &nbsp;
-                { `(${selectedUser.id})` }
             </div>
             <div>
                 <Button onClick={deSelectUser}>
@@ -40,6 +38,14 @@ export const UserDetail: FunctionComponent = () => {
         </div>
         <table>
             <tbody>
+                <tr>
+                    <td>
+                        Id
+                    </td>
+                    <td>
+                        { selectedUser.id }
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         Username
@@ -53,7 +59,7 @@ export const UserDetail: FunctionComponent = () => {
                         Email
                     </td>
                     <td>
-                        <Input type='text' placeholder='new email' />
+                        { selectedUser.email }
                     </td>
                 </tr>
                 <tr>
@@ -72,6 +78,22 @@ export const UserDetail: FunctionComponent = () => {
                     <td>
                         { allRoles.filter(r => !selectedUser.roles.includes(r))
                             .map(r => <UserRoleButton key={r} userId={selectedUser.id} role={r} isAssigned={false} />) }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Created
+                    </td>
+                    <td>
+                        { selectedUser.created.toString() }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Modified
+                    </td>
+                    <td>
+                        { selectedUser.modified?.toString() }
                     </td>
                 </tr>
             </tbody>

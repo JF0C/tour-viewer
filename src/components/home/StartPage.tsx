@@ -41,6 +41,11 @@ export const StartPage: FunctionComponent = () => {
         </NavLink>
         <Button onClick={() => dispatch(logoutRequest())}>Logout</Button>
         <Button onClick={() => dispatch(showInfobar(!infoBarVisible))}>Toggle Info Bar</Button>
+        <NavLink to={Paths.CreateTourPage}>
+            <Button>
+                Create Tour
+            </Button>
+        </NavLink>
         </div>
     }
     </div>
