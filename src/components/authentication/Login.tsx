@@ -1,6 +1,6 @@
 import { Button, Input } from "@mui/material";
 import { FunctionComponent, useState } from "react";
-import { loginRequest, logoutRequest } from "../../store/loginThunk";
+import { loginRequest, logoutRequest } from "../../store/authThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";

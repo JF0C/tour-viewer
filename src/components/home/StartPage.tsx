@@ -4,14 +4,17 @@ import { NavLink } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Login } from "../authentication/Login";
-import { loadLoggedInUser, logoutRequest } from "../../store/loginThunk";
+import { logoutRequest } from "../../store/authThunk";
+import { loadLoggedInUser } from "../../store/userThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { showInfobar } from "../../store/tourStateReducer";
 
 
 export const StartPage: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.auth.user);
-    const authState = useAppSelector((state) => state.auth)
+    const authState = useAppSelector((state) => state.auth);
+    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar);
 
     if (!authState.user && !authState.fetchUserAttempted && !authState.loading) {
         dispatch(loadLoggedInUser());
@@ -37,6 +40,7 @@ export const StartPage: FunctionComponent = () => {
             </Button>
         </NavLink>
         <Button onClick={() => dispatch(logoutRequest())}>Logout</Button>
+        <Button onClick={() => dispatch(showInfobar(!infoBarVisible))}>Toggle Info Bar</Button>
         </div>
     }
     </div>

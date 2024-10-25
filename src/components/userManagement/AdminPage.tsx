@@ -17,18 +17,15 @@ export const AdminPage: FunctionComponent = () => {
     if (adminState.loading) {
         return <LoadingSpinner />
     }
-    if (adminState.availableRoles === undefined && !adminState.loading) {
-        dispatch(loadAvailableRoles());
-    }
-
     const loadUsers = () => {
-        dispatch(loadUsersAdmin({ page: adminState.pagination.page, count: adminState.pagination.itemsPerPage }));
+        dispatch(loadUsersAdmin({ 
+                page: adminState.pagination.page, 
+                count: adminState.pagination.itemsPerPage }))
+            .then(() => dispatch(loadAvailableRoles()));
     }
-
-    if (adminState.availableRoles !== undefined && adminState.users === undefined && !adminState.loading) {
+    if ((adminState.users === undefined || adminState.availableRoles === undefined) && !adminState.loading) {
         loadUsers();
     }
-
 
     return <div className="flex flex-col w-full">
 

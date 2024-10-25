@@ -5,17 +5,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { setUserForEditing } from "../../store/adminStateReducer";
 import { UserRoleButton } from "./userRoleButton";
+import { ConfirmModal } from "../shared/ConfirmModal";
+import { deleteUser } from "../../store/adminThunk";
 
 export const UserDetail: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const selectedUser = useAppSelector((state) => state.admin.userForEditing);
     const allRoles = useAppSelector((state) => state.admin.availableRoles) ?? [];
 
+    console.log(allRoles)
+
     if (selectedUser === undefined) {
         return <></>
     }
     const deSelectUser = () => {
         dispatch(setUserForEditing(undefined))
+    }
+    const deleteSelectedUser = () => {
+        dispatch(deleteUser(selectedUser.id));
     }
 
     return <div className="flex-1">
@@ -69,5 +76,9 @@ export const UserDetail: FunctionComponent = () => {
                 </tr>
             </tbody>
         </table>
+        <div>
+            <ConfirmModal onConfirm={deleteSelectedUser} buttonContent={<>Delete</>} type='error' 
+                message={`Are you sure that you want to delete user ${selectedUser.username}?`} />
+        </div>
     </div>
 }

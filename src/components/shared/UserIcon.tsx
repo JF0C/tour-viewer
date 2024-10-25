@@ -5,7 +5,7 @@ import { faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { Paths } from "../../constants/Paths";
 import { NavLink, useNavigate } from "react-router-dom";
-import { logoutRequest } from "../../store/loginThunk";
+import { logoutRequest } from "../../store/authThunk";
 
 export const UserIcon: FunctionComponent = () => {
     const dispatch = useAppDispatch();

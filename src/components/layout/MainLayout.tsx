@@ -5,13 +5,15 @@ import { FunctionComponent, ReactNode, useState } from "react";
 import { UserIcon } from "../shared/UserIcon";
 import { ImageUpload } from "../tourEditing/ImageUpload";
 import { Navbar } from "../navigation/Navbar";
+import { useAppSelector } from "../../store/store";
 
 export type MainLayoutProps = {
     children: ReactNode
 }
 
 export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar);
 
     return <div className="h-full main-layout flex flex-col">
         <div className="h-14">
@@ -42,10 +44,10 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
 
                 <Navbar closeSidebar={() => setSidebarOpen(false)}/>
             </SwipeableDrawer>
-            <div className="border border-solid flex-1 ">
+            <div className="flex-1 ">
                 {props.children}
             </div>
-            <div className="md:w-1/6 border border-solid">
+            <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''}`}>
                 <ImageUpload />
             </div>
         </div>

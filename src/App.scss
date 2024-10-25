@@ -21,6 +21,16 @@
   background-color: darkgoldenrod;
 }
 
+#info-sidebar {
+  width: 0px;
+  transition: width .2s ease-in-out;
+  border-left: 1px solid white;
+}
+
+#info-sidebar.open {
+  width: 20%;
+}
+
 th {
   padding: 8px;
 }

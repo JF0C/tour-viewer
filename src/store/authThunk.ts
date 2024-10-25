@@ -2,22 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiUrls } from "../constants/ApiUrls";
 import { LoginDto } from "../dtos/loginDto";
 import { UserDto } from "../dtos/userDto";
-import { CreateUserDto } from "../dtos/createUserDto";
 import { ValidateCodeDto } from "../dtos/validateCodeDto";
-
-export const loadLoggedInUser = createAsyncThunk('load-user', async (): Promise<UserDto | undefined> => {
-    const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.UserEndpoint}`,{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include'
-    })
-    if (response.ok) {
-        return response.json();
-    }
-    return undefined;
-})
+import { ResetPasswordDto } from "../dtos/resetPasswordDto";
+import { ChangePasswordDto } from "../dtos/changePasswordDto";
 
 export const loginRequest = createAsyncThunk('login', async (login: LoginDto): Promise<UserDto> => {
     const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.LoginEndpoint}`, {
@@ -36,18 +23,6 @@ export const logoutRequest = createAsyncThunk('logout', async (): Promise<void> 
         method: 'POST',
         credentials: 'include'
     });
-});
-
-export const registerRequest = createAsyncThunk('register', async (user: CreateUserDto): Promise<number> => {
-    const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.UserEndpoint}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    });
-
-    return Number(response.text())
 });
 
 export const validateCodeRequest = createAsyncThunk('validate-code', async (validate: ValidateCodeDto): Promise<UserDto> => {
@@ -69,5 +44,29 @@ export const accessCodeRequest = createAsyncThunk('request-code', async (email: 
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(email)
-    })
-})
+    });
+});
+
+export const resetPasswordRequest = createAsyncThunk('reset-password',
+    async (resetPassword: ResetPasswordDto): Promise<UserDto> => {
+        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.PasswordEndpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(resetPassword)
+        });
+        return response.json();
+});
+
+export const changePasswordRequest = createAsyncThunk('change-password',
+    async (changePassword: ChangePasswordDto): Promise<void> => {
+        await fetch(`${ApiUrls.BaseUrl + ApiUrls.PasswordEndpoint}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(changePassword),
+            credentials: 'include'
+        });
+});

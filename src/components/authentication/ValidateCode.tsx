@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Button, Input } from "@mui/material";
-import { validateCodeRequest } from "../../store/loginThunk";
+import { validateCodeRequest } from "../../store/authThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Paths } from "../../constants/Paths";

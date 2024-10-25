@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/userDto";
-import { changeRoleAssignment, loadAvailableRoles, loadUsersAdmin } from "./adminThunk";
+import { changeRoleAssignment, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, validateUserAdmin } from "./adminThunk";
 import { PaginationState } from "./paginationState";
 
 export interface IAdminState
@@ -78,6 +78,38 @@ export const adminSlice = createSlice({
             state.loading = false;
         })
         builder.addCase(changeRoleAssignment.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(deleteUser.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(deleteUser.fulfilled, (state) => {
+            state.loading = false;
+            state.users = undefined;
+            state.userForEditing = undefined;
+        })
+        builder.addCase(deleteUser.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(changeUsernameAdmin.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(changeUsernameAdmin.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(changeUsernameAdmin.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(validateUserAdmin.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(validateUserAdmin.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(validateUserAdmin.rejected, (state) => {
             state.loading = false;
         })
     }

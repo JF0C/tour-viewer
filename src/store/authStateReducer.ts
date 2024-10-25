@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/userDto";
-import { accessCodeRequest, loadLoggedInUser, loginRequest, logoutRequest, registerRequest, validateCodeRequest } from "./loginThunk";
+import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
+import { changeUsernameRequest, deleteUserRequest, loadLoggedInUser, registerRequest, searchUsers } from "./userThunk"
+import { UserReferenceDto } from "../dtos/userReferenceDto";
+import { PaginationState } from "./paginationState";
 
 
 export interface IAuthState {
@@ -8,11 +11,20 @@ export interface IAuthState {
     user?: UserDto;
     afterLoginPath?: string;
     fetchUserAttempted: boolean;
+    users: UserReferenceDto[];
+    userPagination: PaginationState;
 }
 
 const initialState: IAuthState = {
     loading: false,
-    fetchUserAttempted: false
+    fetchUserAttempted: false,
+    users: [],
+    userPagination: {
+        page: 1,
+        itemsPerPage: 10,
+        totalPages: 1,
+        totalItems: 1
+    }
 }
 
 export const authStateSlice = createSlice({
@@ -71,6 +83,7 @@ export const authStateSlice = createSlice({
             state.loading = true;
         })
         builder.addCase(validateCodeRequest.fulfilled, (state, action) => {
+            console.log(action.payload);
             state.loading = false;
             state.user = action.payload;
         })
@@ -85,6 +98,60 @@ export const authStateSlice = createSlice({
             state.loading = false;
         })
         builder.addCase(accessCodeRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(changeUsernameRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(changeUsernameRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(changeUsernameRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(deleteUserRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(deleteUserRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(deleteUserRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(searchUsers.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(searchUsers.fulfilled, (state, action) => {
+            state.users = action.payload.items;
+            state.userPagination.totalItems = action.payload.totalItems;
+            state.userPagination.page = action.payload.page;
+            state.userPagination.totalPages = action.payload.totalPages
+            state.loading = false;
+        })
+        builder.addCase(searchUsers.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(changePasswordRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(changePasswordRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(changePasswordRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(resetPasswordRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(resetPasswordRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(resetPasswordRequest.rejected, (state) => {
             state.loading = false;
         })
     }
