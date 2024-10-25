@@ -18,4 +18,6 @@ export class ApiUrls
     public static readonly RequestCodeEndpoint = '/Authentication/Code'
     public static readonly LoginEndpoint = '/Authentication/Login'
     public static readonly LogoutEndpoint = '/Authentication/Logout'
+
+    public static readonly TourEndpoint = '/Tour'
 }
