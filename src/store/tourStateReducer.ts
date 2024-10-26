@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserReferenceDto } from "../dtos/userReferenceDto";
+import { TourDto } from "../dtos/tourDto";
+import { PaginationState } from "./paginationState";
+import { createTourRequest, loadTourRequest, searchTours } from "./tourThunk";
 
 export interface ICreateTour {
     name: string;
@@ -9,7 +12,9 @@ export interface ICreateTour {
 
 export interface ITourState {
     loading: boolean;
-    currentTours: string[];
+    tours: TourDto[];
+    selectedTour?: TourDto;
+    tourPagination: PaginationState;
     showInfoBar: boolean;
     editingTour: ICreateTour;
     radioGroups: { groupId: string, activeItem?: string }[];
@@ -18,7 +23,13 @@ export interface ITourState {
 const initialState: ITourState = {
     loading: false,
     showInfoBar: false,
-    currentTours: [],
+    tours: [],
+    tourPagination: {
+        page: 1,
+        totalItems: 1,
+        totalPages: 1,
+        itemsPerPage: 10
+    },
     radioGroups: [],
     editingTour: {
         name: '',
@@ -34,8 +45,8 @@ export const tourStateSlice = createSlice({
         showInfobar(state, action: PayloadAction<boolean>) {
             state.showInfoBar = action.payload;
         },
-        setTours(state, action: PayloadAction<string[]>) {
-            state.currentTours = action.payload;
+        setTracks(state, action: PayloadAction<number[]>) {
+
         },
         setRadioGroup(state, action: PayloadAction<{groupId: string, activeItem?: string}>) {
             let entry = state.radioGroups.find(x => x.groupId === action.payload.groupId);
@@ -71,11 +82,52 @@ export const tourStateSlice = createSlice({
             state.editingTour.participants = state.editingTour.participants
                 .filter(p => p.id !== action.payload);
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(createTourRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(createTourRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(createTourRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(searchTours.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(searchTours.fulfilled, (state, action) => {
+            state.loading = false;
+            state.tours = action.payload.items;
+            for(let t of state.tours) {
+                t.startDate = new Date(t.startDate).valueOf();
+            }
+            state.tourPagination.page = action.payload.page;
+            state.tourPagination.totalItems = action.payload.totalItems;
+            state.tourPagination.totalPages = action.payload.totalPages;
+        })
+        builder.addCase(searchTours.rejected, (state) => {
+            state.loading = false;
+            state.tours = [];
+        })
+        
+        builder.addCase(loadTourRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(loadTourRequest.fulfilled, (state, action) => {
+            state.loading = false;
+            state.selectedTour = action.payload;
+            state.selectedTour.startDate = new Date(state.selectedTour.startDate).valueOf();
+        })
+        builder.addCase(loadTourRequest.rejected, (state) => {
+            state.loading = false;
+        })
     }
 })
 
 export const tourStateReducer = tourStateSlice.reducer;
-export const { setRadioGroup, setTours, showInfobar,
+export const { setRadioGroup, showInfobar,
     resetEditingTour, setEditingTourName, setEditingTourStartDate,
-    addEditingTourParticipant, removeEditingTourParticipant
+    addEditingTourParticipant, removeEditingTourParticipant, setTracks
  } = tourStateSlice.actions;

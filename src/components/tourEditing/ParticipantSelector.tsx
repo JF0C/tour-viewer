@@ -11,8 +11,6 @@ export const ParticipantSelector: FunctionComponent = () => {
     const userState = useAppSelector((state) => state.auth);
     const selectedUsers = useAppSelector((state) => state.tour.editingTour.participants);
 
-    console.log(userState.users)
-
     const toggleSelectedUser = (user: UserReferenceDto) => {
         if (selectedUsers.find(u => u.id === user.id)) {
             dispatch(removeEditingTourParticipant(user.id));

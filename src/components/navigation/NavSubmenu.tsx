@@ -38,7 +38,7 @@ export const NavSubMenu: FunctionComponent<NavSubMenuProps> = (props) => {
         <AccordionSummary sx={{ bgcolor: color }} expandIcon={<FontAwesomeIcon style={{ color: 'white' }} icon={faChevronDown}/>}>
         <div className='flex flex-row justify-center items-center'>
             <TourLink key={props.data.displayName + 'link'} displayName={props.data.displayName}
-                tours={props.data.items?.map(i => `${props.data.path}/${i.tour}`) ?? []} />
+                tracks={props.data.items ?? []} />
         </div>
         </AccordionSummary>
         <AccordionDetails>
@@ -46,9 +46,9 @@ export const NavSubMenu: FunctionComponent<NavSubMenuProps> = (props) => {
                 props.data.subGroups?.map(s => <NavSubMenu key={s.path} radioGroupId={props.data.path} data={s} onClick={props.onClick} />)
             }
             {
-                props.data.items?.map(i => <TourLink key={i.displayName}
-                    displayName={i.displayName}
-                    tours={[`${props.data.path}/${i.tour}`]}
+                props.data.items?.map(i => <TourLink key={i.name}
+                    displayName={i.name}
+                    tracks={[i]}
                 />)
             }
         </AccordionDetails>

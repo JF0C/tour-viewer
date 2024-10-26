@@ -31,3 +31,14 @@ export const createTourRequest = createAsyncThunk('create-tour',
         return Number(response.text())
     }
 )
+
+export const loadTourRequest = createAsyncThunk('load-tour',
+    async (tourId: number): Promise<TourDto> => {
+        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${tourId}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+
+        return response.json();
+    }
+)

@@ -7,12 +7,14 @@ export const menuTree: MenuGroup[] = [
         path: Paths.Athens2022Path,
         items: [
             {
-                tour: Paths.Athens2022_01Path,
-                displayName: '01 Muenchen -> Bad Aibling'
+                id: 1,
+                tourPosition: 1,
+                name: '01 Muenchen -> Bad Aibling'
             },
             {
-                tour: Paths.Athens2022_02Path,
-                displayName: '02 - Bad Aibling -> Salzburg'
+                id: 2,
+                tourPosition: 2,
+                name: '02 - Bad Aibling -> Salzburg'
             }
         ]
     },
@@ -21,12 +23,14 @@ export const menuTree: MenuGroup[] = [
         path: Paths.MitDir2022Path,
         items: [
             {
-                tour: Paths.MitDir2022_01Path,
-                displayName: '01 München -> Murner See'
+                id: 1,
+                tourPosition: 1,
+                name: '01 München -> Murner See'
             },
             {
-                tour: Paths.MitDir2022_02Path,
-                displayName: '02 - Murner See -> Schöneck'
+                id: 2,
+                tourPosition: 2,
+                name: '02 - Murner See -> Schöneck'
             }
         ]
     }

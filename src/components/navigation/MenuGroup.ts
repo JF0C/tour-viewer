@@ -2,10 +2,11 @@ export type MenuGroup = {
     displayName: string;
     path: string;
     subGroups?: MenuGroup[];
-    items?: TourItem[]
+    items?: TrackItem[]
 }
 
-export type TourItem = {
-    tour: string;
-    displayName: string;
+export type TrackItem = {
+    id: number;
+    tourPosition: number;
+    name: string;
 }

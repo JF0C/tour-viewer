@@ -8,9 +8,11 @@ import { Button } from "@mui/material";
 import { TourParticipants } from "./TourParticipants";
 import { SmallFormLayout } from "../layout/SmallFormLayout";
 import { createTourRequest } from "../../store/tourThunk";
+import { useNavigate } from "react-router-dom";
 
 export const CreateTour: FunctionComponent = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const user = useAppSelector((state) => state.auth.user);
     const tour = useAppSelector((state) => state.tour.editingTour);
     const [nameValid, setNameValid] = useState(false);
@@ -21,10 +23,11 @@ export const CreateTour: FunctionComponent = () => {
 
     const validateStartDate = (ticks: number) => {
         const date = ticks;
-        const fromDate = new Date().valueOf() - 1000*60*60*24*365*10;
-        const toDate = new Date().valueOf() + 1000*60*60*24*365;
+        const fromDate = new Date().valueOf() - 1000 * 60 * 60 * 24 * 365 * 10;
+        const toDate = new Date().valueOf() + 1000 * 60 * 60 * 24 * 365;
         return fromDate < date && date < toDate
     }
+
     const startDateValid = validateStartDate(tour.startDate)
 
     const saveTour = () => {
@@ -37,12 +40,17 @@ export const CreateTour: FunctionComponent = () => {
         }));
     }
 
-    return <SmallFormLayout buttons={<Button onClick={saveTour} disabled={!nameValid || !startDateValid}>Save</Button>}>
-        <ValidatingInput name="Name" minLength={3} maxLength={100} 
-            onChange={n => dispatch(setEditingTourName(n))} inputType="text" 
-            validCallback={v => setNameValid(v)}/>
-        <DatePicker format="DD.MM.YYYY" onChange={e => {dispatch(setEditingTourStartDate(e?.toDate().valueOf() ?? 0))} } />
-        <div className="text-xs" style={{color: 'red'}}>{startDateValid ? '' : 'Date must be bigger than 10 years ago and smaller than 1 year in the future'}</div>
+    return <SmallFormLayout buttons={
+        <>
+            <Button onClick={saveTour} disabled={!nameValid || !startDateValid}>Save</Button>
+            <Button onClick={() => navigate(-1)} color='warning'>Cancel</Button>
+        </>
+    }>
+        <ValidatingInput name="Name" minLength={3} maxLength={100}
+            onChange={n => dispatch(setEditingTourName(n))} inputType="text"
+            validCallback={v => setNameValid(v)} />
+        <DatePicker format="DD.MM.YYYY" onChange={e => { dispatch(setEditingTourStartDate(e?.toDate().valueOf() ?? 0)) }} />
+        <div className="text-xs" style={{ color: 'red' }}>{startDateValid ? '' : 'Date must be bigger than 10 years ago and smaller than 1 year in the future'}</div>
         <TourParticipants />
     </SmallFormLayout>
 }

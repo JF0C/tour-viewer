@@ -4,7 +4,7 @@ import { UserReferenceDto } from "./userReferenceDto";
 
 export type TourDto = EntityBaseDto & {
     name: string;
-    startDate: Date;
+    startDate: number;
     tracks: TrackDto[];
     participants: UserReferenceDto[];
 }
