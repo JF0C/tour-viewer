@@ -7,6 +7,7 @@ import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { changeTourStartDateRequest, renameTourRequest } from "../../store/tourThunk";
 import { setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
 import { ticksToUtcDate } from "../../converters/dateConverters";
+import { TrackList } from "./TrackList";
 
 
 export const EditTour: FunctionComponent = () => {
@@ -38,6 +39,7 @@ export const EditTour: FunctionComponent = () => {
         <EditableNameLabel value={tourState.editingTour.name} inputType="text" name="Name" 
             onApply={changeTourName} minLength={3} maxLength={100}/>
         <EditableDateLabel value={tourState.editingTour.startDate} onApply={changeTourStartDate} />
+        <TrackList />
     </SmallFormLayout>
 }
 

@@ -3,14 +3,15 @@ import { UserReferenceDto } from "../dtos/userReferenceDto";
 import { TourDto } from "../dtos/tourDto";
 import { PaginationState } from "./paginationState";
 import { createTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
-import { CreateTrackDto } from "../dtos/createTrackDto";
+import { EditTrackDto } from "../dtos/editTrackDto";
+import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 
 export interface IEditTour {
     id: number;
     name: string;
     startDate: number;
     participants: UserReferenceDto[];
-    tracks: CreateTrackDto[]
+    tracks: EditTrackDto[]
 }
 
 export interface ITourState {
@@ -95,6 +96,8 @@ export const tourStateSlice = createSlice({
             state.editingTour.participants = action.payload.participants;
             state.editingTour.startDate = action.payload.startDate;
             state.editingTour.tracks = action.payload.tracks.map(t => { return {
+                tourId: action.payload.id,
+                id: t.id,
                 name: t.name,
                 tourPosition: t.tourPosition,
                 data: t.data
@@ -149,6 +152,26 @@ export const tourStateSlice = createSlice({
             state.loading = false;
         })
         builder.addCase(renameTourRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(deleteTrackRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(deleteTrackRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(deleteTrackRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(createTrackRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(createTrackRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(createTrackRequest.rejected, (state) => {
             state.loading = false;
         })
     }

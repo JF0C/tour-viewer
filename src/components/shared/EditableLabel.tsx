@@ -13,8 +13,6 @@ export type EditableLabelProps = {
 export const EditableLabel: FunctionComponent<EditableLabelProps> = (props) => {
     const [editing, setEditing] = useState(false);
 
-    console.log('input valid: ' + props.canConfirm);
-
     if (editing) {
         return <div className="flex flex-row gap-2">
         <div className="flex-1">

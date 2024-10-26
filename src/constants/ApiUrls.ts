@@ -20,4 +20,6 @@ export class ApiUrls
     public static readonly LogoutEndpoint = '/Authentication/Logout'
 
     public static readonly TourEndpoint = '/Tour'
+
+    public static readonly TrackEndpoint = '/Track'
 }

@@ -1,33 +1,32 @@
 import { Input } from "@mui/material"
 import { FunctionComponent, useState } from "react"
 
-export type ValidatingInputProps = {
-    inputType: 'text' | 'password'
+export type ValidatingNumberInputProps = {
     name: string
-    value?: string
-    onChange?: (value: string) => void
-    minLength?: number
-    maxLength?: number
-    customValidator?: (value: string) => string | null
+    value?: number
+    onChange?: (value: number) => void
+    min?: number
+    max?: number
+    customValidator?: (value: number) => string | null
     validCallback?: (valid: boolean) => void
 }
 
-export const ValidatingInput: FunctionComponent<ValidatingInputProps> = (props) => {
+export const ValidatingNumberInput: FunctionComponent<ValidatingNumberInputProps> = (props) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-    const validate = (value: string) => {
+    const validate = (value: number) => {
         props.onChange?.(value);
-        const validationMinLength = props.minLength ?? 0;
-        if (props.maxLength) {
-            if (value.length < validationMinLength || value.length > props.maxLength) {
-                setErrorMessage(`Length of ${props.name} must be in range [${validationMinLength}, ${props.maxLength}]`);
+        const validationMin = props.min ?? 0;
+        if (props.max) {
+            if (value < validationMin || value > props.max) {
+                setErrorMessage(`${props.name} must be in range [${validationMin}, ${props.max}]`);
                 props.validCallback?.(false);
                 return;
             }
         }
         else {
-            if (value.length < validationMinLength) {
-                setErrorMessage(`${props.name} must be at least ${validationMinLength} long`);
+            if (value < validationMin) {
+                setErrorMessage(`${props.name} must be at least ${validationMin}`);
                 props.validCallback?.(false);
                 return;
             }
@@ -45,7 +44,7 @@ export const ValidatingInput: FunctionComponent<ValidatingInputProps> = (props) 
     }
 
     return <div className="flex flex-col">
-        <Input defaultValue={props.value} sx={{fontSize: '16px'}} onChange={(e) => validate(e.target.value)} type={props.inputType} />
+        <Input sx={{fontSize: '16px'}} defaultValue={props.value} onChange={(e) => validate(Number(e.target.value))} type='number' />
         <div className="text-xs" style={{color: 'red'}}>{ errorMessage }</div>
     </div>
 }
