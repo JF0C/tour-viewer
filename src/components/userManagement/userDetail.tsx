@@ -1,17 +1,19 @@
 import { FunctionComponent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { Button, Input } from "@mui/material";
+import { Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { setUserForEditing } from "../../store/adminStateReducer";
 import { UserRoleButton } from "./userRoleButton";
 import { ConfirmModal } from "../shared/ConfirmModal";
-import { deleteUser } from "../../store/adminThunk";
+import { changeUsernameAdmin, deleteUser, loadUsersAdmin } from "../../store/adminThunk";
+import { EditableNameLabel } from "../shared/EditableNameLabel";
 
 export const UserDetail: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const selectedUser = useAppSelector((state) => state.admin.userForEditing);
-    const allRoles = useAppSelector((state) => state.admin.availableRoles) ?? [];
+    const adminState = useAppSelector((state) => state.admin);
+    const selectedUser = adminState.userForEditing;
+    const allRoles = adminState.availableRoles ?? [];
 
     console.log(allRoles)
 
@@ -23,6 +25,16 @@ export const UserDetail: FunctionComponent = () => {
     }
     const deleteSelectedUser = () => {
         dispatch(deleteUser(selectedUser.id));
+    }
+    const changeUsername = (username: string) => {
+        dispatch(changeUsernameAdmin({id: selectedUser.id, username: username}))
+            .unwrap()
+            .catch()
+            .then(() => {
+                dispatch(loadUsersAdmin({ 
+                    page: adminState.pagination.page, 
+                    count: adminState.pagination.itemsPerPage }))
+            })
     }
 
     return <div className="flex-1">
@@ -51,7 +63,9 @@ export const UserDetail: FunctionComponent = () => {
                         Username
                     </td>
                     <td>
-                        <Input type='text' placeholder='new username' />
+                        <EditableNameLabel value={selectedUser.username} name='Username'
+                            inputType="text" onApply={changeUsername}
+                            minLength={3} maxLength={20} />
                     </td>
                 </tr>
                 <tr>

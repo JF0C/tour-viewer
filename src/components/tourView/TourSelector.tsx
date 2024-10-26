@@ -43,7 +43,7 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
     return <div className="w-96">
         {
             tourState.tours.map(t =>
-                <div className="flex flex-row">
+                <div key={t.id} className="flex flex-row">
                     <Button key={t.id} sx={{ width: '100%' }} onClick={() => selectTour(t.id)}>
                         <div className="flex flex-row items-center w-full justify-between" >
                             <div>

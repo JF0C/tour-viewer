@@ -45,7 +45,7 @@ export const ValidatingInput: FunctionComponent<ValidatingInputProps> = (props) 
     }
 
     return <div className="flex flex-col">
-        <Input defaultValue={props.value} onChange={(e) => validate(e.target.value)} type={props.inputType} />
+        <Input sx={{fontSize: '16px'}} defaultValue={props.value} onChange={(e) => validate(e.target.value)} type={props.inputType} />
         <div className="text-xs" style={{color: 'red'}}>{ errorMessage }</div>
     </div>
 }

@@ -51,6 +51,9 @@ export const changeUsernameAdmin = createAsyncThunk('changeusername-admin',
         const url = `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${changeUsername.id}/Username`;
         await fetch(url, {
             method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             credentials: 'include',
             body: JSON.stringify(changeUsername.username)
         })
