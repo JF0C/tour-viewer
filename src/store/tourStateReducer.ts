@@ -2,12 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserReferenceDto } from "../dtos/userReferenceDto";
 import { TourDto } from "../dtos/tourDto";
 import { PaginationState } from "./paginationState";
-import { createTourRequest, loadTourRequest, searchTours } from "./tourThunk";
+import { createTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
+import { CreateTrackDto } from "../dtos/createTrackDto";
 
-export interface ICreateTour {
+export interface IEditTour {
+    id: number;
     name: string;
     startDate: number;
     participants: UserReferenceDto[];
+    tracks: CreateTrackDto[]
 }
 
 export interface ITourState {
@@ -16,7 +19,7 @@ export interface ITourState {
     selectedTour?: TourDto;
     tourPagination: PaginationState;
     showInfoBar: boolean;
-    editingTour: ICreateTour;
+    editingTour: IEditTour;
     radioGroups: { groupId: string, activeItem?: string }[];
 }
 
@@ -32,9 +35,11 @@ const initialState: ITourState = {
     },
     radioGroups: [],
     editingTour: {
+        id: 0,
         name: '',
         startDate: 0,
-        participants: []
+        participants: [],
+        tracks: []
     }
 }
 
@@ -61,9 +66,11 @@ export const tourStateSlice = createSlice({
         },
         resetEditingTour(state) {
             state.editingTour = {
+                id: 0,
                 name: '',
                 startDate: 0,
-                participants: []
+                participants: [],
+                tracks: []
             };
         },
         setEditingTourName(state, action: PayloadAction<string>) {
@@ -81,6 +88,17 @@ export const tourStateSlice = createSlice({
         removeEditingTourParticipant(state, action: PayloadAction<number>) {
             state.editingTour.participants = state.editingTour.participants
                 .filter(p => p.id !== action.payload);
+        },
+        startEditingTour(state, action: PayloadAction<TourDto>) {
+            state.editingTour.id = action.payload.id
+            state.editingTour.name = action.payload.name;
+            state.editingTour.participants = action.payload.participants;
+            state.editingTour.startDate = action.payload.startDate;
+            state.editingTour.tracks = action.payload.tracks.map(t => { return {
+                name: t.name,
+                tourPosition: t.tourPosition,
+                data: t.data
+            }})
         }
     },
     extraReducers: (builder) => {
@@ -123,11 +141,22 @@ export const tourStateSlice = createSlice({
         builder.addCase(loadTourRequest.rejected, (state) => {
             state.loading = false;
         })
+
+        builder.addCase(renameTourRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(renameTourRequest.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(renameTourRequest.rejected, (state) => {
+            state.loading = false;
+        })
     }
 })
 
 export const tourStateReducer = tourStateSlice.reducer;
 export const { setRadioGroup, showInfobar,
     resetEditingTour, setEditingTourName, setEditingTourStartDate,
-    addEditingTourParticipant, removeEditingTourParticipant, setTracks
+    addEditingTourParticipant, removeEditingTourParticipant, setTracks,
+    startEditingTour
  } = tourStateSlice.actions;

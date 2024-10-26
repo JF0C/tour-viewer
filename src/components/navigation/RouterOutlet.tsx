@@ -9,6 +9,7 @@ import { Register } from "../authentication/Register";
 import { ValidateCode } from "../authentication/ValidateCode";
 import { RequestCode } from "../authentication/RequestCode";
 import { CreateTour } from "../tourEditing/CreateTour";
+import { EditTour } from "../tourEditing/EditTour";
 
 
 export const RouterOutlet: FunctionComponent = () => {
@@ -23,5 +24,6 @@ export const RouterOutlet: FunctionComponent = () => {
         
         <Route path={Paths.ToursPage} element={<TourView />} />
         <Route path={Paths.CreateTourPage} element={<CreateTour />} />
+        <Route path={Paths.EditTourPage} element={<EditTour />} />
     </Routes>
 }

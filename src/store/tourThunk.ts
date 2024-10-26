@@ -4,6 +4,8 @@ import { TourDto } from "../dtos/tourDto";
 import { PageRequestDto } from "../dtos/pageRequestDto";
 import { ApiUrls } from "../constants/ApiUrls";
 import { CreateTourDto } from "../dtos/createTourDto";
+import { RenameTourDto } from "../dtos/renameTourDto";
+import { ChangeTourStartDateDto } from "../dtos/changeTourStartDateDto";
 
 export const searchTours = createAsyncThunk('search-tours',
     async (search: PageRequestDto): Promise<PagedResult<TourDto>> => {
@@ -40,5 +42,31 @@ export const loadTourRequest = createAsyncThunk('load-tour',
         })
 
         return response.json();
+    }
+)
+
+export const renameTourRequest = createAsyncThunk('rename-tour',
+    async (rename: RenameTourDto): Promise<void> => {
+        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${rename.tourId}/Name`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(rename.name)
+        });
+    }
+)
+
+export const changeTourStartDateRequest = createAsyncThunk('change-tour-start-date',
+    async (changeStartDate: ChangeTourStartDateDto): Promise<void> => {
+        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${changeStartDate.tourId}/StartDate`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(changeStartDate.startDate)
+        })
     }
 )

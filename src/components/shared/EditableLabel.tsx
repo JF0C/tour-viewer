@@ -16,11 +16,11 @@ export const EditableLabel: FunctionComponent<EditableLabelProps> = (props) => {
     console.log('input valid: ' + props.canConfirm);
 
     if (editing) {
-        return <div className="flex flex-row">
+        return <div className="flex flex-row gap-2">
         <div className="flex-1">
             { props.editor }
         </div>
-        <div>
+        <div className="flex flex-row gap-2">
             <Button color="warning" variant="outlined" onClick={() => setEditing(false)}>
                 <FontAwesomeIcon icon={faX} />
             </Button>
@@ -31,7 +31,7 @@ export const EditableLabel: FunctionComponent<EditableLabelProps> = (props) => {
     </div>
     }
     else {
-        return <div className="flex flex-row">
+        return <div className="flex flex-row gap-2">
             <div className="flex-1">
                 { props.label }
             </div>

@@ -18,7 +18,8 @@ export const EditableNameLabel: FunctionComponent<EditableNameLabelProps> = (pro
     return <EditableLabel canConfirm={isValid && (props.value !== currentValue)} label={props.value} editor={
         <ValidatingInput inputType={props.inputType} value={props.value}
             name={props.name} onChange={v => setCurrentValue(v)}
-            minLength={props.minLength} maxLength={props.maxLength} validCallback={(v) => setIsValid(v)}/>} 
+            minLength={props.minLength} maxLength={props.maxLength} 
+            validCallback={(v) => setIsValid(v)}/>} 
         onApplyChange={() => props.onApply(currentValue)}
         />
 }

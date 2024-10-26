@@ -6,6 +6,10 @@ import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { Roles } from "../../constants/Rolenames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { startEditingTour } from "../../store/tourStateReducer";
+import { useNavigate } from "react-router-dom";
+import { Paths } from "../../constants/Paths";
+import { ticksToDateString } from "../../converters/dateConverters";
 
 export type TourSelectorProps = {
     onSelected: () => void
@@ -13,6 +17,7 @@ export type TourSelectorProps = {
 
 export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const tourState = useAppSelector((state) => state.tour);
     const isContributor = useAppSelector((state) => 
         state.auth.user?.roles.includes(Roles.Contributor) ?? false);
@@ -23,15 +28,18 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
             .catch()
             .then(() => props.onSelected?.())
     }
+    const editTour = (tourId: number) => {
+        dispatch(loadTourRequest(tourId))
+            .unwrap()
+            .catch()
+            .then((tour) => {
+                props.onSelected?.();
+                dispatch(startEditingTour(tour))
+                navigate(Paths.EditTourPage);
+        })
+    }
     const changePage = (page: number) => {
         dispatch(searchTours({ page: page, count: tourState.tourPagination.itemsPerPage }))
-    }
-
-    const formatDate = (ticks: number) => {
-        const date = new Date(ticks);
-        const month = (date.getMonth() < 10 ? '0' : '') + date.getMonth().toString();
-        const day = (date.getDate() < 10 ? '0': '') + date.getDate().toString();
-        return `${day}.${month}.${date.getFullYear()}`
     }
 
     if (tourState.tours.length === 0 && !tourState.loading) {
@@ -50,12 +58,12 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
                                 {t.name}
                             </div>
                             <div>
-                                {formatDate(t.startDate)}
+                                {ticksToDateString(t.startDate)}
                             </div>
                         </div>
                     </Button>
                     {
-                        isContributor ? <Button>
+                        isContributor ? <Button onClick={() => editTour(t.id)}>
                             <FontAwesomeIcon icon={faEdit} />
                         </Button>
                         :<></>
