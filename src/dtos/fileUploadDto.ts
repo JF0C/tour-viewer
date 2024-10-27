@@ -2,6 +2,6 @@ import { AxiosProgressEvent } from "axios";
 
 export type FileUploadDto = {
     file: File;
-    trackId?: number;
+    blogPostId?: number;
     onChunk?: (progress: AxiosProgressEvent) => void
 }

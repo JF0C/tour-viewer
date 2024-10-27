@@ -1,11 +1,13 @@
-import { Button } from "@mui/material";
-import { FunctionComponent, useRef } from "react";
+import { Button, Input } from "@mui/material";
+import { FunctionComponent, useRef, useState } from "react";
 import { useAppDispatch } from "../../store/store";
-import { uploadFile } from "../../store/filesThunk";
+import { uploadImage } from "../../store/filesThunk";
 import { AxiosProgressEvent } from "axios";
+import { ApiUrls } from "../../constants/ApiUrls";
 
 export const ImageUpload: FunctionComponent = () => {
     const dispatch = useAppDispatch();
+    const [imageFile, setImageFile] = useState('')
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const onProgress = (progress: AxiosProgressEvent) => {
@@ -15,10 +17,16 @@ export const ImageUpload: FunctionComponent = () => {
         const files = fileInputRef?.current?.files;
         if (files) {
             const file = files[0];
-            dispatch(uploadFile({ file: file, trackId: 1, onChunk: onProgress}))
+            console.log(file.name)
+            dispatch(uploadImage({ file: file, onChunk: onProgress}))
+                .unwrap()
+                .then((response) => console.log(response))
         }
     }
     return <div>
+        <Input placeholder="image guid" onChange={(e) => setImageFile(e.target.value)} />
+        <img src={`${ApiUrls.BaseUrl + ApiUrls.ImageEndpoint}/${imageFile}`} 
+            width='200px' alt="selected in input" />
         <input ref={fileInputRef} onChange={() => upload()}
             className="hidden" type="file" name="data" accept="image/jpeg" />
         <Button onClick={() => fileInputRef.current?.click()}>
