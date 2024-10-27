@@ -25,7 +25,7 @@ export const ImageUpload: FunctionComponent = () => {
     }
     return <div>
         <Input placeholder="image guid" onChange={(e) => setImageFile(e.target.value)} />
-        <img src={`${ApiUrls.BaseUrl + ApiUrls.ImageEndpoint}/${imageFile}`} 
+        <img src={`${ApiUrls.BaseUrl + ApiUrls.ImageEndpoint}/${imageFile}.jpg`} 
             width='200px' alt="selected in input" />
         <input ref={fileInputRef} onChange={() => upload()}
             className="hidden" type="file" name="data" accept="image/jpeg" />
