@@ -13,11 +13,11 @@ export const TourSelector: FunctionComponent = () => {
     return <BaseConfirmModal onConfirm={() => setOpen(false)} 
             onOpen={() => setOpen(true)} open={open} 
             hideCancel confirmText={'Cancel'} 
-            buttonContent={<>
+            buttonContent={<div>
                 <FontAwesomeIcon icon={faList}/>
                 &nbsp;
                 {`${tour?.name ?? 'Select Tour'}`}
-            </>} buttonClass="">
+            </div>} buttonClass="">
             <TourList onSelected={() => setOpen(false)} />
         </BaseConfirmModal>
 }

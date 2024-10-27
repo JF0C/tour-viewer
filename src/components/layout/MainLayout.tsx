@@ -20,7 +20,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             <AppBar sx={{ backgroundColor: '#282c34' }}>
                 <div className="flex flex-row justify-between items-center">
                     <div>
-                        <Button onClick={() => setSidebarOpen(true)}>
+                        <Button onClick={() => setSidebarOpen(!sidebarOpen)}>
                             <FontAwesomeIcon icon={faBars} />
                         </Button>
                     </div>
@@ -42,6 +42,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                 onOpen={() => setSidebarOpen(true)}
             >
                 <div id="sidebar-content" className="w-44 h-full">
+                    <div className="h-16 placeholder"></div>
                     <Navbar closeSidebar={() => setSidebarOpen(false)} />
                 </div>
             </SwipeableDrawer>

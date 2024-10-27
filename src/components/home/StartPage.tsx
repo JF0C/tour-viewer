@@ -1,20 +1,15 @@
-import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { NavLink } from "react-router-dom";
-import { Paths } from "../../constants/Paths";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { Login } from "../authentication/Login";
-import { logoutRequest } from "../../store/authThunk";
 import { loadLoggedInUser } from "../../store/userThunk";
+import { Login } from "../authentication/Login";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { showInfobar } from "../../store/tourStateReducer";
+import { TourMap } from "../tourView/TourMap";
 
 
 export const StartPage: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.auth.user);
     const authState = useAppSelector((state) => state.auth);
-    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar);
 
     if (!authState.user && !authState.fetchUserAttempted && !authState.loading) {
         dispatch(loadLoggedInUser());
@@ -24,19 +19,11 @@ export const StartPage: FunctionComponent = () => {
         return <LoadingSpinner />
     }
 
-    return <div>
-    {
-        user === undefined ? <Login />
-        :
-        <div>
-        <Button onClick={() => dispatch(logoutRequest())}>Logout</Button>
-        <Button onClick={() => dispatch(showInfobar(!infoBarVisible))}>Toggle Info Bar</Button>
-        <NavLink to={Paths.CreateTourPage}>
-            <Button>
-                Create Tour
-            </Button>
-        </NavLink>
-        </div>
+    if (!user) {
+        return <Login />
     }
+
+    return <div className="h-full">
+        <TourMap />
     </div>
 }
