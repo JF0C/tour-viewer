@@ -11,48 +11,52 @@ export const TrackList: FunctionComponent = () => {
     const tour = useAppSelector((state) => state.tour.editingTour);
     const selectedTour = useAppSelector((state) => state.tour.selectedTour);
 
-    const nextTrackPosition = tour.tracks.length > 1 ? 
+    const nextTrackPosition = tour.tracks.length > 1 ?
         (tour.tracks.map(t => t.tourPosition).reduce((a, b) => Math.max(a, b)) + 1) :
         tour.tracks.length === 1 ? (tour.tracks[0].tourPosition + 1) :
-        1;
+            1;
 
     const reloadTour = () => {
         dispatch(loadTourRequest(tour.id))
-        .unwrap()
-        .then(() => {
-            setTimeout(() => {
-                if (selectedTour) {
-                    dispatch(startEditingTour(selectedTour))
-                }
-            }, 100)
-        })
+            .unwrap()
+            .then(() => {
+                setTimeout(() => {
+                    if (selectedTour) {
+                        dispatch(startEditingTour(selectedTour))
+                    }
+                }, 100)
+            })
     }
 
     return <table>
-        <thead>
+        <thead className="text-left">
             <tr>
                 <th>
-                    Name
+                    Track
                 </th>
                 <th>
                     Position
                 </th>
                 <th>
-                    GPX-Data
+                    File
                 </th>
                 <th>
-                    Actions
+                    Action
                 </th>
             </tr>
         </thead>
         <tbody>
             {
-                tour.tracks.map(t => <TrackListItem key={t.id} track={t} onDataChanged={reloadTour}/>)
+                tour.tracks.map(t => <TrackListItem key={t.id} track={t} onDataChanged={reloadTour} />)
             }
-            <NewTrackItem onDataChanged={reloadTour} initialPosition={nextTrackPosition} tourId={tour.id}/>
+            <NewTrackItem onDataChanged={reloadTour} initialPosition={nextTrackPosition} tourId={tour.id} />
         </tbody>
         <tfoot>
-            <Button onClick={reloadTour}>Reload</Button>
+            <tr>
+                <td>
+                    <Button onClick={reloadTour}>Reload</Button>
+                </td>
+            </tr>
         </tfoot>
     </table>
 }

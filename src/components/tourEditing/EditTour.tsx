@@ -15,7 +15,7 @@ export const EditTour: FunctionComponent = () => {
     const tourState = useAppSelector((state) => state.tour);
 
     const changeTourName = (name: string) => {
-        dispatch(renameTourRequest({tourId: tourState.editingTour.id, name: name}))
+        dispatch(renameTourRequest({ tourId: tourState.editingTour.id, name: name }))
             .unwrap()
             .catch()
             .then(() => dispatch(setEditingTourName(name)))
@@ -36,9 +36,30 @@ export const EditTour: FunctionComponent = () => {
     }
 
     return <SmallFormLayout>
-        <EditableNameLabel value={tourState.editingTour.name} inputType="text" name="Name" 
-            onApply={changeTourName} minLength={3} maxLength={100}/>
-        <EditableDateLabel value={tourState.editingTour.startDate} onApply={changeTourStartDate} />
+        <table>
+            <tbody>
+                <tr>
+                    <td className="font-bold">
+                        Name
+                    </td>
+                    <td>
+                        <EditableNameLabel value={tourState.editingTour.name} 
+                            inputType="text" name="Name"
+                            onApply={changeTourName} minLength={3} maxLength={100} />
+                    </td>
+                </tr>
+                <tr>
+                    <td className="font-bold">
+                        Start Date
+                    </td>
+                    <td>
+                        <EditableDateLabel value={tourState.editingTour.startDate} 
+                            onApply={changeTourStartDate} />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         <TrackList />
     </SmallFormLayout>
 }

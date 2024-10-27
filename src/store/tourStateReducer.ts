@@ -100,7 +100,7 @@ export const tourStateSlice = createSlice({
                 id: t.id,
                 name: t.name,
                 tourPosition: t.tourPosition,
-                data: t.data
+                data: t.fileReference
             }})
         }
     },

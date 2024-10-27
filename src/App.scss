@@ -26,6 +26,10 @@
   transition: width .2s ease-in-out;
 }
 
+#sidebar-content {
+  background-color: #282c34;
+}
+
 #info-sidebar.open {
   width: 20%;
   border-left: 1px solid white;

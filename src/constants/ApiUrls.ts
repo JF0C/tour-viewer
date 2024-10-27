@@ -2,7 +2,8 @@
 export class ApiUrls
 {
     // public static readonly BaseUrl = 'https://tourviewer.c11g.net'
-    public static readonly BaseUrl = 'https://localhost:7271'
+    public static BaseUrl = '.'
+    // public static BaseUrl = 'https://localhost:7271'
     public static readonly ImageEndpoint = '/img'
 
     public static readonly UserEndpoint = '/User'

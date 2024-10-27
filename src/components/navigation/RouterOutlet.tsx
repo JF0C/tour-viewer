@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
-import { TourView } from "../tourView/TourView";
+import { TourSelector } from "../tourView/TourSelector";
 import { AdminPage } from "../userManagement/AdminPage";
 import { Login } from "../authentication/Login";
 import { StartPage } from "../home/StartPage";
@@ -22,7 +22,7 @@ export const RouterOutlet: FunctionComponent = () => {
 
         <Route path={Paths.AdminPage} element={<AdminPage />} />
         
-        <Route path={Paths.ToursPage} element={<TourView />} />
+        <Route path={Paths.ToursPage} element={<TourSelector />} />
         <Route path={Paths.CreateTourPage} element={<CreateTour />} />
         <Route path={Paths.EditTourPage} element={<EditTour />} />
     </Routes>

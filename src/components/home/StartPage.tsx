@@ -29,16 +29,6 @@ export const StartPage: FunctionComponent = () => {
         user === undefined ? <Login />
         :
         <div>
-        <NavLink to={Paths.AdminPage}>
-            <Button>
-                Admin
-            </Button>
-        </NavLink>
-        <NavLink to={Paths.ToursPage}>
-            <Button>
-                Tours
-            </Button>
-        </NavLink>
         <Button onClick={() => dispatch(logoutRequest())}>Logout</Button>
         <Button onClick={() => dispatch(showInfobar(!infoBarVisible))}>Toggle Info Bar</Button>
         <NavLink to={Paths.CreateTourPage}>

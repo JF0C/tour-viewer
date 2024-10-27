@@ -4,6 +4,6 @@ import { EntityBaseDto } from "./entityBaseDto"
 export type TrackDto = EntityBaseDto & {
     tourPosition: number,
     name: string,
-    data: string,
+    fileReference: string,
     blogPosts: BlogPostDto[]
 }

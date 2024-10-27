@@ -35,14 +35,15 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             </AppBar>
         </div>
         <div className="flex-1 flex flex-row flex-wrap">
-            <SwipeableDrawer 
-                anchor="left" 
-                open={sidebarOpen} 
+            <SwipeableDrawer
+                anchor="left"
+                open={sidebarOpen}
                 onClose={() => setSidebarOpen(false)}
                 onOpen={() => setSidebarOpen(true)}
             >
-
-                <Navbar closeSidebar={() => setSidebarOpen(false)}/>
+                <div id="sidebar-content" className="w-44 h-full">
+                    <Navbar closeSidebar={() => setSidebarOpen(false)} />
+                </div>
             </SwipeableDrawer>
             <div className="flex-1 ">
                 {props.children}
