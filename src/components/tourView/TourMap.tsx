@@ -5,6 +5,9 @@ import { loadTrackRequest } from "../../store/trackThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { TrackRoutes } from "./TrackRoutes";
 import { TourBounds } from "./TourBounds";
+import { BlogPostDto } from "../../dtos/blogPostDto";
+import { BlogPostMarker } from "./BlogPostMarker";
+import { BlogPostCreator } from "./BlogPostCreator";
 
 
 export const TourMap: FunctionComponent = () => {
@@ -12,9 +15,9 @@ export const TourMap: FunctionComponent = () => {
     const tour = useAppSelector((state) => state.tour.selectedTour);
     const trackState = useAppSelector((state) => state.track);
 
-
     let content = <></>
-    console.log(trackState)
+    
+    const blogPosts: BlogPostDto[] = [];
 
     if (trackState.loading) {
         content = <LoadingSpinner />
@@ -29,6 +32,11 @@ export const TourMap: FunctionComponent = () => {
         }
         else {
             content = <>{trackState.tracks.map(t => <TrackRoutes key={t.fileReference} track={t} />)}</>
+            for (let t of (tour?.tracks ??[])) {
+                for (let b of t.blogPosts) {
+                    blogPosts.push(b);
+                }
+            }
         }
     }
 
@@ -38,6 +46,10 @@ export const TourMap: FunctionComponent = () => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        {
+            blogPosts.map(b => <BlogPostMarker blogPost={b} />)
+        }
         <TourBounds />
+        <BlogPostCreator />
     </MapContainer>
 }

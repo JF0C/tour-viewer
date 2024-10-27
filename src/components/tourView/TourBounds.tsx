@@ -22,26 +22,30 @@ export const TourBounds: FunctionComponent = () => {
         console.log('set bounds set');
         dispatch(setBoundsSet());
         const bounds = trackState.tracks.find(t => t.selected)?.bounds;
+        let south = bounds?.south;
+        let north = bounds?.north;
+        let west = bounds?.west;
+        let east = bounds?.east;
         if (bounds) {
             for (let t of trackState.tracks.filter(t => t.selected)) {
                 if (t.bounds) {
                     if (t.bounds.south < bounds.south) {
-                        bounds.south = t.bounds.south;
+                        south = t.bounds.south;
                     }
                     if (t.bounds.west < bounds.west) {
-                        bounds.west = t.bounds.west;
+                        west = t.bounds.west;
                     }
                     if (t.bounds.north > bounds.north) {
-                        bounds.north = t.bounds.north;
+                        north = t.bounds.north;
                     }
                     if (t.bounds.east > bounds.east) {
-                        bounds.east = t.bounds.east;
+                        east = t.bounds.east;
                     }
                 }
             }
             const maxBounds = new LatLngBounds(
-                new LatLng(bounds.north, bounds.east),
-                new LatLng(bounds.south, bounds.west)
+                new LatLng(north ?? 0, east ?? 0),
+                new LatLng(south ?? 0, west ?? 0)
             );
             map.fitBounds(maxBounds);
         }
