@@ -38,25 +38,25 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
                 props.onSelected?.();
                 dispatch(startEditingTour(tour))
                 navigate(Paths.EditTourPage);
-        })
+            })
     }
 
-    return <div key={props.tour.id} className="flex flex-row">
-    <Button sx={{ width: '100%' }} onClick={() => selectTour(props.tour.id)}>
-        <div className="flex flex-row items-center w-full justify-between" >
-            <div>
-                {props.tour.name}
+    return <div key={'tour' + props.tour.id} className="flex flex-row">
+        <Button sx={{ width: '100%' }} onClick={() => selectTour(props.tour.id)}>
+            <div className="flex flex-row items-center w-full justify-between" >
+                <div>
+                    {props.tour.name}
+                </div>
+                <div>
+                    {ticksToDateString(props.tour.startDate)}
+                </div>
             </div>
-            <div>
-                {ticksToDateString(props.tour.startDate)}
-            </div>
-        </div>
-    </Button>
-    {
-        canEdit ? <Button onClick={() => editTour(props.tour.id)}>
-            <FontAwesomeIcon icon={faEdit} />
         </Button>
-        :<></>
-    }
-</div>
+        {
+            canEdit ? <Button onClick={() => editTour(props.tour.id)}>
+                <FontAwesomeIcon icon={faEdit} />
+            </Button>
+                : <></>
+        }
+    </div>
 }

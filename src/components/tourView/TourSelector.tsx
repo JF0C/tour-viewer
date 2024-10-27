@@ -1,13 +1,14 @@
 import { FunctionComponent, useState } from "react";
-import { useAppSelector } from "../../store/store";
 import { BaseConfirmModal } from "../shared/BaseConfirmModal";
 import { TourList } from "./TourList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
+import { useAppDispatch } from "../../store/store";
+import { clearTracks } from "../../store/trackStateReducer";
 
 
 export const TourSelector: FunctionComponent = () => {
-    const tour = useAppSelector((state) => state.tour.selectedTour);
+    const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
 
     return <BaseConfirmModal onConfirm={() => setOpen(false)} 
@@ -15,9 +16,11 @@ export const TourSelector: FunctionComponent = () => {
             hideCancel confirmText={'Cancel'} 
             buttonContent={<div>
                 <FontAwesomeIcon icon={faList}/>
-                &nbsp;
-                {`${tour?.name ?? 'Select Tour'}`}
+                &nbsp;Select Tour
             </div>} buttonClass="">
-            <TourList onSelected={() => setOpen(false)} />
+            <TourList onSelected={() => {
+                dispatch(clearTracks())
+                setOpen(false);
+            }} />
         </BaseConfirmModal>
 }

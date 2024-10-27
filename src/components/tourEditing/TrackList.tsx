@@ -47,7 +47,7 @@ export const TrackList: FunctionComponent = () => {
         </thead>
         <tbody>
             {
-                tour.tracks.map(t => <TrackListItem key={t.id} track={t} onDataChanged={reloadTour} />)
+                tour.tracks.map(t => <TrackListItem key={'track-item-' + t.id} track={t} onDataChanged={reloadTour} />)
             }
             <NewTrackItem onDataChanged={reloadTour} initialPosition={nextTrackPosition} tourId={tour.id} />
         </tbody>

@@ -26,7 +26,7 @@ export const TrackListItem: FunctionComponent<TrackListItemProps> = (props) => {
             })
     }
 
-    return <tr>
+    return <tr key={'track' + props.track.id}>
         <td>
             { props.track.name }
         </td>

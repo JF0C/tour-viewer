@@ -51,9 +51,6 @@ export const tourStateSlice = createSlice({
         showInfobar(state, action: PayloadAction<boolean>) {
             state.showInfoBar = action.payload;
         },
-        setTracks(state, action: PayloadAction<number[]>) {
-
-        },
         setRadioGroup(state, action: PayloadAction<{groupId: string, activeItem?: string}>) {
             let entry = state.radioGroups.find(x => x.groupId === action.payload.groupId);
             if (!entry) {
@@ -138,6 +135,7 @@ export const tourStateSlice = createSlice({
         })
         builder.addCase(loadTourRequest.fulfilled, (state, action) => {
             state.loading = false;
+            console.log(action.payload)
             state.selectedTour = action.payload;
             state.selectedTour.startDate = new Date(state.selectedTour.startDate).valueOf();
         })
@@ -180,6 +178,6 @@ export const tourStateSlice = createSlice({
 export const tourStateReducer = tourStateSlice.reducer;
 export const { setRadioGroup, showInfobar,
     resetEditingTour, setEditingTourName, setEditingTourStartDate,
-    addEditingTourParticipant, removeEditingTourParticipant, setTracks,
+    addEditingTourParticipant, removeEditingTourParticipant,
     startEditingTour
  } = tourStateSlice.actions;

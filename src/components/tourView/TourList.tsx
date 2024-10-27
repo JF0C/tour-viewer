@@ -26,7 +26,7 @@ export const TourList: FunctionComponent<TourListProps> = (props) => {
     return <div className="w-96">
         {
             tourState.tours.map(t =>
-                <TourListItem tour={t} onSelected={props.onSelected}/>
+                <TourListItem key={'tour-item-' + t.id} tour={t} onSelected={props.onSelected}/>
             )
         }
         <Pagination count={tourState.tourPagination.totalPages} siblingCount={0} boundaryCount={1}
