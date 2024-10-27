@@ -14,6 +14,7 @@ export const TourMap: FunctionComponent = () => {
 
 
     let content = <></>
+    console.log(trackState)
 
     if (trackState.loading) {
         content = <LoadingSpinner />
@@ -37,6 +38,6 @@ export const TourMap: FunctionComponent = () => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        { trackState.boundsSet ? <></> : <TourBounds /> }
+        <TourBounds />
     </MapContainer>
 }

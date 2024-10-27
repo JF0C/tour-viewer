@@ -22,7 +22,6 @@ export const RouterOutlet: FunctionComponent = () => {
 
         <Route path={Paths.AdminPage} element={<AdminPage />} />
         
-        <Route path={Paths.ToursPage} element={<TourSelector />} />
         <Route path={Paths.CreateTourPage} element={<CreateTour />} />
         <Route path={Paths.EditTourPage} element={<EditTour />} />
     </Routes>

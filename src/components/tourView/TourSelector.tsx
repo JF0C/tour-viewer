@@ -6,8 +6,11 @@ import { faList } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch } from "../../store/store";
 import { clearTracks } from "../../store/trackStateReducer";
 
+export type TourSelectorProps = {
+    onSelected: () => void;
+}
 
-export const TourSelector: FunctionComponent = () => {
+export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
 
@@ -19,7 +22,8 @@ export const TourSelector: FunctionComponent = () => {
                 &nbsp;Select Tour
             </div>} buttonClass="">
             <TourList onSelected={() => {
-                dispatch(clearTracks())
+                props.onSelected();
+                dispatch(clearTracks());
                 setOpen(false);
             }} />
         </BaseConfirmModal>

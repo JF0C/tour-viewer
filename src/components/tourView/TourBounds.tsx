@@ -3,6 +3,7 @@ import { useMap } from "react-leaflet";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setBoundsSet } from "../../store/trackStateReducer";
 import { LatLng, LatLngBounds } from "leaflet";
+import { Layers } from "../../constants/Layers";
 
 
 export const TourBounds: FunctionComponent = () => {
@@ -10,8 +11,13 @@ export const TourBounds: FunctionComponent = () => {
     const trackState = useAppSelector((state) => state.track);
     const map = useMap();
 
-    console.log('bounds set: ' + trackState.boundsSet);
-    
+    if (trackState.loading) {
+        map.eachLayer(l => {
+            if (l.options.attribution === Layers.RoutesLayer)
+            l.removeFrom(map)
+        });
+    }
+
     if (!trackState.boundsSet) {
         console.log('set bounds set');
         dispatch(setBoundsSet());

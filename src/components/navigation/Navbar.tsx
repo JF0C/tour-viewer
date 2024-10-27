@@ -31,7 +31,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
             <FontAwesomeIcon icon={faInfoCircle} />
             &nbsp;Show Info
         </Button>
-        <TourSelector />
+        <TourSelector onSelected={props.closeSidebar}/>
         {
             isContributor ?
                 <NavLink to={Paths.CreateTourPage}>

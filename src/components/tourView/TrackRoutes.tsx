@@ -4,6 +4,7 @@ import { FunctionComponent } from "react";
 import { useMap } from "react-leaflet";
 import { ITrackEntity, setBounds } from "../../store/trackStateReducer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { Layers } from "../../constants/Layers";
 
 export type TrackRoutesProps = {
     track: ITrackEntity
@@ -19,15 +20,19 @@ export const TrackRoutes: FunctionComponent<TrackRoutesProps> = (props) => {
         return <></>
     }
 
+
     if (error) throw error
 
     for (let k = 0; k < gpx.tracks[0].points.length - 1; k++) {
 
     }
 
+    const layer = new L.LayerGroup();
+    layer.options.attribution = Layers.RoutesLayer;
     const line = L.polyline(gpx.tracks[0].points
-        .map(p => [p.latitude, p.longitude]), { color: 'black' })
-        .addTo(map);
+        .map(p => [p.latitude, p.longitude]), { color: 'black' }).addTo(layer);
+    map.addLayer(layer);
+
     if (!trackState.tracks.find(t => t.fileReference === props.track.fileReference && t.bounds)) {
         const bounds = line.getBounds();
         dispatch(setBounds({
