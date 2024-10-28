@@ -1,12 +1,13 @@
 import { LatLng } from "leaflet";
 import { FunctionComponent, useState } from "react";
-import { Marker, useMapEvents } from "react-leaflet";
+import { Marker, useMap, useMapEvents } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { Roles } from "../../constants/Rolenames";
 import { trackClosestToPoint } from "../../converters/trackDataClosestToPoint";
-import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setEditingBlogpost } from "../../store/blogPostStateReducer";
+import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setEditingBlogpost, setMapCenter, setMarkerPosition } from "../../store/blogPostStateReducer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Timeouts } from "../../constants/Timeouts";
+import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
 
 export const BlogPostLocationEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -14,11 +15,13 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
     const selectedTracks = useAppSelector((state) => state.track.tracks.filter(t => t.selected) ?? []);
     const tourTracks = useAppSelector((state) => state.tour.selectedTour?.tracks);
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
+    const markerPosition = useAppSelector((state) => state.blog.markerPosition);
     const [clickedTime, setClickedTime] = useState<Date | null>(null);
     const [clickedLocation, setClickedLocation] = useState<LatLng | null>(null);
-    const [markerPosition, setMarkerPosition] = useState<LatLng | null>(null);
     const [dragging, setDragging] = useState(false);
 
+    const map = useMap();
+    
     const trackIdClosestToPoint = (position: LatLng) => {
         const closestTrackFileReference = trackClosestToPoint(selectedTracks, position)?.fileReference;
         return tourTracks?.find(t => t.fileReference === closestTrackFileReference)?.id ?? 0;
@@ -29,15 +32,20 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
             latitude: clickedLocation?.lat ?? 0,
             longitude: clickedLocation?.lng ?? 0
         }))
+        dispatch(setMarkerPosition(latLngToCoordinates(endposition)));
         const trackId = trackIdClosestToPoint(endposition);
         dispatch(changeEditingBlogpostTrack(trackId));
         setTimeout(() => setDragging(false), 50);
     }
 
+
     useMapEvents({
+        move() {
+            dispatch(setMapCenter(latLngToCoordinates(map.getCenter())))
+        },
         mousedown(e) {
-            setClickedTime(new Date())
-            setClickedLocation(e.latlng)
+            setClickedTime(new Date());
+            setClickedLocation(e.latlng);
         },
         mouseup() {
             if (dragging) {
@@ -45,7 +53,10 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
             }
             const timeDelta = new Date().valueOf() - (clickedTime?.valueOf() ?? new Date().valueOf());
             if (timeDelta > Timeouts.CreateBlogPostHold && isContributor && clickedLocation) {
-                setMarkerPosition(clickedLocation);
+                dispatch(setMarkerPosition({
+                    latitude: clickedLocation.lat,
+                    longitude: clickedLocation.lng
+                }));
                 if (!isEditingBlogPost) {
                     dispatch(setEditingBlogpost({
                         id: 0,
@@ -64,6 +75,7 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
                     }))
                 }
             }
+            setClickedLocation(null);
         }
     });
 
@@ -76,7 +88,7 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
                 dragend(e) {
                     dragEnd(e.target._latlng)
                 }
-            }} icon={MarkerIcons.orange} draggable position={markerPosition}>
+            }} icon={MarkerIcons.orange} draggable position={coordinatesToLatLng(markerPosition)}>
 
         </Marker>
     }

@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
+import { CoordinatesDto } from "../dtos/coordinatesDto";
 
 
 export interface IBlogPostState {
     loading: boolean;
     editingBlogPost?: CreateBlogPostDto;
     coordinatesChanged: boolean;
+    markerPosition?: CoordinatesDto;
+    mapCenter?: CoordinatesDto
 }
 
 const initialState: IBlogPostState = {
@@ -20,6 +23,15 @@ export const BlogPostSlice = createSlice({
         setEditingBlogpost(state, action: PayloadAction<CreateBlogPostDto | undefined>) {
             state.editingBlogPost = action.payload;
             state.coordinatesChanged = false;
+        },
+        setMarkerPosition(state, action: PayloadAction<CoordinatesDto | undefined>) {
+            state.markerPosition = action.payload;
+        },
+        resetCoordinatesChanged(state) {
+            state.coordinatesChanged = false;
+        },
+        setMapCenter(state, action: PayloadAction<CoordinatesDto | undefined>) {
+            state.mapCenter = action.payload;
         },
         changeEditingBlogpostPosition(state, action: PayloadAction<{ latitude: number, longitude: number }>) {
             if (state.editingBlogPost) {
@@ -59,5 +71,6 @@ export const BlogPostSlice = createSlice({
 export const blogPostStateReducer = BlogPostSlice.reducer;
 
 export const { setEditingBlogpost, changeEditingBlogpostPosition, changeEditingBlogpostTrack,
-    changeEditingBlogpostTitle, changeEditingBlogpostMessage, addImageReferenceToEditingBlogpost
+    changeEditingBlogpostTitle, changeEditingBlogpostMessage, addImageReferenceToEditingBlogpost,
+    setMarkerPosition, setMapCenter, resetCoordinatesChanged
 } = BlogPostSlice.actions
