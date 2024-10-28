@@ -8,14 +8,15 @@ export type EditableLabelProps = {
     editor: ReactNode;
     onApplyChange: () => void;
     canConfirm: boolean;
+    className?: string;
 }
 
 export const EditableLabel: FunctionComponent<EditableLabelProps> = (props) => {
     const [editing, setEditing] = useState(false);
 
     if (editing) {
-        return <div className="flex flex-row gap-2">
-        <div className="flex-1">
+        return <div className="flex flex-row gap-2 flex-wrap">
+        <div className={`flex-1 ${props.className}`}>
             { props.editor }
         </div>
         <div className="flex flex-row gap-2">
@@ -29,8 +30,8 @@ export const EditableLabel: FunctionComponent<EditableLabelProps> = (props) => {
     </div>
     }
     else {
-        return <div className="flex flex-row gap-2">
-            <div className="flex-1">
+        return <div className="flex flex-row gap-2 flex-wrap">
+            <div className={`flex-1 ${props.className}`}>
                 { props.label }
             </div>
             <div>

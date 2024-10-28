@@ -1,13 +1,16 @@
-import { Button, Input } from "@mui/material";
-import { FunctionComponent, useRef, useState } from "react";
-import { useAppDispatch } from "../../store/store";
-import { uploadImage } from "../../store/filesThunk";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@mui/material";
 import { AxiosProgressEvent } from "axios";
+import { FunctionComponent, useRef } from "react";
+import { uploadImage } from "../../store/filesThunk";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { addImageReferenceToEditingBlogpost } from "../../store/blogPostStateReducer";
 import { ApiUrls } from "../../constants/ApiUrls";
 
 export const ImageUpload: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const [imageFile, setImageFile] = useState('')
+    const images = useAppSelector((state) => state.blog.editingBlogPost?.images) ?? [];
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const onProgress = (progress: AxiosProgressEvent) => {
@@ -20,17 +23,22 @@ export const ImageUpload: FunctionComponent = () => {
             console.log(file.name)
             dispatch(uploadImage({ file: file, onChunk: onProgress}))
                 .unwrap()
-                .then((response) => console.log(response))
+                .then((response) => {
+                    console.log(response);
+                    dispatch(addImageReferenceToEditingBlogpost(response))
+        })
         }
     }
     return <div>
-        <Input placeholder="image guid" onChange={(e) => setImageFile(e.target.value)} />
-        <img src={`${ApiUrls.BaseUrl + ApiUrls.ImageEndpoint}/${imageFile}.jpg`} 
-            width='200px' alt="selected in input" />
+        {
+            images.map(i => <img key={i} width="100px" src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i}/>)
+        }
+            
         <input ref={fileInputRef} onChange={() => upload()}
             className="hidden" type="file" name="data" accept="image/jpeg" />
         <Button onClick={() => fileInputRef.current?.click()}>
-            upload
+            <FontAwesomeIcon icon={faPlus} />
+            &nbsp;Add Image
         </Button>
     </div>
 }

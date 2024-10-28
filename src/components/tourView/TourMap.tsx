@@ -40,6 +40,7 @@ export const TourMap: FunctionComponent = () => {
                 }
             }
         }
+        console.log(blogPosts);
     }
 
     return <MapContainer center={[48.136805, 11.578965]} zoom={13}

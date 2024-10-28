@@ -20,7 +20,7 @@ $base-color: #282c34;
 }
 
 .main-layout {
-  background-color: darkgoldenrod;
+  background-color: darkgray;
 }
 
 #info-sidebar {
@@ -33,7 +33,7 @@ $base-color: #282c34;
 }
 
 #info-sidebar.open {
-  width: 20%;
+  width: 300px;
   border-left: 1px solid white;
 }
 

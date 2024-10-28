@@ -3,11 +3,11 @@ import { FileUploadDto } from "../dtos/fileUploadDto";
 import { ApiUrls } from "../constants/ApiUrls";
 import http from 'axios';
 
-export const uploadImage = createAsyncThunk('upload/file', async (fileUploadDto: FileUploadDto): Promise<string[]> => {
+export const uploadImage = createAsyncThunk('upload/file', async (fileUploadDto: FileUploadDto): Promise<string> => {
     const data = new FormData();
     data.append("file", fileUploadDto.file);
 
-    let url = `${ApiUrls.BaseUrl + ApiUrls.ImageEndpoint}`;
+    let url = `${ApiUrls.BaseUrl + ApiUrls.ImageUploadEndpoint}`;
     if (fileUploadDto.blogPostId !== undefined) {
         url += '/' + fileUploadDto.blogPostId;
     }
@@ -19,5 +19,5 @@ export const uploadImage = createAsyncThunk('upload/file', async (fileUploadDto:
         withCredentials: true,
         onUploadProgress: fileUploadDto.onChunk
     });
-    return response.data as string[];
+    return response.data as string;
 });

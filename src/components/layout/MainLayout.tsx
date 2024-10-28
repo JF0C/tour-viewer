@@ -50,10 +50,12 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             <div className="flex-1 ">
                 {props.children}
             </div>
-            <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip p-2`}>
-                {
-                    isEditingBlogPost ? <BlogPostEditor /> : <></>
-                }
+            <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip`}>
+                <div className="h-full p-2">
+                    {
+                        isEditingBlogPost ? <BlogPostEditor /> : <></>
+                    }
+                </div>
             </div>
         </div>
     </div>

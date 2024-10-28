@@ -6,6 +6,7 @@ import { Roles } from "../../constants/Rolenames";
 import { trackClosestToPoint } from "../../converters/trackDataClosestToPoint";
 import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setEditingBlogpost } from "../../store/blogPostStateReducer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { Timeouts } from "../../constants/Timeouts";
 
 export const BlogPostLocationEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -43,10 +44,11 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
                 return;
             }
             const timeDelta = new Date().valueOf() - (clickedTime?.valueOf() ?? new Date().valueOf());
-            if (timeDelta > 1000 && isContributor && clickedLocation) {
+            if (timeDelta > Timeouts.CreateBlogPostHold && isContributor && clickedLocation) {
                 setMarkerPosition(clickedLocation);
                 if (!isEditingBlogPost) {
                     dispatch(setEditingBlogpost({
+                        id: 0,
                         latitude: clickedLocation?.lat ?? 0,
                         longitude: clickedLocation?.lng ?? 0,
                         title: '',
