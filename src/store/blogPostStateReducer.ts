@@ -12,7 +12,7 @@ export const BlogPostSlice = createSlice({
     name: 'blogpostState',
     initialState: initialState,
     reducers: {
-        startEditingBlogpost(state, action: PayloadAction<CreateBlogPostDto>) {
+        setEditingBlogpost(state, action: PayloadAction<CreateBlogPostDto | undefined>) {
             state.editingBlogPost = action.payload;
         },
         changeEditingBlogpostPosition(state, action: PayloadAction<{latitude: number, longitude: number}>) {
@@ -20,10 +20,15 @@ export const BlogPostSlice = createSlice({
                 state.editingBlogPost.latitude = action.payload.latitude;
                 state.editingBlogPost.longitude = action.payload.longitude;
             }
+        },
+        changeEditingBlogpostTrack(state, action: PayloadAction<number>) {
+            if (state.editingBlogPost) {
+                state.editingBlogPost.trackId = action.payload;
+            }
         }
     }
 })
 
-export const BlogPostStateReducer = BlogPostSlice.reducer;
+export const blogPostStateReducer = BlogPostSlice.reducer;
 
-export const { startEditingBlogpost, changeEditingBlogpostPosition } = BlogPostSlice.actions
+export const { setEditingBlogpost, changeEditingBlogpostPosition, changeEditingBlogpostTrack } = BlogPostSlice.actions

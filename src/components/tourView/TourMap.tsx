@@ -6,8 +6,8 @@ import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { TrackRoutes } from "./TrackRoutes";
 import { TourBounds } from "./TourBounds";
 import { BlogPostDto } from "../../dtos/blogPostDto";
-import { BlogPostMarker } from "./BlogPostMarker";
-import { BlogPostCreator } from "./BlogPostCreator";
+import { BlogPostMarker } from "../blogPost/BlogPostMarker";
+import { BlogPostLocationEditor } from "../blogPost/BlogPostLocationEditor";
 
 
 export const TourMap: FunctionComponent = () => {
@@ -53,6 +53,6 @@ export const TourMap: FunctionComponent = () => {
             blogPosts.map(b => <BlogPostMarker blogPost={b} />)
         }
         <TourBounds />
-        <BlogPostCreator />
+        <BlogPostLocationEditor />
     </MapContainer>
 }

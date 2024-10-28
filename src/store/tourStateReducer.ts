@@ -135,7 +135,6 @@ export const tourStateSlice = createSlice({
         })
         builder.addCase(loadTourRequest.fulfilled, (state, action) => {
             state.loading = false;
-            console.log(action.payload)
             state.selectedTour = action.payload;
             state.selectedTour.startDate = new Date(state.selectedTour.startDate).valueOf();
         })

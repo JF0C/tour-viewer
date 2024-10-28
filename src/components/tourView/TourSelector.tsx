@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch } from "../../store/store";
 import { clearTracks } from "../../store/trackStateReducer";
+import { setEditingBlogpost } from "../../store/blogPostStateReducer";
 
 export type TourSelectorProps = {
     onSelected: () => void;
@@ -24,6 +25,7 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
             <TourList onSelected={() => {
                 props.onSelected();
                 dispatch(clearTracks());
+                dispatch(setEditingBlogpost(undefined))
                 setOpen(false);
             }} />
         </BaseConfirmModal>

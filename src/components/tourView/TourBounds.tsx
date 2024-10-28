@@ -19,7 +19,6 @@ export const TourBounds: FunctionComponent = () => {
     }
 
     if (!trackState.boundsSet) {
-        console.log('set bounds set');
         dispatch(setBoundsSet());
         const bounds = trackState.tracks.find(t => t.selected)?.bounds;
         let south = bounds?.south;

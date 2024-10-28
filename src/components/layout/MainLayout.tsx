@@ -2,10 +2,10 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppBar, Button, SwipeableDrawer } from "@mui/material";
 import { FunctionComponent, ReactNode, useState } from "react";
-import { UserIcon } from "../shared/UserIcon";
-import { ImageUpload } from "../tourEditing/ImageUpload";
-import { Navbar } from "../navigation/Navbar";
 import { useAppSelector } from "../../store/store";
+import { BlogPostEditor } from "../blogPost/BlogPostEditor";
+import { Navbar } from "../navigation/Navbar";
+import { UserIcon } from "../shared/UserIcon";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -13,7 +13,8 @@ export type MainLayoutProps = {
 
 export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar);
+    const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
+    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost;
 
     return <div className="h-full main-layout flex flex-col">
         <div className="h-14">
@@ -49,8 +50,10 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             <div className="flex-1 ">
                 {props.children}
             </div>
-            <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip`}>
-                <ImageUpload />
+            <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip p-2`}>
+                {
+                    isEditingBlogPost ? <BlogPostEditor /> : <></>
+                }
             </div>
         </div>
     </div>
