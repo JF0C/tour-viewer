@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { parseGPX } from "@we-gold/gpxjs"
 import { ApiUrls } from "../constants/ApiUrls"
 import { EditTrackDto } from "../dtos/editTrackDto"
 import { ITrackEntity } from "./trackStateReducer"
+import { parseGpxText } from "../converters/trackDataParser"
 
 export const deleteTrackRequest = createAsyncThunk('delete-track',
     async (trackId: number): Promise<void> => {
@@ -39,7 +39,7 @@ export const loadTrackRequest = createAsyncThunk('load-track',
         return {
             fileReference: fileReference,
             selected: true,
-            data: await response.text()
+            data: parseGpxText(await response.text())
         };
     }
 );

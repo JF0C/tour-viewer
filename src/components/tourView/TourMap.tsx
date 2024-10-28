@@ -16,7 +16,7 @@ export const TourMap: FunctionComponent = () => {
     const trackState = useAppSelector((state) => state.track);
 
     let content = <></>
-    
+
     const blogPosts: BlogPostDto[] = [];
 
     if (trackState.loading) {
@@ -32,15 +32,18 @@ export const TourMap: FunctionComponent = () => {
         }
         else {
             content = <>{trackState.tracks.map(t => <TrackRoutes key={t.fileReference} track={t} />)}</>
-            for (let t of (tour?.tracks ??[])) {
-                for (let b of t.blogPosts) {
-                    blogPosts.push(b);
+            for (let t of (tour?.tracks ?? [])) {
+                if (trackState.tracks.find(ts => ts.fileReference === t.fileReference)?.selected) {
+                    for (let b of t.blogPosts) {
+                        blogPosts.push(b);
+                    }
                 }
             }
         }
     }
 
-    return <MapContainer center={[48.136805, 11.578965]} zoom={13} scrollWheelZoom={true} touchZoom={true}>
+    return <MapContainer center={[48.136805, 11.578965]} zoom={13}
+        scrollWheelZoom={true} touchZoom={true}>
         {content}
         <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

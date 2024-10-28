@@ -1,10 +1,9 @@
-import { parseGPX } from "@we-gold/gpxjs";
 import L from "leaflet";
 import { FunctionComponent } from "react";
 import { useMap } from "react-leaflet";
-import { ITrackEntity, setBounds } from "../../store/trackStateReducer";
-import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Layers } from "../../constants/Layers";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { ITrackEntity, setBounds } from "../../store/trackStateReducer";
 
 export type TrackRoutesProps = {
     track: ITrackEntity
@@ -13,23 +12,19 @@ export type TrackRoutesProps = {
 export const TrackRoutes: FunctionComponent<TrackRoutesProps> = (props) => {
     const dispatch = useAppDispatch();
     const trackState = useAppSelector((state) => state.track);
-    const [gpx, error] = parseGPX(props.track.data);
     const map = useMap();
 
     if (!props.track.selected) {
         return <></>
     }
 
-
-    if (error) throw error
-
-    for (let k = 0; k < gpx.tracks[0].points.length - 1; k++) {
+    for (let k = 0; k < props.track.data.points.length - 1; k++) {
 
     }
 
     const layer = new L.LayerGroup();
     layer.options.attribution = Layers.RoutesLayer;
-    const line = L.polyline(gpx.tracks[0].points
+    const line = L.polyline(props.track.data.points
         .map(p => [p.latitude, p.longitude]), { color: 'black' }).addTo(layer);
     map.addLayer(layer);
 

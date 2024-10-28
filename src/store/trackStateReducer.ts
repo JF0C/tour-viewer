@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loadTrackRequest } from "./trackThunk";
+import { TrackData } from "../data/trackData";
 
 export interface BoundsInternal {
     south: number;
@@ -10,7 +11,7 @@ export interface BoundsInternal {
 
 export interface ITrackEntity {
     fileReference: string;
-    data: string;
+    data: TrackData;
     selected: boolean;
     bounds?: BoundsInternal
 }
