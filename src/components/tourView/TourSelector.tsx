@@ -9,6 +9,8 @@ import { setEditingBlogpost } from "../../store/blogPostStateReducer";
 
 export type TourSelectorProps = {
     onSelected: () => void;
+    title: string;
+    showIcon?: boolean;
 }
 
 export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
@@ -19,8 +21,15 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
             onOpen={() => setOpen(true)} open={open} 
             hideCancel confirmText={'Cancel'} 
             buttonContent={<div>
-                <FontAwesomeIcon icon={faList}/>
-                &nbsp;Select Tour
+                {
+                    props.showIcon ? 
+                    <span>
+                        <FontAwesomeIcon icon={faList}/> &nbsp;
+                    </span>
+                    : <></>
+                }
+                
+                {props.title}
             </div>} buttonClass="">
             <TourList onSelected={() => {
                 props.onSelected();

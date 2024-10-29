@@ -137,6 +137,8 @@ export const tourStateSlice = createSlice({
         builder.addCase(loadTourRequest.fulfilled, (state, action) => {
             state.loading = false;
             state.selectedTour = action.payload;
+            state.selectedTour.tracks = state.selectedTour.tracks
+                .sort((a, b) => a.tourPosition - b.tourPosition);
             state.selectedTour.startDate = new Date(state.selectedTour.startDate).valueOf();
             console.log(action.payload)
         })

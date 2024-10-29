@@ -38,11 +38,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                 &nbsp; Home
             </Button>
         </NavLink>
-        <Button onClick={() => dispatch(showInfobar(!infoBarVisible))}>
-            <FontAwesomeIcon icon={faInfoCircle} />
-            &nbsp;Show Info
-        </Button>
-        <TourSelector onSelected={props.closeSidebar} />
+        <TourSelector showIcon title='Select Tour' onSelected={props.closeSidebar} />
         {
             isContributor ?
                 <NavLink to={Paths.CreateTourPage}>

@@ -29,7 +29,7 @@ export const TourList: FunctionComponent<TourListProps> = (props) => {
                 <TourListItem key={'tour-item-' + t.id} tour={t} onSelected={props.onSelected}/>
             )
         }
-        <Pagination count={tourState.tourPagination.totalPages} siblingCount={0} boundaryCount={1}
+        <Pagination sx={{color: 'white'}} count={tourState.tourPagination.totalPages} siblingCount={0} boundaryCount={1}
             onChange={(e: any, page: number) => changePage(page)} />
     </div>
 }

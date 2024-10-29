@@ -6,6 +6,7 @@ import { useAppSelector } from "../../store/store";
 import { BlogPostEditor } from "../blogPost/BlogPostEditor";
 import { Navbar } from "../navigation/Navbar";
 import { UserIcon } from "../shared/UserIcon";
+import { TourSelectorBar } from "../tourView/DataSelectorBar";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -34,6 +35,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
 
                 </div>
             </AppBar>
+            <TourSelectorBar />
         </div>
         <div className="flex-1 flex flex-col md:flex-row flex-wrap">
             <SwipeableDrawer
