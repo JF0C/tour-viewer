@@ -1,13 +1,13 @@
-import { FunctionComponent } from "react";
-import { BlogPostDto } from "../../dtos/blogPostDto";
-import { Marker, Popup } from "react-leaflet";
-import { Button } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { Roles } from "../../constants/Rolenames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@mui/material";
+import { FunctionComponent } from "react";
+import { Marker, Popup } from "react-leaflet";
 import { ApiUrls } from "../../constants/ApiUrls";
+import { BlogPostDto } from "../../dtos/blogPostDto";
 import { setEditingBlogpost } from "../../store/blogPostStateReducer";
+import { isAllowedToEditBlogpost } from "../../store/stateHelpers";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 
 export type BlogPostMarkerProps = {
     blogPost: BlogPostDto
@@ -15,15 +15,14 @@ export type BlogPostMarkerProps = {
 
 export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) => {
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.auth.user);
-    const allowedToEdit = user?.roles.includes(Roles.Admin) ||
-        (props.blogPost.author.id === user?.id)
+    const allowedToEdit = useAppSelector((state) => isAllowedToEditBlogpost(state, props.blogPost));
     const imageId = props.blogPost.images.length > 0 ? props.blogPost.images[0].imageId : null;
 
     const startEditing = () => {
         dispatch(setEditingBlogpost({
             id: props.blogPost.id,
             trackId: props.blogPost.track.id,
+            trackFileReference: props.blogPost.track.fileReference,
             images: props.blogPost.images.map(i => i.imageId),
             title: props.blogPost.title,
             message: props.blogPost.message,

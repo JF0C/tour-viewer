@@ -43,7 +43,7 @@ export const changeBlogPostMessageRequest = createAsyncThunk('change-blogpost-me
             },
             credentials: 'include',
             body: JSON.stringify(changeMessage.message)
-        })
+        });
     }
 )
 

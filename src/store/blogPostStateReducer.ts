@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
 import { CoordinatesDto } from "../dtos/coordinatesDto";
+import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
 
 
 export interface ClickedEvent {
@@ -48,17 +49,15 @@ export const BlogPostSlice = createSlice({
         },
         changeEditingBlogpostPosition(state, action: PayloadAction<{ latitude: number, longitude: number }>) {
             if (state.editingBlogPost) {
-                console.log('latitude: ' + action.payload.latitude + ', longitude: ' + action.payload.longitude)
                 state.editingBlogPost.latitude = action.payload.latitude;
                 state.editingBlogPost.longitude = action.payload.longitude;
-                if (state.editingBlogPost.id !== 0) {
-                    state.coordinatesChanged = true;
-                }
+                state.coordinatesChanged = true;
             }
         },
-        changeEditingBlogpostTrack(state, action: PayloadAction<number>) {
+        changeEditingBlogpostTrack(state, action: PayloadAction<{trackId: number, trackFileReference: string}>) {
             if (state.editingBlogPost) {
-                state.editingBlogPost.trackId = action.payload;
+                state.editingBlogPost.trackId = action.payload.trackId;
+                state.editingBlogPost.trackFileReference = action.payload.trackFileReference;
             }
         },
         changeEditingBlogpostTitle(state, action: PayloadAction<string>) {
@@ -78,6 +77,67 @@ export const BlogPostSlice = createSlice({
                 }
             }
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(createBlogPostRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(createBlogPostRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(createBlogPostRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(changeBlogPostTitleRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(changeBlogPostTitleRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(changeBlogPostTitleRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(changeBlogPostMessageRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(changeBlogPostMessageRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(changeBlogPostMessageRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(changeBlogPostLocationRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(changeBlogPostLocationRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(changeBlogPostLocationRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(changeBlogPostTrackRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(changeBlogPostTrackRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(changeBlogPostTrackRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(deleteBlogPostRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteBlogPostRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(deleteBlogPostRequest.rejected, (state) => {
+            state.loading = false;
+        });
     }
 })
 

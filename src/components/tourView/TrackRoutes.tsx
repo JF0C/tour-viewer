@@ -12,6 +12,7 @@ export type TrackRoutesProps = {
 export const TrackRoutes: FunctionComponent<TrackRoutesProps> = (props) => {
     const dispatch = useAppDispatch();
     const trackState = useAppSelector((state) => state.track);
+    const referencedTrack = useAppSelector((state) => state.blog.editingBlogPost?.trackFileReference);
     const map = useMap();
 
     if (!props.track.selected) {
@@ -22,10 +23,12 @@ export const TrackRoutes: FunctionComponent<TrackRoutesProps> = (props) => {
 
     }
 
+    const trackColor = referencedTrack === props.track.fileReference ? 'red' : 'black'
+
     const layer = new L.LayerGroup();
     layer.options.attribution = Layers.RoutesLayer;
     const line = L.polyline(props.track.data.points
-        .map(p => [p.latitude, p.longitude]), { color: 'black' }).addTo(layer);
+        .map(p => [p.latitude, p.longitude]), { color: trackColor }).addTo(layer);
     map.addLayer(layer);
 
     if (!trackState.tracks.find(t => t.fileReference === props.track.fileReference && t.bounds)) {

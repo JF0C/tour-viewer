@@ -15,8 +15,6 @@ export const UserDetail: FunctionComponent = () => {
     const selectedUser = adminState.userForEditing;
     const allRoles = adminState.availableRoles ?? [];
 
-    console.log(allRoles)
-
     if (selectedUser === undefined) {
         return <></>
     }

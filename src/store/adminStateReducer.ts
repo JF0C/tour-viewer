@@ -41,7 +41,6 @@ export const adminSlice = createSlice({
             state.loading = true;
         })
         builder.addCase(loadUsersAdmin.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.users = action.payload.items;
             state.pagination.totalItems = action.payload.totalItems;
             state.pagination.totalPages = action.payload.totalPages;

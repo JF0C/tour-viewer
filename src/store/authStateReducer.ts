@@ -39,7 +39,6 @@ export const authStateSlice = createSlice({
         builder.addCase(loginRequest.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload;
-            console.log(state.user);
         });
         builder.addCase(loginRequest.rejected, (state) => {
             state.loading = false;
@@ -83,7 +82,6 @@ export const authStateSlice = createSlice({
             state.loading = true;
         })
         builder.addCase(validateCodeRequest.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.loading = false;
             state.user = action.payload;
         })

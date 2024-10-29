@@ -11,6 +11,7 @@ import { ApiUrls } from "../../constants/ApiUrls";
 export const ImageUpload: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const images = useAppSelector((state) => state.blog.editingBlogPost?.images) ?? [];
+    const blogPostId = useAppSelector((state) => state.blog.editingBlogPost?.id);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const onProgress = (progress: AxiosProgressEvent) => {
@@ -20,13 +21,15 @@ export const ImageUpload: FunctionComponent = () => {
         const files = fileInputRef?.current?.files;
         if (files) {
             const file = files[0];
-            console.log(file.name)
-            dispatch(uploadImage({ file: file, onChunk: onProgress}))
+            var  targetBlogPostId = blogPostId;
+            if (targetBlogPostId === 0) {
+                targetBlogPostId = undefined;
+            }
+            dispatch(uploadImage({ file: file, blogPostId: targetBlogPostId, onChunk: onProgress}))
                 .unwrap()
                 .then((response) => {
-                    console.log(response);
-                    dispatch(addImageReferenceToEditingBlogpost(response))
-        })
+                    dispatch(addImageReferenceToEditingBlogpost(response));
+            });
         }
     }
     return <div>

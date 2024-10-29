@@ -3,22 +3,18 @@ import { useAppSelector } from "../../store/store"
 import { LatLng } from "leaflet";
 import { Timeouts } from "../../constants/Timeouts";
 import { useState } from "react";
-import { Roles } from "../../constants/Rolenames";
+import { isAllowedToCreate } from "../../store/stateHelpers";
 
 export const SecondaryClickCountdown = () => {
     const position = useAppSelector((state) => state.blog.clickedEvent.location);
     const clickedTime = useAppSelector((state) => state.blog.clickedEvent.time);
-    const user = useAppSelector((state) => state.auth.user);
-    const tour = useAppSelector((state) => state.tour.selectedTour);
+    const canEdit = useAppSelector((state) => isAllowedToCreate(state));
     const map = useMap();
 
     const [points, setPoints] = useState<LatLng[]>([]);
     const [running, setRunning] = useState(false);
 
-    const isAllowedToEdit = Boolean(tour?.participants.find(p => p.id === user?.id)) 
-        || Boolean(user?.roles.includes(Roles.Admin));
-
-    if (!position || !isAllowedToEdit) {
+    if (!position || !canEdit) {
         if (points.length > 0) {
             setPoints([]);
         }

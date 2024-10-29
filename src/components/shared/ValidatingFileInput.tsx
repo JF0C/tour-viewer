@@ -15,7 +15,6 @@ export const ValidatingFileInput: FunctionComponent<ValidatingFileInputProps> = 
     const fileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files.length > 0) {
-            console.log(files[0])
             setCurrentFile(files[0].name)
             const data = await files[0].text();
             props.onFileSelected(files[0].name, data)

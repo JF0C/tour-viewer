@@ -76,7 +76,6 @@ export const tourStateSlice = createSlice({
         },
         setEditingTourStartDate(state, action: PayloadAction<number>) {
             state.editingTour.startDate = action.payload;
-            console.log(state.editingTour.startDate)
         },
         addEditingTourParticipant(state, action: PayloadAction<UserReferenceDto>) {
             if (!state.editingTour.participants.find(p => p.id === action.payload.id)) {

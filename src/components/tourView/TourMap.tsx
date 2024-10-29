@@ -7,7 +7,7 @@ import { TrackRoutes } from "./TrackRoutes";
 import { TourBounds } from "./TourBounds";
 import { BlogPostDto } from "../../dtos/blogPostDto";
 import { BlogPostMarker } from "../blogPost/BlogPostMarker";
-import { BlogPostLocationEditor } from "../blogPost/BlogPostLocationEditor";
+import { BlogPostMapLocationEditor } from "../blogPost/BlogPostMapLocationEditor";
 import { SecondaryClickCountdown } from "../blogPost/SecondaryClickCountdown";
 
 
@@ -29,6 +29,7 @@ export const TourMap: FunctionComponent = () => {
         if ((missingTracks?.length ?? 0) > 0) {
             for (let track of missingTracks!) {
                 dispatch(loadTrackRequest(track.fileReference));
+                return <LoadingSpinner />
             }
         }
         else {
@@ -41,7 +42,6 @@ export const TourMap: FunctionComponent = () => {
                 }
             }
         }
-        console.log(blogPosts);
     }
 
     return <MapContainer center={[48.136805, 11.578965]} zoom={13}
@@ -52,10 +52,10 @@ export const TourMap: FunctionComponent = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {
-            blogPosts.map(b => <BlogPostMarker blogPost={b} />)
+            blogPosts.map(b => <BlogPostMarker key={b.id} blogPost={b} />)
         }
         <TourBounds />
-        <BlogPostLocationEditor />
+        <BlogPostMapLocationEditor />
         <SecondaryClickCountdown />
     </MapContainer>
 }
