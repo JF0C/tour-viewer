@@ -1,15 +1,17 @@
-import { FunctionComponent } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { TrackListItem } from "./TrackListItem";
-import { loadTourRequest } from "../../store/tourThunk";
-import { NewTrackItem } from "./NewTrackItem";
 import { Button } from "@mui/material";
-import { startEditingTour } from "../../store/tourStateReducer";
+import { FunctionComponent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { setEditingTour } from "../../store/tourStateReducer";
+import { loadTourRequest } from "../../store/tourThunk";
+import { resetBoundsSet } from "../../store/trackStateReducer";
+import { NewTrackItem } from "./NewTrackItem";
+import { TrackListItem } from "./TrackListItem";
 
 export const TrackList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tour = useAppSelector((state) => state.tour.editingTour);
-    const selectedTour = useAppSelector((state) => state.tour.selectedTour);
+    const navigate = useNavigate();
 
     const nextTrackPosition = tour.tracks.length > 1 ?
         (tour.tracks.map(t => t.tourPosition).reduce((a, b) => Math.max(a, b)) + 1) :
@@ -19,13 +21,16 @@ export const TrackList: FunctionComponent = () => {
     const reloadTour = () => {
         dispatch(loadTourRequest(tour.id))
             .unwrap()
-            .then(() => {
+            .then((tour) => {
                 setTimeout(() => {
-                    if (selectedTour) {
-                        dispatch(startEditingTour(selectedTour))
-                    }
+                        dispatch(setEditingTour(tour))
                 }, 100)
             })
+    }
+
+    const cancelEditing = () => {
+        dispatch(resetBoundsSet());
+        navigate(-1);
     }
 
     return <table>
@@ -54,7 +59,10 @@ export const TrackList: FunctionComponent = () => {
         <tfoot>
             <tr>
                 <td>
-                    <Button onClick={reloadTour}>Reload</Button>
+                    <Button variant='outlined' onClick={reloadTour}>Reload</Button>
+                </td>
+                <td>
+                    <Button variant='outlined' color='warning' onClick={cancelEditing}>Cancel</Button>
                 </td>
             </tr>
         </tfoot>

@@ -34,7 +34,10 @@ $base-color: #282c34;
 
 #info-sidebar.open {
   width: 300px;
-  border-left: 1px solid white;
+}
+
+.base-modal {
+  background-color: $base-color;
 }
 
 th {

@@ -49,11 +49,16 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
             dispatch(setMapCenter(latLngToCoordinates(map.getCenter())))
         },
         mousedown(e: any) {
-            if (e.originalEvent.originalTarget?.className?.includes('leaflet-container')) {
-                dispatch(setClickedEvent({
-                    latitude: e.latlng.lat,
-                    longitude: e.latlng.lng
-                }));
+            try {
+                if (e.originalEvent.originalTarget?.className?.includes('leaflet-container')) {
+                    dispatch(setClickedEvent({
+                        latitude: e.latlng.lat,
+                        longitude: e.latlng.lng
+                    }));
+                }
+            }
+            catch(ex){
+
             }
         },
         mouseup() {

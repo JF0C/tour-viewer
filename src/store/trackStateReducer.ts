@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { loadTrackRequest } from "./trackThunk";
+import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest, loadTrackRequest } from "./trackThunk";
 import { TrackData } from "../data/trackData";
 
 export interface BoundsInternal {
@@ -61,6 +61,9 @@ export const trackStateSlice = createSlice({
         },
         setBoundsSet(state) {
             state.boundsSet = true;
+        },
+        resetBoundsSet(state) {
+            state.boundsSet = false;
         }
     },
     extraReducers: (builder) => {
@@ -97,8 +100,48 @@ export const trackStateSlice = createSlice({
         builder.addCase(loadTrackRequest.rejected, (state) => {
             state.loading = false;
         });
+
+        builder.addCase(deleteTrackRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteTrackRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(deleteTrackRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(changeTrackNameRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(changeTrackNameRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(changeTrackNameRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(changeTrackPositionRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(changeTrackPositionRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(changeTrackPositionRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(createTrackRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(createTrackRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(createTrackRequest.rejected, (state) => {
+            state.loading = false;
+        });
     }
 });
 
 export const trackStateReducer = trackStateSlice.reducer;
-export const { selectTracks, setBounds, clearTracks, setBoundsSet } = trackStateSlice.actions;
+export const { selectTracks, setBounds, clearTracks, setBoundsSet, resetBoundsSet } = trackStateSlice.actions;

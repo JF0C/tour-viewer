@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
 import { ticksToDateString } from "../../converters/dateConverters";
-import { startEditingTour } from "../../store/tourStateReducer";
+import { setEditingTour } from "../../store/tourStateReducer";
 import { Roles } from "../../constants/Rolenames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -36,7 +36,7 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
             .catch()
             .then((tour) => {
                 props.onSelected?.();
-                dispatch(startEditingTour(tour))
+                dispatch(setEditingTour(tour))
                 navigate(Paths.EditTourPage);
             })
     }

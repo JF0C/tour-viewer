@@ -10,6 +10,7 @@ import { ValidatingDatePicker } from "../shared/ValidatingDatePicker";
 import { ValidatingInput } from "../shared/ValidatingInput";
 import { TourParticipants } from "./TourParticipants";
 import { ticksToUtcDate } from "../../converters/dateConverters";
+import { resetBoundsSet } from "../../store/trackStateReducer";
 
 export const CreateTour: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -40,7 +41,7 @@ export const CreateTour: FunctionComponent = () => {
     return <SmallFormLayout buttons={
         <>
             <Button onClick={saveTour} disabled={!nameValid || !dateValid}>Save</Button>
-            <Button onClick={() => navigate(-1)} color='warning'>Cancel</Button>
+            <Button onClick={() => { dispatch(resetBoundsSet());navigate(-1);}} color='warning'>Cancel</Button>
         </>
     }>
         <ValidatingInput name="Name" minLength={3} maxLength={100}

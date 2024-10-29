@@ -1,4 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent, useState } from "react";
@@ -54,9 +54,10 @@ export const NewTrackItem: FunctionComponent<NewTrackItemProps> = (props) => {
             <ValidatingFileInput onFileSelected={onFileSelected} validCallback={v => setFileValid(v)}/>
         </td>
         <td>
-            <Button disabled={!trackNameValid || !tourPositionValid || !fileValid} color='success' onClick={createTrack}>
-                <FontAwesomeIcon icon={faPlus} />
-                &nbsp;Create
+            <Button disabled={!trackNameValid || !tourPositionValid || !fileValid} 
+                color='success' onClick={createTrack} variant="outlined">
+                <FontAwesomeIcon icon={faCheck} />
+                <span className="hidden md:block">&nbsp;Create</span>
             </Button>
         </td>
     </tr>

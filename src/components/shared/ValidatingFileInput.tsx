@@ -32,8 +32,9 @@ export const ValidatingFileInput: FunctionComponent<ValidatingFileInputProps> = 
                 currentFile === '' ?
                     <div>
                         <FontAwesomeIcon icon={faPlus} />
-                        &nbsp;
-                        Add File
+                        <span className="hidden md:block">
+                            &nbsp;Add File
+                        </span>
                     </div>
                     :
                     <div>

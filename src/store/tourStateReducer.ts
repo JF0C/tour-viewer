@@ -51,7 +51,7 @@ export const tourStateSlice = createSlice({
         showInfobar(state, action: PayloadAction<boolean>) {
             state.showInfoBar = action.payload;
         },
-        setRadioGroup(state, action: PayloadAction<{groupId: string, activeItem?: string}>) {
+        setRadioGroup(state, action: PayloadAction<{ groupId: string, activeItem?: string }>) {
             let entry = state.radioGroups.find(x => x.groupId === action.payload.groupId);
             if (!entry) {
                 state.radioGroups.push({ groupId: action.payload.groupId, activeItem: action.payload.activeItem });
@@ -86,18 +86,20 @@ export const tourStateSlice = createSlice({
             state.editingTour.participants = state.editingTour.participants
                 .filter(p => p.id !== action.payload);
         },
-        startEditingTour(state, action: PayloadAction<TourDto>) {
+        setEditingTour(state, action: PayloadAction<TourDto>) {
             state.editingTour.id = action.payload.id
             state.editingTour.name = action.payload.name;
             state.editingTour.participants = action.payload.participants;
             state.editingTour.startDate = action.payload.startDate;
-            state.editingTour.tracks = action.payload.tracks.map(t => { return {
-                tourId: action.payload.id,
-                id: t.id,
-                name: t.name,
-                tourPosition: t.tourPosition,
-                data: t.fileReference
-            }})
+            state.editingTour.tracks = action.payload.tracks.map(t => {
+                return {
+                    tourId: action.payload!.id,
+                    id: t.id,
+                    name: t.name,
+                    tourPosition: t.tourPosition,
+                    data: t.fileReference
+                }
+            })
         }
     },
     extraReducers: (builder) => {
@@ -117,7 +119,7 @@ export const tourStateSlice = createSlice({
         builder.addCase(searchTours.fulfilled, (state, action) => {
             state.loading = false;
             state.tours = action.payload.items;
-            for(let t of state.tours) {
+            for (let t of state.tours) {
                 t.startDate = new Date(t.startDate).valueOf();
             }
             state.tourPagination.page = action.payload.page;
@@ -128,7 +130,7 @@ export const tourStateSlice = createSlice({
             state.loading = false;
             state.tours = [];
         })
-        
+
         builder.addCase(loadTourRequest.pending, (state) => {
             state.loading = true;
         })
@@ -178,5 +180,5 @@ export const tourStateReducer = tourStateSlice.reducer;
 export const { setRadioGroup, showInfobar,
     resetEditingTour, setEditingTourName, setEditingTourStartDate,
     addEditingTourParticipant, removeEditingTourParticipant,
-    startEditingTour
- } = tourStateSlice.actions;
+    setEditingTour
+} = tourStateSlice.actions;
