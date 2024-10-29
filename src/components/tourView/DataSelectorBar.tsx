@@ -6,7 +6,10 @@ import { TrackSelector } from "./TrackSelector";
 
 export const TourSelectorBar: FunctionComponent = () => {
 
-    const tour = useAppSelector((state) => state.tour.selectedTour)
+    const tour = useAppSelector((state) => state.tour.selectedTour);
+    if (document.location.pathname !== "/") {
+        return <></>
+    }
 
     return <div style={{top: '50px', zIndex: 1000}} 
         className="flex flex-row w-full absolute justify-center items-center drop-shadow">
