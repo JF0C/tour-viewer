@@ -28,12 +28,26 @@ $base-color: #282c34;
   transition: width .2s ease-in-out;
 }
 
-#sidebar-content {
-  background-color: $base-color;
-}
-
 #info-sidebar.open {
   width: 300px;
+}
+
+@media screen and (max-width: 768px) {
+  #info-sidebar {
+    width: 100%;
+    height: 0px;
+    transition: height .2s ease-in-out;
+  }
+
+  #info-sidebar.open {
+    height: 400px;
+    overflow-y: scroll;
+    width: 100%;
+  }
+}
+
+#sidebar-content {
+  background-color: $base-color;
 }
 
 .base-modal {

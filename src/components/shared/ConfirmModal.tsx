@@ -6,11 +6,11 @@ export type ConfirmModalProps = {
     type: 'inherit' | 'error' | 'primary' | 'secondary' | 'success' | 'info' | 'warning';
     onConfirm: () => void;
     buttonContent: ReactElement;
-    outlinedButton?: boolean;
+    confirmText?: string;
 }
 
 export const ConfirmModal: FunctionComponent<ConfirmModalProps> = (props) => {
     return <BaseConfirmModal confirmType='error' onConfirm={props.onConfirm} 
-            buttonContent={props.buttonContent} outlinedButton
-            confirmText="Delete">{props.message}</BaseConfirmModal>
+            buttonContent={props.buttonContent}
+            confirmText={props.confirmText ?? 'Delete'}>{props.message}</BaseConfirmModal>
 }

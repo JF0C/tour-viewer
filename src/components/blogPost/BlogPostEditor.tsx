@@ -82,12 +82,27 @@ export const BlogPostEditor: FunctionComponent = () => {
     }
 
     return <div className="flex flex-col h-full">
-        <div>
-            <EditableNameLabel value={blogPost.title === '' ? 'New Blog Post' : blogPost.title}
-                className="font-bold text-xl"
-                minLength={0} maxLength={100} name='Blog Post Title' inputType='text'
-                onApply={changeTitle}
-            />
+        <div className="flex flex-row">
+            <div className="flex-1">
+                <EditableNameLabel value={blogPost.title === '' ? 'New Blog Post' : blogPost.title}
+                    className="font-bold text-xl"
+                    minLength={0} maxLength={100} name='Blog Post Title' inputType='text'
+                    onApply={changeTitle}
+                />
+
+            </div>
+            {
+                blogPost.id === 0 ?
+                    <ConfirmModal message="Unsafed changes might get lost." type="error"
+                    onConfirm={() => dispatch(setEditingBlogpost(undefined))}
+                    buttonContent={<>
+                            <FontAwesomeIcon icon={faX} />
+                    </>}/>
+                    :
+                    <Button onClick={() => dispatch(setEditingBlogpost(undefined))}>
+                        <FontAwesomeIcon icon={faX} />
+                    </Button>
+            }
         </div>
         <div className="flex-1 py-2">
             <ImageUpload />
@@ -100,19 +115,15 @@ export const BlogPostEditor: FunctionComponent = () => {
         <div className="flex flex-row gap-2">
             {
                 blogPost.id === 0 ?
-                    <Button color='success' variant="outlined" onClick={submitBlogPost}>
+                    <Button className="w-full" color='success' variant="outlined" onClick={submitBlogPost}>
                         <FontAwesomeIcon icon={faFloppyDisk} />
                         &nbsp;Save
                     </Button>
                     : <></>
             }
-            <Button color='warning' variant="outlined" onClick={() => dispatch(setEditingBlogpost(undefined))}>
-                <FontAwesomeIcon icon={faX} />
-                &nbsp;Cancel
-            </Button>
             {
                 blogPost.id !== 0 ?
-                    <ConfirmModal outlinedButton message={`Do you really want to delete blog post ${blogPost.title}`}
+                    <ConfirmModal message={`Do you really want to delete blog post ${blogPost.title}`}
                         onConfirm={deleteBlogPost} type='error' buttonContent={<>
                             <FontAwesomeIcon icon={faTrash} />
                             &nbsp;Delete

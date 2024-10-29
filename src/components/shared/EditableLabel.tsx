@@ -19,23 +19,23 @@ export const EditableLabel: FunctionComponent<EditableLabelProps> = (props) => {
         <div className={`flex-1 ${props.className}`}>
             { props.editor }
         </div>
-        <div className="flex flex-row gap-2">
-            <Button color="warning" variant="outlined" onClick={() => setEditing(false)}>
+        <div className="flex flex-row gap-2 items-center">
+            <Button sx={{minWidth: '20px'}} color="warning" onClick={() => setEditing(false)}>
                 <FontAwesomeIcon icon={faX} />
             </Button>
-            <Button disabled={!props.canConfirm} color="success" variant="outlined" onClick={() => { props.onApplyChange(); setEditing(false) }}>
+            <Button sx={{minWidth: '20px'}} disabled={!props.canConfirm} color="success" onClick={() => { props.onApplyChange(); setEditing(false) }}>
                 <FontAwesomeIcon icon={faCheck} />
             </Button>
         </div>
     </div>
     }
     else {
-        return <div className="flex flex-row gap-2 flex-wrap">
-            <div className={`flex-1 ${props.className}`}>
+        return <div className="flex flex-row gap-2 flex-wrap items-center">
+            <div className={`${props.className}`}>
                 { props.label }
             </div>
             <div>
-                <Button variant="outlined" onClick={() => setEditing(true)}>
+                <Button sx={{minWidth: '20px'}} onClick={() => setEditing(true)}>
                     <FontAwesomeIcon icon={faEdit} />
                 </Button>
             </div>

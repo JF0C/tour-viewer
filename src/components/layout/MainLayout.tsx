@@ -17,7 +17,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost;
 
     return <div className="h-full main-layout flex flex-col">
-        <div className="h-14">
+        <div className="h-10">
             <AppBar sx={{ backgroundColor: '#282c34', zIndex: 5000 }}>
                 <div className="flex flex-row justify-between items-center">
                     <div>
@@ -35,7 +35,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                 </div>
             </AppBar>
         </div>
-        <div className="flex-1 flex flex-row flex-wrap">
+        <div className="flex-1 flex flex-col md:flex-row flex-wrap">
             <SwipeableDrawer
                 anchor="left"
                 open={sidebarOpen}

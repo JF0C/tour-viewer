@@ -11,7 +11,6 @@ export type BaseConfirmModalProps = {
     hideCancel?: boolean;
     buttonClass?: string;
     closeOnSelection?: boolean;
-    outlinedButton?: boolean;
     open?: boolean;
     onConfirm: () => void;
     disableConfirm?: boolean;
@@ -34,7 +33,7 @@ export const BaseConfirmModal: FunctionComponent<BaseConfirmModalProps> = (props
 
     return <>
         <div className={props.buttonClass}>
-            <Button color={props.confirmType} variant={props.outlinedButton ? 'outlined' : 'text'} onClick={() => { props.onOpen?.(); setModalOpen(true); }}>
+            <Button color={props.confirmType} onClick={() => { props.onOpen?.(); setModalOpen(true); }}>
                 {props.buttonContent}
             </Button>
         </div>

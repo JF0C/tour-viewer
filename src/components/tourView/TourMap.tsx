@@ -44,7 +44,7 @@ export const TourMap: FunctionComponent = () => {
         }
     }
 
-    return <MapContainer center={[48.136805, 11.578965]} zoom={13}
+    return <MapContainer center={[48.136805, 11.578965]} zoom={13} zoomControl={false}
         scrollWheelZoom={true} touchZoom={true}>
         {content}
         <TileLayer
