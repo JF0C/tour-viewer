@@ -1,8 +1,8 @@
-import { LatLng } from "leaflet";
 import { TrackPoint } from "../data/trackPoint";
+import { CoordinatesDto } from "../dtos/coordinatesDto";
 import { ITrackEntity } from "../store/trackStateReducer";
 
-export const trackClosestToPoint = (tracks: ITrackEntity[], point: LatLng): ITrackEntity | null => {
+export const trackClosestToPoint = (tracks: ITrackEntity[], point: CoordinatesDto): ITrackEntity | null => {
     if (tracks.length === 0) return null;
     let closestTrack = tracks[0];
     let distance = pointDistance(closestTrack.data.points[0], point);
@@ -18,6 +18,6 @@ export const trackClosestToPoint = (tracks: ITrackEntity[], point: LatLng): ITra
     return closestTrack;
 }
 
-const pointDistance = (point: TrackPoint, coordinates: LatLng) => {
-    return (point.latitude - coordinates.lat) ** 2 + (point.longitude - coordinates.lng) ** 2;
+const pointDistance = (point: TrackPoint, coordinates: CoordinatesDto) => {
+    return (point.latitude - coordinates.latitude) ** 2 + (point.longitude - coordinates.longitude) ** 2;
 }

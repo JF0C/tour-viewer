@@ -14,6 +14,9 @@ function App() {
   if (document.location.href.includes('localhost:3000')) {
     ApiUrls.BaseUrl = 'https://localhost:7271';
   }
+  else if (document.location.href.includes('192.168.1.226:3000')) {
+    ApiUrls.BaseUrl = 'https://192.168.1.226:7271';
+  }
   else {
     ApiUrls.BaseUrl = '.';
   }

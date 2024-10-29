@@ -3,17 +3,26 @@ import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
 import { CoordinatesDto } from "../dtos/coordinatesDto";
 
 
+export interface ClickedEvent {
+    time: number;
+    location?: CoordinatesDto;
+}
+
 export interface IBlogPostState {
     loading: boolean;
     editingBlogPost?: CreateBlogPostDto;
     coordinatesChanged: boolean;
     markerPosition?: CoordinatesDto;
-    mapCenter?: CoordinatesDto
+    mapCenter?: CoordinatesDto;
+    clickedEvent: ClickedEvent;
 }
 
 const initialState: IBlogPostState = {
     loading: false,
-    coordinatesChanged: false
+    coordinatesChanged: false,
+    clickedEvent: {
+        time: 0
+    }
 }
 
 export const BlogPostSlice = createSlice({
@@ -26,6 +35,10 @@ export const BlogPostSlice = createSlice({
         },
         setMarkerPosition(state, action: PayloadAction<CoordinatesDto | undefined>) {
             state.markerPosition = action.payload;
+        },
+        setClickedEvent(state, action: PayloadAction<CoordinatesDto | undefined>) {
+            state.clickedEvent.location = action.payload;
+            state.clickedEvent.time = new Date().valueOf();
         },
         resetCoordinatesChanged(state) {
             state.coordinatesChanged = false;
@@ -72,5 +85,5 @@ export const blogPostStateReducer = BlogPostSlice.reducer;
 
 export const { setEditingBlogpost, changeEditingBlogpostPosition, changeEditingBlogpostTrack,
     changeEditingBlogpostTitle, changeEditingBlogpostMessage, addImageReferenceToEditingBlogpost,
-    setMarkerPosition, setMapCenter, resetCoordinatesChanged
+    setMarkerPosition, setMapCenter, resetCoordinatesChanged, setClickedEvent
 } = BlogPostSlice.actions

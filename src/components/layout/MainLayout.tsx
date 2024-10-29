@@ -18,7 +18,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
 
     return <div className="h-full main-layout flex flex-col">
         <div className="h-14">
-            <AppBar sx={{ backgroundColor: '#282c34' }}>
+            <AppBar sx={{ backgroundColor: '#282c34', zIndex: 5000 }}>
                 <div className="flex flex-row justify-between items-center">
                     <div>
                         <Button onClick={() => setSidebarOpen(!sidebarOpen)}>

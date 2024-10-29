@@ -8,6 +8,7 @@ import { TourBounds } from "./TourBounds";
 import { BlogPostDto } from "../../dtos/blogPostDto";
 import { BlogPostMarker } from "../blogPost/BlogPostMarker";
 import { BlogPostLocationEditor } from "../blogPost/BlogPostLocationEditor";
+import { SecondaryClickCountdown } from "../blogPost/SecondaryClickCountdown";
 
 
 export const TourMap: FunctionComponent = () => {
@@ -55,5 +56,6 @@ export const TourMap: FunctionComponent = () => {
         }
         <TourBounds />
         <BlogPostLocationEditor />
+        <SecondaryClickCountdown />
     </MapContainer>
 }
