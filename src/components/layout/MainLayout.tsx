@@ -7,6 +7,7 @@ import { BlogPostEditor } from "../blogPost/BlogPostEditor";
 import { Navbar } from "../navigation/Navbar";
 import { UserIcon } from "../user/UserIcon";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
+import { TourData } from "../tourView/TourData";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -60,7 +61,8 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip`}>
                 <div className="h-full p-2">
                     {
-                        isEditingBlogPost ? <BlogPostEditor /> : <></>
+                        isEditingBlogPost ? <BlogPostEditor /> :
+                        <TourData />
                     }
                 </div>
             </div>
