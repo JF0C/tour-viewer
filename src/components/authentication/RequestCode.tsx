@@ -28,6 +28,6 @@ export const RequestCode: FunctionComponent = () => {
     
     return authState.loading ? <LoadingSpinner /> :
         <SmallFormLayout buttons={<Button variant='outlined' color='success' onClick={requestCode}>Request Code</Button>}>
-            <Input type='text' onKeyUp={keyUp} onChange={e => setEmail(e.target.value)}/>
+            <Input placeholder="email" type='text' onKeyUp={keyUp} onChange={e => setEmail(e.target.value)}/>
         </SmallFormLayout>
 }
