@@ -1,11 +1,11 @@
-import { FunctionComponent, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import { faSignIn, faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { Button, Menu, MenuItem } from "@mui/material";
-import { Paths } from "../../constants/Paths";
+import { FunctionComponent, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Paths } from "../../constants/Paths";
 import { logoutRequest } from "../../store/authThunk";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 
 export const UserIcon: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -34,11 +34,17 @@ export const UserIcon: FunctionComponent = () => {
         <Button ref={buttonRef} onClick={() => setMenuOpen(!menuOpen)}>
             { user.username }
         </Button>
-        <Menu anchorEl={buttonRef.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
+        <Menu sx={{ zIndex: 6000 }} anchorEl={buttonRef.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
             <MenuItem>
                 <Button onClick={logout}>
                     <FontAwesomeIcon icon={faSignOut} />
                     &nbsp;Logout
+                </Button>
+            </MenuItem>
+            <MenuItem>
+                <Button onClick={() => navigate(Paths.UserPage)}>
+                    <FontAwesomeIcon icon={faUser} />
+                    &nbsp;Profile
                 </Button>
             </MenuItem>
         </Menu>

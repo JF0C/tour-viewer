@@ -5,7 +5,7 @@ import { FunctionComponent, ReactNode, useState } from "react";
 import { useAppSelector } from "../../store/store";
 import { BlogPostEditor } from "../blogPost/BlogPostEditor";
 import { Navbar } from "../navigation/Navbar";
-import { UserIcon } from "../shared/UserIcon";
+import { UserIcon } from "../user/UserIcon";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
 
 export type MainLayoutProps = {
