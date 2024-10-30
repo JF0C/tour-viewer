@@ -8,6 +8,7 @@ import { changeTourStartDateRequest, renameTourRequest } from "../../store/tourT
 import { setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
 import { ticksToUtcDate } from "../../converters/dateConverters";
 import { TrackList } from "./TrackList";
+import { ParticipantSelector } from "./ParticipantSelector";
 
 
 export const EditTour: FunctionComponent = () => {
@@ -59,7 +60,7 @@ export const EditTour: FunctionComponent = () => {
                 </tr>
             </tbody>
         </table>
-
+        <ParticipantSelector />
         <TrackList />
     </SmallFormLayout>
 }

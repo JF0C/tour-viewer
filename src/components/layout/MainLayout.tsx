@@ -14,6 +14,7 @@ export type MainLayoutProps = {
 
 export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const isLoggedId = useAppSelector((state) => Boolean(state.auth.user));
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
     const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost;
 
@@ -22,9 +23,13 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             <AppBar sx={{ backgroundColor: '#282c34', zIndex: 5000 }}>
                 <div className="flex flex-row justify-between items-center">
                     <div>
-                        <Button onClick={() => setSidebarOpen(!sidebarOpen)}>
-                            <FontAwesomeIcon icon={faBars} />
-                        </Button>
+                        {
+                            isLoggedId ?
+                            <Button onClick={() => setSidebarOpen(!sidebarOpen)}>
+                                <FontAwesomeIcon icon={faBars} />
+                            </Button>
+                            : <></>
+                        }
                     </div>
                     <div className='p-2 text-2xl md:text-3xl'>
                         CK Cycling Tour Viewer

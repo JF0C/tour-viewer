@@ -20,7 +20,7 @@ export const UserIcon: FunctionComponent = () => {
         dispatch(logoutRequest())
             .unwrap()
             .catch()
-            .then(() => navigate(Paths.HomePage))
+            .then(() => navigate(Paths.LoginPage))
     }
 
     if (!user) {

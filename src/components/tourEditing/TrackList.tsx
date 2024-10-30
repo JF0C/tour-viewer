@@ -21,11 +21,7 @@ export const TrackList: FunctionComponent = () => {
     const reloadTour = () => {
         dispatch(loadTourRequest(tour.id))
             .unwrap()
-            .then((tour) => {
-                setTimeout(() => {
-                        dispatch(setEditingTour(tour))
-                }, 100)
-            })
+            .then((tour) => dispatch(setEditingTour(tour)))
     }
 
     const cancelEditing = () => {

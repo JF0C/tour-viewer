@@ -6,6 +6,7 @@ import { ApiUrls } from "../constants/ApiUrls";
 import { CreateTourDto } from "../dtos/createTourDto";
 import { RenameTourDto } from "../dtos/renameTourDto";
 import { ChangeTourStartDateDto } from "../dtos/changeTourStartDateDto";
+import { ChangeParticipantDto } from "../dtos/changeParticipantDto";
 
 export const searchTours = createAsyncThunk('search-tours',
     async (search: PageRequestDto): Promise<PagedResult<TourDto>> => {
@@ -70,3 +71,29 @@ export const changeTourStartDateRequest = createAsyncThunk('change-tour-start-da
         })
     }
 )
+
+export const addParticipantRequest = createAsyncThunk('add-participant',
+    async (addParticipant: ChangeParticipantDto): Promise<void> => {
+        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${addParticipant.tourId}/Participant`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(addParticipant.participantId)
+        });
+    }
+);
+
+export const removeParticipantRequest = createAsyncThunk('add-participant',
+    async (removeParticipant: ChangeParticipantDto): Promise<void> => {
+        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${removeParticipant.tourId}/Participant`, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(removeParticipant.participantId)
+        });
+    }
+);

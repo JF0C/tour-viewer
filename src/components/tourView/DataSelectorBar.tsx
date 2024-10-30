@@ -5,9 +5,9 @@ import { TrackSelector } from "./TrackSelector";
 
 
 export const TourSelectorBar: FunctionComponent = () => {
-
     const tour = useAppSelector((state) => state.tour.selectedTour);
-    if (document.location.pathname !== "/") {
+    const user = useAppSelector((state) => state.auth.user);
+    if (document.location.pathname !== "/" || !user) {
         return <></>
     }
 
