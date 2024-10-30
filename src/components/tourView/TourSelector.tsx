@@ -28,9 +28,8 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
                     </span>
                     : <></>
                 }
-                
                 {props.title}
-            </div>} buttonClass="">
+            </div>}>
             <TourList onSelected={() => {
                 props.onSelected();
                 dispatch(clearTracks());

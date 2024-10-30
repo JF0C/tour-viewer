@@ -11,15 +11,12 @@ export const TourBounds: FunctionComponent = () => {
     const trackState = useAppSelector((state) => state.track);
     const map = useMap();
 
-    if (trackState.loading) {
+    if (!trackState.boundsSet) {
+        dispatch(setBoundsSet());
         map.eachLayer(l => {
             if (l.options.attribution === Layers.RoutesLayer)
             l.removeFrom(map)
         });
-    }
-
-    if (!trackState.boundsSet) {
-        dispatch(setBoundsSet());
         const bounds = trackState.tracks.find(t => t.selected)?.bounds;
         let south = bounds?.south;
         let north = bounds?.north;

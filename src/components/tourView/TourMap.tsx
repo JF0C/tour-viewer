@@ -33,9 +33,11 @@ export const TourMap: FunctionComponent = () => {
             }
         }
         else {
-            content = <>{trackState.tracks.map(t => <TrackRoutes key={t.fileReference} track={t} />)}</>
+            const selectedTracks = trackState.tracks.filter(t => t.selected);
+            const firstTrackName = selectedTracks.length > 0 ? selectedTracks[0].fileReference : '';
+            content = <>{selectedTracks.map(t => <TrackRoutes key={t.fileReference} isStart={firstTrackName === t.fileReference} track={t} />)}</>
             for (let t of (tour?.tracks ?? [])) {
-                if (trackState.tracks.find(ts => ts.fileReference === t.fileReference)?.selected) {
+                if (selectedTracks.find(ts => ts.fileReference === t.fileReference)?.selected) {
                     for (let b of t.blogPosts) {
                         blogPosts.push(b);
                     }

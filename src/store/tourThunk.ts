@@ -97,3 +97,12 @@ export const removeParticipantRequest = createAsyncThunk('add-participant',
         });
     }
 );
+
+export const deleteTourRequest = createAsyncThunk('delete-tour',
+    async (tourId: number): Promise<void> => {
+        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${tourId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+    }
+)

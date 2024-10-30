@@ -24,7 +24,7 @@ export const TrackSelector: FunctionComponent = () => {
         }
     }
 
-    return <div className="track-selector flex flex-row items-center">
+    return <div className="track-selector flex flex-row flex-wrap items-center">
         <FontAwesomeIcon icon={faChevronRight} />
         <Select
             labelId="track-select-label"

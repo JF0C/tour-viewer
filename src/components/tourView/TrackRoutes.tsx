@@ -1,12 +1,13 @@
-import L from "leaflet";
+import L, { LatLng } from "leaflet";
 import { FunctionComponent } from "react";
-import { useMap } from "react-leaflet";
+import { Marker, Popup, useMap } from "react-leaflet";
 import { Layers } from "../../constants/Layers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ITrackEntity, setBounds } from "../../store/trackStateReducer";
 
 export type TrackRoutesProps = {
-    track: ITrackEntity
+    track: ITrackEntity,
+    isStart?: boolean
 }
 
 export const TrackRoutes: FunctionComponent<TrackRoutesProps> = (props) => {
@@ -19,14 +20,13 @@ export const TrackRoutes: FunctionComponent<TrackRoutesProps> = (props) => {
         return <></>
     }
 
-    for (let k = 0; k < props.track.data.points.length - 1; k++) {
-
-    }
+    const lastPoint = props.track.data.points[props.track.data.points.length - 1]
 
     const trackColor = referencedTrack === props.track.fileReference ? 'red' : 'black'
 
     const layer = new L.LayerGroup();
     layer.options.attribution = Layers.RoutesLayer;
+
     const line = L.polyline(props.track.data.points
         .map(p => [p.latitude, p.longitude]), { color: trackColor }).addTo(layer);
     map.addLayer(layer);
@@ -43,5 +43,20 @@ export const TrackRoutes: FunctionComponent<TrackRoutesProps> = (props) => {
             }
         }));
     }
-    return <></>
+    return <>
+    {
+        props.isStart ? 
+        <Marker position={[props.track.data.points[0].latitude, props.track.data.points[0].longitude]}>
+            <Popup>
+                Start
+            </Popup>
+        </Marker>
+        :<></>
+    }
+    <Marker position={new LatLng(lastPoint.latitude, lastPoint.longitude)}>
+        <Popup>
+            {props.track.data.name}
+        </Popup>
+    </Marker>
+    </>
 }

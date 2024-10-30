@@ -43,7 +43,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             </AppBar>
             <TourSelectorBar />
         </div>
-        <div className="flex-1 flex flex-col md:flex-row flex-wrap">
+        <div className="flex-1 flex flex-col md:flex-row flex-wrap h-full">
             <SwipeableDrawer
                 anchor="left"
                 open={sidebarOpen}
@@ -55,7 +55,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                     <Navbar closeSidebar={() => setSidebarOpen(false)} />
                 </div>
             </SwipeableDrawer>
-            <div className="flex-1 ">
+            <div className="flex-1 overflow-y-scroll h-full">
                 {props.children}
             </div>
             <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip`}>

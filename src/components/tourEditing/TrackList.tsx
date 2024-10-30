@@ -3,14 +3,17 @@ import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setEditingTour } from "../../store/tourStateReducer";
-import { loadTourRequest } from "../../store/tourThunk";
+import { deleteTourRequest, loadTourRequest, searchTours } from "../../store/tourThunk";
 import { resetBoundsSet } from "../../store/trackStateReducer";
 import { NewTrackItem } from "./NewTrackItem";
 import { TrackListItem } from "./TrackListItem";
+import { Paths } from "../../constants/Paths";
+import { ConfirmModal } from "../shared/ConfirmModal";
 
 export const TrackList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tour = useAppSelector((state) => state.tour.editingTour);
+    const pagination = useAppSelector((state) => state.tour.tourPagination);
     const navigate = useNavigate();
 
     const nextTrackPosition = tour.tracks.length > 1 ?
@@ -27,6 +30,16 @@ export const TrackList: FunctionComponent = () => {
     const cancelEditing = () => {
         dispatch(resetBoundsSet());
         navigate(-1);
+    }
+
+    const deleteTour = () => {
+        dispatch(deleteTourRequest(tour.id))
+            .unwrap().then(() => {
+                dispatch(searchTours({
+                    page: pagination.page,
+                    count: pagination.itemsPerPage
+                })).then(() => navigate(Paths.HomePage));
+            })
     }
 
     return <table>
@@ -54,11 +67,12 @@ export const TrackList: FunctionComponent = () => {
         </tbody>
         <tfoot>
             <tr>
-                <td>
-                    <Button variant='outlined' onClick={reloadTour}>Reload</Button>
-                </td>
-                <td>
-                    <Button variant='outlined' color='warning' onClick={cancelEditing}>Cancel</Button>
+                <td colSpan={4} className="flex flex-row gap-2">
+                    <Button onClick={reloadTour}>Reload</Button>
+                    <Button color='warning' onClick={cancelEditing}>Cancel</Button>
+                    <ConfirmModal type='error' onConfirm={deleteTour} 
+                        message={`Do you really want to delete tour ${tour.name}`} 
+                        buttonContent={<>Delete</>}/>
                 </td>
             </tr>
         </tfoot>

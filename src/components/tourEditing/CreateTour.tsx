@@ -3,14 +3,15 @@ import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Roles } from "../../constants/Rolenames";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
-import { createTourRequest } from "../../store/tourThunk";
+import { setEditingTour, setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
+import { createTourRequest, loadTourRequest } from "../../store/tourThunk";
 import { SmallFormLayout } from "../layout/SmallFormLayout";
 import { ValidatingDatePicker } from "../shared/ValidatingDatePicker";
 import { ValidatingInput } from "../shared/ValidatingInput";
 import { TourParticipants } from "./TourParticipants";
 import { ticksToUtcDate } from "../../converters/dateConverters";
 import { resetBoundsSet } from "../../store/trackStateReducer";
+import { Paths } from "../../constants/Paths";
 
 export const CreateTour: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -35,20 +36,26 @@ export const CreateTour: FunctionComponent = () => {
             name: tour.name,
             startDate: ticksToUtcDate(tour.startDate),
             participantIds: tour.participants.map(p => p.id)
-        }));
+        })).unwrap().then((id) => {
+            dispatch(loadTourRequest(id))
+                .unwrap().then((tour) => {
+                    dispatch(setEditingTour(tour));
+                    navigate(Paths.EditTourPage);
+                });
+        });
     }
 
     return <SmallFormLayout buttons={
         <>
             <Button onClick={saveTour} disabled={!nameValid || !dateValid}>Save</Button>
-            <Button onClick={() => { dispatch(resetBoundsSet());navigate(-1);}} color='warning'>Cancel</Button>
+            <Button onClick={() => { dispatch(resetBoundsSet()); navigate(-1); }} color='warning'>Cancel</Button>
         </>
     }>
         <ValidatingInput name="Name" minLength={3} maxLength={100}
             onChange={n => dispatch(setEditingTourName(n))} inputType="text"
             validCallback={v => setNameValid(v)} />
         <ValidatingDatePicker value={tour.startDate} validCallback={v => setDateValid(v)}
-            onChange={v => dispatch(setEditingTourStartDate(v))}/>
+            onChange={v => dispatch(setEditingTourStartDate(v))} />
         <TourParticipants />
     </SmallFormLayout>
 }
