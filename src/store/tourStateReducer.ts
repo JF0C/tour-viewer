@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserReferenceDto } from "../dtos/userReferenceDto";
 import { TourDto } from "../dtos/tourDto";
 import { PaginationState } from "./paginationState";
-import { createTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
+import { createTourRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { EditTrackDto } from "../dtos/editTrackDto";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 
@@ -20,6 +20,7 @@ export interface ITourState {
     selectedTour?: TourDto;
     tourPagination: PaginationState;
     showInfoBar: boolean;
+    dataSelectorBarState: 'show' | 'small' | 'hide';
     editingTour: IEditTour;
     radioGroups: { groupId: string, activeItem?: string }[];
 }
@@ -27,6 +28,7 @@ export interface ITourState {
 const initialState: ITourState = {
     loading: false,
     showInfoBar: false,
+    dataSelectorBarState: 'hide',
     tours: [],
     tourPagination: {
         page: 1,
@@ -50,6 +52,9 @@ export const tourStateSlice = createSlice({
     reducers: {
         showInfobar(state, action: PayloadAction<boolean>) {
             state.showInfoBar = action.payload;
+        },
+        setDataBarState(state, action: PayloadAction<'show' | 'small' | 'hide'>) {
+            state.dataSelectorBarState = action.payload;
         },
         setRadioGroup(state, action: PayloadAction<{ groupId: string, activeItem?: string }>) {
             let entry = state.radioGroups.find(x => x.groupId === action.payload.groupId);
@@ -156,6 +161,17 @@ export const tourStateSlice = createSlice({
             state.loading = false;
         })
 
+        builder.addCase(deleteTourRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(deleteTourRequest.fulfilled, (state) => {
+            state.loading = false;
+            state.selectedTour = undefined;
+        })
+        builder.addCase(deleteTourRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
         builder.addCase(deleteTrackRequest.pending, (state) => {
             state.loading = true;
         })
@@ -182,5 +198,5 @@ export const tourStateReducer = tourStateSlice.reducer;
 export const { setRadioGroup, showInfobar,
     resetEditingTour, setEditingTourName, setEditingTourStartDate,
     addEditingTourParticipant, removeEditingTourParticipant,
-    setEditingTour
+    setEditingTour, setDataBarState
 } = tourStateSlice.actions;

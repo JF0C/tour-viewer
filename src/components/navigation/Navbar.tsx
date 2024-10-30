@@ -1,15 +1,15 @@
-import { faEdit, faHome, faInfoCircle, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faHome, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Paths } from '../../constants/Paths';
-import { TourSelector } from '../tourView/TourSelector';
-import { useAppDispatch, useAppSelector } from '../../store/store';
 import { Roles } from '../../constants/Rolenames';
-import { showInfobar, setEditingTour } from '../../store/tourStateReducer';
 import { isAllowedToCreate } from '../../store/stateHelpers';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { setEditingTour } from '../../store/tourStateReducer';
 import { resetBoundsSet } from '../../store/trackStateReducer';
+import { TourSelector } from '../tourView/TourSelector';
 
 export type NavbarProps = {
     closeSidebar: () => void
@@ -20,7 +20,6 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
     const user = useAppSelector((state) => state.auth.user);
     const isAdmin = user?.roles.includes(Roles.Admin);
     const isContributor = user?.roles.includes(Roles.Contributor);
-    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar);
     const tour = useAppSelector((state) => state.tour.selectedTour);
     const canEdit = useAppSelector((state) => isAllowedToCreate(state));
 
@@ -41,7 +40,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         <TourSelector showIcon title='Select Tour' onSelected={props.closeSidebar} />
         {
             isContributor ?
-                <NavLink to={Paths.CreateTourPage}>
+                <NavLink to={Paths.CreateTourPage} onClick={() => props.closeSidebar()}>
                     <Button>
                         <FontAwesomeIcon icon={faPlus} />
                         &nbsp;Create Tour

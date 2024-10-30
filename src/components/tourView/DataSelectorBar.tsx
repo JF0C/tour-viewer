@@ -1,21 +1,39 @@
 import { FunctionComponent } from "react";
-import { useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { TourSelector } from "./TourSelector";
 import { TrackSelector } from "./TrackSelector";
+import { Button } from "@mui/material";
+import { setDataBarState } from "../../store/tourStateReducer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 
 export const TourSelectorBar: FunctionComponent = () => {
+    const dispatch = useAppDispatch();
     const tour = useAppSelector((state) => state.tour.selectedTour);
-    const user = useAppSelector((state) => state.auth.user);
-    if (document.location.pathname !== "/" || !user) {
+    const barState = useAppSelector((state) => state.tour.dataSelectorBarState);
+
+    if (barState === 'hide') {
         return <></>
+    }
+
+    const expandBar = () => {
+        dispatch(setDataBarState('show'));
     }
 
     return <div style={{ top: '60px', zIndex: 1000 }}
         className="flex flex-row w-full absolute justify-center items-center drop-shadow">
         <div className="selector-bar rounded-md border-black flex flex-row flex-wrap">
-            <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
-            <TrackSelector />
+            <div id='data-selector-bar-content' className={barState}>
+                <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
+                <TrackSelector />
+            </div>
+            {
+                barState === 'small' ?
+                    <Button sx={{ minWidth: '20px', minHeight: '10px' }} onClick={expandBar}>
+                        <FontAwesomeIcon icon={faChevronDown} />
+                    </Button> : <></>
+            }
         </div>
-    </div>
+    </div >
 }

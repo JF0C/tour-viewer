@@ -23,6 +23,7 @@ export const StartPage: FunctionComponent = () => {
 
     if (!user) {
         navigate(Paths.LoginPage);
+        return <></>
     }
 
     return <div className="h-full">

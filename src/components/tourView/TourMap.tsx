@@ -9,12 +9,14 @@ import { BlogPostDto } from "../../dtos/blogPostDto";
 import { BlogPostMarker } from "../blogPost/BlogPostMarker";
 import { BlogPostMapLocationEditor } from "../blogPost/BlogPostMapLocationEditor";
 import { SecondaryClickCountdown } from "../blogPost/SecondaryClickCountdown";
+import { setDataBarState } from "../../store/tourStateReducer";
 
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tour = useAppSelector((state) => state.tour.selectedTour);
     const trackState = useAppSelector((state) => state.track);
+    const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
 
     let content = <></>
 
@@ -24,6 +26,9 @@ export const TourMap: FunctionComponent = () => {
         content = <LoadingSpinner />
     }
     else {
+        if (dataSelectorBarState === 'hide') {
+            dispatch(setDataBarState('show'));
+        }
         const missingTracks = tour?.tracks.filter(t => !trackState.tracks
             .find(tr => tr.fileReference === t.fileReference));
         if ((missingTracks?.length ?? 0) > 0) {

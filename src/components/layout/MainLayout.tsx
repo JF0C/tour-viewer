@@ -2,22 +2,31 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppBar, Button, SwipeableDrawer } from "@mui/material";
 import { FunctionComponent, ReactNode, useState } from "react";
-import { useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { BlogPostEditor } from "../blogPost/BlogPostEditor";
 import { Navbar } from "../navigation/Navbar";
 import { UserIcon } from "../user/UserIcon";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { TourData } from "../tourView/TourData";
+import { useLocation } from "react-router-dom";
+import { setDataBarState } from "../../store/tourStateReducer";
 
 export type MainLayoutProps = {
     children: ReactNode
 }
 
 export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
+    const dispatch = useAppDispatch();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const isLoggedId = useAppSelector((state) => Boolean(state.auth.user));
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
     const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost;
+    const location = useLocation();
+    const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
+    
+    if (location.pathname !== "/" && dataSelectorBarState !== 'hide') {
+        dispatch(setDataBarState('hide'));
+    }
 
     return <div className="h-full main-layout flex flex-col">
         <div className="h-10">

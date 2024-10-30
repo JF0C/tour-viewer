@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Timeouts } from "../../constants/Timeouts";
 import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
 import { CoordinatesDto } from "../../dtos/coordinatesDto";
+import { setDataBarState } from "../../store/tourStateReducer";
 
 export const BlogPostMapLocationEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
     const clickedTime = useAppSelector((state) => state.blog.clickedEvent.time);
     const clickedLocation = useAppSelector((state) => state.blog.clickedEvent.location);
     const [dragging, setDragging] = useState(false);
+    const barState = useAppSelector((state) => state.tour.dataSelectorBarState);
 
     const map = useMap();
 
@@ -46,7 +48,10 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
 
     useMapEvents({
         move() {
-            dispatch(setMapCenter(latLngToCoordinates(map.getCenter())))
+            dispatch(setMapCenter(latLngToCoordinates(map.getCenter())));
+            if (barState !== 'small') {
+                dispatch(setDataBarState('small'));
+            }
         },
         mousedown(e: any) {
             try {

@@ -36,13 +36,7 @@ export const CreateTour: FunctionComponent = () => {
             name: tour.name,
             startDate: ticksToUtcDate(tour.startDate),
             participantIds: tour.participants.map(p => p.id)
-        })).unwrap().then((id) => {
-            dispatch(loadTourRequest(id))
-                .unwrap().then((tour) => {
-                    dispatch(setEditingTour(tour));
-                    navigate(Paths.EditTourPage);
-                });
-        });
+        })).unwrap().then(() => navigate(Paths.EditTourPage));
     }
 
     return <SmallFormLayout buttons={
