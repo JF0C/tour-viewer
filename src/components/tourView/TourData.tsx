@@ -1,9 +1,14 @@
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { useAppSelector } from "../../store/store";
 import { ticksToDateString } from "../../converters/dateConverters";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { showInfobar } from "../../store/tourStateReducer";
 
 
 export const TourData: FunctionComponent = () => {
+    const dispatch = useAppDispatch();
     const tracks = useAppSelector((state) => state.track.tracks);
     const selectedTracks = tracks.filter(t => t.selected);
     const tour = useAppSelector((state) => state.tour.selectedTour);
@@ -26,7 +31,7 @@ export const TourData: FunctionComponent = () => {
     const positive = selectedTracks
         .map(t => t.data.elevation.positive)
         .reduce((a, b) => a + b);
-    
+
     const negative = selectedTracks
         .map(t => t.data.elevation.negative)
         .reduce((a, b) => a + b);
@@ -35,11 +40,22 @@ export const TourData: FunctionComponent = () => {
     const endDate = selectedTracks[selectedTracks.length - 1].data.points[0].time;
 
 
-    return <table>
+    return <table className="w-full">
         <thead>
             <tr>
                 <th colSpan={2}>
-                    {title}
+                    <div className="w-full flex flex-row justify-between items-center">
+                        <div>
+                            {title}
+                        </div>
+                        <div>
+                            <Button style={{zIndex: '1000', minWidth: '20px'}} 
+                                onClick={() => dispatch(showInfobar(false))}>
+                                <FontAwesomeIcon icon={faX} />
+                            </Button>
+                        </div>
+
+                    </div>
                 </th>
             </tr>
         </thead>

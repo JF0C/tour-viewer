@@ -22,9 +22,9 @@ export const TourSelectorBar: FunctionComponent = () => {
     }
 
     return <div style={{ top: '60px', zIndex: 1000 }}
-        className="flex flex-row w-full absolute justify-center items-center drop-shadow">
+        className="flex flex-row w-full absolute justify-center items-center">
         <div className="selector-bar rounded-md border-black flex flex-row flex-wrap">
-            <div id='data-selector-bar-content' className={barState}>
+            <div id='data-selector-bar-content' className={`${barState} flex flex-row flex-wrap`}>
                 <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
                 <TrackSelector />
             </div>
