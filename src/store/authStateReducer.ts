@@ -102,7 +102,10 @@ export const authStateSlice = createSlice({
         builder.addCase(changeUsernameRequest.pending, (state) => {
             state.loading = true;
         })
-        builder.addCase(changeUsernameRequest.fulfilled, (state) => {
+        builder.addCase(changeUsernameRequest.fulfilled, (state, action) => {
+            if (state.user) {
+                state.user.username = action.payload.username;
+            }
             state.loading = false;
         })
         builder.addCase(changeUsernameRequest.rejected, (state) => {
@@ -146,7 +149,8 @@ export const authStateSlice = createSlice({
         builder.addCase(resetPasswordRequest.pending, (state) => {
             state.loading = true;
         })
-        builder.addCase(resetPasswordRequest.fulfilled, (state) => {
+        builder.addCase(resetPasswordRequest.fulfilled, (state, action) => {
+            state.user = action.payload;
             state.loading = false;
         })
         builder.addCase(resetPasswordRequest.rejected, (state) => {

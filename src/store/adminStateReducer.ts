@@ -22,6 +22,20 @@ const initialState: IAdminState = {
     loading: false
 }
 
+const updateUser = (state: IAdminState, changedUser: UserDto) => {
+    if (state.userForEditing) {
+        state.userForEditing.username = changedUser.username;
+        state.userForEditing.roles = changedUser.roles;
+        state.userForEditing.validated = changedUser.validated;
+    }
+    const user = state.users?.find(u => u.id === changedUser.id);
+    if (user) {
+        user.roles = changedUser.roles;
+        user.validated = changedUser.validated;
+        user.username = changedUser.username;
+    }
+}
+
 export const adminSlice = createSlice({
     name: 'adminState',
     initialState: initialState,
@@ -73,7 +87,8 @@ export const adminSlice = createSlice({
         builder.addCase(changeRoleAssignment.pending, (state) => {
             state.loading = true;
         })
-        builder.addCase(changeRoleAssignment.fulfilled, (state) => {
+        builder.addCase(changeRoleAssignment.fulfilled, (state, action) => {
+            updateUser(state, action.payload);
             state.loading = false;
         })
         builder.addCase(changeRoleAssignment.rejected, (state) => {
@@ -95,7 +110,8 @@ export const adminSlice = createSlice({
         builder.addCase(changeUsernameAdmin.pending, (state) => {
             state.loading = true;
         })
-        builder.addCase(changeUsernameAdmin.fulfilled, (state) => {
+        builder.addCase(changeUsernameAdmin.fulfilled, (state, action) => {
+            updateUser(state, action.payload)
             state.loading = false;
         })
         builder.addCase(changeUsernameAdmin.rejected, (state) => {
@@ -105,7 +121,8 @@ export const adminSlice = createSlice({
         builder.addCase(validateUserAdmin.pending, (state) => {
             state.loading = true;
         })
-        builder.addCase(validateUserAdmin.fulfilled, (state) => {
+        builder.addCase(validateUserAdmin.fulfilled, (state, action) => {
+            updateUser(state, action.payload);
             state.loading = false;
         })
         builder.addCase(validateUserAdmin.rejected, (state) => {

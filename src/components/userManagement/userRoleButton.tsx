@@ -1,7 +1,7 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import { FunctionComponent, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { changeRoleAssignment, loadUsersAdmin } from "../../store/adminThunk";
+import { changeRoleAssignment } from "../../store/adminThunk";
+import { useAppDispatch } from "../../store/store";
 
 export type UserRoleButtonProps = {
     role: string;
@@ -14,16 +14,13 @@ export const UserRoleButton: FunctionComponent<UserRoleButtonProps> = (props) =>
     const buttonRef = useRef<any>();
     const [openMenu, setOpenMenu] = useState(false);
     const assignmentAction = props.isAssigned ? 'unassign' : 'assign';
-    const pagination = useAppSelector((state) => state.admin.pagination);
 
     const toggleRoleAssignment = () => {
-        dispatch(changeRoleAssignment({ role: props.role, userId: props.userId, action: assignmentAction }))
-            .unwrap()
-            .catch()
-            .then(() => dispatch(loadUsersAdmin({
-                page: pagination.page,
-                count: pagination.itemsPerPage
-            })));
+        dispatch(changeRoleAssignment({
+            role: props.role,
+            userId: props.userId,
+            action: assignmentAction
+        }));
     }
 
     return <>

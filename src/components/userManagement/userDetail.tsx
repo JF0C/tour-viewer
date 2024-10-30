@@ -1,13 +1,13 @@
-import { FunctionComponent } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { Button } from "@mui/material";
+import { faCheckCircle, faXmark, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@mui/material";
+import { FunctionComponent } from "react";
 import { setUserForEditing } from "../../store/adminStateReducer";
-import { UserRoleButton } from "./userRoleButton";
+import { changeUsernameAdmin, deleteUser, validateUserAdmin } from "../../store/adminThunk";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ConfirmModal } from "../shared/ConfirmModal";
-import { changeUsernameAdmin, deleteUser, loadUsersAdmin } from "../../store/adminThunk";
 import { EditableNameLabel } from "../shared/EditableNameLabel";
+import { UserRoleButton } from "./userRoleButton";
 
 export const UserDetail: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -25,14 +25,10 @@ export const UserDetail: FunctionComponent = () => {
         dispatch(deleteUser(selectedUser.id));
     }
     const changeUsername = (username: string) => {
-        dispatch(changeUsernameAdmin({id: selectedUser.id, username: username}))
-            .unwrap()
-            .catch()
-            .then(() => {
-                dispatch(loadUsersAdmin({ 
-                    page: adminState.pagination.page, 
-                    count: adminState.pagination.itemsPerPage }))
-            })
+        dispatch(changeUsernameAdmin({id: selectedUser.id, username: username}));
+    }
+    const validateUser = () => {
+        dispatch(validateUserAdmin(selectedUser.id));
     }
 
     return <div className="flex-1">
@@ -90,6 +86,22 @@ export const UserDetail: FunctionComponent = () => {
                     <td>
                         { allRoles.filter(r => !selectedUser.roles.includes(r))
                             .map(r => <UserRoleButton key={r} userId={selectedUser.id} role={r} isAssigned={false} />) }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Validated
+                    </td>
+                    <td>
+                        {
+                            selectedUser.validated ? <FontAwesomeIcon icon={faCheckCircle} />
+                            : <>
+                                <FontAwesomeIcon icon={faXmarkCircle} />
+                                <Button onClick={validateUser}>
+                                    Validate
+                                </Button>
+                            </>
+                        }
                     </td>
                 </tr>
                 <tr>

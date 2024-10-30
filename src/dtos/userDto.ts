@@ -4,5 +4,6 @@ export type UserDto = EntityBaseDto & {
     id: number;
     username: string;
     email: string;
+    validated: boolean;
     roles: string[];
 }

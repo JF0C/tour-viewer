@@ -34,8 +34,8 @@ export const registerRequest = createAsyncThunk('register', async (user: CreateU
 });
 
 export const changeUsernameRequest = createAsyncThunk('change-username',
-    async (username: string): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.ChangeUsernameEndpoint}`, {
+    async (username: string): Promise<UserDto> => {
+        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.ChangeUsernameEndpoint}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,6 +43,7 @@ export const changeUsernameRequest = createAsyncThunk('change-username',
             body: JSON.stringify(username),
             credentials: 'include'
         });
+        return response.json();
     }
 );
 

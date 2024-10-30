@@ -29,34 +29,37 @@ export const loadAvailableRoles = createAsyncThunk('get-roles',
 });
 
 export const changeRoleAssignment = createAsyncThunk('change-role-assignment',
-    async (roleAssignment: roleAssignmentDto): Promise<void> => {
+    async (roleAssignment: roleAssignmentDto): Promise<UserDto> => {
         const url = `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${roleAssignment.userId}/Role/${roleAssignment.role}`;
-        await fetch(url, {
+        const response = await fetch(url, {
             method: roleAssignment.action === 'assign' ? 'PUT' : 'DELETE',
             credentials: 'include'
         })
+        return response.json();
 });
 
 export const validateUserAdmin = createAsyncThunk('validate-user-admin',
-    async (userId: number): Promise<void> => {
+    async (userId: number): Promise<UserDto> => {
         const url = `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${userId}/Validate`;
-        await fetch(url, {
+        const response = await fetch(url, {
             method: 'PUT',
             credentials: 'include'
-        })
+        });
+        return response.json();
 });
 
 export const changeUsernameAdmin = createAsyncThunk('changeusername-admin',
-    async (changeUsername: ChangeUsernameDto): Promise<void> => {
+    async (changeUsername: ChangeUsernameDto): Promise<UserDto> => {
         const url = `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${changeUsername.id}/Username`;
-        await fetch(url, {
+        const response = await fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
             body: JSON.stringify(changeUsername.username)
-        })
+        });
+        return response.json();
 });
 
 export const deleteUser = createAsyncThunk('delete-user',

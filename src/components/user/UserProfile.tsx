@@ -1,14 +1,14 @@
+import { Button } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Paths } from "../../constants/Paths";
+import { changePasswordRequest } from "../../store/authThunk";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { changeUsernameRequest } from "../../store/userThunk";
 import { SmallFormLayout } from "../layout/SmallFormLayout";
 import { EditableNameLabel } from "../shared/EditableNameLabel";
-import { ValidatingInput } from "../shared/ValidatingInput";
-import { changePasswordRequest } from "../../store/authThunk";
-import { Button } from "@mui/material";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { changeUsernameRequest, loadLoggedInUser } from "../../store/userThunk";
+import { ValidatingInput } from "../shared/ValidatingInput";
 
 export const UserProfile: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -32,9 +32,7 @@ export const UserProfile: FunctionComponent = () => {
     }
 
     const changeUsername = (username: string) => {
-        dispatch(changeUsernameRequest(username))
-            .unwrap()
-            .then(() => dispatch(loadLoggedInUser()));
+        dispatch(changeUsernameRequest(username));
     }
 
     const changePassword = () => {
