@@ -35,7 +35,6 @@ export const TrackList: FunctionComponent = () => {
     const deleteTour = () => {
         dispatch(deleteTourRequest(tour.id))
             .unwrap().then(() => {
-                dispatch()
                 dispatch(searchTours({
                     page: pagination.page,
                     count: pagination.itemsPerPage
