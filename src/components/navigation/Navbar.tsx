@@ -1,4 +1,4 @@
-import { faEdit, faHome, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faHome, faImage, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@mui/material';
 import { FunctionComponent } from 'react';
@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { setEditingTour } from '../../store/tourStateReducer';
 import { resetBoundsSet } from '../../store/trackStateReducer';
 import { TourSelector } from '../tourView/TourSelector';
+import { setEditingBlogpost, setMarkerPosition } from '../../store/blogPostStateReducer';
 
 export type NavbarProps = {
     closeSidebar: () => void
@@ -22,6 +23,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
     const isContributor = user?.roles.includes(Roles.Contributor);
     const tour = useAppSelector((state) => state.tour.selectedTour);
     const canEdit = useAppSelector((state) => isAllowedToCreate(state));
+    const mapCenter = useAppSelector((state) => state.blog.mapCenter);
 
     const editCurrentTour = () => {
         props.closeSidebar();
@@ -30,8 +32,28 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         }
     }
 
+    const createBlogPost = () => {
+        if (!mapCenter || !tour) {
+            return;
+        }
+        dispatch(setEditingBlogpost({
+            id: 0,
+            trackId: tour.tracks[0].id,
+            trackFileReference: tour.tracks[0].fileReference,
+            title: '',
+            message: '',
+            latitude: mapCenter.latitude,
+            longitude: mapCenter.longitude,
+            images: []
+        }));
+        dispatch(setMarkerPosition({
+            latitude: mapCenter.latitude,
+            longitude: mapCenter.longitude
+        }))
+    }
+
     return <ul className='nav-list flex flex-col gap-2 items-start'>
-        <NavLink onClick={() => {props.closeSidebar(); dispatch(resetBoundsSet())}} to={Paths.HomePage}>
+        <NavLink onClick={() => { props.closeSidebar(); dispatch(resetBoundsSet()) }} to={Paths.HomePage}>
             <Button>
                 <FontAwesomeIcon icon={faHome} />
                 &nbsp; Home
@@ -50,12 +72,20 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         }
         {
             (canEdit && tour !== undefined) ?
-                <NavLink to={Paths.EditTourPage} onClick={editCurrentTour}>
-                    <Button>
-                        <FontAwesomeIcon icon={faEdit} />
-                        &nbsp;Edit Tour
-                    </Button>
-                </NavLink>
+                <>
+                    <NavLink to={Paths.EditTourPage} onClick={editCurrentTour}>
+                        <Button>
+                            <FontAwesomeIcon icon={faEdit} />
+                            &nbsp;Edit Tour
+                        </Button>
+                    </NavLink>
+                    <div className='md:hidden'>
+                        <Button onClick={createBlogPost}>
+                            <FontAwesomeIcon icon={faImage} />
+                            &nbsp;Add Post
+                        </Button>
+                    </div>
+                </>
                 : <></>
         }
         {

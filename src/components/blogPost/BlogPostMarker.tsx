@@ -8,6 +8,7 @@ import { BlogPostDto } from "../../dtos/blogPostDto";
 import { setEditingBlogpost } from "../../store/blogPostStateReducer";
 import { isAllowedToEditBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { MarkerIcons } from "../../constants/MarkerIcons";
 
 export type BlogPostMarkerProps = {
     blogPost: BlogPostDto
@@ -31,7 +32,8 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
         }))
     }
 
-    return <Marker position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]}>
+    return <Marker icon={MarkerIcons.postWhite}
+        position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]}>
         <Popup>
             <div className="flex flex-col justify-center items-center">
                 <div className="font-bold text-xl">

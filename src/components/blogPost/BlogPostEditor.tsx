@@ -62,7 +62,7 @@ export const BlogPostEditor: FunctionComponent = () => {
     }
 
     const changeMessage = (message: string) => {
-        dispatch(changeEditingBlogpostMessage(message))
+        dispatch(changeEditingBlogpostMessage(message));
         if (blogPost.id !== 0) {
             dispatch(changeBlogPostMessageRequest({
                 id: blogPost.id,

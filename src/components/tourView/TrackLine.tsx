@@ -5,12 +5,12 @@ import { Layers } from "../../constants/Layers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ITrackEntity, setBounds } from "../../store/trackStateReducer";
 
-export type TrackRoutesProps = {
+export type TrackLineProps = {
     track: ITrackEntity,
     isStart?: boolean
 }
 
-export const TrackRoutes: FunctionComponent<TrackRoutesProps> = (props) => {
+export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
     const dispatch = useAppDispatch();
     const trackState = useAppSelector((state) => state.track);
     const referencedTrack = useAppSelector((state) => state.blog.editingBlogPost?.trackFileReference);

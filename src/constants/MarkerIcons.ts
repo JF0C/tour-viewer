@@ -83,4 +83,12 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
+    public static readonly postWhite = new L.Icon({
+        iconUrl: 'icon/blogpost-marker-alt.png',
+        shadowUrl: 'icon/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
 }

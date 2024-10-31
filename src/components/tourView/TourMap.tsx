@@ -3,7 +3,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTrackRequest } from "../../store/trackThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { TrackRoutes } from "./TrackRoutes";
+import { TrackLine } from "./TrackLine";
 import { TourBounds } from "./TourBounds";
 import { BlogPostDto } from "../../dtos/blogPostDto";
 import { BlogPostMarker } from "../blogPost/BlogPostMarker";
@@ -40,7 +40,7 @@ export const TourMap: FunctionComponent = () => {
         else {
             const selectedTracks = trackState.tracks.filter(t => t.selected);
             const firstTrackName = selectedTracks.length > 0 ? selectedTracks[0].fileReference : '';
-            content = <>{selectedTracks.map(t => <TrackRoutes key={t.fileReference} isStart={firstTrackName === t.fileReference} track={t} />)}</>
+            content = <>{selectedTracks.map(t => <TrackLine key={t.fileReference} isStart={firstTrackName === t.fileReference} track={t} />)}</>
             for (let t of (tour?.tracks ?? [])) {
                 if (selectedTracks.find(ts => ts.fileReference === t.fileReference)?.selected) {
                     for (let b of t.blogPosts) {
@@ -52,7 +52,7 @@ export const TourMap: FunctionComponent = () => {
     }
 
     return <MapContainer center={[48.136805, 11.578965]} zoom={13} zoomControl={false}
-        scrollWheelZoom={true} touchZoom={true}>
+        scrollWheelZoom={true} touchZoom={true} style={{userSelect: 'none'}}>
         {content}
         <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
