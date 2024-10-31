@@ -4,7 +4,7 @@ import { Marker, useMap, useMapEvents } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { Roles } from "../../constants/Rolenames";
 import { trackClosestToPoint } from "../../converters/trackDataClosestToPoint";
-import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setClickedEvent, setEditingBlogpost, setMapCenter, setMarkerPosition } from "../../store/blogPostStateReducer";
+import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setClickedEvent, setEditingBlogpost, setMapCenter, setMarkerPosition, setZoomLevel } from "../../store/blogPostStateReducer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Timeouts } from "../../constants/Timeouts";
 import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
@@ -65,6 +65,9 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
             catch(ex){
 
             }
+        },
+        zoom(e: any) {
+            dispatch(setZoomLevel(e.target._zoom));
         },
         mouseup() {
             if (dragging) {

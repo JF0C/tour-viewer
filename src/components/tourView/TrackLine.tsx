@@ -1,9 +1,10 @@
 import L, { LatLng } from "leaflet";
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import { Marker, Popup, useMap } from "react-leaflet";
 import { Layers } from "../../constants/Layers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ITrackEntity, setBounds } from "../../store/trackStateReducer";
+import { TrackArrow } from "./TrackArrow";
 
 export type TrackLineProps = {
     track: ITrackEntity,
@@ -14,6 +15,7 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
     const dispatch = useAppDispatch();
     const trackState = useAppSelector((state) => state.track);
     const referencedTrack = useAppSelector((state) => state.blog.editingBlogPost?.trackFileReference);
+    const zoomLevel = useAppSelector((state) => state.blog.zoomLevel);
     const map = useMap();
 
     if (!props.track.selected) {
@@ -26,6 +28,19 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
 
     const layer = new L.LayerGroup();
     layer.options.attribution = Layers.RoutesLayer;
+
+    const arrows: ReactNode[] = [];
+
+    for (let k = 0; k < props.track.data.points.length-1; k++) {
+        
+        if (k % Math.floor(50000/(zoomLevel**2)) === 0) {
+            const point = props.track.data.points[k];
+            const nextPoint = props.track.data.points[k + 1];
+            arrows.push(<TrackArrow from={{latitude: point.latitude, longitude: point.longitude}}
+                to={{latitude: nextPoint.latitude, longitude: nextPoint.longitude}}/>)
+
+        }
+    }
 
     const line = L.polyline(props.track.data.points
         .map(p => [p.latitude, p.longitude]), { color: trackColor }).addTo(layer);
@@ -58,5 +73,8 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
             {props.track.data.name}
         </Popup>
     </Marker>
+    {
+        arrows
+    }
     </>
 }

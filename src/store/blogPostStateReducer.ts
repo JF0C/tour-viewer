@@ -15,6 +15,7 @@ export interface IBlogPostState {
     coordinatesChanged: boolean;
     markerPosition?: CoordinatesDto;
     mapCenter?: CoordinatesDto;
+    zoomLevel: number;
     clickedEvent: ClickedEvent;
 }
 
@@ -23,7 +24,8 @@ const initialState: IBlogPostState = {
     coordinatesChanged: false,
     clickedEvent: {
         time: 0
-    }
+    },
+    zoomLevel: 13
 }
 
 export const BlogPostSlice = createSlice({
@@ -36,6 +38,9 @@ export const BlogPostSlice = createSlice({
         },
         setMarkerPosition(state, action: PayloadAction<CoordinatesDto | undefined>) {
             state.markerPosition = action.payload;
+        },
+        setZoomLevel(state, action: PayloadAction<number>) {
+            state.zoomLevel = action.payload;
         },
         setClickedEvent(state, action: PayloadAction<CoordinatesDto | undefined>) {
             state.clickedEvent.location = action.payload;
@@ -145,5 +150,5 @@ export const blogPostStateReducer = BlogPostSlice.reducer;
 
 export const { setEditingBlogpost, changeEditingBlogpostPosition, changeEditingBlogpostTrack,
     changeEditingBlogpostTitle, changeEditingBlogpostMessage, addImageReferenceToEditingBlogpost,
-    setMarkerPosition, setMapCenter, resetCoordinatesChanged, setClickedEvent
+    setMarkerPosition, setMapCenter, resetCoordinatesChanged, setClickedEvent, setZoomLevel
 } = BlogPostSlice.actions
