@@ -26,6 +26,17 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
 
     const trackColor = referencedTrack === props.track.fileReference ? 'red' : 'black'
 
+    let startLabel = 'Start';
+    let endLabel = props.track.data.name;
+
+    if (props.track.data.name.includes('->')) {
+        const parts = props.track.data.name.split('->');
+        startLabel = parts[0];
+        startLabel = startLabel.trimEnd();
+        endLabel = parts[1];
+        endLabel = endLabel.trimStart();
+    }
+
     const layer = new L.LayerGroup();
     layer.options.attribution = Layers.RoutesLayer;
 
@@ -63,14 +74,14 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
         props.isStart ? 
         <Marker position={[props.track.data.points[0].latitude, props.track.data.points[0].longitude]}>
             <Popup>
-                Start
+                {startLabel}
             </Popup>
         </Marker>
         :<></>
     }
     <Marker position={new LatLng(lastPoint.latitude, lastPoint.longitude)}>
         <Popup>
-            {props.track.data.name}
+            {endLabel}
         </Popup>
     </Marker>
     {
