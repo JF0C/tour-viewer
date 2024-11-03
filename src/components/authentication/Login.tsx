@@ -21,9 +21,9 @@ export const Login: FunctionComponent = () => {
             email: email,
             password: password
         }))
-        .unwrap()
-        .catch()
-        .then(() => navigate(Paths.HomePage))
+            .unwrap()
+            .catch()
+            .then(() => navigate(Paths.HomePage))
     }
     const logout = () => {
         dispatch(logoutRequest());
@@ -40,11 +40,21 @@ export const Login: FunctionComponent = () => {
             :
             <SmallFormLayout buttons={
                 loggedIn ? <Button variant='outlined' color='warning' onClick={logout}>Logout</Button> :
-                <>
-                    <Button variant='outlined' color='success' onClick={login}>Login</Button>
-                    <Button variant='outlined' color='primary'><NavLink to={Paths.RegisterPage}>Register</NavLink></Button>
-                    <Button variant='outlined' color='primary'><NavLink to={Paths.RequestCodePage}>Send Code</NavLink></Button>
-                </>
+                    <>
+                        <Button variant='outlined' color='success' onClick={login}>
+                            Login
+                        </Button>
+                        <NavLink to={Paths.RegisterPage}>
+                            <Button className="w-full" variant='outlined' color='primary'>
+                                Register
+                            </Button>
+                        </NavLink>
+                        <NavLink to={Paths.RequestCodePage}>
+                            <Button className="w-full" variant='outlined' color='primary'>
+                                Send Code
+                            </Button>
+                        </NavLink>
+                    </>
             }>
                 {
                     loggedIn ? <></> :

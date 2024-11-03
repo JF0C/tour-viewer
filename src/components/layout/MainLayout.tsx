@@ -31,7 +31,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     return <div className="h-full main-layout flex flex-col">
         <div className="h-10">
             <AppBar sx={{ backgroundColor: '#282c34', zIndex: 5000 }}>
-                <div className="flex flex-row justify-between items-center">
+                <div className="flex flex-row justify-between items-center truncate">
                     <div>
                         {
                             isLoggedId ?
@@ -42,7 +42,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                         }
                     </div>
                     <div className='p-2 text-2xl md:text-3xl'>
-                        CK Cycling Tour Viewer
+                        Tour Viewer
                     </div>
                     <div>
                         <UserIcon />
