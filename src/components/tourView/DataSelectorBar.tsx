@@ -21,9 +21,9 @@ export const TourSelectorBar: FunctionComponent = () => {
         dispatch(setDataBarState('show'));
     }
 
-    return <div style={{ top: '60px', zIndex: 1000 }}
+    return <div style={{ top: '60px'}}
         className="flex flex-row w-full absolute justify-center items-center">
-        <div className="selector-bar rounded-md border-black flex flex-row flex-wrap">
+        <div style={{ zIndex: 1000 }} className="selector-bar rounded-md border-black flex flex-row flex-wrap">
             <div id='data-selector-bar-content' className={`${barState} flex flex-row flex-wrap`}>
                 <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
                 <TrackSelector />

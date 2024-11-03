@@ -2,14 +2,14 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppBar, Button, SwipeableDrawer } from "@mui/material";
 import { FunctionComponent, ReactNode, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { setDataBarState } from "../../store/tourStateReducer";
 import { BlogPostEditor } from "../blogPost/BlogPostEditor";
 import { Navbar } from "../navigation/Navbar";
-import { UserIcon } from "../user/UserIcon";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
-import { TourData } from "../tourView/TourData";
-import { useLocation } from "react-router-dom";
-import { setDataBarState } from "../../store/tourStateReducer";
+import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
+import { UserIcon } from "../user/UserIcon";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -71,7 +71,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                 <div className="h-full p-2">
                     {
                         isEditingBlogPost ? <BlogPostEditor /> :
-                        <TourData />
+                        <TourDataSwipeContainer />
                     }
                 </div>
             </div>

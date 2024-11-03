@@ -57,7 +57,7 @@ export const TourMap: FunctionComponent = () => {
                     const distance = haversine(end, start);
                     showStartMarker ||= distance > 10000;
                 }
-                tracks.push(<TrackLine track={track} startMarker={showStartMarker}/>);
+                tracks.push(<TrackLine key={track.fileReference} track={track} startMarker={showStartMarker}/>);
             }
             content = <>{tracks}</>;
             for (let t of (tour?.tracks ?? [])) {

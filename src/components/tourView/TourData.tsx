@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { showInfobar } from "../../store/tourStateReducer";
 import { Participant } from "../tourEditing/Participant";
 
-
 export const TourData: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tracks = useAppSelector((state) => state.track.tracks);
@@ -19,7 +18,6 @@ export const TourData: FunctionComponent = () => {
             No Tour Data
         </div>
     }
-
     let trackNumber = '';
     if (selectedTracks.length === 1) {
         const id = selectedTracks[0].fileReference;
@@ -69,10 +67,10 @@ export const TourData: FunctionComponent = () => {
                     <div className="w-full flex flex-row justify-between items-center">
                         {
                             trackNumber !== '' ?
-                            <div>
-                                {trackNumber}
-                            </div>
-                            : <></>
+                                <div>
+                                    {trackNumber}
+                                </div>
+                                : <></>
                         }
                         <div>
                             {title}
@@ -154,7 +152,7 @@ export const TourData: FunctionComponent = () => {
                     Movement Velocity
                 </td>
                 <td>
-                    {(distance/movementTime*3600000).toFixed(2)} km/h
+                    {(distance / movementTime * 3600000).toFixed(2)} km/h
                 </td>
             </tr>
         </tbody>
