@@ -28,7 +28,7 @@ export const AdminPage: FunctionComponent = () => {
         loadUsers();
     }
 
-    return <div className="flex flex-col w-full">
+    return <div className="flex flex-col w-full pt-4">
 
         <div className="flex flex-row flex-wrap">
             <UserList />

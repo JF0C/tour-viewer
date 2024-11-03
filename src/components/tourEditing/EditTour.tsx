@@ -6,7 +6,7 @@ import { EditableDateLabel } from "../shared/EditableDateLabel";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { changeTourStartDateRequest, renameTourRequest } from "../../store/tourThunk";
 import { setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
-import { ticksToUtcDate } from "../../converters/dateConverters";
+import { millisToUtcDate } from "../../converters/dateConverters";
 import { TrackList } from "./TrackList";
 import { ParticipantSelector } from "./ParticipantSelector";
 
@@ -25,7 +25,7 @@ export const EditTour: FunctionComponent = () => {
     const changeTourStartDate = (ticks: number) => {
         dispatch(changeTourStartDateRequest({
             tourId: tourState.editingTour.id,
-            startDate: ticksToUtcDate(ticks)
+            startDate: millisToUtcDate(ticks)
         }))
             .unwrap()
             .catch()

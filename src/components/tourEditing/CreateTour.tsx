@@ -9,7 +9,7 @@ import { SmallFormLayout } from "../layout/SmallFormLayout";
 import { ValidatingDatePicker } from "../shared/ValidatingDatePicker";
 import { ValidatingInput } from "../shared/ValidatingInput";
 import { TourParticipants } from "./TourParticipants";
-import { ticksToUtcDate } from "../../converters/dateConverters";
+import { millisToUtcDate } from "../../converters/dateConverters";
 import { resetBoundsSet } from "../../store/trackStateReducer";
 import { Paths } from "../../constants/Paths";
 
@@ -34,7 +34,7 @@ export const CreateTour: FunctionComponent = () => {
     const saveTour = () => {
         dispatch(createTourRequest({
             name: tour.name,
-            startDate: ticksToUtcDate(tour.startDate),
+            startDate: millisToUtcDate(tour.startDate),
             participantIds: tour.participants.map(p => p.id)
         })).unwrap().then(() => navigate(Paths.EditTourPage));
     }

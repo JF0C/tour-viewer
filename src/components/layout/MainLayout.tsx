@@ -41,7 +41,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                             : <></>
                         }
                     </div>
-                    <div className='p-2 text-2xl md:text-3xl'>
+                    <div className='p-2 text-2xl md:text-3xl truncate'>
                         Tour Viewer
                     </div>
                     <div>

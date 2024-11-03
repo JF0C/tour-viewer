@@ -32,7 +32,7 @@ export const UserDetail: FunctionComponent = () => {
     }
 
     return <div className="flex-1">
-        <div className="flex flex-row w-full p-4 items-center">
+        <div className="flex flex-row w-fullitems-center">
             <div className="flex-1 font-bold text-center">
                 { selectedUser.username }
             </div>

@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
-import { ticksToDateString } from "../../converters/dateConverters";
+import { millisToDateString } from "../../converters/dateConverters";
 import { setEditingTour } from "../../store/tourStateReducer";
 import { Roles } from "../../constants/Rolenames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -48,7 +48,7 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
                     {props.tour.name}
                 </div>
                 <div>
-                    {ticksToDateString(props.tour.startDate)}
+                    {millisToDateString(props.tour.startDate)}
                 </div>
             </div>
         </Button>

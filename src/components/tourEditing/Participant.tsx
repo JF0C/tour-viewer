@@ -18,10 +18,14 @@ export const Participant: FunctionComponent<ParticipantProps> = (props) => {
         dispatch(removeEditingTourParticipant(props.id))
     }
 
-    return <div className="flex flex-row border rounded-full ps-2 items-center">
+    return <div className={`flex flex-row border rounded-full ps-2 items-center ${props.canRemove?'':'pe-2'}`}>
         <div>{props.name}</div>
-        <Button sx={{ minWidth: 0, minHeight: 0 }} onClick={removeParticipant}>
-            <FontAwesomeIcon icon={faX}/>
-        </Button>
+        {
+            props.canRemove ? 
+            <Button sx={{ minWidth: 0, minHeight: 0 }} onClick={removeParticipant}>
+                <FontAwesomeIcon icon={faX}/>
+            </Button>
+            :<></>
+        }
     </div>
 }

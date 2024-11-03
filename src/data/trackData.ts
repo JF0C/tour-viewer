@@ -6,4 +6,6 @@ export type TrackData = {
     elevation: ElevationData;
     distance: number;
     points: TrackPoint[];
+    totalTime: number;
+    totalMovementTime: number;
 }

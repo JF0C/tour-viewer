@@ -2,9 +2,10 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { ticksToDateString } from "../../converters/dateConverters";
+import { millisToDateString, millisToTimeSpan } from "../../converters/dateConverters";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { showInfobar } from "../../store/tourStateReducer";
+import { Participant } from "../tourEditing/Participant";
 
 
 export const TourData: FunctionComponent = () => {
@@ -17,6 +18,19 @@ export const TourData: FunctionComponent = () => {
         return <div>
             No Tour Data
         </div>
+    }
+
+    let trackNumber = '';
+    if (selectedTracks.length === 1) {
+        const id = selectedTracks[0].fileReference;
+        let num = 1;
+        for (let t of tracks) {
+            if (t.fileReference === id) {
+                break;
+            }
+            num++;
+        }
+        trackNumber = `${num}/${tracks.length}`;
     }
 
     const title = selectedTracks.length === 1 ?
@@ -36,6 +50,14 @@ export const TourData: FunctionComponent = () => {
         .map(t => t.data.elevation.negative)
         .reduce((a, b) => a + b);
 
+    const time = selectedTracks
+        .map(t => t.data.totalTime)
+        .reduce((a, b) => a + b);
+
+    const movementTime = selectedTracks
+        .map(t => t.data.totalMovementTime)
+        .reduce((a, b) => a + b);
+
     const startDate = selectedTracks[0].data.points[0].time;
     const endDate = selectedTracks[selectedTracks.length - 1].data.points[0].time;
 
@@ -45,30 +67,44 @@ export const TourData: FunctionComponent = () => {
             <tr>
                 <th colSpan={2}>
                     <div className="w-full flex flex-row justify-between items-center">
+                        {
+                            trackNumber !== '' ?
+                            <div>
+                                {trackNumber}
+                            </div>
+                            : <></>
+                        }
                         <div>
                             {title}
                         </div>
                         <div>
-                            <Button style={{zIndex: '1000', minWidth: '20px'}} 
+                            <Button style={{ zIndex: '1000', minWidth: '20px' }}
                                 onClick={() => dispatch(showInfobar(false))}>
                                 <FontAwesomeIcon icon={faX} />
                             </Button>
                         </div>
-
                     </div>
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
+                <td colSpan={2} className="flex gap-2 flex-wrap">
+                    {
+                        tour?.participants.map(p =>
+                            <Participant name={p.username} id={p.id} canRemove={false} />)
+                    }
+                </td>
+            </tr>
+            <tr>
                 <td>
                     Date
                 </td>
                 <td>
-                    {ticksToDateString(startDate)}
+                    {millisToDateString(startDate)}
                     {
                         endDate !== startDate ?
-                            ` - ${ticksToDateString(endDate)}`
+                            ` - ${millisToDateString(endDate)}`
                             : ''
                     }
                 </td>
@@ -95,6 +131,22 @@ export const TourData: FunctionComponent = () => {
                 </td>
                 <td>
                     {negative.toFixed(0)} m
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total Time
+                </td>
+                <td>
+                    {millisToTimeSpan(time)}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Movement Time
+                </td>
+                <td>
+                    {millisToTimeSpan(movementTime)}
                 </td>
             </tr>
         </tbody>

@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { EditableLabel } from "./EditableLabel";
 import { ValidatingDatePicker } from "./ValidatingDatePicker";
-import { ticksToDateString } from "../../converters/dateConverters";
+import { millisToDateString } from "../../converters/dateConverters";
 
 export type EditableDateLabelProps = {
     value: number;
@@ -13,7 +13,7 @@ export const EditableDateLabel: FunctionComponent<EditableDateLabelProps> = (pro
     const [isValid, setIsValid] = useState(false);
 
     return <EditableLabel canConfirm={isValid && (props.value !== currentValue)} 
-        label={ticksToDateString(props.value)} editor={
+        label={millisToDateString(props.value)} editor={
         <ValidatingDatePicker validCallback={v => setIsValid(v)} 
         value={props.value} onChange={v => setCurrentValue(v)} />} 
         onApplyChange={() => props.onApply(currentValue)}
