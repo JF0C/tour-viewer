@@ -149,6 +149,14 @@ export const TourData: FunctionComponent = () => {
                     {millisToTimeSpan(movementTime)}
                 </td>
             </tr>
+            <tr>
+                <td>
+                    Movement Velocity
+                </td>
+                <td>
+                    {(distance/movementTime*3600000).toFixed(2)} km/h
+                </td>
+            </tr>
         </tbody>
     </table>
 }
