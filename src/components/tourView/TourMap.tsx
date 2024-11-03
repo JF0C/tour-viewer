@@ -10,7 +10,8 @@ import { BlogPostMarker } from "../blogPost/BlogPostMarker";
 import { BlogPostMapLocationEditor } from "../blogPost/BlogPostMapLocationEditor";
 import { SecondaryClickCountdown } from "../blogPost/SecondaryClickCountdown";
 import { setDataBarState } from "../../store/tourStateReducer";
-
+import { haversine } from "../../converters/haversine";
+import { CoordinatesDto } from "../../dtos/coordinatesDto";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -32,15 +33,33 @@ export const TourMap: FunctionComponent = () => {
         const missingTracks = tour?.tracks.filter(t => !trackState.tracks
             .find(tr => tr.fileReference === t.fileReference));
         if ((missingTracks?.length ?? 0) > 0) {
-            for (let track of missingTracks!) {
-                dispatch(loadTrackRequest(track.fileReference));
-                return <LoadingSpinner />
-            }
+            dispatch(loadTrackRequest(missingTracks![0].fileReference));
+            content = <LoadingSpinner />
         }
         else {
             const selectedTracks = trackState.tracks.filter(t => t.selected);
             const firstTrackName = selectedTracks.length > 0 ? selectedTracks[0].fileReference : '';
-            content = <>{selectedTracks.map(t => <TrackLine key={t.fileReference} isStart={firstTrackName === t.fileReference} track={t} />)}</>
+            const tracks = [];
+            for (let k = 0; k < selectedTracks.length; k++) {
+                const track = selectedTracks[k];
+                let showStartMarker = track.fileReference === firstTrackName;
+                if (k > 0) {
+                    const lastPoints = selectedTracks[k-1].data.points;
+                    const lastPoint = lastPoints[lastPoints.length - 1];
+                    const start: CoordinatesDto = {
+                        latitude: track.data.points[0].latitude, 
+                        longitude: track.data.points[0].longitude
+                    };
+                    const end: CoordinatesDto = {
+                        latitude: lastPoint.latitude,
+                        longitude: lastPoint.longitude
+                    };
+                    const distance = haversine(end, start);
+                    showStartMarker ||= distance > 10000;
+                }
+                tracks.push(<TrackLine track={track} startMarker={showStartMarker}/>);
+            }
+            content = <>{tracks}</>;
             for (let t of (tour?.tracks ?? [])) {
                 if (selectedTracks.find(ts => ts.fileReference === t.fileReference)?.selected) {
                     for (let b of t.blogPosts) {

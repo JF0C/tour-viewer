@@ -29,7 +29,7 @@ export const TrackList: FunctionComponent = () => {
 
     const cancelEditing = () => {
         dispatch(resetBoundsSet());
-        navigate(-1);
+        navigate(Paths.HomePage);
     }
 
     const deleteTour = () => {
@@ -69,10 +69,19 @@ export const TrackList: FunctionComponent = () => {
             <tr>
                 <td colSpan={4} className="flex flex-row gap-2">
                     <Button onClick={reloadTour}>Reload</Button>
-                    <Button color='warning' onClick={cancelEditing}>Cancel</Button>
-                    <ConfirmModal type='error' onConfirm={deleteTour} 
-                        message={`Do you really want to delete tour ${tour.name}`} 
-                        buttonContent={<>Delete</>}/>
+                    <ConfirmModal type='error' onConfirm={deleteTour}
+                        message={`Do you really want to delete tour ${tour.name}`}
+                        buttonContent={<>Delete</>} />
+                    {
+                        tour.id === 0 ?
+                            <Button color='warning' onClick={cancelEditing}>
+                                Cancel
+                            </Button>
+                            :
+                            <Button onClick={cancelEditing}>
+                                Done
+                            </Button>
+                    }
                 </td>
             </tr>
         </tfoot>

@@ -8,7 +8,7 @@ import { TrackArrow } from "./TrackArrow";
 
 export type TrackLineProps = {
     track: ITrackEntity,
-    isStart?: boolean
+    startMarker?: boolean
 }
 
 export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
@@ -71,7 +71,7 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
     }
     return <>
     {
-        props.isStart ? 
+        props.startMarker ? 
         <Marker position={[props.track.data.points[0].latitude, props.track.data.points[0].longitude]}>
             <Popup>
                 {startLabel}
