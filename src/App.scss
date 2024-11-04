@@ -131,12 +131,20 @@ td {
   transition: all .2s ease-in-out;
 }
 
-#info-bar-handle.hide {
-  right: -50px;
+@media screen and (min-width: 769px) {
+  #info-bar-handle.hide {
+    right: -50px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #info-bar-handle.hide {
+    bottom: -50px;
+  }
 }
 
 .arrow-icon {
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   border: none;
   font-size: 20px;
   display: flex;
