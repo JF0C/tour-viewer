@@ -1,15 +1,13 @@
-import { faChevronRight, faInfo, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import { FunctionComponent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { showInfobar } from "../../store/tourStateReducer";
 import { selectTracks } from "../../store/trackStateReducer";
 
 export const TrackSelector: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tracks = useAppSelector((state) => state.tour.selectedTour?.tracks);
-    const infoOpen = useAppSelector((state) => state.tour.showInfoBar);
 
     if (!tracks) {
         return <></>
@@ -42,15 +40,5 @@ export const TrackSelector: FunctionComponent = () => {
                 </MenuItem>)
             }
         </Select>
-        <FontAwesomeIcon icon={faChevronRight} />
-        <Button sx={{minWidth: '25px'}} onClick={() => dispatch(showInfobar(!infoOpen))}>
-            {
-                infoOpen ?
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    :
-                    <FontAwesomeIcon icon={faInfo} />
-            }
-        </Button>
-
     </div>
 }

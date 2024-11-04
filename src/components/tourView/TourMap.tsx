@@ -13,6 +13,7 @@ import { SecondaryClickCountdown } from "../blogPost/SecondaryClickCountdown";
 import { OverallLoadingSpinner } from "../shared/OverallLoadingSpinner";
 import { TourBounds } from "./TourBounds";
 import { TrackLine } from "./TrackLine";
+import { InfoBarHandle } from "./InfoBarHandle";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -86,5 +87,6 @@ export const TourMap: FunctionComponent = () => {
         <TourBounds />
         <BlogPostMapLocationEditor />
         <SecondaryClickCountdown />
+        <InfoBarHandle />
     </MapContainer>
 }

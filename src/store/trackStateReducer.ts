@@ -122,6 +122,7 @@ export const trackStateSlice = createSlice({
                 trackEntity.selected = action.payload.selected;
                 trackEntity.loading = false;
             }
+            
             state.boundsSet = false;
             for (let t of state.tracks) {
                 t.bounds = undefined;

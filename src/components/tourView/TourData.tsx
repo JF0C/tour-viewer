@@ -14,8 +14,14 @@ export const TourData: FunctionComponent = () => {
     const tour = useAppSelector((state) => state.tour.selectedTour);
 
     if (selectedTracks.length === 0) {
-        return <div>
-            No Tour Data
+        return <div className="flex flex-row justify-between">
+            <div className="font-bold">
+                No Tour Selected
+            </div>
+            <Button style={{ minWidth: '20px' }}
+                onClick={() => dispatch(showInfobar(false))}>
+                <FontAwesomeIcon icon={faX} />
+            </Button>
         </div>
     }
     let trackNumber = '';
@@ -76,7 +82,7 @@ export const TourData: FunctionComponent = () => {
                             {title}
                         </div>
                         <div>
-                            <Button style={{ zIndex: '1000', minWidth: '20px' }}
+                            <Button style={{ minWidth: '20px' }}
                                 onClick={() => dispatch(showInfobar(false))}>
                                 <FontAwesomeIcon icon={faX} />
                             </Button>

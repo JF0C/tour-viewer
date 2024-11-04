@@ -96,18 +96,43 @@ td {
   }
 }
 
-.selector-bar {
+.selector-field {
   background-color: #7d7d7d85;
 }
 
 #data-selector-bar-content {
-  transition: height, width .2s ease-in-out;
-  overflow: hidden;
+  top: 60px;
+  transition: top .2s ease-in-out;
 }
 
 #data-selector-bar-content.small {
-  width: 0px;
-  height: 0px;
+  top: -50px;
+}
+
+#data-selector-bar-handle {
+  top: -50px;
+  transition: top .2s ease-in-out;
+}
+
+#data-selector-bar-handle.small {
+  top: 60px;
+}
+
+#selector-bar-inner-handle {
+  transition: transform .2s ease-in-out;
+  transform: rotateX(180deg);
+}
+
+#selector-bar-inner-handle.small {
+  transform: rotateX(0deg);
+}
+
+#info-bar-handle {
+  transition: all .2s ease-in-out;
+}
+
+#info-bar-handle.hide {
+  right: -50px;
 }
 
 .arrow-icon {

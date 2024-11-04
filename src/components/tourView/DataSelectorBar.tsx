@@ -21,19 +21,22 @@ export const TourSelectorBar: FunctionComponent = () => {
         dispatch(setDataBarState('show'));
     }
 
-    return <div style={{ top: '60px'}}
-        className="flex flex-row w-full absolute justify-center items-center">
-        <div style={{ zIndex: 1000 }} className="selector-bar rounded-md border-black flex flex-row flex-wrap">
-            <div id='data-selector-bar-content' className={`${barState} flex flex-row flex-wrap`}>
-                <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
-                <TrackSelector />
+    return <>
+        <div id='data-selector-bar-content' className={`flex flex-row w-full absolute justify-center ${barState}`}>
+            <div style={{ zIndex: 1000 }} className="selector-field rounded-md border-black flex flex-row flex-wrap">
+                <div className={`${barState} flex flex-row flex-wrap`}>
+                    <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
+                    <TrackSelector />
+                </div>
             </div>
-            {
-                barState === 'small' ?
-                    <Button sx={{ minWidth: '20px', minHeight: '10px' }} onClick={expandBar}>
-                        <FontAwesomeIcon icon={faChevronDown} />
-                    </Button> : <></>
-            }
         </div>
-    </div >
+        <div id='data-selector-bar-handle' className={`flex flex-row w-full absolute justify-center ${barState}`}>
+            <div id='selector-bar-inner-handle' style={{ zIndex: 1000 }} 
+                className={`selector-field rounded-md border-black ${barState}`}>
+                <Button sx={{ minWidth: '20px', minHeight: '10px' }} onClick={expandBar}>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                </Button>
+            </div>
+        </div>
+    </>
 }
