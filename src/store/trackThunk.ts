@@ -32,17 +32,42 @@ export const createTrackRequest = createAsyncThunk('create-track',
 
 export const loadTrackRequest = createAsyncThunk('load-track',
     async (fileReference: string): Promise<ITrackEntity> => {
-        const response = await fetch(`${ApiUrls.BaseUrl}/trk/${fileReference}.gpx`, {
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/xml'
+        try
+        {
+            const response = await fetch(`${ApiUrls.BaseUrl}/trk/${fileReference}.gpx`, {
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/xml'
+                }
+            });
+            return {
+                fileReference: fileReference,
+                selected: true,
+                loading: false,
+                data: parseGpxText(await response.text())
+            };
+        }
+        catch(e) {
+            return {
+                fileReference: fileReference,
+                selected: false,
+                loading: false,
+                data: {
+                    name: `Failed to load ${fileReference}`,
+                    points: [],
+                    totalTime: 1,
+                    totalMovementTime: 1,
+                    elevation: {
+                        positive: 0,
+                        negative: 0,
+                        average: 0,
+                        minimum: 0,
+                        maximum: 0
+                    },
+                    distance: 0
+                }
             }
-        });
-        return {
-            fileReference: fileReference,
-            selected: true,
-            data: parseGpxText(await response.text())
-        };
+        }
     }
 );
 

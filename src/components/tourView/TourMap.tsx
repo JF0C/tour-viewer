@@ -1,17 +1,18 @@
 import { FunctionComponent } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { loadTrackRequest } from "../../store/trackThunk";
-import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { TrackLine } from "./TrackLine";
-import { TourBounds } from "./TourBounds";
-import { BlogPostDto } from "../../dtos/blogPostDto";
-import { BlogPostMarker } from "../blogPost/BlogPostMarker";
-import { BlogPostMapLocationEditor } from "../blogPost/BlogPostMapLocationEditor";
-import { SecondaryClickCountdown } from "../blogPost/SecondaryClickCountdown";
-import { setDataBarState } from "../../store/tourStateReducer";
 import { haversine } from "../../converters/haversine";
+import { BlogPostDto } from "../../dtos/blogPostDto";
 import { CoordinatesDto } from "../../dtos/coordinatesDto";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { setDataBarState } from "../../store/tourStateReducer";
+import { startLoadingTrack } from "../../store/trackStateReducer";
+import { loadTrackRequest } from "../../store/trackThunk";
+import { BlogPostMapLocationEditor } from "../blogPost/BlogPostMapLocationEditor";
+import { BlogPostMarker } from "../blogPost/BlogPostMarker";
+import { SecondaryClickCountdown } from "../blogPost/SecondaryClickCountdown";
+import { OverallLoadingSpinner } from "../shared/OverallLoadingSpinner";
+import { TourBounds } from "./TourBounds";
+import { TrackLine } from "./TrackLine";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -23,8 +24,8 @@ export const TourMap: FunctionComponent = () => {
 
     const blogPosts: BlogPostDto[] = [];
 
-    if (trackState.loading) {
-        content = <LoadingSpinner />
+    if (trackState.loading || trackState.tracks.find(t => t.loading)) {
+        content = <OverallLoadingSpinner />
     }
     else {
         if (dataSelectorBarState === 'hide') {
@@ -33,8 +34,10 @@ export const TourMap: FunctionComponent = () => {
         const missingTracks = tour?.tracks.filter(t => !trackState.tracks
             .find(tr => tr.fileReference === t.fileReference));
         if ((missingTracks?.length ?? 0) > 0) {
-            dispatch(loadTrackRequest(missingTracks![0].fileReference));
-            content = <LoadingSpinner />
+            for (let missing of missingTracks!) {
+                dispatch(startLoadingTrack(missing.fileReference));
+                dispatch(loadTrackRequest(missing.fileReference));
+            }
         }
         else {
             const selectedTracks = trackState.tracks.filter(t => t.selected);

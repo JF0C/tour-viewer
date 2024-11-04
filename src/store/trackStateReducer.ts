@@ -13,6 +13,7 @@ export interface ITrackEntity {
     fileReference: string;
     data: TrackData;
     selected: boolean;
+    loading: boolean;
     bounds?: BoundsInternal
 }
 
@@ -44,10 +45,37 @@ export const trackStateSlice = createSlice({
                 t.bounds = undefined;
             }
         },
+        startLoadingTrack(state, action: PayloadAction<string>) {
+            const track = state.tracks.find(t => t.fileReference === action.payload);
+            if (track) {
+                track.loading = true;
+            }
+            else {
+                state.tracks.push({
+                    fileReference: action.payload,
+                    data: {
+                        name: '',
+                        elevation: {
+                            average: 0,
+                            minimum: 0,
+                            maximum: 0,
+                            positive: 0,
+                            negative: 0
+                        },
+                        distance: 0,
+                        points: [],
+                        totalTime: 1,
+                        totalMovementTime: 1,
+                    },
+                    selected: false,
+                    loading: true
+                })
+            }
+        },
         clearTracks(state) {
             state.tracks = [];
         },
-        setBounds(state, action: PayloadAction<{fileReference: string, bounds: BoundsInternal}>) {
+        setBounds(state, action: PayloadAction<{ fileReference: string, bounds: BoundsInternal }>) {
             const track = state.tracks.find(t => t.fileReference === action.payload.fileReference);
             if (track?.bounds) {
                 track.bounds.south = action.payload.bounds.south;
@@ -73,12 +101,13 @@ export const trackStateSlice = createSlice({
         builder.addCase(loadTrackRequest.fulfilled, (state, action) => {
             state.loading = false;
             let trackEntity = state.tracks.find(t => t.fileReference === action.payload.fileReference);
-            
+
             if (!trackEntity) {
                 state.tracks.push({
                     fileReference: action.payload.fileReference,
                     selected: action.payload.selected,
                     data: action.payload.data,
+                    loading: false,
                     bounds: {
                         south: 0,
                         west: 0,
@@ -91,6 +120,7 @@ export const trackStateSlice = createSlice({
                 trackEntity.data = action.payload.data;
                 trackEntity.fileReference = action.payload.fileReference;
                 trackEntity.selected = action.payload.selected;
+                trackEntity.loading = false;
             }
             state.boundsSet = false;
             for (let t of state.tracks) {
@@ -144,4 +174,11 @@ export const trackStateSlice = createSlice({
 });
 
 export const trackStateReducer = trackStateSlice.reducer;
-export const { selectTracks, setBounds, clearTracks, setBoundsSet, resetBoundsSet } = trackStateSlice.actions;
+export const {
+    selectTracks,
+    setBounds,
+    clearTracks,
+    setBoundsSet,
+    resetBoundsSet,
+    startLoadingTrack
+} = trackStateSlice.actions;

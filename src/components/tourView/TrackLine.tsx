@@ -42,12 +42,14 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
 
     const arrows: ReactNode[] = [];
 
+    const arrowInterval = Math.floor(50_000_000/(zoomLevel**5));
+
     for (let k = 0; k < props.track.data.points.length-1; k++) {
         
-        if (k % Math.floor(50000/(zoomLevel**2)) === 0) {
+        if (k % arrowInterval === 0) {
             const point = props.track.data.points[k];
             const nextPoint = props.track.data.points[k + 1];
-            arrows.push(<TrackArrow from={{latitude: point.latitude, longitude: point.longitude}}
+            arrows.push(<TrackArrow key={`t-${props.track.fileReference}-arr-${k}`} from={{latitude: point.latitude, longitude: point.longitude}}
                 to={{latitude: nextPoint.latitude, longitude: nextPoint.longitude}}/>)
 
         }
