@@ -50,7 +50,8 @@ export const TourDataSwipeContainer: FunctionComponent = () => {
 
     const KeyboardSwipeable = bindKeyboard(SwipeableViews);
     return <div>
-        <KeyboardSwipeable onChangeIndex={e => selectTrack(currentIndex - (hasPrevTrack ? 1 : 0) + e)} index={hasPrevTrack ? 1 : 0} enableMouseEvents className="w-full">
+        <KeyboardSwipeable onChangeIndex={e => selectTrack(currentIndex - (hasPrevTrack ? 1 : 0) + e)}
+            index={hasPrevTrack ? 1 : 0} enableMouseEvents className="w-full">
             {
                 content
             }

@@ -10,6 +10,7 @@ import { Navbar } from "../navigation/Navbar";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
 import { UserIcon } from "../user/UserIcon";
+import { BlogPostDetails } from "../blogPost/BlogPostDetails";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -20,7 +21,8 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const isLoggedId = useAppSelector((state) => Boolean(state.auth.user));
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
-    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost;
+    const selectedBlogPost = useAppSelector((state) => state.blog.selectedBlogPost);
+    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost || Boolean(selectedBlogPost);
     const location = useLocation();
     const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
     
@@ -71,6 +73,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                 <div className="h-full p-2">
                     {
                         isEditingBlogPost ? <BlogPostEditor /> :
+                        selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost}/> :
                         <TourDataSwipeContainer />
                     }
                 </div>

@@ -96,7 +96,7 @@ export const BlogPostEditor: FunctionComponent = () => {
                     <ConfirmModal message="Unsafed changes might get lost." type="error"
                     onConfirm={() => dispatch(setEditingBlogpost(undefined))}
                     buttonContent={<>
-                            <FontAwesomeIcon icon={faX} />
+                        <FontAwesomeIcon icon={faX} />
                     </>}/>
                     :
                     <Button onClick={() => dispatch(setEditingBlogpost(undefined))}>

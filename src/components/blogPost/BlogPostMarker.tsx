@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { Marker, Popup } from "react-leaflet";
-import { ApiUrls } from "../../constants/ApiUrls";
+import { MarkerIcons } from "../../constants/MarkerIcons";
 import { BlogPostDto } from "../../dtos/blogPostDto";
-import { setEditingBlogpost } from "../../store/blogPostStateReducer";
+import { setEditingBlogpost, setSelectedBlogpost } from "../../store/blogPostStateReducer";
 import { isAllowedToEditBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { MarkerIcons } from "../../constants/MarkerIcons";
+import { ImageSwipeContainer } from "./ImageSwipeContainer";
 
 export type BlogPostMarkerProps = {
     blogPost: BlogPostDto
@@ -17,7 +17,6 @@ export type BlogPostMarkerProps = {
 export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) => {
     const dispatch = useAppDispatch();
     const allowedToEdit = useAppSelector((state) => isAllowedToEditBlogpost(state, props.blogPost));
-    const imageId = props.blogPost.images.length > 0 ? props.blogPost.images[0].imageId : null;
 
     const startEditing = () => {
         dispatch(setEditingBlogpost({
@@ -39,15 +38,9 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
                 <div className="font-bold text-xl">
                     {props.blogPost.title}
                 </div>
-                {
-                    imageId ? <div>
-                        <img width="150px" src={`${ApiUrls.BaseUrl + ApiUrls.ImageEndpoint}/${imageId}.jpg`}
-                            alt={imageId} />
-                    </div>
-                        : <></>
-                }
+                <ImageSwipeContainer images={props.blogPost.images?.map(i => i.imageId) ?? []}/>
                 <div>
-                    <Button>
+                    <Button onClick={() => dispatch(setSelectedBlogpost(props.blogPost))}>
                         <FontAwesomeIcon icon={faEye} />
                         &nbsp;Details
                     </Button>

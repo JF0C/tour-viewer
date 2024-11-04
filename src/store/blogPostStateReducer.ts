@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
 import { CoordinatesDto } from "../dtos/coordinatesDto";
 import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
+import { BlogPostDto } from "../dtos/blogPostDto";
 
 
 export interface ClickedEvent {
@@ -12,6 +13,7 @@ export interface ClickedEvent {
 export interface IBlogPostState {
     loading: boolean;
     editingBlogPost?: CreateBlogPostDto;
+    selectedBlogPost?: BlogPostDto;
     coordinatesChanged: boolean;
     markerPosition?: CoordinatesDto;
     mapCenter?: CoordinatesDto;
@@ -35,6 +37,9 @@ export const BlogPostSlice = createSlice({
         setEditingBlogpost(state, action: PayloadAction<CreateBlogPostDto | undefined>) {
             state.editingBlogPost = action.payload;
             state.coordinatesChanged = false;
+        },
+        setSelectedBlogpost(state, action: PayloadAction<BlogPostDto | undefined>) {
+            state.selectedBlogPost = action.payload;
         },
         setMarkerPosition(state, action: PayloadAction<CoordinatesDto | undefined>) {
             state.markerPosition = action.payload;
@@ -150,5 +155,6 @@ export const blogPostStateReducer = BlogPostSlice.reducer;
 
 export const { setEditingBlogpost, changeEditingBlogpostPosition, changeEditingBlogpostTrack,
     changeEditingBlogpostTitle, changeEditingBlogpostMessage, addImageReferenceToEditingBlogpost,
-    setMarkerPosition, setMapCenter, resetCoordinatesChanged, setClickedEvent, setZoomLevel
+    setMarkerPosition, setMapCenter, resetCoordinatesChanged, setClickedEvent, setZoomLevel,
+    setSelectedBlogpost
 } = BlogPostSlice.actions
