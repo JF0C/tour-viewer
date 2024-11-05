@@ -31,7 +31,15 @@ export const ProfilePictureEditor: FunctionComponent<ProfilePictureEditorProps> 
         dispatch(uploadProfilePictureRequest({
             file: file,
             onChunk: (e) => console.log(e)
-        }));
+        }))
+        .unwrap()
+        .then(() => {
+            dispatch(setProfilePictureParametersRequest({
+                zoom: 1,
+                left: 0,
+                top: 0
+            }))
+        });
     }
 
     const saveParameters = () => {

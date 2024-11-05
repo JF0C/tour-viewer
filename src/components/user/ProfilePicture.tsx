@@ -10,7 +10,7 @@ export type ProfilePictureProps = {
 }
 
 export const ProfilePicture: FunctionComponent<ProfilePictureProps> = (props) => {
-    const userParameters: ProfilePictureParametersDto = JSON.parse(props.user.profilePictureParameters ?? '{"zoom":0,"left":0,"top":0}');
+    const userParameters: ProfilePictureParametersDto = JSON.parse(props.user.profilePictureParameters ?? '{"zoom":1,"left":0,"top":0}');
     const zoom = (props.parameters ? Math.max(props.parameters.zoom, 1) : userParameters.zoom);
     const left = (props.parameters?.left ?? userParameters.left) / 300 * props.size;
     const top = (props.parameters?.top ?? userParameters.top) / 300 * props.size;
