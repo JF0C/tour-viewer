@@ -4,7 +4,8 @@ import { UserDto } from "../dtos/userDto";
 import { CreateUserDto } from "../dtos/createUserDto";
 import { PageRequestDto } from "../dtos/pageRequestDto";
 import { PagedResult } from "../dtos/pagedResult";
-
+import http from 'axios';
+import { FileUploadDto } from "../dtos/fileUploadDto";
 
 export const loadLoggedInUser = createAsyncThunk('load-user', async (): Promise<UserDto | undefined> => {
     const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.UserEndpoint}`,{
@@ -19,7 +20,6 @@ export const loadLoggedInUser = createAsyncThunk('load-user', async (): Promise<
     }
     return undefined;
 })
-
 
 export const registerRequest = createAsyncThunk('register', async (user: CreateUserDto): Promise<number> => {
     const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.UserEndpoint}`, {
@@ -71,3 +71,34 @@ export const searchUsers = createAsyncThunk('search-users',
         return response.json();
     }
 );
+
+export const uploadProfilePictureRequest = createAsyncThunk('upload-profile-picture',
+    async (fileUploadDto: FileUploadDto): Promise<UserDto> => {
+        const data = new FormData();
+        data.append("file", fileUploadDto.file);
+
+        let url = `${ApiUrls.BaseUrl + ApiUrls.ProfilePictureEndpoint}`;
+        if (fileUploadDto.blogPostId !== undefined) {
+            url += '/' + fileUploadDto.blogPostId;
+        }
+
+        const response = await http.post(url, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            withCredentials: true,
+            onUploadProgress: fileUploadDto.onChunk
+        });
+        return response.data as UserDto;
+    }
+);
+
+export const deleteProfilePictureRequest = createAsyncThunk('delete-profile-picture',
+    async (): Promise<UserDto> => {
+        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.ProfilePictureEndpoint}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        return response.json();
+    }
+)

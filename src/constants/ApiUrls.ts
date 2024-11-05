@@ -10,6 +10,7 @@ export class ApiUrls
     public static readonly UserEndpoint = '/User'
     public static readonly ChangeUsernameEndpoint = '/User/Username'
     public static readonly SearchUsersEndpoint = '/User/Search'
+    public static readonly ProfilePictureEndpoint = '/User/ProfilePicture'
 
     public static readonly AdminEndpoint = '/Admin'
     public static readonly AdminRolesEndpoint = '/Admin/Roles'

@@ -9,6 +9,7 @@ import { SmallFormLayout } from "../layout/SmallFormLayout";
 import { EditableNameLabel } from "../shared/EditableNameLabel";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { ValidatingInput } from "../shared/ValidatingInput";
+import { ProfilePictureEditor } from "./ProfilePictureEditor";
 
 export const UserProfile: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -59,6 +60,11 @@ export const UserProfile: FunctionComponent = () => {
     return <SmallFormLayout>
         <table>
             <tbody>
+                <tr>
+                    <td colSpan={2}>
+                        <ProfilePictureEditor user={user} />
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         Username
