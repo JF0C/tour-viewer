@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/userDto";
 import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
-import { changeUsernameRequest, deleteProfilePictureRequest, deleteUserRequest, loadLoggedInUser, registerRequest, searchUsers, uploadProfilePictureRequest } from "./userThunk"
+import { changeUsernameRequest, deleteProfilePictureRequest, deleteUserRequest, loadLoggedInUser, registerRequest, searchUsers, setProfilePictureParametersRequest, uploadProfilePictureRequest } from "./userThunk"
 import { UserReferenceDto } from "../dtos/userReferenceDto";
 import { PaginationState } from "./paginationState";
 
@@ -176,6 +176,17 @@ export const authStateSlice = createSlice({
             state.user = action.payload;
         })
         builder.addCase(deleteProfilePictureRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(setProfilePictureParametersRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(setProfilePictureParametersRequest.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+        })
+        builder.addCase(setProfilePictureParametersRequest.rejected, (state) => {
             state.loading = false;
         })
     }

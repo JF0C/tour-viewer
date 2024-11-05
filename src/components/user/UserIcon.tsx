@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { logoutRequest } from "../../store/authThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { ProfilePicture } from "./ProfilePicture";
 
 export const UserIcon: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -32,7 +33,11 @@ export const UserIcon: FunctionComponent = () => {
     }
     return <>
         <Button ref={buttonRef} onClick={() => setMenuOpen(!menuOpen)}>
-            { user.username }
+        { 
+        user.profilePictureId ?
+            <ProfilePicture user={user} size={40} />
+            : user.username
+        }
         </Button>
         <Menu sx={{ zIndex: 6000 }} anchorEl={buttonRef.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
             <MenuItem>

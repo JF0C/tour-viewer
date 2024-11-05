@@ -50,7 +50,8 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         : <></>
                     }
 
-                    <img key={i} className="w-full" src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
+                    <img key={i} style={{pointerEvents: 'none'}} 
+                        className="w-full" src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
                 </div>
             )
         }

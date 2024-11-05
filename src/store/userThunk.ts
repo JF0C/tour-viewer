@@ -6,6 +6,7 @@ import { PageRequestDto } from "../dtos/pageRequestDto";
 import { PagedResult } from "../dtos/pagedResult";
 import http from 'axios';
 import { FileUploadDto } from "../dtos/fileUploadDto";
+import { ProfilePictureParametersDto } from "../dtos/profilePictureParametersDto";
 
 export const loadLoggedInUser = createAsyncThunk('load-user', async (): Promise<UserDto | undefined> => {
     const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.UserEndpoint}`,{
@@ -98,6 +99,21 @@ export const deleteProfilePictureRequest = createAsyncThunk('delete-profile-pict
         const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.ProfilePictureEndpoint}`, {
             method: 'DELETE',
             credentials: 'include'
+        });
+        return response.json();
+    }
+)
+
+export const setProfilePictureParametersRequest = createAsyncThunk('set-profile-picuture-parameters',
+    async (parameters: ProfilePictureParametersDto): Promise<UserDto> => {
+
+        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.ProfilePictureParametersEndpoint}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(JSON.stringify(parameters))
         });
         return response.json();
     }
