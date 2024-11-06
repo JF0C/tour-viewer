@@ -3,12 +3,11 @@ import { FunctionComponent, useState } from "react";
 import { Marker, useMap, useMapEvents } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { Roles } from "../../constants/Rolenames";
+import { Timeouts } from "../../constants/Timeouts";
+import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
 import { trackClosestToPoint } from "../../converters/trackDataClosestToPoint";
 import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setClickedEvent, setEditingBlogpost, setMapCenter, setMarkerPosition, setZoomLevel } from "../../store/blogPostStateReducer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { Timeouts } from "../../constants/Timeouts";
-import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
-import { CoordinatesDto } from "../../dtos/coordinatesDto";
 import { setDataBarState } from "../../store/tourStateReducer";
 
 export const BlogPostMapLocationEditor: FunctionComponent = () => {
@@ -25,23 +24,16 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
 
     const map = useMap();
 
-    const trackIdClosestToPoint = (position: CoordinatesDto) => {
-        const closestTrackFileReference = trackClosestToPoint(selectedTracks, position)?.fileReference;
-        return tourTracks?.find(t => t.fileReference === closestTrackFileReference)?.id ?? 0;
-    }
-
     const dragEnd = (endposition: LatLng) => {
         dispatch(changeEditingBlogpostPosition({
             latitude: endposition.lat,
             longitude: endposition.lng
         }));
         dispatch(setMarkerPosition(latLngToCoordinates(endposition)));
-        const trackId = trackIdClosestToPoint({
-            latitude: endposition.lat,
-            longitude: endposition.lng
-        });
-        const trackFileReference = tourTracks?.find(t => t.id === trackId)?.fileReference ?? '';
-        dispatch(changeEditingBlogpostTrack({trackId: trackId, trackFileReference: trackFileReference}));
+        
+        const fileId = trackClosestToPoint(selectedTracks, { latitude: endposition.lat, longitude: endposition.lng })?.fileReference ?? '';
+        const trackId = tourTracks?.find(t => t.fileReference === fileId)?.id ?? 0;
+        dispatch(changeEditingBlogpostTrack({trackId: trackId, trackFileReference: fileId}));
         setTimeout(() => setDragging(false), 50);
     }
 
@@ -77,8 +69,8 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
             if (timeDelta > Timeouts.CreateBlogPostHold && isContributor && clickedLocation) {
                 dispatch(setMarkerPosition(clickedLocation));
                 if (!isEditingBlogPost) {
-                    const trackId = trackIdClosestToPoint(clickedLocation);
-                    const trackFileReference = tourTracks?.find(t => t.id === trackId)?.fileReference;
+                    const fileId = trackClosestToPoint(selectedTracks, clickedLocation)?.fileReference ?? '';
+                    const trackId = tourTracks?.find(t => t.fileReference === fileId)?.id ?? 0;
                     dispatch(setEditingBlogpost({
                         id: 0,
                         latitude: clickedLocation.latitude,
@@ -87,7 +79,7 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
                         message: '',
                         images: [],
                         trackId: trackId,
-                        trackFileReference: trackFileReference ?? ''
+                        trackFileReference: fileId
                     }))
                 }
                 else {

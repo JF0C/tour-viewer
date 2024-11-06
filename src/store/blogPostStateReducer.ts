@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
-import { CoordinatesDto } from "../dtos/coordinatesDto";
-import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
 import { BlogPostDto } from "../dtos/blogPostDto";
-
+import { CoordinatesDto } from "../dtos/coordinatesDto";
+import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
+import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
 
 export interface ClickedEvent {
     time: number;

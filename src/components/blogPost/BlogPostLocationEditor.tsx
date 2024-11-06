@@ -2,11 +2,12 @@ import { faCheck, faLocation, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { resetCoordinatesChanged, setMarkerPosition } from "../../store/blogPostStateReducer";
+import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, resetCoordinatesChanged, setMarkerPosition } from "../../store/blogPostStateReducer";
 import { changeBlogPostLocationRequest } from "../../store/blogPostThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
 import { updateEditingBlogpost } from "../../store/stateHelpers";
+import { trackClosestToPoint } from "../../converters/trackDataClosestToPoint";
 
 export const BlogPostLocationEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -14,6 +15,8 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
     const coordinatesChanged = useAppSelector((state) => state.blog.coordinatesChanged);
     const mapCenter = useAppSelector((state) => state.blog.mapCenter);
     const tourId = useAppSelector((state) => state.tour.selectedTour?.id);
+    const selectedTracks = useAppSelector((state) => state.track.tracks.filter(t => t.selected));
+    const tourTracks = useAppSelector((state) => state.tour.selectedTour?.tracks);
 
     if (!blogPost || !tourId) {
         return <></>
@@ -42,13 +45,30 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
         dispatch(resetCoordinatesChanged());
     }
 
+    const startEditingBlogPostTrack = () => {
+        if (!mapCenter) {
+            return;
+        }
+
+        dispatch(setMarkerPosition({
+            latitude: mapCenter.latitude,
+            longitude: mapCenter.longitude
+        }));
+
+        dispatch(changeEditingBlogpostPosition({
+            latitude: mapCenter.latitude,
+            longitude: mapCenter.longitude
+        }));
+
+        const fileId = trackClosestToPoint(selectedTracks, mapCenter)?.fileReference ?? '';
+        const trackId = tourTracks?.find(t => t.fileReference === fileId)?.id ?? 0;
+        dispatch(changeEditingBlogpostTrack({trackId: trackId, trackFileReference: fileId}));
+    }
+
     return <div>
         Coordinates: <br />
         {blogPost.latitude.toFixed(4)}, {blogPost.longitude.toFixed(4)}
-        <Button onClick={() => dispatch(setMarkerPosition({
-            latitude: mapCenter?.latitude ?? 0,
-            longitude: mapCenter?.longitude ?? 0
-        }))}>
+        <Button onClick={startEditingBlogPostTrack}>
             <FontAwesomeIcon icon={faLocation} />
         </Button>
         {
@@ -61,9 +81,9 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
         {
             coordinatesChanged ?
                 <Button color='error' onClick={resetLocation}>
-                    <FontAwesomeIcon icon={faX}/>
+                    <FontAwesomeIcon icon={faX} />
                 </Button>
-                :<></>
+                : <></>
         }
     </div>
 }
