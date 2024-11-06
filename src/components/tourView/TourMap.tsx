@@ -14,6 +14,7 @@ import { OverallLoadingSpinner } from "../shared/OverallLoadingSpinner";
 import { TourBounds } from "./TourBounds";
 import { TrackLine } from "./TrackLine";
 import { InfoBarHandle } from "./InfoBarHandle";
+import MarkerClusterGroup from 'react-leaflet-cluster'
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -48,10 +49,10 @@ export const TourMap: FunctionComponent = () => {
                 const track = selectedTracks[k];
                 let showStartMarker = track.fileReference === firstTrackName;
                 if (k > 0) {
-                    const lastPoints = selectedTracks[k-1].data.points;
+                    const lastPoints = selectedTracks[k - 1].data.points;
                     const lastPoint = lastPoints[lastPoints.length - 1];
                     const start: CoordinatesDto = {
-                        latitude: track.data.points[0].latitude, 
+                        latitude: track.data.points[0].latitude,
                         longitude: track.data.points[0].longitude
                     };
                     const end: CoordinatesDto = {
@@ -61,7 +62,7 @@ export const TourMap: FunctionComponent = () => {
                     const distance = haversine(end, start);
                     showStartMarker ||= distance > 10000;
                 }
-                tracks.push(<TrackLine key={track.fileReference} track={track} startMarker={showStartMarker}/>);
+                tracks.push(<TrackLine key={track.fileReference} track={track} startMarker={showStartMarker} />);
             }
             content = <>{tracks}</>;
             for (let t of (tour?.tracks ?? [])) {
@@ -73,17 +74,20 @@ export const TourMap: FunctionComponent = () => {
             }
         }
     }
+    const blogPostElements: any[] = blogPosts.map(b => <BlogPostMarker key={b.id} blogPost={b} />)
 
     return <MapContainer center={[48.136805, 11.578965]} zoom={13} zoomControl={false}
-        scrollWheelZoom={true} touchZoom={true} style={{userSelect: 'none'}}>
+        scrollWheelZoom={true} touchZoom={true} style={{ userSelect: 'none' }}>
         {content}
         <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {
-            blogPosts.map(b => <BlogPostMarker key={b.id} blogPost={b} />)
-        }
+        <MarkerClusterGroup polygonOptions={{smoothFactor: 1, noClip: true}}>
+            {
+                blogPostElements
+            }
+        </MarkerClusterGroup>
         <TourBounds />
         <BlogPostMapLocationEditor />
         <SecondaryClickCountdown />
