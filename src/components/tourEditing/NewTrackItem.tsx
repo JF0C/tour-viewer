@@ -37,8 +37,11 @@ export const NewTrackItem: FunctionComponent<NewTrackItemProps> = (props) => {
             tourPosition: tourPosition,
             data: fileData
         }))
-        .unwrap()
-        .then(() => props.onDataChanged())
+            .unwrap()
+            .then(() => {
+                props.onDataChanged();
+                setTimeout(() => props.onDataChanged(), 100);
+            })
     }
 
     return <tr>
@@ -51,10 +54,10 @@ export const NewTrackItem: FunctionComponent<NewTrackItemProps> = (props) => {
                 onChange={p => setTourPosition(p)} validCallback={v => setTourPositionValid(v)} />
         </td>
         <td>
-            <ValidatingFileInput onFileSelected={onFileSelected} validCallback={v => setFileValid(v)}/>
+            <ValidatingFileInput onFileSelected={onFileSelected} validCallback={v => setFileValid(v)} />
         </td>
         <td>
-            <Button disabled={!trackNameValid || !tourPositionValid || !fileValid} 
+            <Button disabled={!trackNameValid || !tourPositionValid || !fileValid}
                 color='success' onClick={createTrack} variant="outlined">
                 <FontAwesomeIcon icon={faCheck} />
                 <span className="hidden md:block">&nbsp;Create</span>

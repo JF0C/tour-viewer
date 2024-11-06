@@ -29,7 +29,8 @@ export const TrackListItem: FunctionComponent<TrackListItemProps> = (props) => {
         dispatch(deleteTrackRequest(props.track.id))
             .unwrap()
             .then(() => {
-                props.onDataChanged()
+                props.onDataChanged();
+                setTimeout(() => props.onDataChanged(), 500);
             })
     }
 
