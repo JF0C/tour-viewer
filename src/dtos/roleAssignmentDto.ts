@@ -1,5 +1,4 @@
-export type roleAssignmentDto = {
+export type RoleAssignmentDto = {
     role: string;
     userId: number;
-    action: 'assign' | 'unassign'
 }

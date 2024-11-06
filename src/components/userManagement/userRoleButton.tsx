@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import { FunctionComponent, useRef, useState } from "react";
-import { changeRoleAssignment } from "../../store/adminThunk";
+import { addRoleRequest, removeRoleRequest } from "../../store/adminThunk";
 import { useAppDispatch } from "../../store/store";
 
 export type UserRoleButtonProps = {
@@ -16,11 +16,18 @@ export const UserRoleButton: FunctionComponent<UserRoleButtonProps> = (props) =>
     const assignmentAction = props.isAssigned ? 'unassign' : 'assign';
 
     const toggleRoleAssignment = () => {
-        dispatch(changeRoleAssignment({
-            role: props.role,
-            userId: props.userId,
-            action: assignmentAction
-        }));
+        if (assignmentAction === 'unassign') {
+            dispatch(removeRoleRequest({
+                role: props.role,
+                userId: props.userId
+            }));
+        }
+        else {
+            dispatch(addRoleRequest({
+                role: props.role,
+                userId: props.userId
+            }));
+        }
     }
 
     return <>
@@ -28,7 +35,7 @@ export const UserRoleButton: FunctionComponent<UserRoleButtonProps> = (props) =>
         <Menu anchorEl={buttonRef.current} open={openMenu} onClose={() => setOpenMenu(false)}>
             <MenuItem>
                 <Button onClick={toggleRoleAssignment}>
-                    { assignmentAction }
+                    {assignmentAction}
                 </Button>
             </MenuItem>
         </Menu>

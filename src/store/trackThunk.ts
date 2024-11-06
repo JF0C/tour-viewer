@@ -1,98 +1,51 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ApiUrls } from "../constants/ApiUrls"
-import { EditTrackDto } from "../dtos/editTrackDto"
-import { ITrackEntity } from "./trackStateReducer"
 import { parseGpxText } from "../converters/trackDataParser"
 import { ChangeTrackNameDto } from "../dtos/changeTrackNameDto"
 import { ChangeTrackPositionDto } from "../dtos/changeTrackPositionDto"
+import { EditTrackDto } from "../dtos/editTrackDto"
+import { createDeleteThunk, createPostThunk, createPutThunk } from "./thunkBase"
+import { ITrackEntity } from "./trackStateReducer"
 
-export const deleteTrackRequest = createAsyncThunk('delete-track',
-    async (trackId: number): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TrackEndpoint}/${trackId}`, {
-            method: 'DELETE',
-            credentials: 'include'
-        })
-    }
-)
+export const deleteTrackRequest = createDeleteThunk<number>(
+    'delete-track',
+    (trackId) => `${ApiUrls.BaseUrl + ApiUrls.TrackEndpoint}/${trackId}`
+);
 
-export const createTrackRequest = createAsyncThunk('create-track', 
-    async (track: EditTrackDto): Promise<number> => {
-        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.TrackEndpoint}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(track)
-        })
-
-        return Number(response.text())
-    }
-)
+export const createTrackRequest = createPostThunk<number, EditTrackDto>(
+    'create-track',
+    () => `${ApiUrls.BaseUrl + ApiUrls.TrackEndpoint}`,
+    async (response) => Number(await response.text())
+);
 
 export const loadTrackRequest = createAsyncThunk('load-track',
     async (fileReference: string): Promise<ITrackEntity> => {
-        try
-        {
-            const response = await fetch(`${ApiUrls.BaseUrl}/trk/${fileReference}.gpx`, {
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/xml'
-                }
-            });
-            return {
-                fileReference: fileReference,
-                selected: true,
-                loading: false,
-                data: parseGpxText(await response.text())
-            };
-        }
-        catch(e) {
-            return {
-                fileReference: fileReference,
-                selected: false,
-                loading: false,
-                data: {
-                    name: `Failed to load ${fileReference}`,
-                    points: [],
-                    totalTime: 1,
-                    totalMovementTime: 1,
-                    elevation: {
-                        positive: 0,
-                        negative: 0,
-                        average: 0,
-                        minimum: 0,
-                        maximum: 0
-                    },
-                    distance: 0
-                }
+        const response = await fetch(`${ApiUrls.BaseUrl}/trk/${fileReference}.gpx`, {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/xml'
             }
+        });
+        if (!response.ok) {
+            throw new Error(await response.text());
         }
+        return {
+            fileReference: fileReference,
+            selected: true,
+            loading: false,
+            data: parseGpxText(await response.text())
+        };
     }
 );
 
-export const changeTrackNameRequest = createAsyncThunk('change-track-name',
-    async (changeName: ChangeTrackNameDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TrackEndpoint}/${changeName.trackId}/Name`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(changeName.name)
-        });
-    }
+export const changeTrackNameRequest = createPutThunk<ChangeTrackNameDto>(
+    'change-track-name',
+    (changeName) => `${ApiUrls.BaseUrl + ApiUrls.TrackEndpoint}/${changeName.trackId}/Name`,
+    (changeName) => JSON.stringify(changeName.name)
 );
 
-export const changeTrackPositionRequest = createAsyncThunk('change-track-position',
-    async (changeName: ChangeTrackPositionDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TrackEndpoint}/${changeName.trackId}/Position`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(changeName.position)
-        });
-    }
+export const changeTrackPositionRequest = createPutThunk<ChangeTrackPositionDto>(
+    'change-track-position',
+    (changePosition) => `${ApiUrls.BaseUrl + ApiUrls.TrackEndpoint}/${changePosition.trackId}/Position`,
+    (changePosition) => JSON.stringify(changePosition.position)
 );

@@ -1,71 +1,50 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { UserDto } from "../dtos/userDto";
-import { PageRequestDto } from "../dtos/pageRequestDto";
 import { ApiUrls } from "../constants/ApiUrls";
-import { PagedResult } from "../dtos/pagedResult";
-import { roleAssignmentDto } from "../dtos/roleAssignmentDto";
 import { ChangeUsernameDto } from "../dtos/changeUsernameDto";
+import { PagedResult } from "../dtos/pagedResult";
+import { PageRequestDto } from "../dtos/pageRequestDto";
+import { RoleAssignmentDto } from "../dtos/roleAssignmentDto";
+import { UserDto } from "../dtos/userDto";
+import { createDeleteThunk, createGetThunk, createResponseDeleteThunk, createResponsePutThunk } from "./thunkBase";
 
-export const loadUsersAdmin = createAsyncThunk('admin-get-users', 
-    async (pageRequest: PageRequestDto): Promise<PagedResult<UserDto>> => {
-        const url = `${ApiUrls.BaseUrl}${ApiUrls.AdminEndpoint}?` +
-            `page=${pageRequest.page}&number=${pageRequest.count}`
-        const response = await fetch(url, {
-            method: 'GET',
-            credentials: 'include'
-        });
+export const loadUsersAdmin = createGetThunk<PagedResult<UserDto>, PageRequestDto>(
+    'admin-get-users',
+    (pageRequest) => `${ApiUrls.BaseUrl}${ApiUrls.AdminEndpoint}?` +
+        `page=${pageRequest.page}&number=${pageRequest.count}`,
+    async (response) => await response.json()
+)
 
-        return response.json();
-});
+export const loadAvailableRoles = createGetThunk<string[], void>(
+    'get-roles',
+    () => `${ApiUrls.BaseUrl + ApiUrls.AdminRolesEndpoint}`,
+    async (response) => await response.json()
+);
 
-export const loadAvailableRoles = createAsyncThunk('get-roles',
-    async (): Promise<string[]> => {
-        const url = `${ApiUrls.BaseUrl + ApiUrls.AdminRolesEndpoint}`;
-        const response = await fetch(url, {
-            method: 'GET',
-            credentials: 'include'
-        });
-        return response.json();
-});
+export const addRoleRequest = createResponsePutThunk<UserDto, RoleAssignmentDto>(
+    'add-role-assignment',
+    (roleAssignment) => `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${roleAssignment.userId}/Role/${roleAssignment.role}`,
+    async (response) => await response.json()
+);
 
-export const changeRoleAssignment = createAsyncThunk('change-role-assignment',
-    async (roleAssignment: roleAssignmentDto): Promise<UserDto> => {
-        const url = `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${roleAssignment.userId}/Role/${roleAssignment.role}`;
-        const response = await fetch(url, {
-            method: roleAssignment.action === 'assign' ? 'PUT' : 'DELETE',
-            credentials: 'include'
-        })
-        return response.json();
-});
+export const removeRoleRequest = createResponseDeleteThunk<UserDto, RoleAssignmentDto>(
+    'remove-role-assignment',
+    (roleAssignment) => `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${roleAssignment.userId}/Role/${roleAssignment.role}`,
+    async (response) => await response.json()
+)
 
-export const validateUserAdmin = createAsyncThunk('validate-user-admin',
-    async (userId: number): Promise<UserDto> => {
-        const url = `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${userId}/Validate`;
-        const response = await fetch(url, {
-            method: 'PUT',
-            credentials: 'include'
-        });
-        return response.json();
-});
+export const validateUserAdmin = createResponsePutThunk<UserDto, number>(
+    'validate-user-admin',
+    (userId) => `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${userId}/Validate`,
+    async (response) => await response.json()
+)
 
-export const changeUsernameAdmin = createAsyncThunk('changeusername-admin',
-    async (changeUsername: ChangeUsernameDto): Promise<UserDto> => {
-        const url = `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${changeUsername.id}/Username`;
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(changeUsername.username)
-        });
-        return response.json();
-});
+export const changeUsernameAdmin = createResponsePutThunk<UserDto, ChangeUsernameDto>(
+    'change-username-admin',
+    (changeUsername) => `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${changeUsername.id}/Username`,
+    async (response) => await response.json(),
+    (changeUsername) => JSON.stringify(changeUsername.username)
+);
 
-export const deleteUser = createAsyncThunk('delete-user',
-    async (userId: number): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${userId}`,{
-            method: 'DELETE',
-            credentials: 'include'
-        });
-});
+export const deleteUser = createDeleteThunk<number>(
+    'delete-user',
+    (userId) => `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${userId}`
+);

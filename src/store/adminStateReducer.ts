@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/userDto";
-import { changeRoleAssignment, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, validateUserAdmin } from "./adminThunk";
+import { addRoleRequest, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, removeRoleRequest, validateUserAdmin } from "./adminThunk";
 import { PaginationState } from "./paginationState";
 
 export interface IAdminState
@@ -84,14 +84,25 @@ export const adminSlice = createSlice({
             state.availableRoles = [];
         })
 
-        builder.addCase(changeRoleAssignment.pending, (state) => {
+        builder.addCase(addRoleRequest.pending, (state) => {
             state.loading = true;
         })
-        builder.addCase(changeRoleAssignment.fulfilled, (state, action) => {
+        builder.addCase(addRoleRequest.fulfilled, (state, action) => {
             updateUser(state, action.payload);
             state.loading = false;
         })
-        builder.addCase(changeRoleAssignment.rejected, (state) => {
+        builder.addCase(addRoleRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(removeRoleRequest.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(removeRoleRequest.fulfilled, (state, action) => {
+            updateUser(state, action.payload);
+            state.loading = false;
+        })
+        builder.addCase(removeRoleRequest.rejected, (state) => {
             state.loading = false;
         })
 

@@ -1,82 +1,42 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiUrls } from "../constants/ApiUrls";
-import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
-import { ChangeBlogPostTitleDto } from "../dtos/changeBlogPostTitleDto";
-import { ChangeBlogPostMessageDto } from "../dtos/changeBlogPostMessageDto";
 import { ChangeBlogPostLocationDto } from "../dtos/changeBlogPostLocationDto";
+import { ChangeBlogPostMessageDto } from "../dtos/changeBlogPostMessageDto";
+import { ChangeBlogPostTitleDto } from "../dtos/changeBlogPostTitleDto";
 import { ChangeBlogPostTrackDto } from "../dtos/changeBlogPostTrackDto";
+import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
+import { createDeleteThunk, createPostThunk, createPutThunk } from "./thunkBase";
 
-export const createBlogPostRequest = createAsyncThunk('create-blogpost',
-    async (blogpost: CreateBlogPostDto): Promise<number> => {
-        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(blogpost)
-        });
-        return Number(await response.text());
-    }
-)
+export const createBlogPostRequest = createPostThunk<number, CreateBlogPostDto>(
+    'create-blogpost',
+    () => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}`,
+    async (response) => Number(await response.text())
+);
 
-export const changeBlogPostTitleRequest = createAsyncThunk('change-blogpost-title',
-    async (changeTitle: ChangeBlogPostTitleDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeTitle.id}/Title`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(changeTitle.title)
-        })
-    }
-)
+export const changeBlogPostTitleRequest = createPutThunk< ChangeBlogPostTitleDto>(
+    'change-blogpost-title',
+    (changeTitle) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeTitle.id}/Title`,
+    (changeTitle) => JSON.stringify(changeTitle.title)
+);
 
-export const changeBlogPostMessageRequest = createAsyncThunk('change-blogpost-message',
-    async (changeMessage: ChangeBlogPostMessageDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeMessage.id}/Message`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(changeMessage.message)
-        });
-    }
-)
+export const changeBlogPostMessageRequest = createPutThunk<ChangeBlogPostMessageDto>(
+    'change-blogpost-message',
+    (changeMessage) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeMessage.id}/Message`,
+    (changeMessage) => JSON.stringify(changeMessage.message)
+);
 
-export const changeBlogPostLocationRequest = createAsyncThunk('change-blogpost-location',
-    async (changeLocation: ChangeBlogPostLocationDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeLocation.id}/Location`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(changeLocation.coordinates)
-        })
-    }
-)
+export const changeBlogPostLocationRequest = createPutThunk<ChangeBlogPostLocationDto>(
+    'change-blogpost-location',
+    (changeLocation) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeLocation.id}/Location`,
+    (changeLocation) => JSON.stringify(changeLocation.coordinates)
+);
 
-export const changeBlogPostTrackRequest = createAsyncThunk('change-blogpost-track',
-    async (changeTrack: ChangeBlogPostTrackDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeTrack.id}/Track`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(changeTrack.trackId)
-        })
-    }
-)
+export const changeBlogPostTrackRequest = createPutThunk<ChangeBlogPostTrackDto>(
+    'change-blogpost-track',
+    (changeTrack) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeTrack.id}/Track`,
+    (changeTrack) => JSON.stringify(changeTrack.trackId)
+);
 
-export const deleteBlogPostRequest = createAsyncThunk('delete-blogpost',
-    async (blogPostId: number): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`, {
-            method: 'DELETE',
-            credentials: 'include'
-        })
-    }
-)
+export const deleteBlogPostRequest = createDeleteThunk<number>(
+    'delete-blogpost',
+    (blogPostId) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`
+);

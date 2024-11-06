@@ -1,108 +1,60 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { PagedResult } from "../dtos/pagedResult";
-import { TourDto } from "../dtos/tourDto";
-import { PageRequestDto } from "../dtos/pageRequestDto";
 import { ApiUrls } from "../constants/ApiUrls";
-import { CreateTourDto } from "../dtos/createTourDto";
-import { RenameTourDto } from "../dtos/renameTourDto";
-import { ChangeTourStartDateDto } from "../dtos/changeTourStartDateDto";
 import { ChangeParticipantDto } from "../dtos/changeParticipantDto";
+import { ChangeTourStartDateDto } from "../dtos/changeTourStartDateDto";
+import { CreateTourDto } from "../dtos/createTourDto";
+import { PagedResult } from "../dtos/pagedResult";
+import { PageRequestDto } from "../dtos/pageRequestDto";
+import { RenameTourDto } from "../dtos/renameTourDto";
+import { TourDto } from "../dtos/tourDto";
+import { createDeleteThunk, createGetThunk, createPostThunk, createPutThunk } from "./thunkBase";
 
-export const searchTours = createAsyncThunk('search-tours',
-    async (search: PageRequestDto): Promise<PagedResult<TourDto>> => {
-        const url = `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}` +
-            `?page=${search.page}&number=${search.count}`;
-        const response = await fetch(url, {
-            method: 'GET',
-            credentials: 'include'
-        });
-        return response.json();
-    }
+export const searchTours = createGetThunk<PagedResult<TourDto>, PageRequestDto>(
+    'search-tours',
+    (searchRequest) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}` +
+        `?page=${searchRequest.page}&number=${searchRequest.count}`,
+    (async (response) => {
+        return await response.json();
+    })
 );
 
-export const createTourRequest = createAsyncThunk('create-tour',
-    async (tour: CreateTourDto): Promise<number> => {
-        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(tour)
-        });
-
-        return Number(response.text())
-    }
-)
-
-export const loadTourRequest = createAsyncThunk('load-tour',
-    async (tourId: number): Promise<TourDto> => {
-        const response = await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${tourId}`, {
-            method: 'GET',
-            credentials: 'include'
-        })
-
-        return response.json();
-    }
-)
-
-export const renameTourRequest = createAsyncThunk('rename-tour',
-    async (rename: RenameTourDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${rename.tourId}/Name`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(rename.name)
-        });
-    }
-)
-
-export const changeTourStartDateRequest = createAsyncThunk('change-tour-start-date',
-    async (changeStartDate: ChangeTourStartDateDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${changeStartDate.tourId}/StartDate`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(changeStartDate.startDate)
-        })
-    }
-)
-
-export const addParticipantRequest = createAsyncThunk('add-participant',
-    async (addParticipant: ChangeParticipantDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${addParticipant.tourId}/Participant`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(addParticipant.participantId)
-        });
-    }
+export const createTourRequest = createPostThunk<Number, CreateTourDto>(
+    'create-tour',
+    () => ApiUrls.BaseUrl + ApiUrls.TourEndpoint, (async (response) => {
+        return Number(await response.text())
+    })
 );
 
-export const removeParticipantRequest = createAsyncThunk('add-participant',
-    async (removeParticipant: ChangeParticipantDto): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${removeParticipant.tourId}/Participant`, {
-            method: 'DELETE',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(removeParticipant.participantId)
-        });
-    }
+export const loadTourRequest = createGetThunk<TourDto, number>(
+    'load-tour',
+    (tourId: number) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${tourId}`,
+    (response) => response.json()
 );
 
-export const deleteTourRequest = createAsyncThunk('delete-tour',
-    async (tourId: number): Promise<void> => {
-        await fetch(`${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${tourId}`, {
-            method: 'DELETE',
-            credentials: 'include'
-        });
-    }
+export const renameTourRequest = createPutThunk<RenameTourDto>(
+    'rename-tour',
+    (rename) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${rename.tourId}/Name`,
+    (rename) => JSON.stringify(rename.name)
 )
+
+export const changeTourStartDateRequest = createPutThunk<ChangeTourStartDateDto>(
+    'change-tour-start-date',
+    (changeStartDate) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${changeStartDate.tourId}/StartDate`,
+    (changeStartDate) => JSON.stringify(changeStartDate.startDate)
+);
+
+export const addParticipantRequest = createPutThunk<ChangeParticipantDto>(
+    'add-participant',
+    (addParticipant) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${addParticipant.tourId}/Participant`,
+    (addParticipant) => JSON.stringify(addParticipant.participantId)
+);
+
+export const removeParticipantRequest = createDeleteThunk<ChangeParticipantDto>(
+    'remove-participant',
+    (removeParticipant) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${removeParticipant.tourId}/Participant`,
+    (removeParticipant) => JSON.stringify(removeParticipant.participantId)
+);
+
+export const deleteTourRequest = createDeleteThunk<number>(
+    'delete-tour',
+    (tourId) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${tourId}`
+);

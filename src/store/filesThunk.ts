@@ -20,6 +20,11 @@ export const uploadImage = createAsyncThunk('upload/file',
             withCredentials: true,
             onUploadProgress: fileUploadDto.onChunk
         });
+
+        if (response.status > 299) {
+            throw new Error(response.data.toString())
+        }
+
         return response.data as string;
     }
 );
