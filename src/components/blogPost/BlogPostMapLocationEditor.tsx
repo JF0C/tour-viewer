@@ -99,7 +99,7 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
                 dragend(e) {
                     dragEnd(e.target._latlng)
                 }
-            }} icon={MarkerIcons.orange} draggable position={coordinatesToLatLng(markerPosition)}>
+            }} icon={MarkerIcons.postNew} draggable position={coordinatesToLatLng(markerPosition)}>
 
         </Marker>
     }

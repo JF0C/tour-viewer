@@ -5,6 +5,7 @@ import { Layers } from "../../constants/Layers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ITrackEntity, setBounds } from "../../store/trackStateReducer";
 import { TrackArrow } from "./TrackArrow";
+import { MarkerIcons } from "../../constants/MarkerIcons";
 
 export type TrackLineProps = {
     track: ITrackEntity,
@@ -74,14 +75,14 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
     return <>
     {
         props.startMarker ? 
-        <Marker position={[props.track.data.points[0].latitude, props.track.data.points[0].longitude]}>
+        <Marker icon={MarkerIcons.blue} position={[props.track.data.points[0].latitude, props.track.data.points[0].longitude]}>
             <Popup>
                 {startLabel}
             </Popup>
         </Marker>
         :<></>
     }
-    <Marker position={new LatLng(lastPoint.latitude, lastPoint.longitude)}>
+    <Marker icon={MarkerIcons.blue} position={new LatLng(lastPoint.latitude, lastPoint.longitude)}>
         <Popup>
             {endLabel}
         </Popup>

@@ -11,6 +11,7 @@ import { setEditingTour } from '../../store/tourStateReducer';
 import { resetBoundsSet } from '../../store/trackStateReducer';
 import { TourSelector } from '../tourView/TourSelector';
 import { setEditingBlogpost, setMarkerPosition } from '../../store/blogPostStateReducer';
+import { enqueueSnackbar } from 'notistack';
 
 export type NavbarProps = {
     closeSidebar: () => void
@@ -98,5 +99,8 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                 </NavLink>
                 : <></>
         }
+        <Button onClick={() => enqueueSnackbar('test', { autoHideDuration: 10000 })}>
+            Test Notification
+        </Button>
     </ul>
 }

@@ -16,8 +16,7 @@ export const createBlogPostRequest = createAsyncThunk('create-blogpost',
             credentials: 'include',
             body: JSON.stringify(blogpost)
         });
-
-        return Number(response.text())
+        return Number(await response.text());
     }
 )
 

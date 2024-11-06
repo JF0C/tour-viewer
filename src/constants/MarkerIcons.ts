@@ -2,7 +2,7 @@ import L from "leaflet";
 
 
 export class MarkerIcons {
-    public static readonly blue = new L.Icon({
+    public static readonly blue = L.icon({
         iconUrl: 'icon/marker-icon-2x-blue.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -11,7 +11,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly gold = new L.Icon({
+    public static readonly gold = L.icon({
         iconUrl: 'icon/marker-icon-2x-gold.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -20,7 +20,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly red = new L.Icon({
+    public static readonly red = L.icon({
         iconUrl: 'icon/marker-icon-2x-red.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -29,7 +29,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly green = new L.Icon({
+    public static readonly green = L.icon({
         iconUrl: 'icon/marker-icon-2x-green.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -38,7 +38,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly orange = new L.Icon({
+    public static readonly orange = L.icon({
         iconUrl: 'icon/marker-icon-2x-orange.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -47,7 +47,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly yellow = new L.Icon({
+    public static readonly yellow = L.icon({
         iconUrl: 'icon/marker-icon-2x-yellow.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -56,7 +56,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly violet = new L.Icon({
+    public static readonly violet = L.icon({
         iconUrl: 'icon/marker-icon-2x-violet.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -65,7 +65,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly grey = new L.Icon({
+    public static readonly grey = L.icon({
         iconUrl: 'icon/marker-icon-2x-grey.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -74,7 +74,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly black = new L.Icon({
+    public static readonly black = L.icon({
         iconUrl: 'icon/marker-icon-2x-black.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
@@ -83,8 +83,26 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly postWhite = new L.Icon({
-        iconUrl: 'icon/blogpost-marker-alt.png',
+    public static readonly postWhite = L.icon({
+        iconUrl: 'icon/blogpost-marker.png',
+        shadowUrl: 'icon/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    public static readonly postNew = L.icon({
+        iconUrl: 'icon/blogpost-marker-new-position.png',
+        shadowUrl: 'icon/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    public static readonly postOld = L.icon({
+        iconUrl: 'icon/blogpost-marker-old-position.png',
         shadowUrl: 'icon/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],

@@ -2,7 +2,7 @@ import { faFloppyDisk, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { changeEditingBlogpostMessage, changeEditingBlogpostTitle, setEditingBlogpost } from "../../store/blogPostStateReducer";
+import { changeEditingBlogpostMessage, changeEditingBlogpostTitle, setEditingBlogpost, setMarkerPosition } from "../../store/blogPostStateReducer";
 import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest } from "../../store/blogPostThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
@@ -12,7 +12,7 @@ import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { ImageUpload } from "./ImageUpload";
 import { BlogPostLocationEditor } from "./BlogPostLocationEditor";
 import { ConfirmModal } from "../shared/ConfirmModal";
-import { isAllowedToCreate } from "../../store/stateHelpers";
+import { isAllowedToCreate, updateEditingBlogpost } from "../../store/stateHelpers";
 import { BlogPostTrackSelector } from "./BlogPostTrackSelector";
 
 export const BlogPostEditor: FunctionComponent = () => {
@@ -43,9 +43,14 @@ export const BlogPostEditor: FunctionComponent = () => {
                 trackFileReference: blogPost.trackFileReference
             }))
                 .unwrap()
-                .then(() => {
+                .then((blogPostId) => {
+                    dispatch(setMarkerPosition());
                     if (tour?.id !== undefined) {
-                        dispatch(loadTourRequest(tour.id));
+                        dispatch(loadTourRequest(tour.id))
+                            .unwrap()
+                            .then(tour => {
+                                updateEditingBlogpost(dispatch, tour, blogPostId);
+                            })
                     }
                 });
         }
@@ -72,11 +77,13 @@ export const BlogPostEditor: FunctionComponent = () => {
     }
 
     const deleteBlogPost = () => {
+        dispatch(setMarkerPosition());
         dispatch(deleteBlogPostRequest(blogPost.id))
             .unwrap()
             .then(() => {
                 if (tour?.id) {
                     dispatch(loadTourRequest(tour.id));
+                    dispatch(setEditingBlogpost())
                 }
             });
     }
@@ -112,10 +119,10 @@ export const BlogPostEditor: FunctionComponent = () => {
                 rows={10} name='Blog Post Message' onApply={changeMessage} minLength={0} maxLength={1000} />
         </div>
 
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 justify-center">
             {
                 blogPost.id === 0 ?
-                    <Button className="w-full" color='success' variant="outlined" onClick={submitBlogPost}>
+                    <Button className="w-full" color='success' onClick={submitBlogPost}>
                         <FontAwesomeIcon icon={faFloppyDisk} />
                         &nbsp;Save
                     </Button>
