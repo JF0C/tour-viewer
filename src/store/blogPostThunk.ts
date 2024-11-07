@@ -1,10 +1,31 @@
 import { ApiUrls } from "../constants/ApiUrls";
+import { BlogPostDto } from "../dtos/blogPostDto";
+import { BlogpostPageRequestDto } from "../dtos/blogPostPageRequestDto";
 import { ChangeBlogPostLocationDto } from "../dtos/changeBlogPostLocationDto";
 import { ChangeBlogPostMessageDto } from "../dtos/changeBlogPostMessageDto";
 import { ChangeBlogPostTitleDto } from "../dtos/changeBlogPostTitleDto";
 import { ChangeBlogPostTrackDto } from "../dtos/changeBlogPostTrackDto";
 import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
-import { createDeleteThunk, createPostThunk, createPutThunk } from "./thunkBase";
+import { PagedResult } from "../dtos/pagedResult";
+import { createDeleteThunk, createGetThunk, createPostThunk, createPutThunk } from "./thunkBase";
+
+export const blogpostRequestToUrl = (request: BlogpostPageRequestDto) => {
+    var requestUrl = `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}` +
+        `?page=${request.page}&number=${request.count}`;
+    if (request.author || request.author === 0) {
+        requestUrl += `&author=${request.author}`;
+    }
+    if (request.title) {
+        requestUrl += `&title=${request.title}`;
+    }
+    if (request.tourId || request.tourId === 0) {
+        requestUrl += `&tourId=${request.tourId}`;
+    }
+    if (request.tourName) {
+        requestUrl += `&tourName=${request.tourName}`;
+    }
+    return requestUrl;
+}
 
 export const createBlogPostRequest = createPostThunk<number, CreateBlogPostDto>(
     'create-blogpost',
@@ -40,3 +61,15 @@ export const deleteBlogPostRequest = createDeleteThunk<number>(
     'delete-blogpost',
     (blogPostId) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`
 );
+
+export const searchBlogPostRequest = createGetThunk<PagedResult<BlogPostDto>, BlogpostPageRequestDto>(
+    'search-blogposts',
+    blogpostRequestToUrl,
+    async (response) => await response.json()
+)
+
+export const searchBlogPostsForUser = createGetThunk<PagedResult<BlogPostDto>, BlogpostPageRequestDto>(
+    'search-blogposts-for-user',
+    blogpostRequestToUrl,
+    async (response) => await response.json()
+)

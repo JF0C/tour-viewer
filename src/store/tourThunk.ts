@@ -3,19 +3,40 @@ import { ChangeParticipantDto } from "../dtos/changeParticipantDto";
 import { ChangeTourStartDateDto } from "../dtos/changeTourStartDateDto";
 import { CreateTourDto } from "../dtos/createTourDto";
 import { PagedResult } from "../dtos/pagedResult";
-import { PageRequestDto } from "../dtos/pageRequestDto";
 import { RenameTourDto } from "../dtos/renameTourDto";
 import { TourDto } from "../dtos/tourDto";
+import { TourPageRequestDto } from "../dtos/tourPageRequestDto";
 import { createDeleteThunk, createGetThunk, createPostThunk, createPutThunk } from "./thunkBase";
 
-export const searchTours = createGetThunk<PagedResult<TourDto>, PageRequestDto>(
+export const tourRequestToUrl = (request: TourPageRequestDto) => {
+    var requestUrl = `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}` +
+        `?page=${request.page}&number=${request.count}`;
+    if (request.year) {
+        requestUrl += `&year=${request.year}`;
+    }
+    if (request.month || request.month === 0) {
+        requestUrl += `&month=${request.month}`;
+    }
+    if (request.name) {
+        requestUrl += `&name=${request.name}`;
+    }
+    if (request.participantId || request.participantId === 0) {
+        requestUrl += `&participant=${request.participantId}`;
+    }
+    return requestUrl;
+}
+
+export const searchTours = createGetThunk<PagedResult<TourDto>, TourPageRequestDto>(
     'search-tours',
-    (searchRequest) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}` +
-        `?page=${searchRequest.page}&number=${searchRequest.count}`,
-    (async (response) => {
-        return await response.json();
-    })
+    tourRequestToUrl,
+    async (response) => await response.json()
 );
+
+export const searchToursForUser = createGetThunk<PagedResult<TourDto>, TourPageRequestDto>(
+    'search-tours-for-user',
+    tourRequestToUrl,
+    async (response) => await response.json()
+)
 
 export const createTourRequest = createPostThunk<Number, CreateTourDto>(
     'create-tour',

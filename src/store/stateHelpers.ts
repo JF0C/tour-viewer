@@ -1,8 +1,11 @@
 import { Roles } from "../constants/Rolenames";
 import { BlogPostDto } from "../dtos/blogPostDto";
 import { TourDto } from "../dtos/tourDto";
+import { UserDetailDto } from "../dtos/userDetailDto";
 import { setEditingBlogpost } from "./blogPostStateReducer";
+import { searchBlogPostsForUser } from "./blogPostThunk";
 import { AppDispatch, RootState } from "./store";
+import { searchToursForUser } from "./tourThunk";
 
 export const isAllowedToCreate = (state: RootState): boolean => {
     const user = state.auth.user;
@@ -10,7 +13,7 @@ export const isAllowedToCreate = (state: RootState): boolean => {
     if (!user || !tour) {
         return false;
     }
-    return (Boolean(tour.participants.find(p => p.id === user.id)) && user.roles.includes(Roles.Contributor)) 
+    return (Boolean(tour.participants.find(p => p.id === user.id)) && user.roles.includes(Roles.Contributor))
         || user.roles.includes(Roles.Admin);
 }
 
@@ -45,4 +48,17 @@ export const updateEditingBlogpost = (dispatch: AppDispatch, tour: TourDto, blog
             }
         }
     }
+}
+
+export const loadUserDetail = (dispatch: AppDispatch, detailedUser: UserDetailDto) => {
+    dispatch(searchToursForUser({
+        page: detailedUser.tours?.page ?? 1,
+        count: detailedUser.toursPerPage,
+        participantId: detailedUser.id
+    }));
+    dispatch(searchBlogPostsForUser({
+        page: detailedUser.blogPosts?.page ?? 1,
+        count: detailedUser.blogPostsPerPage,
+        author: detailedUser.id
+    }))
 }

@@ -7,6 +7,7 @@ import { Paths } from "../../constants/Paths";
 import { logoutRequest } from "../../store/authThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ProfilePicture } from "./ProfilePicture";
+import { setUserDetail } from "../../store/userStateReducer";
 
 export const UserIcon: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -31,6 +32,12 @@ export const UserIcon: FunctionComponent = () => {
             </Button>
         </NavLink>
     }
+
+    const loadUserProfile = () => {
+        dispatch(setUserDetail(user));
+        navigate(Paths.UserProfilePage);
+    }
+
     return <>
         <Button ref={buttonRef} onClick={() => setMenuOpen(!menuOpen)}>
             {
@@ -40,20 +47,20 @@ export const UserIcon: FunctionComponent = () => {
             }
         </Button>
         <Menu sx={{ zIndex: 6000 }} anchorEl={buttonRef.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
-            <MenuItem>
-                <Button onClick={() => navigate(Paths.UserProfilePage)}>
+            <MenuItem onClick={loadUserProfile}>
+                <Button>
                     <FontAwesomeIcon icon={faUser} />
                     &nbsp;Profile
                 </Button>
             </MenuItem>
-            <MenuItem>
-                <Button onClick={() => navigate(Paths.UserSettingsPage)}>
+            <MenuItem onClick={() => navigate(Paths.UserSettingsPage)}>
+                <Button>
                     <FontAwesomeIcon icon={faCog} />
                     &nbsp;Settings
                 </Button>
             </MenuItem>
-            <MenuItem>
-                <Button onClick={logout}>
+            <MenuItem onClick={logout}>
+                <Button>
                     <FontAwesomeIcon icon={faSignOut} />
                     &nbsp;Logout
                 </Button>
