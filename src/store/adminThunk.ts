@@ -45,6 +45,6 @@ export const changeUsernameAdmin = createResponsePutThunk<UserDto, ChangeUsernam
 );
 
 export const deleteUser = createDeleteThunk<number>(
-    'delete-user',
+    'delete-user-admin',
     (userId) => `${ApiUrls.BaseUrl + ApiUrls.AdminEndpoint}/${userId}`
 );
