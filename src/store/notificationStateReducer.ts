@@ -4,6 +4,8 @@ import { enqueueSnackbar } from "notistack";
 import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
+import { addRoleRequest, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, removeRoleRequest, validateUserAdmin } from "./adminThunk";
+import { changeUsernameRequest, deleteUserRequest, loadLoggedInUser, registerRequest } from "./userThunk";
 
 export interface INotificationState {
     message?: string;
@@ -143,7 +145,56 @@ export const NotificationSlice = createSlice({
             snackError('deleting blog post', action.error);
         });
 
-        
+        builder.addCase(loadUsersAdmin.rejected, (_state, action) => {
+            snackError('loading users', action.error);
+        });
+
+        builder.addCase(loadAvailableRoles.rejected, (_state, action) => {
+            snackError('loading roles', action.error);
+        });
+
+        builder.addCase(addRoleRequest.rejected, (_state, action) => {
+            snackError('adding role', action.error);
+        });
+
+        builder.addCase(removeRoleRequest.rejected, (_state, action) => {
+            snackError('removing role', action.error);
+        });
+
+        builder.addCase(validateUserAdmin.rejected, (_state, action) => {
+            snackError('validating user', action.error);
+        });
+
+        builder.addCase(changeUsernameAdmin.rejected, (_state, action) => {
+            snackError('changing username', action.error);
+        });
+
+        builder.addCase(deleteUser.fulfilled, () => {
+            enqueueSnackbar(`Deleted user`, { variant: 'success' });
+        });
+        builder.addCase(deleteUser.rejected, (_state, action) => {
+            snackError('deleting user', action.error);
+        });
+
+        builder.addCase(loadLoggedInUser.rejected, (_state, action) => {
+            snackError('loading user', action.error);
+        });
+
+        builder.addCase(registerRequest.rejected, (_state, action) => {
+            snackError('registering', action.error);
+        });
+        builder.addCase(registerRequest.fulfilled, (_state, action) => {
+            enqueueSnackbar(`User ${action.meta.arg.username} registered`, { variant: 'success' });
+        });
+
+        builder.addCase(changeUsernameRequest.rejected, (_state, action) => {
+            snackError('changing username', action.error);
+        });
+
+        builder.addCase(deleteUserRequest.rejected, (_state, action) => {
+            snackError('deleting user', action.error);
+        });
+
     }
 });
 

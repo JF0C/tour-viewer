@@ -1,11 +1,14 @@
-import { Button } from "@mui/material";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Input } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { changePasswordRequest } from "../../store/authThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { changeUsernameRequest } from "../../store/userThunk";
+import { changeUsernameRequest, deleteUserRequest } from "../../store/userThunk";
 import { SmallFormLayout } from "../layout/SmallFormLayout";
+import { BaseConfirmModal } from "../shared/BaseConfirmModal";
 import { EditableNameLabel } from "../shared/EditableNameLabel";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { ValidatingInput } from "../shared/ValidatingInput";
@@ -21,7 +24,7 @@ export const UserProfile: FunctionComponent = () => {
     const [newPassword2, setNewPassword2] = useState('');
     const [password1Valid, setPassword1Valid] = useState(false);
     const [password2Valid, setPassword2Valid] = useState(false);
-
+    const [confirmDeletePassword, setConfirmDeletePassword] = useState('');
 
     if (!user) {
         navigate(Paths.LoginPage);
@@ -30,6 +33,14 @@ export const UserProfile: FunctionComponent = () => {
 
     if (loading) {
         return <LoadingSpinner />
+    }
+
+    const deleteUser = () => {
+        dispatch(deleteUserRequest(confirmDeletePassword))
+            .unwrap()
+            .then(() => {
+                navigate(Paths.RegisterPage)
+            });
     }
 
     const changeUsername = (username: string) => {
@@ -87,6 +98,24 @@ export const UserProfile: FunctionComponent = () => {
                         <Button disabled={!password1Valid || !password2Valid} onClick={changePassword}>
                             Save
                         </Button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={2}>
+                        <div className="w-full flex flex-row justify-center">
+                            <BaseConfirmModal confirmType="error"
+                                confirmText='Leave'
+                                buttonContent={<>
+                                    <FontAwesomeIcon icon={faX}/>&nbsp;
+                                    Delete profile and leave
+                                </>} onConfirm={deleteUser}>
+                                <div>
+                                    <div>Do you really want to delete your account and leave the platform?</div>
+                                    <Input placeholder="password" type='password' sx={{color: 'white'}}
+                                        onChange={(e) => setConfirmDeletePassword(e.target.value)} />
+                                </div>
+                            </BaseConfirmModal>
+                        </div>
                     </td>
                 </tr>
             </tbody>
