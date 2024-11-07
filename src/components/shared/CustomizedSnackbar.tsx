@@ -18,7 +18,7 @@ export const CustomizedSnackbar: FunctionComponent = () => {
     )}
         anchorOrigin={{
             horizontal: 'center',
-            vertical: 'bottom'
+            vertical: 'top'
         }}
         dense
         maxSnack={10}

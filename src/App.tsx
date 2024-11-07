@@ -6,7 +6,6 @@ import { BrowserRouter } from 'react-router-dom';
 import './App.scss';
 import { MainLayout } from './components/layout/MainLayout';
 import { RouterOutlet } from './components/navigation/RouterOutlet';
-import { CustomizedSnackbar } from './components/shared/CustomizedSnackbar';
 import { ApiUrls } from './constants/ApiUrls';
 import theme from './materialUiConfig';
 import { store } from './store/store';
@@ -30,7 +29,6 @@ function App() {
             <MainLayout>
               <RouterOutlet />
             </MainLayout>
-            <CustomizedSnackbar />
           </BrowserRouter>
         </LocalizationProvider>
       </ThemeProvider>

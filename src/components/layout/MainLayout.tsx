@@ -11,6 +11,7 @@ import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
 import { UserIcon } from "../user/UserIcon";
 import { BlogPostDetails } from "../blogPost/BlogPostDetails";
+import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -25,7 +26,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost || Boolean(selectedBlogPost);
     const location = useLocation();
     const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
-    
+
     if (location.pathname !== "/" && dataSelectorBarState !== 'hide') {
         dispatch(setDataBarState('hide'));
     }
@@ -33,14 +34,15 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     return <div className="h-full main-layout flex flex-col">
         <div className="h-10">
             <AppBar sx={{ backgroundColor: '#282c34', zIndex: 5000 }}>
+                <CustomizedSnackbar />
                 <div className="flex flex-row justify-between items-center truncate">
                     <div>
                         {
                             isLoggedId ?
-                            <Button onClick={() => setSidebarOpen(!sidebarOpen)}>
-                                <FontAwesomeIcon icon={faBars} />
-                            </Button>
-                            : <></>
+                                <Button onClick={() => setSidebarOpen(!sidebarOpen)}>
+                                    <FontAwesomeIcon icon={faBars} />
+                                </Button>
+                                : <></>
                         }
                     </div>
                     <div className='p-2 text-2xl md:text-3xl truncate'>
@@ -73,8 +75,8 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                 <div className="h-full p-2">
                     {
                         isEditingBlogPost ? <BlogPostEditor /> :
-                        selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost}/> :
-                        <TourDataSwipeContainer />
+                            selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost} /> :
+                                <TourDataSwipeContainer />
                     }
                 </div>
             </div>
