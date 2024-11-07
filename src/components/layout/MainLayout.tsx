@@ -33,7 +33,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
 
     return <div className="h-full main-layout flex flex-col">
         <div className="h-10">
-            <AppBar sx={{ backgroundColor: '#282c34', zIndex: 5000 }}>
+            <AppBar sx={{ backgroundColor: '#201f23', zIndex: 5000 }}>
                 <CustomizedSnackbar />
                 <div className="flex flex-row justify-between items-center truncate">
                     <div>
@@ -68,7 +68,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                     <Navbar closeSidebar={() => setSidebarOpen(false)} />
                 </div>
             </SwipeableDrawer>
-            <div className="flex-1 overflow-y-scroll h-full">
+            <div className="flex-1 overflow-y-scroll h-full main-content">
                 {props.children}
             </div>
             <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip`}>

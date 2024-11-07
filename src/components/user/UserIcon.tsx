@@ -33,11 +33,11 @@ export const UserIcon: FunctionComponent = () => {
     }
     return <>
         <Button ref={buttonRef} onClick={() => setMenuOpen(!menuOpen)}>
-        { 
-        user.profilePictureId ?
-            <ProfilePicture user={user} size={40} />
-            : user.username
-        }
+            {
+                user.profilePictureId ?
+                    <ProfilePicture user={user} size={40} />
+                    : user.username
+            }
         </Button>
         <Menu sx={{ zIndex: 6000 }} anchorEl={buttonRef.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
             <MenuItem>

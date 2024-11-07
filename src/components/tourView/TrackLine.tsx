@@ -43,15 +43,15 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
 
     const arrows: ReactNode[] = [];
 
-    const arrowInterval = Math.floor(50_000_000/(zoomLevel**5));
+    const arrowInterval = Math.floor(50_000_000 / (zoomLevel ** 5));
 
-    for (let k = 0; k < props.track.data.points.length-1; k++) {
-        
+    for (let k = 0; k < props.track.data.points.length - 1; k++) {
+
         if (k % arrowInterval === 0) {
             const point = props.track.data.points[k];
             const nextPoint = props.track.data.points[k + 1];
-            arrows.push(<TrackArrow key={`t-${props.track.fileReference}-arr-${k}`} from={{latitude: point.latitude, longitude: point.longitude}}
-                to={{latitude: nextPoint.latitude, longitude: nextPoint.longitude}}/>)
+            arrows.push(<TrackArrow key={`t-${props.track.fileReference}-arr-${k}`} from={{ latitude: point.latitude, longitude: point.longitude }}
+                to={{ latitude: nextPoint.latitude, longitude: nextPoint.longitude }} />)
 
         }
     }
@@ -73,22 +73,30 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
         }));
     }
     return <>
-    {
-        props.startMarker ? 
-        <Marker icon={MarkerIcons.blue} position={[props.track.data.points[0].latitude, props.track.data.points[0].longitude]}>
+        {
+            props.startMarker ?
+                <Marker icon={MarkerIcons.blue} position={[props.track.data.points[0].latitude, props.track.data.points[0].longitude]}>
+                    <Popup>
+                        <div className="flex flex-col justify-center items-center">
+                            <div className="font-bold text-xl">
+                                {startLabel}
+                            </div>
+                        </div>
+                    </Popup>
+                </Marker>
+                : <></>
+        }
+        <Marker icon={MarkerIcons.blue} position={new LatLng(lastPoint.latitude, lastPoint.longitude)}>
             <Popup>
-                {startLabel}
+                <div className="flex flex-col justify-center items-center">
+                    <div className="font-bold text-xl">
+                        {endLabel}
+                    </div>
+                </div>
             </Popup>
         </Marker>
-        :<></>
-    }
-    <Marker icon={MarkerIcons.blue} position={new LatLng(lastPoint.latitude, lastPoint.longitude)}>
-        <Popup>
-            {endLabel}
-        </Popup>
-    </Marker>
-    {
-        arrows
-    }
+        {
+            arrows
+        }
     </>
 }

@@ -1,7 +1,13 @@
-$base-color: #282c34;
+$base-color: #1c1d25;
+$secondary: rgb(64, 59, 51);
 
 .App {
   text-align: center;
+  color: white;
+}
+
+.main-content {
+  color: white;
 }
 
 .App-header {
@@ -20,13 +26,14 @@ $base-color: #282c34;
 }
 
 .main-layout {
-  background-color: darkgray;
+  background-color: $secondary;
 }
 
 #info-sidebar {
   padding-top: 10px;
   width: 0px;
   transition: width .2s ease-in-out;
+  color: white;
 }
 
 #info-sidebar.open {
@@ -49,7 +56,7 @@ $base-color: #282c34;
 }
 
 #sidebar-content {
-  background-color: $base-color;
+  background-color: $secondary;
 }
 
 .base-modal {
@@ -151,6 +158,7 @@ td {
   flex-direction: row;
   justify-content: center;
   justify-items: center;
+  color: black;
 }
 
 .marker-cluster-small {
@@ -159,4 +167,20 @@ td {
 
 .marker-cluster-small div {
   background-color: rgba(56, 116, 203, 0.7) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: $base-color;
+  color: white;
+}
+.leaflet-popup-tip {
+  background-color: $base-color;
+}
+
+.MuiMenu-list {
+  background-color: $secondary;
+}
+
+.MuiInputBase-root input {
+  color: white;
 }
