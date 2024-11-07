@@ -1,8 +1,9 @@
 import { createSlice, SerializedError } from "@reduxjs/toolkit";
 import { addParticipantRequest, changeTourStartDateRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeParticipantRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { enqueueSnackbar } from "notistack";
-import { loginRequest } from "./authThunk";
-import { createTrackRequest } from "./trackThunk";
+import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
+import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
+import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
 
 export interface INotificationState {
     message?: string;
@@ -22,8 +23,41 @@ export const NotificationSlice = createSlice({
     initialState: initialState,
     reducers: {},
     extraReducers(builder) {
+        builder.addCase(loginRequest.rejected, () => {
+            snackError('logging in');
+        });
+
+        builder.addCase(logoutRequest.rejected, () => {
+            snackError('logging out');
+        });
+
+        builder.addCase(validateCodeRequest.fulfilled, () => {
+            enqueueSnackbar(`Code validated`, { variant: 'success' });
+        });
+        builder.addCase(validateCodeRequest.rejected, (_state, action) => {
+            snackError('validating code', action.error);
+        });
+
+        builder.addCase(accessCodeRequest.fulfilled, () => {
+            enqueueSnackbar('Requested access code', { variant: 'success' });
+        });
+        builder.addCase(accessCodeRequest.rejected, (_state, action) => {
+            snackError('requesting access code', action.error);
+        });
+
+        builder.addCase(resetPasswordRequest.rejected, (_state, action) => {
+            snackError('resetting password', action.error);
+        });
+
+        builder.addCase(changePasswordRequest.fulfilled, () => {
+            enqueueSnackbar('Changed password', { variant: 'success' });
+        });
+        builder.addCase(changePasswordRequest.rejected, (_state, action) => {
+            snackError('changing password', action.error);
+        });
+
         builder.addCase(createTourRequest.fulfilled, (_state, action) => {
-            enqueueSnackbar(`Created Tour ${action.meta.arg.name}`, { variant: 'success' } );
+            enqueueSnackbar(`Created Tour ${action.meta.arg.name}`, { variant: 'success' });
         });
         builder.addCase(createTourRequest.rejected, (_state, action) => {
             snackError('creating tour', action.error);
@@ -67,9 +101,49 @@ export const NotificationSlice = createSlice({
             snackError('creating track', action.error);
         });
 
-        builder.addCase(loginRequest.rejected, () => {
-            snackError('logging in')
+        builder.addCase(deleteTrackRequest.rejected, (_state, action) => {
+            snackError('deleting track', action.error);
         });
+
+        builder.addCase(changeTrackNameRequest.rejected, (_state, action) => {
+            snackError('renaming track', action.error);
+        });
+
+        builder.addCase(changeTrackPositionRequest.rejected, (_state, action) => {
+            snackError('changing track position', action.error)
+        });
+
+        builder.addCase(createBlogPostRequest.rejected, (_state, action) => {
+            snackError('creating blog post', action.error);
+        });
+        builder.addCase(createBlogPostRequest.fulfilled, (_state, action) => {
+            enqueueSnackbar(`Created blog post ${action.meta.arg.title}`, { variant: 'success' });
+        });
+
+        builder.addCase(changeBlogPostTitleRequest.rejected, (_state, action) => {
+            snackError('changing blog post title', action.error);
+        });
+
+        builder.addCase(changeBlogPostMessageRequest.rejected, (_state, action) => {
+            snackError('changing blog post message', action.error);
+        });
+
+        builder.addCase(changeBlogPostLocationRequest.rejected, (_state, action) => {
+            snackError('changing blog post location', action.error);
+        });
+
+        builder.addCase(changeBlogPostTrackRequest.rejected, (_state, action) => {
+            snackError('changing blog post track', action.error);
+        });
+
+        builder.addCase(deleteBlogPostRequest.fulfilled, () => {
+            enqueueSnackbar(`Deleted blog post`, { variant: 'success' });
+        });
+        builder.addCase(deleteBlogPostRequest.rejected, (_state, action) => {
+            snackError('deleting blog post', action.error);
+        });
+
+        
     }
 });
 
