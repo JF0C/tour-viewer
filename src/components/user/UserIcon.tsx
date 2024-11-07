@@ -1,4 +1,4 @@
-import { faSignIn, faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faSignIn, faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { FunctionComponent, useRef, useState } from "react";
@@ -41,15 +41,21 @@ export const UserIcon: FunctionComponent = () => {
         </Button>
         <Menu sx={{ zIndex: 6000 }} anchorEl={buttonRef.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
             <MenuItem>
-                <Button onClick={logout}>
-                    <FontAwesomeIcon icon={faSignOut} />
-                    &nbsp;Logout
+                <Button onClick={() => navigate(Paths.UserProfilePage)}>
+                    <FontAwesomeIcon icon={faUser} />
+                    &nbsp;Profile
                 </Button>
             </MenuItem>
             <MenuItem>
-                <Button onClick={() => navigate(Paths.UserPage)}>
-                    <FontAwesomeIcon icon={faUser} />
-                    &nbsp;Profile
+                <Button onClick={() => navigate(Paths.UserSettingsPage)}>
+                    <FontAwesomeIcon icon={faCog} />
+                    &nbsp;Settings
+                </Button>
+            </MenuItem>
+            <MenuItem>
+                <Button onClick={logout}>
+                    <FontAwesomeIcon icon={faSignOut} />
+                    &nbsp;Logout
                 </Button>
             </MenuItem>
         </Menu>

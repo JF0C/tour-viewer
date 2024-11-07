@@ -7,5 +7,5 @@ export type UserDto = EntityBaseDto & {
     validated: boolean;
     roles: string[];
     profilePictureId?: string;
-    profilePictureParameters?: string
+    profilePictureParameters?: string;
 }

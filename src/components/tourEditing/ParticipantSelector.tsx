@@ -9,7 +9,7 @@ import { addParticipantRequest, loadTourRequest, removeParticipantRequest } from
 
 export const ParticipantSelector: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const userState = useAppSelector((state) => state.auth);
+    const userState = useAppSelector((state) => state.user);
     const selectedUsers = useAppSelector((state) => state.tour.editingTour.participants);
     const tourId = useAppSelector((state) => state.tour.editingTour.id);
 

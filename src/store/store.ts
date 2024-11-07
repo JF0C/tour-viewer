@@ -6,12 +6,14 @@ import { tourStateReducer } from './tourStateReducer';
 import { trackStateReducer } from './trackStateReducer';
 import { blogPostStateReducer } from './blogPostStateReducer';
 import { notificationReducer } from './notificationStateReducer';
+import { userStateReducer } from './userStateReducer';
 
 export const store = configureStore({
     reducer: {
         tour: tourStateReducer,
         track: trackStateReducer,
         auth: authStateReducer,
+        user: userStateReducer,
         blog: blogPostStateReducer,
         admin: adminStateReducer,
         notification: notificationReducer

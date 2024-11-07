@@ -8,6 +8,7 @@ import http from 'axios';
 import { FileUploadDto } from "../dtos/fileUploadDto";
 import { ProfilePictureParametersDto } from "../dtos/profilePictureParametersDto";
 import { createDeleteThunk, createGetThunk, createPostThunk, createResponseDeleteThunk, createResponsePutThunk } from "./thunkBase";
+import { UserReferenceDto } from "../dtos/userReferenceDto";
 
 export const loadLoggedInUser = createGetThunk<UserDto, void>(
     'load-user',
@@ -32,7 +33,7 @@ export const deleteUserRequest = createDeleteThunk<string>(
     () => `${ApiUrls.BaseUrl + ApiUrls.UserEndpoint}`
 );
 
-export const searchUsers = createGetThunk<PagedResult<UserDto>, PageRequestDto>(
+export const searchUsers = createGetThunk<PagedResult<UserReferenceDto>, PageRequestDto>(
     'search-users',
     (search) => `${ApiUrls.BaseUrl + ApiUrls.SearchUsersEndpoint}` +
             `?page=${search.page}&number=${search.count}`,

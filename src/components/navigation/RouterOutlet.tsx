@@ -8,9 +8,10 @@ import { ValidateCode } from "../authentication/ValidateCode";
 import { StartPage } from "../home/StartPage";
 import { CreateTour } from "../tourEditing/CreateTour";
 import { EditTour } from "../tourEditing/EditTour";
-import { UserProfile } from "../user/UserProfile";
+import { UserSettings } from "../user/UserSettings";
 import { AdminPage } from "../userManagement/AdminPage";
 import { ResetPassword } from "../authentication/ResetPassword";
+import { UserProfile } from "../user/UserProfile";
 
 
 export const RouterOutlet: FunctionComponent = () => {
@@ -24,7 +25,8 @@ export const RouterOutlet: FunctionComponent = () => {
 
         <Route path={Paths.AdminPage} element={<AdminPage />} />
 
-        <Route path={Paths.UserPage} element={<UserProfile />} />
+        <Route path={Paths.UserSettingsPage} element={<UserSettings />} />
+        <Route path={Paths.UserProfilePage} element={<UserProfile />} />
         
         <Route path={Paths.CreateTourPage} element={<CreateTour />} />
         <Route path={Paths.EditTourPage} element={<EditTour />} />

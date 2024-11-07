@@ -1,30 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/userDto";
 import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
-import { changeUsernameRequest, deleteProfilePictureRequest, deleteUserRequest, loadLoggedInUser, registerRequest, searchUsers, setProfilePictureParametersRequest, uploadProfilePictureRequest } from "./userThunk"
-import { UserReferenceDto } from "../dtos/userReferenceDto";
-import { PaginationState } from "./paginationState";
+import { changeUsernameRequest, deleteProfilePictureRequest, deleteUserRequest, loadLoggedInUser, registerRequest, setProfilePictureParametersRequest, uploadProfilePictureRequest } from "./userThunk";
 
 
 export interface IAuthState {
     loading: boolean;
     user?: UserDto;
-    afterLoginPath?: string;
     fetchUserAttempted: boolean;
-    users: UserReferenceDto[];
-    userPagination: PaginationState;
 }
 
 const initialState: IAuthState = {
     loading: false,
-    fetchUserAttempted: false,
-    users: [],
-    userPagination: {
-        page: 1,
-        itemsPerPage: 10,
-        totalPages: 1,
-        totalItems: 1
-    }
+    fetchUserAttempted: false
 }
 
 export const authStateSlice = createSlice({
@@ -121,21 +109,7 @@ export const authStateSlice = createSlice({
         builder.addCase(deleteUserRequest.rejected, (state) => {
             state.loading = false;
         })
-
-        builder.addCase(searchUsers.pending, (state) => {
-            state.loading = true;
-        })
-        builder.addCase(searchUsers.fulfilled, (state, action) => {
-            state.users = action.payload.items;
-            state.userPagination.totalItems = action.payload.totalItems;
-            state.userPagination.page = action.payload.page;
-            state.userPagination.totalPages = action.payload.totalPages
-            state.loading = false;
-        })
-        builder.addCase(searchUsers.rejected, (state) => {
-            state.loading = false;
-        })
-
+        
         builder.addCase(changePasswordRequest.pending, (state) => {
             state.loading = true;
         })
