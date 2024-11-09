@@ -50,7 +50,7 @@ export const NewTrackItem: FunctionComponent<NewTrackItemProps> = (props) => {
                 onChange={v => setTrackName(v)} validCallback={v => setTrackNameValid(v)} />
         </td>
         <td>
-            <ValidatingNumberInput name='Tour Position' min={0} max={10_000} value={props.initialPosition}
+            <ValidatingNumberInput width={50} name='Tour Position' min={0} max={10_000} value={props.initialPosition}
                 onChange={p => setTourPosition(p)} validCallback={v => setTourPositionValid(v)} />
         </td>
         <td>

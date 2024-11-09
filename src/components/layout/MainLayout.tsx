@@ -68,7 +68,12 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                     <Navbar closeSidebar={() => setSidebarOpen(false)} />
                 </div>
             </SwipeableDrawer>
-            <div className="flex-1 overflow-y-scroll h-full main-content">
+            <div className="flex-1 overflow-y-scroll h-full main-content flex flex-col">
+                {
+                    location.pathname !== '/' ?
+                        <div className="placeholder h-12"></div>
+                        : <></>
+                }
                 {props.children}
             </div>
             <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip`}>

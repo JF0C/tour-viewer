@@ -60,7 +60,8 @@ export const TrackListItem: FunctionComponent<TrackListItemProps> = (props) => {
 
     return <tr key={'track' + props.track.id}>
         <td>
-            <BaseConfirmModal disableConfirm={!trackNameValid} onConfirm={changeTrackName} buttonContent={<>{props.track.name}</>}>
+            <BaseConfirmModal disableConfirm={!trackNameValid} onConfirm={changeTrackName} 
+                buttonContent={<div className="truncate max-w-28 md:max-w-full">{props.track.name}</div>}>
                 <div>
                     <div>Change Track Name</div>
                     <ValidatingInput inputType='text' name='Track Name' onChange={setChangedTrackName}

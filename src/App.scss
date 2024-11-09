@@ -1,4 +1,4 @@
-$base-color: #1c1d25;
+$primary: #1c1d25;
 $secondary: rgb(64, 59, 51);
 
 .App {
@@ -11,7 +11,7 @@ $secondary: rgb(64, 59, 51);
 }
 
 .App-header {
-  background-color: $base-color;
+  background-color: $primary;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,6 +19,10 @@ $secondary: rgb(64, 59, 51);
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.bg-primary {
+  background-color: $primary;
 }
 
 .App-link {
@@ -60,7 +64,7 @@ $secondary: rgb(64, 59, 51);
 }
 
 .base-modal {
-  background-color: $base-color;
+  background-color: $primary;
 }
 
 th {
@@ -170,15 +174,16 @@ td {
 }
 
 .leaflet-popup-content-wrapper {
-  background-color: $base-color;
+  background-color: $primary;
   color: white;
 }
 .leaflet-popup-tip {
-  background-color: $base-color;
+  background-color: $primary;
 }
 
 .MuiMenu-list {
   background-color: $secondary;
+  color: white;
 }
 
 .MuiInputBase-root input {

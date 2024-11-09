@@ -9,6 +9,7 @@ export type ValidatingNumberInputProps = {
     max?: number
     customValidator?: (value: number) => string | null
     validCallback?: (valid: boolean) => void
+    width?: number
 }
 
 export const ValidatingNumberInput: FunctionComponent<ValidatingNumberInputProps> = (props) => {
@@ -44,7 +45,7 @@ export const ValidatingNumberInput: FunctionComponent<ValidatingNumberInputProps
     }
 
     return <div className="flex flex-col">
-        <Input sx={{fontSize: '16px', width: '80px'}} defaultValue={props.value} onChange={(e) => validate(Number(e.target.value))} type='number' />
+        <Input sx={{fontSize: '16px', width: props.width ?? '80px'}} defaultValue={props.value} onChange={(e) => validate(Number(e.target.value))} type='number' />
         <div className="text-xs" style={{color: 'red'}}>{ errorMessage }</div>
     </div>
 }
