@@ -47,7 +47,7 @@ export const BlogPostTrackSelector: FunctionComponent = () => {
         <InputLabel id="track-select-label">Track</InputLabel>
         <Select
             labelId="track-select-label"
-            id="track-select"
+            id="blogpost-track-select"
             value={blogPost.trackId}
             label="Track"
             onChange={(e) => setTrack(e.target.value)}

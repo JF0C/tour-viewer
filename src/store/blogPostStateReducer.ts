@@ -18,6 +18,7 @@ export interface IBlogPostState {
     mapCenter?: CoordinatesDto;
     zoomLevel: number;
     clickedEvent: ClickedEvent;
+    fullSizeImages: string[];
 }
 
 const initialState: IBlogPostState = {
@@ -26,7 +27,8 @@ const initialState: IBlogPostState = {
     clickedEvent: {
         time: 0
     },
-    zoomLevel: 13
+    zoomLevel: 13,
+    fullSizeImages: []
 }
 
 export const BlogPostSlice = createSlice({
@@ -85,6 +87,9 @@ export const BlogPostSlice = createSlice({
                     state.editingBlogPost.images.push(action.payload);
                 }
             }
+        },
+        setFullSizeImages(state, action: PayloadAction<string[]>) {
+            state.fullSizeImages = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -155,5 +160,5 @@ export const blogPostStateReducer = BlogPostSlice.reducer;
 export const { setEditingBlogpost, changeEditingBlogpostPosition, changeEditingBlogpostTrack,
     changeEditingBlogpostTitle, changeEditingBlogpostMessage, addImageReferenceToEditingBlogpost,
     setMarkerPosition, setMapCenter, resetCoordinatesChanged, setClickedEvent, setZoomLevel,
-    setSelectedBlogpost
+    setSelectedBlogpost, setFullSizeImages
 } = BlogPostSlice.actions

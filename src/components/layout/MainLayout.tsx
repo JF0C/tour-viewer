@@ -5,13 +5,13 @@ import { FunctionComponent, ReactNode, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
+import { BlogPostDetails } from "../blogPost/BlogPostDetails";
 import { BlogPostEditor } from "../blogPost/BlogPostEditor";
 import { Navbar } from "../navigation/Navbar";
+import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
 import { UserIcon } from "../user/UserIcon";
-import { BlogPostDetails } from "../blogPost/BlogPostDetails";
-import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -68,7 +68,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                     <Navbar closeSidebar={() => setSidebarOpen(false)} />
                 </div>
             </SwipeableDrawer>
-            <div className="flex-1 overflow-y-scroll h-full main-content flex flex-col">
+            <div className="main-content flex-1 overflow-y-scroll h-full flex flex-col">
                 {
                     location.pathname !== '/' ?
                         <div className="placeholder h-12"></div>

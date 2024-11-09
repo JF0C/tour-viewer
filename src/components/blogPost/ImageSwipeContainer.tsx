@@ -5,12 +5,17 @@ import { FunctionComponent, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { bindKeyboard } from "react-swipeable-views-utils";
 import { ApiUrls } from "../../constants/ApiUrls";
+import { useAppDispatch } from "../../store/store";
+import { setFullSizeImages } from "../../store/blogPostStateReducer";
 
 export type ImageSwipeContainerProps = {
     images: string[];
+    allowFullSizeView?: boolean;
+    rounded?: boolean;
 }
 
 export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = (props) => {
+    const dispatch = useAppDispatch();
     const [index, setIndex] = useState(0);
     const KeyboardSwipeable = bindKeyboard(SwipeableViews);
     const imageCount = props.images.length;
@@ -27,10 +32,28 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
         setIndex(index + 1);
     }
 
+    const showFullSize = () => {
+        console.log('showing full size images')
+        if (!props.allowFullSizeView) {
+            return;
+        }
+        dispatch(setFullSizeImages(props.images));
+    }
+
     return <KeyboardSwipeable index={index} enableMouseEvents onChangeIndex={(index) => setIndex(index)}>
         {
             props.images.map(i =>
                 <div key={i}>
+                    {
+                        props.allowFullSizeView ? 
+                        <div className="absolute top-0 w-full h-full flex justify-center items-center">
+                            <Button onClick={showFullSize} className="mx-8 border border-white h-full w-full">
+                               
+
+                            </Button>
+                        </div>
+                        : <></>
+                    }
                     {
                         index > 0 ?
                         <div className="absolute top-0 h-full flex flex-col justify-center">
@@ -50,8 +73,9 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         : <></>
                     }
 
-                    <img key={i} style={{pointerEvents: 'none'}} 
-                        className="w-full" src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
+                    <img key={i} style={{pointerEvents: 'none'}}
+                        className={`w-full ${props.rounded ? 'rounded-lg' : ''}`}
+                        src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
                 </div>
             )
         }

@@ -13,6 +13,9 @@ export const UserTourList: FunctionComponent<UserTourListProps> = (props) => {
     }
 
     return <div>
+        <div className="font-bold">
+            Tours
+        </div>
         {
             props.user.tours.items.map(t => <TourListItem tour={t} onSelected={() => {}}/>)
         }

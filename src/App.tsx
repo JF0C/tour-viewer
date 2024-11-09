@@ -9,6 +9,7 @@ import { RouterOutlet } from './components/navigation/RouterOutlet';
 import { ApiUrls } from './constants/ApiUrls';
 import theme from './materialUiConfig';
 import { store } from './store/store';
+import { FullSizeImageView } from './components/shared/FullSizeImageView';
 
 function App() {
   if (document.location.href.includes('localhost:3000')) {
@@ -27,6 +28,7 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <BrowserRouter>
             <MainLayout>
+              <FullSizeImageView />
               <RouterOutlet />
             </MainLayout>
           </BrowserRouter>

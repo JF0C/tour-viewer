@@ -4,6 +4,8 @@ import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { loadUserDetail } from "../../store/stateHelpers";
 import { ProfilePicture } from "./ProfilePicture";
 import { UserTourList } from "./UserTourList";
+import { BigFormLayout } from "../layout/BigFormLayout";
+import { UserBlogPostList } from "./UserBlogPostList";
 
 export const UserProfile: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -21,17 +23,17 @@ export const UserProfile: FunctionComponent = () => {
         loadUserDetail(dispatch, userState.selectedUser);
     }
 
-    return <div className="h-full">
+    return <BigFormLayout>
         <div className="flex flex-row justify-center">
             <ProfilePicture user={userState.selectedUser} size={300} />
         </div>
-        <div className="flex flex-row flex-wrap">
-            <div className="w-full md:w-50">
-                <UserTourList user={userState.selectedUser}/>
+        <div className="flex flex-row flex-wrap w-full justify-between">
+            <div className="w-full md:max-w-96">
+                <UserTourList user={userState.selectedUser} />
             </div>
-            <div className="w-full md:w-50">
-                other half
+            <div className="w-full md:max-w-96">
+                <UserBlogPostList user={userState.selectedUser} />
             </div>
         </div>
-    </div>
+    </BigFormLayout>
 }

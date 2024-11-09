@@ -66,7 +66,7 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
     }
 
     return <div>
-        Coordinates: <br />
+        Coordinates:&nbsp;
         {blogPost.latitude.toFixed(4)}, {blogPost.longitude.toFixed(4)}
         <Button onClick={startEditingBlogPostTrack}>
             <FontAwesomeIcon icon={faLocation} />

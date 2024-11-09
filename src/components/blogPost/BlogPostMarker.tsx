@@ -46,7 +46,7 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
                 <div className="font-bold text-xl">
                     {props.blogPost.title}
                 </div>
-                <ImageSwipeContainer images={props.blogPost.images?.map(i => i.imageId) ?? []}/>
+                <ImageSwipeContainer allowFullSizeView images={props.blogPost.images?.map(i => i.imageId) ?? []}/>
                 <div>
                     <Button onClick={() => dispatch(setSelectedBlogpost(props.blogPost))}>
                         <FontAwesomeIcon icon={faEye} />
