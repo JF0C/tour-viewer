@@ -11,15 +11,11 @@ export const FullSizeImageView: FunctionComponent = () => {
     const closeFullSizeImages = () => {
         dispatch(setFullSizeImages([]));
     }
-    if (images) {
-        console.log(images)
-    }
 
     return <Modal className="px-4 md:px-14 flex justify-center items-center" 
         open={images.length > 0} onClose={closeFullSizeImages}>
-        <div className="w-96 h-96">
+        <div className="w-max-96 h-max-42 flex flex-col justify-center" >
             <ImageSwipeContainer images={images} rounded/>
-            
         </div>
     </Modal>
 }

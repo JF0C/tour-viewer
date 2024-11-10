@@ -21,7 +21,6 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
     const markerPosition = useAppSelector((state) => state.blog.markerPosition);
 
     if (editingId === props.blogPost.id && markerPosition) {
-        console.log("editing location of blog post " + props.blogPost.title)
         return <Marker icon={MarkerIcons.postOld}
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]} />
     }
