@@ -20,6 +20,7 @@ export interface IBlogPostState {
     zoomLevel: number;
     clickedEvent: ClickedEvent;
     fullSizeImages: string[];
+    openMarker?: number;
 }
 
 const initialState: IBlogPostState = {
@@ -58,6 +59,9 @@ export const BlogPostSlice = createSlice({
         },
         setMapCenter(state, action: PayloadAction<CoordinatesDto | undefined>) {
             state.mapCenter = action.payload;
+        },
+        setOpenMarker(state, action: PayloadAction<number | undefined>) {
+            state.openMarker = action.payload
         },
         changeEditingBlogpostPosition(state, action: PayloadAction<{ latitude: number, longitude: number }>) {
             if (state.editingBlogPost) {
@@ -181,5 +185,5 @@ export const blogPostStateReducer = BlogPostSlice.reducer;
 export const { setEditingBlogpost, changeEditingBlogpostPosition, changeEditingBlogpostTrack,
     changeEditingBlogpostTitle, changeEditingBlogpostMessage, addImageReferenceToEditingBlogpost,
     setMarkerPosition, setMapCenter, resetCoordinatesChanged, setClickedEvent, setZoomLevel,
-    setSelectedBlogpost, setFullSizeImages
+    setSelectedBlogpost, setFullSizeImages, setOpenMarker
 } = BlogPostSlice.actions

@@ -29,7 +29,7 @@ export const BlogPostDetails: FunctionComponent<BlogPostDetailsProps> = (props) 
             </Button>
         </div>
         <div className="flex flex-wrap pb-2">
-            <Participant id={props.blogPost.author.id} name={props.blogPost.author.username} canRemove={false} />
+            <Participant user={props.blogPost.author} linkToProfile canRemove={false} />
         </div>
         <ImageSwipeContainer images={props.blogPost.images.map(i => i.imageId)} />
         <div>

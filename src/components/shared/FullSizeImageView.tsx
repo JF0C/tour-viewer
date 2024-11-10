@@ -14,8 +14,8 @@ export const FullSizeImageView: FunctionComponent = () => {
 
     return <Modal className="px-4 md:px-14 flex justify-center items-center" 
         open={images.length > 0} onClose={closeFullSizeImages}>
-        <div className="shrink flex flex-row w-full">
-            <ImageSwipeContainer images={images} rounded />
+        <div className="flex flex-row w-full">
+            <ImageSwipeContainer images={images} rounded onClose={closeFullSizeImages} />
         </div>
     </Modal>
 }

@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useMap } from "react-leaflet";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setBoundsSet } from "../../store/trackStateReducer";
+import { setBoundsSet, setTargetCoordinates } from "../../store/trackStateReducer";
 import { LatLng, LatLngBounds } from "leaflet";
 import { Layers } from "../../constants/Layers";
 
@@ -44,6 +44,13 @@ export const TourBounds: FunctionComponent = () => {
                 new LatLng(south ?? 0, west ?? 0)
             );
             map.fitBounds(maxBounds);
+        }
+    }
+    else {
+        const coord = trackState.targetCoordinates;
+        if (coord) {
+            map.flyTo(new LatLng(coord.latitude, coord.longitude), 14);
+            dispatch(setTargetCoordinates());
         }
     }
     return <></>

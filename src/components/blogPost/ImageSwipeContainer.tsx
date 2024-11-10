@@ -1,4 +1,4 @@
-import { faChevronLeft, faChevronRight, faImage, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faImage, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent, useState } from "react";
@@ -14,7 +14,7 @@ export type ImageSwipeContainerProps = {
     allowFullSizeView?: boolean;
     rounded?: boolean;
     onDelete?: (imageId: string) => void;
-    onImageClicked?: () => void;
+    onClose?: () => void;
 }
 
 export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = (props) => {
@@ -50,8 +50,16 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         className={`swipe-container-image full-size-image ${props.rounded ? 'rounded-lg' : ''}`}
                         src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
 
-                    <div onClick={() => props.onImageClicked?.()} 
-                        className={`absolute top-0 h-full w-full`}>
+                    <div className={`absolute top-0 h-full w-full`}>
+                        {
+                            props.onClose ? 
+                            <div className="absolute top-0 right-0">
+                                <Button onClick={() => props.onClose?.()} color='error'>
+                                    <FontAwesomeIcon icon={faX} />
+                                </Button>
+                            </div>
+                            :<></>
+                        }
                         {
                             props.allowFullSizeView ?
                                 <div className="absolute top-0 w-full h-full flex justify-center items-center">

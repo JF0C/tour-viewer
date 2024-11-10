@@ -1,11 +1,11 @@
 import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { BlogPostDto } from "../../dtos/blogPostDto";
-import { setEditingBlogpost, setSelectedBlogpost } from "../../store/blogPostStateReducer";
+import { setEditingBlogpost, setOpenMarker, setSelectedBlogpost } from "../../store/blogPostStateReducer";
 import { isAllowedToEditBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ImageSwipeContainer } from "./ImageSwipeContainer";
@@ -19,6 +19,9 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
     const allowedToEdit = useAppSelector((state) => isAllowedToEditBlogpost(state, props.blogPost));
     const editingId = useAppSelector((state) => state.blog.editingBlogPost?.id);
     const markerPosition = useAppSelector((state) => state.blog.markerPosition);
+    const openMarker = useAppSelector((state) => state.blog.openMarker);
+
+    const markerRef = useRef<any>(null);
 
     if (editingId === props.blogPost.id && markerPosition) {
         return <Marker icon={MarkerIcons.postOld}
@@ -38,9 +41,14 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
         }))
     }
 
-    return <Marker icon={MarkerIcons.postWhite}
+    if (openMarker === props.blogPost.id && markerRef && markerRef.current) {
+        setTimeout(() => markerRef.current.openPopup(), 5000);
+        dispatch(setOpenMarker());
+    }
+
+    return <Marker icon={MarkerIcons.postWhite} ref={markerRef}
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]}>
-        <Popup className="marker-popup">
+        <Popup className="marker-popup" >
             <div className="flex flex-col justify-center items-center">
                 <div className="font-bold text-xl">
                     {props.blogPost.title}

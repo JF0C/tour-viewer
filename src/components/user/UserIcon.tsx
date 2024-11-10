@@ -34,8 +34,14 @@ export const UserIcon: FunctionComponent = () => {
     }
 
     const loadUserProfile = () => {
+        setMenuOpen(false);
         dispatch(setUserDetail(user));
         navigate(Paths.UserProfilePage);
+    }
+
+    const openUserSettings = () => {
+        navigate(Paths.UserSettingsPage);
+        setMenuOpen(false);
     }
 
     return <>
@@ -53,7 +59,7 @@ export const UserIcon: FunctionComponent = () => {
                     &nbsp;Profile
                 </Button>
             </MenuItem>
-            <MenuItem onClick={() => navigate(Paths.UserSettingsPage)}>
+            <MenuItem onClick={openUserSettings}>
                 <Button>
                     <FontAwesomeIcon icon={faCog} />
                     &nbsp;Settings

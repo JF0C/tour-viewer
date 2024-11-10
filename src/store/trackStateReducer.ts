@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest, loadTrackRequest } from "./trackThunk";
 import { TrackData } from "../data/trackData";
+import { CoordinatesDto } from "../dtos/coordinatesDto";
 
 export interface BoundsInternal {
     south: number;
@@ -14,12 +15,13 @@ export interface ITrackEntity {
     data: TrackData;
     selected: boolean;
     loading: boolean;
-    bounds?: BoundsInternal
+    bounds?: BoundsInternal;
 }
 
 export interface ITrackState {
     loading: boolean;
     boundsSet: boolean;
+    targetCoordinates?: CoordinatesDto;
     tracks: ITrackEntity[];
 }
 
@@ -92,6 +94,9 @@ export const trackStateSlice = createSlice({
         },
         resetBoundsSet(state) {
             state.boundsSet = false;
+        },
+        setTargetCoordinates(state, action: PayloadAction<CoordinatesDto | undefined>) {
+            state.targetCoordinates = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -181,5 +186,6 @@ export const {
     clearTracks,
     setBoundsSet,
     resetBoundsSet,
-    startLoadingTrack
+    startLoadingTrack,
+    setTargetCoordinates
 } = trackStateSlice.actions;

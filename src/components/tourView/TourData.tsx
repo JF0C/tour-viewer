@@ -96,7 +96,7 @@ export const TourData: FunctionComponent = () => {
                 <td colSpan={2} className="flex gap-2 flex-wrap">
                     {
                         tour?.participants.map(p =>
-                            <Participant key={'participant-' + p.id} name={p.username} id={p.id} canRemove={false} />)
+                            <Participant key={'participant-' + p.id} user={p} linkToProfile canRemove={false} />)
                     }
                 </td>
             </tr>

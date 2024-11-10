@@ -13,7 +13,7 @@ export const TourParticipants: FunctionComponent = () => {
     const canEdit = user?.roles.includes(Roles.Contributor) ?? false;
 
     return <div className="flex flex-row flex-wrap p-2 gap-2">
-        {tour.participants.map(p => <Participant key={'participant' + p.id} id={p.id} name={p.username} canRemove={canEdit} />)}
+        {tour.participants.map(p => <Participant key={'participant' + p.id} user={p} canRemove={canEdit} />)}
         {
             canEdit ?
             <BaseConfirmModal hideCancel confirmText={'Ok'} onConfirm={()=>{}} 

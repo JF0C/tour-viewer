@@ -24,9 +24,13 @@ export const UserProfile: FunctionComponent = () => {
     }
 
     return <BigFormLayout>
-        <div className="flex flex-row justify-center">
-            <ProfilePicture user={userState.selectedUser} size={300} />
-        </div>
+        {
+            userState.selectedUser.profilePictureId ? 
+            <div className="flex flex-row justify-center">
+                <ProfilePicture user={userState.selectedUser} size={300} />
+            </div>
+            : <></>
+        }
         <div className="flex flex-row flex-wrap w-full justify-between">
             <div className="w-full md:max-w-96">
                 <UserTourList user={userState.selectedUser} />
