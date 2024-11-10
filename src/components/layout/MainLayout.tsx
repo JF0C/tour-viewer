@@ -12,6 +12,7 @@ import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
 import { UserIcon } from "../user/UserIcon";
+import { getSelectedTourId } from "../../store/tourThunk";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -23,12 +24,16 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const isLoggedId = useAppSelector((state) => Boolean(state.auth.user));
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
     const selectedBlogPost = useAppSelector((state) => state.blog.selectedBlogPost);
+    const tourState = useAppSelector((state) => state.tour);
     const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost || Boolean(selectedBlogPost);
     const location = useLocation();
-    const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
+    const dataSelectorBarState = tourState.dataSelectorBarState;
 
     if (location.pathname !== "/" && dataSelectorBarState !== 'hide') {
         dispatch(setDataBarState('hide'));
+    }
+    if (tourState.defaultTourId === undefined && !tourState.loading) {
+        dispatch(getSelectedTourId());
     }
 
     return <div className="h-full main-layout flex flex-col">

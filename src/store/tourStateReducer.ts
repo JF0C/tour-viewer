@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserReferenceDto } from "../dtos/userReferenceDto";
 import { TourDto } from "../dtos/tourDto";
 import { PaginationState } from "./paginationState";
-import { createTourRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
+import { createTourRequest, deleteTourRequest, getSelectedTourId, loadTourRequest, renameTourRequest, searchTours, setSelectedTourId } from "./tourThunk";
 import { EditTrackDto } from "../dtos/editTrackDto";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 
@@ -17,6 +17,7 @@ export interface IEditTour {
 export interface ITourState {
     loading: boolean;
     tours: TourDto[];
+    defaultTourId?: number;
     selectedTour?: TourDto;
     tourPagination: PaginationState;
     showInfoBar: boolean;
@@ -189,6 +190,29 @@ export const tourStateSlice = createSlice({
             state.loading = false;
         })
         builder.addCase(createTrackRequest.rejected, (state) => {
+            state.loading = false;
+        })
+
+        builder.addCase(getSelectedTourId.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(getSelectedTourId.fulfilled, (state, action) =>{
+            state.loading = false;
+            state.defaultTourId = action.payload
+        })
+        builder.addCase(getSelectedTourId.rejected, (state) => {
+            state.loading = false;
+            state.defaultTourId = 0;
+        })
+
+        builder.addCase(setSelectedTourId.pending, (state) => {
+            state.loading = true;
+        })
+        builder.addCase(setSelectedTourId.fulfilled, (state, action) => {
+            state.loading = false;
+            state.defaultTourId = action.meta.arg;
+        })
+        builder.addCase(setSelectedTourId.rejected, (state) => {
             state.loading = false;
         })
     }

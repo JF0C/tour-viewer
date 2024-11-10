@@ -79,3 +79,15 @@ export const deleteTourRequest = createDeleteThunk<number>(
     'delete-tour',
     (tourId) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${tourId}`
 );
+
+export const getSelectedTourId = createGetThunk<number, void>(
+    'get-selected-tour-id',
+    () => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/SelectedId`,
+    async (response) => Number(await response.text())
+)
+
+export const setSelectedTourId = createPostThunk<number, number>(
+    'set-selected-tour-id',
+    (tourId) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/SelectedId/${tourId}`,
+    async (response) => Number(await response.text())
+)

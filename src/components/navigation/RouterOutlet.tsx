@@ -9,7 +9,7 @@ import { StartPage } from "../home/StartPage";
 import { CreateTour } from "../tourEditing/CreateTour";
 import { EditTour } from "../tourEditing/EditTour";
 import { UserSettings } from "../user/UserSettings";
-import { AdminPage } from "../userManagement/AdminPage";
+import { AdminPage } from "../admin/AdminPage";
 import { ResetPassword } from "../authentication/ResetPassword";
 import { UserProfile } from "../user/UserProfile";
 
