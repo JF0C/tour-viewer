@@ -13,6 +13,7 @@ export const UserBlogPostList: FunctionComponent<UserBlogPostListProps> = (props
             {props.user.username} has no Blogposts
         </div>
     }
+    console.log(props.user.blogPosts);
 
     return  <div>
         <div className="font-bold">

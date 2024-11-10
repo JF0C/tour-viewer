@@ -6,6 +6,6 @@ export type TrackDto = EntityBaseDto & {
     tourPosition: number,
     name: string,
     fileReference: string,
-    tour: TourDto,
+    tour?: TourDto,
     blogPosts: BlogPostDto[]
 }

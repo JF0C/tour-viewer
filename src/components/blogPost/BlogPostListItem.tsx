@@ -20,14 +20,16 @@ export const BlogPostListItem: FunctionComponent<BlogPostListItemProps> = (props
     const selectedTourId = useAppSelector((state) => state.tour.selectedTour?.id);
 
     const showBlogpostOnMap = () => {
-        if (selectedTourId !== props.blogPost.track.tour.id) {
-            dispatch(loadTourRequest(props.blogPost.track.tour.id))
-                .then(() => 
-                    setTimeout(() => {
-                        dispatch(setTargetCoordinates(props.blogPost.coordinates));
-                        dispatch(setOpenMarker(props.blogPost.id));
-                    }, 1000)
-                );
+        if (selectedTourId !== props.blogPost.track.tour?.id) {
+            if (props.blogPost.track.tour) {
+                dispatch(loadTourRequest(props.blogPost.track.tour.id))
+                    .then(() =>
+                        setTimeout(() => {
+                            dispatch(setTargetCoordinates(props.blogPost.coordinates));
+                            dispatch(setOpenMarker(props.blogPost.id));
+                        }, 1000)
+                    );
+            }
         }
         else {
             dispatch(setTargetCoordinates(props.blogPost.coordinates));
@@ -39,7 +41,7 @@ export const BlogPostListItem: FunctionComponent<BlogPostListItemProps> = (props
     return <div key={'blog-post-list-item-' + props.blogPost.id}
         className="flex flex-row justify-between items-center">
         <div className="flex-1">
-            [{props.blogPost.track.tour.name}]
+            [{props.blogPost.track.tour?.name}]
             &nbsp;
             {props.blogPost.title}
         </div>
@@ -49,10 +51,10 @@ export const BlogPostListItem: FunctionComponent<BlogPostListItemProps> = (props
         </Button>
         {
             props.blogPost.images.length > 0 ?
-            <Button onClick={() => dispatch(setFullSizeImages(props.blogPost.images.map(i => i.imageId)))}>
-                <FontAwesomeIcon icon={faImage}/>
-            </Button>
-            : <></>
+                <Button onClick={() => dispatch(setFullSizeImages(props.blogPost.images.map(i => i.imageId)))}>
+                    <FontAwesomeIcon icon={faImage} />
+                </Button>
+                : <></>
         }
     </div>
 }
