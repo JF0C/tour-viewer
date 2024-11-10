@@ -5,7 +5,7 @@ export class ApiUrls
     public static BaseUrl = '.'
     // public static BaseUrl = 'https://localhost:7271'
     public static readonly ImageEndpoint = '/img'
-    public static readonly ImageUploadEndpoint = '/Image'
+    public static readonly ImageControlEndpoint = '/Image'
 
     public static readonly UserEndpoint = '/User'
     public static readonly ChangeUsernameEndpoint = '/User/Username'

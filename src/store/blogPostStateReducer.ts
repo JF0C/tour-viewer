@@ -3,6 +3,7 @@ import { BlogPostDto } from "../dtos/blogPostDto";
 import { CoordinatesDto } from "../dtos/coordinatesDto";
 import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
 import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
+import { deleteImageRequest, uploadImageRequest } from "./filesThunk";
 
 export interface ClickedEvent {
     time: number;
@@ -150,6 +151,26 @@ export const BlogPostSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(deleteBlogPostRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(uploadImageRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(uploadImageRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(uploadImageRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(deleteImageRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteImageRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(deleteImageRequest.rejected, (state) => {
             state.loading = false;
         });
     }

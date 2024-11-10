@@ -2,13 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { FileUploadDto } from "../dtos/fileUploadDto";
 import { ApiUrls } from "../constants/ApiUrls";
 import http from 'axios';
+import { createDeleteThunk } from "./thunkBase";
 
-export const uploadImage = createAsyncThunk('upload/file',
+export const uploadImageRequest = createAsyncThunk('upload/file',
     async (fileUploadDto: FileUploadDto): Promise<string> => {
         const data = new FormData();
         data.append("file", fileUploadDto.file);
 
-        let url = `${ApiUrls.BaseUrl + ApiUrls.ImageUploadEndpoint}`;
+        let url = `${ApiUrls.BaseUrl + ApiUrls.ImageControlEndpoint}`;
         if (fileUploadDto.blogPostId !== undefined) {
             url += '/' + fileUploadDto.blogPostId;
         }
@@ -28,3 +29,8 @@ export const uploadImage = createAsyncThunk('upload/file',
         return response.data as string;
     }
 );
+
+export const deleteImageRequest = createDeleteThunk<string>(
+    'delete-image',
+    (imageId: string) => `${ApiUrls.BaseUrl + ApiUrls.ImageControlEndpoint}/${imageId}`
+)

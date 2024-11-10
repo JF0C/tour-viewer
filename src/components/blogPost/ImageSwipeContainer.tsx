@@ -1,4 +1,4 @@
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faImage, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent, useState } from "react";
@@ -7,17 +7,18 @@ import { bindKeyboard } from "react-swipeable-views-utils";
 import { ApiUrls } from "../../constants/ApiUrls";
 import { useAppDispatch } from "../../store/store";
 import { setFullSizeImages } from "../../store/blogPostStateReducer";
+import { ConfirmModal } from "../shared/ConfirmModal";
 
 export type ImageSwipeContainerProps = {
     images: string[];
     allowFullSizeView?: boolean;
     rounded?: boolean;
+    onDelete?: (imageId: string) => void;
 }
 
 export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = (props) => {
     const dispatch = useAppDispatch();
     const [index, setIndex] = useState(0);
-    const [imageClicked, setImageClicked] = useState(false);
     const KeyboardSwipeable = bindKeyboard(SwipeableViews);
     const imageCount = props.images.length;
     if (imageCount === 0) {
@@ -40,34 +41,44 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
         dispatch(setFullSizeImages(props.images));
     }
 
-    const containerClicked = () => {
-        console.log(imageClicked)
-    }
-
     return <KeyboardSwipeable index={index} enableMouseEvents onChangeIndex={(index) => setIndex(index)}>
         {
             props.images.map(i =>
-                <div key={i} className="h-full flex flex-col justify-center" onClick={containerClicked}>
-                    <img key={i} style={{ pointerEvents: 'none' }} onClick={() => setImageClicked(true)}
+                <div key={i} className="h-full flex flex-col justify-center">
+                    <img key={i} style={{ pointerEvents: 'none' }}
                         className={`swipe-container-image w-full ${props.rounded ? 'rounded-lg' : ''}`}
                         src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
 
-                    <div className="absolute top-0 h-full w-full">{
-                        index > 0 ?
-                            <div className="absolute top-0 h-full flex flex-col justify-center">
-                                <Button onClick={previousImage} sx={{ color: 'white', minWidth: '20px' }}>
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                </Button>
-                            </div>
-                            : <></>
-                    }
+                    <div className="absolute top-0 h-full w-full">
                         {
                             props.allowFullSizeView ?
                                 <div className="absolute top-0 w-full h-full flex justify-center items-center">
-                                    <Button onClick={showFullSize} className="mx-8 border border-white h-full w-full">
-
-
+                                    <div onClick={showFullSize} className="group mx-8 h-full w-full cursor-pointer
+                                        pointer-cursor flex justify-center items-center">
+                                        <FontAwesomeIcon className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" icon={faImage} />
+                                    </div>
+                                </div>
+                                : <></>
+                        }
+                        {
+                            index > 0 ?
+                                <div className="absolute top-0 h-full flex flex-col justify-center">
+                                    <Button onClick={previousImage} sx={{ color: 'white', minWidth: '20px' }}>
+                                        <FontAwesomeIcon icon={faChevronLeft} />
                                     </Button>
+                                </div>
+                                : <></>
+                        }
+                        {
+                            props.onDelete ?
+                                <div className="absolute bottom-0 w-full h-12 flex">
+                                    <div className="mx-8 h-full w-full flex justify-center items-center">
+                                        <ConfirmModal buttonContent={<FontAwesomeIcon icon={faTrash} />}
+                                            onConfirm={() => props.onDelete?.(i)}
+                                            type='error'
+                                            message="Do you really want to delete this image?"
+                                            />
+                                    </div>
                                 </div>
                                 : <></>
                         }

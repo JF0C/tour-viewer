@@ -8,7 +8,7 @@ import { Roles } from '../../constants/Rolenames';
 import { setEditingBlogpost, setMarkerPosition } from '../../store/blogPostStateReducer';
 import { isAllowedToCreate } from '../../store/stateHelpers';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { setEditingTour } from '../../store/tourStateReducer';
+import { resetEditingTour, setEditingTour } from '../../store/tourStateReducer';
 import { resetBoundsSet } from '../../store/trackStateReducer';
 import { TourSelector } from '../tourView/TourSelector';
 
@@ -36,6 +36,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         if (!mapCenter || !tour) {
             return;
         }
+        props.closeSidebar();
         dispatch(setEditingBlogpost({
             id: 0,
             trackId: tour.tracks[0].id,
@@ -52,6 +53,11 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         }))
     }
 
+    const startCreatingTour = () => {
+        props.closeSidebar();
+        dispatch(resetEditingTour());
+    }
+
     return <ul className='nav-list flex flex-col gap-2 items-start'>
         <NavLink onClick={() => { props.closeSidebar(); dispatch(resetBoundsSet()) }} to={Paths.HomePage}>
             <Button>
@@ -62,7 +68,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         <TourSelector showIcon title='Select Tour' onSelected={props.closeSidebar} />
         {
             isContributor ?
-                <NavLink to={Paths.CreateTourPage} onClick={() => props.closeSidebar()}>
+                <NavLink to={Paths.CreateTourPage} onClick={startCreatingTour}>
                     <Button>
                         <FontAwesomeIcon icon={faPlus} />
                         &nbsp;Create Tour

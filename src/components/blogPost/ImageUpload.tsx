@@ -4,10 +4,11 @@ import { Button } from "@mui/material";
 import { AxiosProgressEvent } from "axios";
 import { FunctionComponent, useRef } from "react";
 import { addImageReferenceToEditingBlogpost } from "../../store/blogPostStateReducer";
-import { uploadImage } from "../../store/filesThunk";
+import { deleteImageRequest, uploadImageRequest } from "../../store/filesThunk";
+import { updateEditingBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { ImageSwipeContainer } from "./ImageSwipeContainer";
 import { loadTourRequest } from "../../store/tourThunk";
+import { ImageSwipeContainer } from "./ImageSwipeContainer";
 
 export const ImageUpload: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -27,20 +28,41 @@ export const ImageUpload: FunctionComponent = () => {
             if (targetBlogPostId === 0) {
                 targetBlogPostId = undefined;
             }
-            dispatch(uploadImage({ file: file, blogPostId: targetBlogPostId, onChunk: onProgress }))
+            dispatch(uploadImageRequest({ file: file, blogPostId: targetBlogPostId, onChunk: onProgress }))
                 .unwrap()
                 .then((response) => {
                     dispatch(addImageReferenceToEditingBlogpost(response));
                     if (tourId || tourId === 0) {
-                        dispatch(loadTourRequest(tourId));
+                        dispatch(loadTourRequest(tourId))
+                            .unwrap()
+                            .then((tour) => {
+                                if (blogPostId) {
+                                    updateEditingBlogpost(dispatch, tour, blogPostId);
+                                }
+                            })
                     }
                 });
         }
     }
 
+    const deleteImage = (imageId: string) => {
+        dispatch(deleteImageRequest(imageId))
+            .unwrap()
+            .then(() => {
+                if (tourId || tourId === 0) {
+                    dispatch(loadTourRequest(tourId))
+                    .unwrap()
+                    .then((tour) => {
+                        if (blogPostId) {
+                            updateEditingBlogpost(dispatch, tour, blogPostId);
+                        }
+                    })
+                }
+            })
+    }
 
     return <div>
-        <ImageSwipeContainer images={images} />
+        <ImageSwipeContainer images={images} onDelete={deleteImage} />
         <input ref={fileInputRef} onChange={() => upload()}
             className="hidden" type="file" name="data" accept="image/jpeg" />
         <Button onClick={() => fileInputRef.current?.click()}>
