@@ -177,6 +177,12 @@ td {
   background-color: rgba(56, 116, 203, 0.7) !important;
 }
 
+@media (min-width: 768px) {
+  .full-size-image {
+    max-height: 80vh;
+  }
+}
+
 .leaflet-popup-content-wrapper {
   background-color: $primary;
   color: white;

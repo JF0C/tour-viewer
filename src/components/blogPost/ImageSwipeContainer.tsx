@@ -14,6 +14,7 @@ export type ImageSwipeContainerProps = {
     allowFullSizeView?: boolean;
     rounded?: boolean;
     onDelete?: (imageId: string) => void;
+    onImageClicked?: () => void;
 }
 
 export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = (props) => {
@@ -44,12 +45,13 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
     return <KeyboardSwipeable index={index} enableMouseEvents onChangeIndex={(index) => setIndex(index)}>
         {
             props.images.map(i =>
-                <div key={i} className="h-full flex flex-col justify-center">
+                <div key={i} className="h-full flex flex-col justify-center items-center">
                     <img key={i} style={{ pointerEvents: 'none' }}
-                        className={`swipe-container-image w-full ${props.rounded ? 'rounded-lg' : ''}`}
+                        className={`swipe-container-image full-size-image ${props.rounded ? 'rounded-lg' : ''}`}
                         src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
 
-                    <div className="absolute top-0 h-full w-full">
+                    <div onClick={() => props.onImageClicked?.()} 
+                        className={`absolute top-0 h-full w-full`}>
                         {
                             props.allowFullSizeView ?
                                 <div className="absolute top-0 w-full h-full flex justify-center items-center">
@@ -77,7 +79,7 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                                             onConfirm={() => props.onDelete?.(i)}
                                             type='error'
                                             message="Do you really want to delete this image?"
-                                            />
+                                        />
                                     </div>
                                 </div>
                                 : <></>
