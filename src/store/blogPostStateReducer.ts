@@ -20,6 +20,7 @@ export interface IBlogPostState {
     zoomLevel: number;
     clickedEvent: ClickedEvent;
     fullSizeImages: string[];
+    selectedFullSizeImage?: string;
     openMarker?: number;
 }
 
@@ -93,8 +94,9 @@ export const BlogPostSlice = createSlice({
                 }
             }
         },
-        setFullSizeImages(state, action: PayloadAction<string[]>) {
-            state.fullSizeImages = action.payload
+        setFullSizeImages(state, action: PayloadAction<{items: string[], selectedItem?: string}>) {
+            state.fullSizeImages = action.payload.items;
+            state.selectedFullSizeImage = action.payload.selectedItem;
         }
     },
     extraReducers: (builder) => {

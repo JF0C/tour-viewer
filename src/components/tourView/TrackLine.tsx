@@ -74,7 +74,9 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
     return <>
         {
             props.startMarker ?
-                <Marker icon={MarkerIcons.blue} position={[props.track.data.points[0].latitude, props.track.data.points[0].longitude]}>
+                <Marker icon={MarkerIcons.blue}
+                    position={[props.track.data.points[0].latitude, 
+                        props.track.data.points[0].longitude]}>
                     <Popup>
                         <div className="flex flex-col justify-center items-center">
                             <div className="font-bold text-xl">

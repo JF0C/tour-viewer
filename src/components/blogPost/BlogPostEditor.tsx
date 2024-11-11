@@ -1,19 +1,20 @@
-import { faFloppyDisk, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { changeEditingBlogpostMessage, changeEditingBlogpostTitle, setEditingBlogpost, setMarkerPosition } from "../../store/blogPostStateReducer";
 import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest } from "../../store/blogPostThunk";
+import { isAllowedToCreate, updateEditingBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
+import { ConfirmModal } from "../shared/ConfirmModal";
 import { EditableNameLabel } from "../shared/EditableNameLabel";
 import { EditableTextField } from "../shared/EditableTextField";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { ImageUpload } from "./ImageUpload";
+import { BlogPostEditButtons } from "./BlogPostEditButtons";
 import { BlogPostLocationEditor } from "./BlogPostLocationEditor";
-import { ConfirmModal } from "../shared/ConfirmModal";
-import { isAllowedToCreate, updateEditingBlogpost } from "../../store/stateHelpers";
 import { BlogPostTrackSelector } from "./BlogPostTrackSelector";
+import { ImageUpload } from "./ImageUpload";
 
 export const BlogPostEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -88,8 +89,8 @@ export const BlogPostEditor: FunctionComponent = () => {
             });
     }
 
-    return <div className="flex flex-col h-full">
-        <div className="flex flex-row">
+    return <div className="flex flex-col h-full info-bar-drawer">
+        <div className="flex flex-row title-bar">
             <div className="flex-1">
                 <EditableNameLabel value={blogPost.title === '' ? 'New Blog Post' : blogPost.title}
                     className="font-bold text-xl"
@@ -101,42 +102,34 @@ export const BlogPostEditor: FunctionComponent = () => {
             {
                 blogPost.id === 0 ?
                     <ConfirmModal message="Unsafed changes might get lost." type="error"
-                    onConfirm={() => dispatch(setEditingBlogpost(undefined))}
-                    buttonContent={<>
-                        <FontAwesomeIcon icon={faX} />
-                    </>}/>
+                        onConfirm={() => dispatch(setEditingBlogpost(undefined))}
+                        buttonContent={<>
+                            <FontAwesomeIcon icon={faX} />
+                        </>} />
                     :
                     <Button onClick={() => dispatch(setEditingBlogpost(undefined))}>
                         <FontAwesomeIcon icon={faX} />
                     </Button>
             }
         </div>
-        <div className="flex-1 py-2">
+        <div className="flex-1 py-2 overflow-y-scroll">
             <ImageUpload />
             <BlogPostTrackSelector />
             <BlogPostLocationEditor />
             <EditableTextField className="flex-none w-full" value={blogPost.message === '' ? '<no message>' : blogPost.message}
                 rows={10} name='Blog Post Message' onApply={changeMessage} minLength={0} maxLength={1000} />
+
+            <div className="flex md:hidden flex-row gap-2 justify-center">
+                <BlogPostEditButtons blogPost={blogPost}
+                    onSave={submitBlogPost}
+                    onDelete={deleteBlogPost} />
+            </div>
         </div>
 
-        <div className="flex flex-row gap-2 justify-center">
-            {
-                blogPost.id === 0 ?
-                    <Button className="w-full" color='success' onClick={submitBlogPost}>
-                        <FontAwesomeIcon icon={faFloppyDisk} />
-                        &nbsp;Save
-                    </Button>
-                    : <></>
-            }
-            {
-                blogPost.id !== 0 ?
-                    <ConfirmModal message={`Do you really want to delete blog post ${blogPost.title}`}
-                        onConfirm={deleteBlogPost} type='error' buttonContent={<>
-                            <FontAwesomeIcon icon={faTrash} />
-                            &nbsp;Delete
-                        </>} />
-                    : <></>
-            }
+        <div className="hidden md:flex flex-row gap-2 justify-center">
+            <BlogPostEditButtons blogPost={blogPost}
+                onSave={submitBlogPost}
+                onDelete={deleteBlogPost} />
         </div>
     </div>
 }

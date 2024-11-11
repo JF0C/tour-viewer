@@ -51,7 +51,9 @@ export const BlogPostListItem: FunctionComponent<BlogPostListItemProps> = (props
         </Button>
         {
             props.blogPost.images.length > 0 ?
-                <Button onClick={() => dispatch(setFullSizeImages(props.blogPost.images.map(i => i.imageId)))}>
+                <Button onClick={() => dispatch(setFullSizeImages({
+                    items: props.blogPost.images.map(i => i.imageId)
+                }))}>
                     <FontAwesomeIcon icon={faImage} />
                 </Button>
                 : <></>

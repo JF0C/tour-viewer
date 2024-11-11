@@ -34,7 +34,7 @@ export const Participant: FunctionComponent<ParticipantProps> = (props) => {
     return <div className={`flex flex-row border rounded-full ps-2 items-center ${props.canRemove?'':'pe-2'}`}>
         {
             props.linkToProfile ? 
-            <Button onClick={openProfile}>{props.user.username}</Button>
+            <Button sx={{ minWidth: 0, minHeight: 0, margin: 0, padding: 0 }} onClick={openProfile}>{props.user.username}</Button>
             : <div>{props.user.username}</div>
         }
         {

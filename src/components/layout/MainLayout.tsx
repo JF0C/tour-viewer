@@ -5,14 +5,12 @@ import { FunctionComponent, ReactNode, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
-import { BlogPostDetails } from "../blogPost/BlogPostDetails";
-import { BlogPostEditor } from "../blogPost/BlogPostEditor";
+import { getSelectedTourId, loadTourRequest } from "../../store/tourThunk";
 import { Navbar } from "../navigation/Navbar";
 import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
-import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
 import { UserIcon } from "../user/UserIcon";
-import { getSelectedTourId, loadTourRequest } from "../../store/tourThunk";
+import { Infobar } from "./Infobar";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -22,10 +20,8 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const dispatch = useAppDispatch();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const isLoggedId = useAppSelector((state) => Boolean(state.auth.user));
-    const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
-    const selectedBlogPost = useAppSelector((state) => state.blog.selectedBlogPost);
     const tourState = useAppSelector((state) => state.tour);
-    const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost || Boolean(selectedBlogPost);
+    
     const location = useLocation();
     const dataSelectorBarState = tourState.dataSelectorBarState;
 
@@ -86,15 +82,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                 }
                 {props.children}
             </div>
-            <div id="info-sidebar" className={`${infoBarVisible ? 'open' : ''} overflow-clip`}>
-                <div className="h-full p-2">
-                    {
-                        isEditingBlogPost ? <BlogPostEditor /> :
-                            selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost} /> :
-                                <TourDataSwipeContainer />
-                    }
-                </div>
-            </div>
+            <Infobar />
         </div>
     </div>
 }

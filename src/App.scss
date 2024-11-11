@@ -1,6 +1,9 @@
 $primary: #1c1d25;
 $secondary: rgb(64, 59, 51);
 
+$mobile-info-bar-height: 300px;
+$desktop-info-bar-width: 300px;
+
 .App {
   text-align: center;
   color: white;
@@ -190,6 +193,9 @@ td {
 .leaflet-popup-tip {
   background-color: $primary;
 }
+.leaflet-popup-close-button {
+  display: none;
+}
 
 .MuiMenu-list {
   background-color: $secondary;
@@ -198,4 +204,31 @@ td {
 
 .MuiInputBase-root input {
   color: white;
+}
+
+.info-bar-drawer .MuiPaper-root {
+  background-color: $secondary;
+  color: white;
+}
+
+@media screen and (max-width: 767px) {
+  .info-bar-drawer {
+    height: $mobile-info-bar-height;
+    top: auto !important;
+  }
+  
+  .info-bar-drawer .MuiModal-backdrop {
+    height: $mobile-info-bar-height;
+    top: auto !important;
+  }
+  
+  .info-bar-drawer .MuiPaper-root {
+    height: $mobile-info-bar-height;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .info-bar-drawer {
+    max-width: $desktop-info-bar-width;
+  }
 }

@@ -48,7 +48,7 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
 
     return <Marker icon={MarkerIcons.postWhite} ref={markerRef}
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]}>
-        <Popup className="marker-popup" >
+        <Popup className="marker-popup">
             <div className="flex flex-col justify-center items-center">
                 <div className="font-bold text-xl">
                     {props.blogPost.title}
@@ -68,7 +68,6 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
                             : <></>
                     }
                 </div>
-
             </div>
         </Popup>
     </Marker>

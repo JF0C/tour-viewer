@@ -11,6 +11,7 @@ import { ConfirmModal } from "../shared/ConfirmModal";
 
 export type ImageSwipeContainerProps = {
     images: string[];
+    selectedImage?: string;
     allowFullSizeView?: boolean;
     rounded?: boolean;
     onDelete?: (imageId: string) => void;
@@ -19,7 +20,14 @@ export type ImageSwipeContainerProps = {
 
 export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = (props) => {
     const dispatch = useAppDispatch();
-    const [index, setIndex] = useState(0);
+
+    var initialIndex = 0;
+    if (props.selectedImage) {
+        initialIndex = props.images.indexOf(props.selectedImage);
+        console.log('initial image: ' + props.selectedImage);
+    }
+
+    const [index, setIndex] = useState(initialIndex);
     const KeyboardSwipeable = bindKeyboard(SwipeableViews);
     const imageCount = props.images.length;
     if (imageCount === 0) {
@@ -35,11 +43,14 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
         setIndex(index + 1);
     }
 
-    const showFullSize = () => {
+    const showFullSize = (selectedImage: string) => {
         if (!props.allowFullSizeView) {
             return;
         }
-        dispatch(setFullSizeImages(props.images));
+        dispatch(setFullSizeImages({
+            items: props.images,
+            selectedItem: selectedImage
+        }));
     }
 
     return <KeyboardSwipeable index={index} enableMouseEvents resistance
@@ -64,7 +75,7 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         {
                             props.allowFullSizeView ?
                                 <div className="absolute top-0 w-full h-full flex justify-center items-center">
-                                    <div onClick={showFullSize} className="group mx-8 h-full w-full cursor-pointer
+                                    <div onClick={() => showFullSize(i)} className="group mx-8 h-full w-full cursor-pointer
                                         pointer-cursor flex justify-center items-center">
                                         <FontAwesomeIcon className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" icon={faImage} />
                                     </div>

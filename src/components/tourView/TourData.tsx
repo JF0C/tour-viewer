@@ -66,101 +66,102 @@ export const TourData: FunctionComponent = () => {
     const endDate = selectedTracks[selectedTracks.length - 1].data.points[0].time;
 
 
-    return <table className="w-full">
-        <thead>
-            <tr>
-                <th colSpan={2}>
-                    <div className="w-full flex flex-row justify-between items-center">
-                        {
-                            trackNumber !== '' ?
-                                <div>
-                                    {trackNumber}
-                                </div>
-                                : <></>
-                        }
-                        <div>
-                            {title}
-                        </div>
-                        <div>
-                            <Button style={{ minWidth: '20px' }}
-                                onClick={() => dispatch(showInfobar(false))}>
-                                <FontAwesomeIcon icon={faX} />
-                            </Button>
-                        </div>
+    return <div className="w-full flex flex-col h-full">
+        <div className="w-full flex flex-row justify-between items-center">
+            {
+                trackNumber !== '' ?
+                    <div>
+                        {trackNumber}
                     </div>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td colSpan={2} className="flex gap-2 flex-wrap">
-                    {
-                        tour?.participants.map(p =>
-                            <Participant key={'participant-' + p.id} user={p} linkToProfile canRemove={false} />)
-                    }
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Date
-                </td>
-                <td>
-                    {millisToDateString(startDate)}
-                    {
-                        endDate !== startDate ?
-                            ` - ${millisToDateString(endDate)}`
-                            : ''
-                    }
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Distance
-                </td>
-                <td>
-                    {distance.toFixed(2)} km
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Positive Elevation
-                </td>
-                <td>
-                    {positive.toFixed(0)} m
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Negative Elevation
-                </td>
-                <td>
-                    {negative.toFixed(0)} m
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Total Time
-                </td>
-                <td>
-                    {millisToTimeSpan(time)}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Movement Time
-                </td>
-                <td>
-                    {millisToTimeSpan(movementTime)}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Movement Velocity
-                </td>
-                <td>
-                    {(distance / movementTime * 3600000).toFixed(2)} km/h
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    : <></>
+            }
+            <div>
+                {title}
+            </div>
+            <div>
+                <Button style={{ minWidth: '20px' }}
+                    onClick={() => dispatch(showInfobar(false))}>
+                    <FontAwesomeIcon icon={faX} />
+                </Button>
+            </div>
+        </div>
+        <div className="flex-1 overflow-y-scroll">
+            <table className="w-full">
+                <tbody>
+                    <tr>
+                        <td colSpan={2}>
+                            <div className="flex gap-2 flex-wrap">
+                                {
+                                    tour?.participants.map(p =>
+                                        <Participant key={'participant-' + p.id} user={p} linkToProfile canRemove={false} />)
+                                }
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Date
+                        </td>
+                        <td>
+                            {millisToDateString(startDate)}
+                            {
+                                endDate !== startDate ?
+                                    ` - ${millisToDateString(endDate)}`
+                                    : ''
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Distance
+                        </td>
+                        <td>
+                            {distance.toFixed(2)} km
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Positive Elevation
+                        </td>
+                        <td>
+                            {positive.toFixed(0)} m
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Negative Elevation
+                        </td>
+                        <td>
+                            {negative.toFixed(0)} m
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total Time
+                        </td>
+                        <td>
+                            {millisToTimeSpan(time)}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Movement Time
+                        </td>
+                        <td>
+                            {millisToTimeSpan(movementTime)}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Movement Velocity
+                        </td>
+                        <td>
+                            {(distance / movementTime * 3600000).toFixed(2)} km/h
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 }

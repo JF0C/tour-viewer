@@ -19,7 +19,7 @@ export const BlogPostDetails: FunctionComponent<BlogPostDetailsProps> = (props) 
         dispatch(setSelectedBlogpost(undefined));
     }
 
-    return <div>
+    return <div className="info-bar-drawer flex flex-col">
         <div className="flex flex-row justify-between">
             <div className="font-bold">
                 {props.blogPost.title}
@@ -28,12 +28,18 @@ export const BlogPostDetails: FunctionComponent<BlogPostDetailsProps> = (props) 
                 <FontAwesomeIcon icon={faX} />
             </Button>
         </div>
-        <div className="flex flex-wrap pb-2">
-            <Participant user={props.blogPost.author} linkToProfile canRemove={false} />
-        </div>
-        <ImageSwipeContainer images={props.blogPost.images.map(i => i.imageId)} />
-        <div>
-            {props.blogPost.message}
+        <div className="flex-1 overflow-y-scroll">
+            <div className="flex flex-wrap pb-2">
+                <Participant user={props.blogPost.author} linkToProfile canRemove={false} />
+            </div>
+            <div>
+                {props.blogPost.message}
+            </div>
+            <div className="w-full flex flex-row justify-center">
+                <div className="w-44 md:w-full">
+                    <ImageSwipeContainer images={props.blogPost.images.map(i => i.imageId)} />
+                </div>
+            </div>
         </div>
     </div>
 }
