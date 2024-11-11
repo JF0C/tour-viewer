@@ -67,7 +67,7 @@ export const TourData: FunctionComponent = () => {
 
 
     return <div className="w-full flex flex-col h-full">
-        <div className="w-full flex flex-row justify-between items-center">
+        <div className="w-full flex flex-row justify-between items-center font-bold">
             {
                 trackNumber !== '' ?
                     <div>

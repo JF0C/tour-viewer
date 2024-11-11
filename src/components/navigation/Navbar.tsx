@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { resetEditingTour, setEditingTour } from '../../store/tourStateReducer';
 import { resetBoundsSet } from '../../store/trackStateReducer';
 import { TourSelector } from '../tourView/TourSelector';
+import { UserSearchModal } from '../user/UserSearchModal';
 
 export type NavbarProps = {
     closeSidebar: () => void
@@ -66,6 +67,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
             </Button>
         </NavLink>
         <TourSelector showIcon title='Select Tour' onSelected={props.closeSidebar} />
+        <UserSearchModal />
         {
             isContributor ?
                 <NavLink to={Paths.CreateTourPage} onClick={startCreatingTour}>

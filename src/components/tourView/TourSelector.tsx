@@ -19,7 +19,7 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
 
     return <BaseConfirmModal onConfirm={() => setOpen(false)} 
             onOpen={() => setOpen(true)} open={open} 
-            hideCancel confirmText={'Cancel'} 
+            hideCancel confirmText='Cancel'
             buttonContent={<div>
                 {
                     props.showIcon ? 
