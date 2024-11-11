@@ -42,7 +42,8 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
         dispatch(setFullSizeImages(props.images));
     }
 
-    return <KeyboardSwipeable index={index} enableMouseEvents onChangeIndex={(index) => setIndex(index)}>
+    return <KeyboardSwipeable index={index} enableMouseEvents resistance
+        onChangeIndex={(index) => setIndex(index)}>
         {
             props.images.map(i =>
                 <div key={i} className="h-full flex flex-col justify-center items-center">

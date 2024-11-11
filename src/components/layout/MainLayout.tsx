@@ -12,7 +12,7 @@ import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
 import { UserIcon } from "../user/UserIcon";
-import { getSelectedTourId } from "../../store/tourThunk";
+import { getSelectedTourId, loadTourRequest } from "../../store/tourThunk";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -33,7 +33,12 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
         dispatch(setDataBarState('hide'));
     }
     if (tourState.defaultTourId === undefined && !tourState.loading) {
-        dispatch(getSelectedTourId());
+        dispatch(getSelectedTourId())
+            .unwrap()
+            .then(tourId => {
+                console.log('selected tour id: ' + tourId);
+                dispatch(loadTourRequest(tourId));
+            });
     }
 
     return <div className="h-full main-layout flex flex-col">

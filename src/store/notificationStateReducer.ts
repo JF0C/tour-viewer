@@ -1,11 +1,11 @@
 import { createSlice, SerializedError } from "@reduxjs/toolkit";
-import { addParticipantRequest, changeTourStartDateRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeParticipantRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { enqueueSnackbar } from "notistack";
-import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
-import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
-import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
 import { addRoleRequest, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, removeRoleRequest, validateUserAdmin } from "./adminThunk";
-import { changeUsernameRequest, deleteUserRequest, loadLoggedInUser, registerRequest } from "./userThunk";
+import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
+import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
+import { addParticipantRequest, changeTourStartDateRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeParticipantRequest, renameTourRequest, searchTours } from "./tourThunk";
+import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
+import { changeUsernameRequest, deleteUserRequest, registerRequest } from "./userThunk";
 
 export interface INotificationState {
     message?: string;
@@ -174,10 +174,6 @@ export const NotificationSlice = createSlice({
         });
         builder.addCase(deleteUser.rejected, (_state, action) => {
             snackError('deleting user', action.error);
-        });
-
-        builder.addCase(loadLoggedInUser.rejected, (_state, action) => {
-            snackError('loading user', action.error);
         });
 
         builder.addCase(registerRequest.rejected, (_state, action) => {
