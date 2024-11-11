@@ -12,7 +12,7 @@ export const UserSearchResult: FunctionComponent<UserSearchResultProps> = (props
 
     return <div className="w-full">
         {userState.users?.map(u =>
-            <div className="w-full flex flex-row justify-center">
+            <div className="w-full">
                 <Button onClick={() => props.onUserSelected(u)}>
                     {u.username}
                 </Button>
