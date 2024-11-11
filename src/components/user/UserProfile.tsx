@@ -6,9 +6,14 @@ import { ProfilePicture } from "./ProfilePicture";
 import { UserTourList } from "./UserTourList";
 import { BigFormLayout } from "../layout/BigFormLayout";
 import { UserBlogPostList } from "./UserBlogPostList";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Paths } from "../../constants/Paths";
+import { resetBoundsSet } from "../../store/trackStateReducer";
 
 export const UserProfile: FunctionComponent = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const userState = useAppSelector((state) => state.user);
 
     if (userState.loading) {
@@ -23,7 +28,18 @@ export const UserProfile: FunctionComponent = () => {
         loadUserDetail(dispatch, userState.selectedUser);
     }
 
-    return <BigFormLayout>
+    const close = () => {
+        dispatch(resetBoundsSet());
+        navigate(Paths.HomePage);
+    }
+
+    return <BigFormLayout buttons={
+        <div className="flex flex-row justify-center w-full">
+            <Button onClick={close}>
+                Close
+            </Button>
+        </div>
+    }>
         {
             userState.selectedUser.profilePictureId ? 
             <div className="flex flex-row justify-center">

@@ -10,8 +10,8 @@ export const UserList: FunctionComponent = () => {
         return <LoadingSpinner />
     }
 
-    return <div className="flex-1">
-        <table className="text-left">
+    return <div className="flex-1 w-full">
+        <table className="text-left w-full">
             <thead>
                 <tr>
                     <th>

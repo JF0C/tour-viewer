@@ -3,9 +3,10 @@ import { useAppSelector } from "../../store/store";
 import { Participant } from "./Participant";
 import { Roles } from "../../constants/Rolenames";
 import { BaseConfirmModal } from "../shared/BaseConfirmModal";
-import { ParticipantSelector } from "./ParticipantSelector";
+import { UserSearch } from "../user/UserSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { ParticipantResultView } from "./ParticipantResultView";
 
 export const TourParticipants: FunctionComponent = () => {
     const user = useAppSelector((state) => state.auth.user);
@@ -18,7 +19,9 @@ export const TourParticipants: FunctionComponent = () => {
             canEdit ?
             <BaseConfirmModal hideCancel confirmText={'Ok'} onConfirm={()=>{}} 
                 buttonContent={<><FontAwesomeIcon icon={faPlus}/>Add</>} buttonClass="border rounded-full border-dashed">
-                <ParticipantSelector />
+                <UserSearch>
+                    <ParticipantResultView />
+                </UserSearch>
             </BaseConfirmModal>
             : <></>
         }

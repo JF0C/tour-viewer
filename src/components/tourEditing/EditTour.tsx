@@ -12,8 +12,9 @@ import { ConfirmModal } from "../shared/ConfirmModal";
 import { EditableDateLabel } from "../shared/EditableDateLabel";
 import { EditableNameLabel } from "../shared/EditableNameLabel";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { ParticipantSelector } from "./ParticipantSelector";
+import { UserSearch } from "../user/UserSearch";
 import { TrackList } from "./TrackList";
+import { ParticipantResultView } from "./ParticipantResultView";
 
 
 export const EditTour: FunctionComponent = () => {
@@ -105,7 +106,9 @@ export const EditTour: FunctionComponent = () => {
                 </tr>
             </tbody>
         </table>
-        <ParticipantSelector />
+        <UserSearch>
+            <ParticipantResultView />
+        </UserSearch>
         <TrackList onReload={reloadTour} />
     </BigFormLayout>
 }

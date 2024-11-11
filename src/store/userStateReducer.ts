@@ -7,14 +7,13 @@ import { searchToursForUser } from "./tourThunk";
 import { searchBlogPostsForUser } from "./blogPostThunk";
 
 export interface IUserState {
-    users: UserReferenceDto[];
+    users?: UserReferenceDto[];
     loading: boolean;
     userPagination: PaginationState;
     selectedUser?: UserDetailDto
 }
 const initialState: IUserState = {
     loading: false,
-    users: [],
     userPagination: {
         page: 1,
         itemsPerPage: 10,
@@ -48,6 +47,7 @@ export const userStateSlice = createSlice({
             state.userPagination.page = action.payload.page;
             state.userPagination.totalPages = action.payload.totalPages
             state.loading = false;
+            console.log(action.payload)
         });
         builder.addCase(searchUsers.rejected, (state) => {
             state.loading = false;

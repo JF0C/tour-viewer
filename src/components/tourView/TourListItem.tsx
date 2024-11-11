@@ -69,7 +69,7 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
             : <></>
         }
         {
-            defaultTourId === props.tour.id ?
+            isAdmin && defaultTourId === props.tour.id ?
             <Button>
                 <FontAwesomeIcon icon={faCheckSquare}/>
             </Button>

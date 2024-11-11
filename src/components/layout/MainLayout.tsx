@@ -21,7 +21,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const isLoggedId = useAppSelector((state) => Boolean(state.auth.user));
     const tourState = useAppSelector((state) => state.tour);
-    
+
     const location = useLocation();
     const dataSelectorBarState = tourState.dataSelectorBarState;
 
@@ -38,31 +38,31 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     }
 
     return <div className="h-full main-layout flex flex-col">
-        <div className="h-10">
-            <AppBar sx={{ backgroundColor: '#201f23', zIndex: 5000 }}>
-                <CustomizedSnackbar />
-                <div className="flex flex-row justify-between items-center truncate">
-                    <div>
-                        {
-                            isLoggedId ?
-                                <Button onClick={() => setSidebarOpen(!sidebarOpen)}>
-                                    <FontAwesomeIcon icon={faBars} />
-                                </Button>
-                                : <></>
-                        }
-                    </div>
-                    <div className='p-2 text-2xl md:text-3xl truncate'>
-                        Tour Viewer
-                    </div>
-                    <div>
-                        <UserIcon />
-                    </div>
-
+        <AppBar sx={{ backgroundColor: '#201f23', zIndex: 5000 }}>
+            <CustomizedSnackbar />
+            <div className="flex flex-row justify-between items-center truncate">
+                <div>
+                    {
+                        isLoggedId ?
+                            <Button onClick={() => setSidebarOpen(!sidebarOpen)}>
+                                <FontAwesomeIcon icon={faBars} />
+                            </Button>
+                            : <></>
+                    }
                 </div>
-            </AppBar>
-            <TourSelectorBar />
+                <div className='p-2 text-2xl md:text-3xl truncate'>
+                    Tour Viewer
+                </div>
+                <div>
+                    <UserIcon />
+                </div>
+
+            </div>
+        </AppBar>
+        <TourSelectorBar />
+        <div className="h-12 flex-none">
         </div>
-        <div className="flex-1 flex flex-col md:flex-row flex-wrap h-full">
+        <div className="flex-1 flex flex-col md:flex-row flex-wrap overflow-y-scroll">
             <SwipeableDrawer
                 anchor="left"
                 open={sidebarOpen}
@@ -74,12 +74,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                     <Navbar closeSidebar={() => setSidebarOpen(false)} />
                 </div>
             </SwipeableDrawer>
-            <div className="main-content flex-1 overflow-y-scroll h-full flex flex-col">
-                {
-                    location.pathname !== '/' ?
-                        <div className="placeholder h-12"></div>
-                        : <></>
-                }
+            <div className="main-content flex-1 overflow-y-scroll flex flex-col">
                 {props.children}
             </div>
             <Infobar />

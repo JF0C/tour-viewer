@@ -1,14 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ApiUrls } from "../constants/ApiUrls";
-import { UserDto } from "../dtos/userDto";
-import { CreateUserDto } from "../dtos/createUserDto";
-import { PageRequestDto } from "../dtos/pageRequestDto";
-import { PagedResult } from "../dtos/pagedResult";
 import http from 'axios';
+import { ApiUrls } from "../constants/ApiUrls";
+import { CreateUserDto } from "../dtos/createUserDto";
 import { FileUploadDto } from "../dtos/fileUploadDto";
+import { PagedResult } from "../dtos/pagedResult";
 import { ProfilePictureParametersDto } from "../dtos/profilePictureParametersDto";
-import { createDeleteThunk, createGetThunk, createPostThunk, createResponseDeleteThunk, createResponsePutThunk } from "./thunkBase";
+import { UserDto } from "../dtos/userDto";
+import { UserPageRequestDto } from "../dtos/userPageRequestDto";
 import { UserReferenceDto } from "../dtos/userReferenceDto";
+import { createDeleteThunk, createGetThunk, createPostThunk, createResponseDeleteThunk, createResponsePutThunk } from "./thunkBase";
 
 export const loadLoggedInUser = createGetThunk<UserDto, void>(
     'load-user',
@@ -33,10 +33,16 @@ export const deleteUserRequest = createDeleteThunk<string>(
     () => `${ApiUrls.BaseUrl + ApiUrls.UserEndpoint}`
 );
 
-export const searchUsers = createGetThunk<PagedResult<UserReferenceDto>, PageRequestDto>(
+export const searchUsers = createGetThunk<PagedResult<UserReferenceDto>, UserPageRequestDto>(
     'search-users',
-    (search) => `${ApiUrls.BaseUrl + ApiUrls.SearchUsersEndpoint}` +
-            `?page=${search.page}&number=${search.count}`,
+    (search) => {
+        var url = `${ApiUrls.BaseUrl + ApiUrls.SearchUsersEndpoint}` +
+            `?page=${search.page}&number=${search.count}`;
+        if (search.username) {
+            url += `&username=${search.username}`
+        }
+        return url;
+    },
     async (response) => await response.json()
 );
 
