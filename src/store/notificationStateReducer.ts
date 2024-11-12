@@ -7,6 +7,7 @@ import { addParticipantRequest, changeTourStartDateRequest, createTourRequest, d
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { changeUsernameRequest, deleteUserRequest, registerRequest } from "./userThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
+import { getAppVersion } from "./systemThunk";
 
 export interface INotificationState {
     message?: string;
@@ -206,6 +207,10 @@ export const NotificationSlice = createSlice({
 
         builder.addCase(deleteCommentRequest.rejected, (_state, action) => {
             snackError('deleting comment', action.error);
+        });
+
+        builder.addCase(getAppVersion.rejected, (_state, action) => {
+            snackError('loading version', action.error);
         });
     }
 });

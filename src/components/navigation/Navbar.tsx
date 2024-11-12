@@ -12,6 +12,7 @@ import { resetEditingTour, setEditingTour } from '../../store/tourStateReducer';
 import { resetBoundsSet } from '../../store/trackStateReducer';
 import { TourSelector } from '../tourView/TourSelector';
 import { UserSearchModal } from '../user/UserSearchModal';
+import { VersionInfo } from '../shared/VersionInfo';
 
 export type NavbarProps = {
     closeSidebar: () => void
@@ -59,52 +60,56 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         dispatch(resetEditingTour());
     }
 
-    return <ul className='nav-list flex flex-col gap-2 items-start'>
-        <NavLink onClick={() => { props.closeSidebar(); dispatch(resetBoundsSet()) }} to={Paths.HomePage}>
-            <Button>
-                <FontAwesomeIcon icon={faHome} />
-                &nbsp; Home
-            </Button>
-        </NavLink>
-        <TourSelector showIcon title='Select Tour' onSelected={props.closeSidebar} />
-        <UserSearchModal />
-        {
-            isContributor ?
-                <NavLink to={Paths.CreateTourPage} onClick={startCreatingTour}>
-                    <Button>
-                        <FontAwesomeIcon icon={faPlus} />
-                        &nbsp;Create Tour
-                    </Button>
-                </NavLink>
-                : <></>
-        }
-        {
-            (canEdit && tour !== undefined) ?
-                <>
-                    <NavLink to={Paths.EditTourPage} onClick={editCurrentTour}>
+    return <ul className='nav-list flex flex-col gap-2 items-start h-full'>
+        <div className='flex-1'>
+            <div className="h-16 placeholder"></div>
+            <NavLink onClick={() => { props.closeSidebar(); dispatch(resetBoundsSet()) }} to={Paths.HomePage}>
+                <Button>
+                    <FontAwesomeIcon icon={faHome} />
+                    &nbsp; Home
+                </Button>
+            </NavLink>
+            <TourSelector showIcon title='Select Tour' onSelected={props.closeSidebar} />
+            <UserSearchModal />
+            {
+                isContributor ?
+                    <NavLink to={Paths.CreateTourPage} onClick={startCreatingTour}>
                         <Button>
-                            <FontAwesomeIcon icon={faEdit} />
-                            &nbsp;Edit Tour
+                            <FontAwesomeIcon icon={faPlus} />
+                            &nbsp;Create Tour
                         </Button>
                     </NavLink>
-                    <div className='md:hidden'>
-                        <Button onClick={createBlogPost}>
-                            <FontAwesomeIcon icon={faImage} />
-                            &nbsp;Add Post
+                    : <></>
+            }
+            {
+                (canEdit && tour !== undefined) ?
+                    <>
+                        <NavLink to={Paths.EditTourPage} onClick={editCurrentTour}>
+                            <Button>
+                                <FontAwesomeIcon icon={faEdit} />
+                                &nbsp;Edit Tour
+                            </Button>
+                        </NavLink>
+                        <div className='md:hidden'>
+                            <Button onClick={createBlogPost}>
+                                <FontAwesomeIcon icon={faImage} />
+                                &nbsp;Add Post
+                            </Button>
+                        </div>
+                    </>
+                    : <></>
+            }
+            {
+                isAdmin ?
+                    <NavLink onClick={() => props.closeSidebar()} to={Paths.AdminPage}>
+                        <Button>
+                            <FontAwesomeIcon icon={faUser} />
+                            &nbsp; Admin
                         </Button>
-                    </div>
-                </>
-                : <></>
-        }
-        {
-            isAdmin ?
-                <NavLink onClick={() => props.closeSidebar()} to={Paths.AdminPage}>
-                    <Button>
-                        <FontAwesomeIcon icon={faUser} />
-                        &nbsp; Admin
-                    </Button>
-                </NavLink>
-                : <></>
-        }
+                    </NavLink>
+                    : <></>
+            }
+        </div>
+        <VersionInfo />
     </ul>
 }

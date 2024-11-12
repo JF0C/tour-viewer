@@ -80,7 +80,6 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                 onOpen={() => setSidebarOpen(true)}
             >
                 <div id="sidebar-content" className="w-44 h-full">
-                    <div className="h-16 placeholder"></div>
                     <Navbar closeSidebar={() => setSidebarOpen(false)} />
                 </div>
             </SwipeableDrawer>

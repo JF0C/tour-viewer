@@ -4,6 +4,9 @@ export class ApiUrls
     // public static readonly BaseUrl = 'https://tourviewer.c11g.net'
     public static BaseUrl = '.'
     // public static BaseUrl = 'https://localhost:7271'
+
+    public static readonly VersionEndpoint = '/System/Version'
+
     public static readonly ImageEndpoint = '/img'
     public static readonly ImageControlEndpoint = '/Image'
 
@@ -24,8 +27,6 @@ export class ApiUrls
     public static readonly LogoutEndpoint = '/Authentication/Logout'
 
     public static readonly TourEndpoint = '/Tour'
-
     public static readonly TrackEndpoint = '/Track'
-
     public static readonly BlogPostEndpoint = '/BlogPost'
 }

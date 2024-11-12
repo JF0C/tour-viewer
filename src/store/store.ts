@@ -7,6 +7,7 @@ import { trackStateReducer } from './trackStateReducer';
 import { blogPostStateReducer } from './blogPostStateReducer';
 import { notificationReducer } from './notificationStateReducer';
 import { userStateReducer } from './userStateReducer';
+import { systemStateReducer } from './systemStateReducer';
 
 export const store = configureStore({
     reducer: {
@@ -16,7 +17,8 @@ export const store = configureStore({
         user: userStateReducer,
         blog: blogPostStateReducer,
         admin: adminStateReducer,
-        notification: notificationReducer
+        notification: notificationReducer,
+        system: systemStateReducer
     }
 });
 
