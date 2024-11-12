@@ -12,6 +12,7 @@ export const Infobar: FunctionComponent = () => {
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
     const selectedBlogPost = useAppSelector((state) => state.blog.selectedBlogPost);
     const infoBarVisible = useAppSelector((state) => state.tour.showInfoBar) || isEditingBlogPost || Boolean(selectedBlogPost);
+    const infoBarFull = useAppSelector((state) => state.tour.infoBarFull);
 
     const isMobile = window.innerWidth < 768;
 
@@ -23,7 +24,7 @@ export const Infobar: FunctionComponent = () => {
     return <SwipeableDrawer
         anchor={isMobile ? "bottom" : "right"}
         variant={(isMobile && !isEditingBlogPost) ? 'temporary': 'persistent'}
-        className="info-bar-drawer"
+        className={`info-bar-drawer ${infoBarFull ? 'full' : ''}`}
         open={infoBarVisible}
         onClose={closeInfobar}
         onOpen={() => dispatch(showInfobar(true))}

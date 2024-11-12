@@ -2,8 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BlogPostDto } from "../dtos/blogPostDto";
 import { CoordinatesDto } from "../dtos/coordinatesDto";
 import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
-import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
+import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "./blogPostThunk";
 import { deleteImageRequest, uploadImageRequest } from "./filesThunk";
+import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
 
 export interface ClickedEvent {
     time: number;
@@ -177,6 +178,47 @@ export const BlogPostSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(deleteImageRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(loadBlogPostDetailRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(loadBlogPostDetailRequest.fulfilled, (state, action) => {
+            state.loading = false;
+            state.selectedBlogPost = action.payload;
+        });
+        builder.addCase(loadBlogPostDetailRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(createCommentRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(createCommentRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(createCommentRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(editCommentRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(editCommentRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(editCommentRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(deleteCommentRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteCommentRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(deleteCommentRequest.rejected, (state) => {
             state.loading = false;
         });
     }

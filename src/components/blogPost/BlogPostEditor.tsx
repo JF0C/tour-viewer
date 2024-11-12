@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { changeEditingBlogpostMessage, changeEditingBlogpostTitle, setEditingBlogpost, setMarkerPosition } from "../../store/blogPostStateReducer";
-import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest } from "../../store/blogPostThunk";
+import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "../../store/blogPostThunk";
 import { isAllowedToCreate, updateEditingBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
@@ -15,6 +15,7 @@ import { BlogPostEditButtons } from "./BlogPostEditButtons";
 import { BlogPostLocationEditor } from "./BlogPostLocationEditor";
 import { BlogPostTrackSelector } from "./BlogPostTrackSelector";
 import { ImageUpload } from "./ImageUpload";
+import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 
 export const BlogPostEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -64,6 +65,8 @@ export const BlogPostEditor: FunctionComponent = () => {
                 id: blogPost.id,
                 title: title
             }))
+            .unwrap()
+            .then(() => dispatch(loadBlogPostDetailRequest(blogPost.id)))
         }
     }
 
@@ -73,7 +76,9 @@ export const BlogPostEditor: FunctionComponent = () => {
             dispatch(changeBlogPostMessageRequest({
                 id: blogPost.id,
                 message: message
-            }));
+            }))
+            .unwrap()
+            .then(() => dispatch(loadBlogPostDetailRequest(blogPost.id)))
         }
     }
 
@@ -90,7 +95,7 @@ export const BlogPostEditor: FunctionComponent = () => {
     }
 
     return <div className="flex flex-col h-full info-bar-drawer">
-        <div className="flex flex-row title-bar">
+        <div className="flex flex-row title-bar items-center">
             <div className="flex-1">
                 <EditableNameLabel value={blogPost.title === '' ? 'New Blog Post' : blogPost.title}
                     className="font-bold text-xl"
@@ -99,6 +104,7 @@ export const BlogPostEditor: FunctionComponent = () => {
                 />
 
             </div>
+            <InfobarMaxButton />
             {
                 blogPost.id === 0 ?
                     <ConfirmModal message="Unsafed changes might get lost." type="error"

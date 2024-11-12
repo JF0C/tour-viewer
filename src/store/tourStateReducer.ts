@@ -11,7 +11,7 @@ export interface IEditTour {
     name: string;
     startDate: number;
     participants: UserReferenceDto[];
-    tracks: EditTrackDto[]
+    tracks: EditTrackDto[];
 }
 
 export interface ITourState {
@@ -21,6 +21,7 @@ export interface ITourState {
     selectedTour?: TourDto;
     tourPagination: PaginationState;
     showInfoBar: boolean;
+    infoBarFull: boolean;
     dataSelectorBarState: 'show' | 'small' | 'hide';
     editingTour: IEditTour;
     radioGroups: { groupId: string, activeItem?: string }[];
@@ -29,6 +30,7 @@ export interface ITourState {
 const initialState: ITourState = {
     loading: false,
     showInfoBar: false,
+    infoBarFull: false,
     dataSelectorBarState: 'hide',
     tours: [],
     tourPagination: {
@@ -53,6 +55,9 @@ export const tourStateSlice = createSlice({
     reducers: {
         showInfobar(state, action: PayloadAction<boolean>) {
             state.showInfoBar = action.payload;
+        },
+        setInfoBarFull(state, action: PayloadAction<boolean>) {
+            state.infoBarFull = action.payload;
         },
         setDataBarState(state, action: PayloadAction<'show' | 'small' | 'hide'>) {
             state.dataSelectorBarState = action.payload;
@@ -222,5 +227,5 @@ export const tourStateReducer = tourStateSlice.reducer;
 export const { setRadioGroup, showInfobar,
     resetEditingTour, setEditingTourName, setEditingTourStartDate,
     addEditingTourParticipant, removeEditingTourParticipant,
-    setEditingTour, setDataBarState
+    setEditingTour, setDataBarState, setInfoBarFull
 } = tourStateSlice.actions;

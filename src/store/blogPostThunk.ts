@@ -27,6 +27,12 @@ export const blogpostRequestToUrl = (request: BlogpostPageRequestDto) => {
     return requestUrl;
 }
 
+export const loadBlogPostDetailRequest = createGetThunk<BlogPostDto, number>(
+    'get-blogpost',
+    (blogPostId) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`,
+    async (response) => await response.json()
+)
+
 export const createBlogPostRequest = createPostThunk<number, CreateBlogPostDto>(
     'create-blogpost',
     () => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}`,

@@ -6,6 +6,7 @@ import { millisToDateString, millisToTimeSpan } from "../../converters/dateConve
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { showInfobar } from "../../store/tourStateReducer";
 import { Participant } from "../tourEditing/Participant";
+import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 
 export const TourData: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -67,7 +68,7 @@ export const TourData: FunctionComponent = () => {
 
 
     return <div className="w-full flex flex-col h-full">
-        <div className="w-full flex flex-row justify-between items-center font-bold">
+        <div className="w-full flex flex-row justify-between items-center text-xl font-bold">
             {
                 trackNumber !== '' ?
                     <div>
@@ -78,7 +79,8 @@ export const TourData: FunctionComponent = () => {
             <div>
                 {title}
             </div>
-            <div>
+            <div className="flex flex-row">
+                <InfobarMaxButton />
                 <Button style={{ minWidth: '20px' }}
                     onClick={() => dispatch(showInfobar(false))}>
                     <FontAwesomeIcon icon={faX} />

@@ -178,6 +178,12 @@ td {
 }
 
 .MuiInputBase-root input {
+  font-size: medium;
+  color: white;
+}
+
+.MuiInputBase-root textarea {
+  font-size: medium;
   color: white;
 }
 
@@ -190,15 +196,33 @@ td {
   .info-bar-drawer {
     max-height: $mobile-info-bar-height;
     top: auto !important;
+    transition: all .2s ease-in-out;
   }
   
   .info-bar-drawer .MuiModal-backdrop {
     max-height: $mobile-info-bar-height;
     top: auto !important;
+    transition: all .2s ease-in-out;
   }
   
   .info-bar-drawer .MuiPaper-root {
     max-height: $mobile-info-bar-height;
+    transition: all .2s ease-in-out;
+  }
+
+  .info-bar-drawer.full {
+    max-height: 100vh;
+    height: 70vh;
+  }
+  
+  .info-bar-drawer.full .MuiModal-backdrop {
+    max-height: 100vh;
+    height: 70vh;
+  }
+  
+  .info-bar-drawer.full .MuiPaper-root {
+    max-height: 100vh;
+    height: 70vh;
   }
 }
 
