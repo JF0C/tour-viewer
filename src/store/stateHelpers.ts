@@ -1,5 +1,6 @@
 import { Roles } from "../constants/Rolenames";
 import { BlogPostDto } from "../dtos/blogPostDto";
+import { CommentDto } from "../dtos/commentDto";
 import { TourDto } from "../dtos/tourDto";
 import { UserDetailDto } from "../dtos/userDetailDto";
 import { setEditingBlogpost } from "./blogPostStateReducer";
@@ -26,6 +27,20 @@ export const isAllowedToEditBlogpost = (state: RootState, blogPost: BlogPostDto)
         return true;
     }
     if (user.roles.includes(Roles.Contributor) && blogPost.author.id === user.id) {
+        return true;
+    }
+    return false;
+}
+
+export const isAllowedToEditComment = (state: RootState, comment: CommentDto): boolean => {
+    const user = state.auth.user;
+    if (!user) {
+        return false;
+    }
+    if (user.roles.includes(Roles.Admin)) {
+        return true;
+    }
+    if (user.roles.includes(Roles.Contributor) && comment.author.id === user.id) {
         return true;
     }
     return false;

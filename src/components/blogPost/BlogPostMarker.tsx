@@ -5,7 +5,8 @@ import { FunctionComponent, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { BlogPostDto } from "../../dtos/blogPostDto";
-import { setEditingBlogpost, setOpenMarker, setSelectedBlogpost } from "../../store/blogPostStateReducer";
+import { setEditingBlogpost, setOpenMarker } from "../../store/blogPostStateReducer";
+import { loadBlogPostDetailRequest } from "../../store/blogPostThunk";
 import { isAllowedToEditBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ImageSwipeContainer } from "./ImageSwipeContainer";
@@ -41,6 +42,10 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
         }))
     }
 
+    const viewBlogPostDetail = () => {
+        dispatch(loadBlogPostDetailRequest(props.blogPost.id));
+    }
+
     if (openMarker === props.blogPost.id && markerRef && markerRef.current) {
         setTimeout(() => markerRef.current.openPopup(), 5000);
         dispatch(setOpenMarker());
@@ -55,7 +60,7 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
                 </div>
                 <ImageSwipeContainer allowFullSizeView images={props.blogPost.images?.map(i => i.imageId) ?? []}/>
                 <div>
-                    <Button onClick={() => dispatch(setSelectedBlogpost(props.blogPost))}>
+                    <Button onClick={viewBlogPostDetail}>
                         <FontAwesomeIcon icon={faEye} />
                         &nbsp;Details
                     </Button>

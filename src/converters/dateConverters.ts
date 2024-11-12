@@ -13,6 +13,14 @@ export const millisToUtcDate = (millis: number) => {
     return utcDate;
 }
 
+export const fullDateString = (date: Date): string => {
+    const hours = date.getHours();
+    const hourStr = hours < 10 ? '0' + hours.toString() : hours.toString();
+    const minutes = date.getMinutes();
+    const minuteStr = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+    return `${millisToDateString(date.valueOf())} - ${hourStr}:${minuteStr}`
+}
+
 const paddedNumberString = (num: number) => {
     return num < 10 ? ('0' + num.toString()) : num.toString();
 }

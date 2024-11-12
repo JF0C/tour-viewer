@@ -224,6 +224,10 @@ td {
     max-height: 100vh;
     height: 70vh;
   }
+
+  .info-bar-drawer.full .info-bar-drawer {
+    max-height: 100vh;
+  }
 }
 
 @media screen and (min-width: 768px) {

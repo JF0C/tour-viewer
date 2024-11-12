@@ -187,6 +187,12 @@ export const BlogPostSlice = createSlice({
         builder.addCase(loadBlogPostDetailRequest.fulfilled, (state, action) => {
             state.loading = false;
             state.selectedBlogPost = action.payload;
+            state.selectedBlogPost.created = new Date(state.selectedBlogPost.created);
+            if (state.selectedBlogPost.comments) {
+                for (let comment of state.selectedBlogPost.comments) {
+                    comment.created = new Date(comment.created);
+                }
+            }
         });
         builder.addCase(loadBlogPostDetailRequest.rejected, (state) => {
             state.loading = false;

@@ -3,19 +3,25 @@ import { BlogPostDto } from "../../dtos/blogPostDto";
 import { Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import { useAppDispatch } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setSelectedBlogpost } from "../../store/blogPostStateReducer";
 import { ImageSwipeContainer } from "./ImageSwipeContainer";
 import { Participant } from "../tourEditing/Participant";
 import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 import { BlogPostComments } from "./BlogPostComments";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
 
 export type BlogPostDetailsProps = {
     blogPost: BlogPostDto
 }
 
 export const BlogPostDetails: FunctionComponent<BlogPostDetailsProps> = (props) => {
+    const loading = useAppSelector((state) => state.blog.loading);
     const dispatch = useAppDispatch();
+
+    if (loading) {
+        return <LoadingSpinner />
+    }
 
     const close = () => {
         dispatch(setSelectedBlogpost(undefined));
