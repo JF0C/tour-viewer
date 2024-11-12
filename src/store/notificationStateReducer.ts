@@ -2,10 +2,11 @@ import { createSlice, SerializedError } from "@reduxjs/toolkit";
 import { enqueueSnackbar } from "notistack";
 import { addRoleRequest, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, removeRoleRequest, validateUserAdmin } from "./adminThunk";
 import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
-import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest } from "./blogPostThunk";
+import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "./blogPostThunk";
 import { addParticipantRequest, changeTourStartDateRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeParticipantRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { changeUsernameRequest, deleteUserRequest, registerRequest } from "./userThunk";
+import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
 
 export interface INotificationState {
     message?: string;
@@ -111,6 +112,10 @@ export const NotificationSlice = createSlice({
             snackError('renaming track', action.error);
         });
 
+        builder.addCase(loadBlogPostDetailRequest.rejected, (_state, action) => {
+            snackError('loading blog post', action.error)
+        });
+
         builder.addCase(changeTrackPositionRequest.rejected, (_state, action) => {
             snackError('changing track position', action.error)
         });
@@ -191,6 +196,17 @@ export const NotificationSlice = createSlice({
             snackError('deleting user', action.error);
         });
 
+        builder.addCase(createCommentRequest.rejected, (_state, action) => {
+            snackError('creating comment', action.error);
+        });
+
+        builder.addCase(editCommentRequest.rejected, (_state, action) => {
+            snackError('editing comment', action.error);
+        });
+
+        builder.addCase(deleteCommentRequest.rejected, (_state, action) => {
+            snackError('deleting comment', action.error);
+        });
     }
 });
 
