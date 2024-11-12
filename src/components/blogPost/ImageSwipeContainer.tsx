@@ -66,7 +66,7 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         {
                             props.onClose ? 
                             <div className="absolute top-0 right-0">
-                                <Button onClick={() => props.onClose?.()} color='error'>
+                                <Button onClick={() => props.onClose?.()}>
                                     <FontAwesomeIcon icon={faX} />
                                 </Button>
                             </div>

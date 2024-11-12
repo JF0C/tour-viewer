@@ -94,8 +94,8 @@ export const BlogPostEditor: FunctionComponent = () => {
             });
     }
 
-    return <div className="flex flex-col h-full info-bar-drawer">
-        <div className="flex flex-row title-bar items-center">
+    return <div className="flex flex-col h-full info-bar-content">
+        <div className="p-2 flex flex-row title-bar items-center w-full bg-primary">
             <div className="flex-1">
                 <EditableNameLabel value={blogPost.title === '' ? 'New Blog Post' : blogPost.title}
                     className="font-bold text-xl"
@@ -113,12 +113,12 @@ export const BlogPostEditor: FunctionComponent = () => {
                             <FontAwesomeIcon icon={faX} />
                         </>} />
                     :
-                    <Button onClick={() => dispatch(setEditingBlogpost(undefined))}>
+                    <Button style={{ minWidth: '20px' }} onClick={() => dispatch(setEditingBlogpost(undefined))}>
                         <FontAwesomeIcon icon={faX} />
                     </Button>
             }
         </div>
-        <div className="flex-1 py-2 overflow-y-scroll">
+        <div className="p-2 flex-1 overflow-y-scroll">
             <ImageUpload />
             <BlogPostTrackSelector />
             <BlogPostLocationEditor />

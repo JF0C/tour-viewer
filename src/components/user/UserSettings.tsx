@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { changePasswordRequest } from "../../store/authThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { resetBoundsSet } from "../../store/trackStateReducer";
 import { changeUsernameRequest, deleteUserRequest } from "../../store/userThunk";
-import { SmallFormLayout } from "../layout/SmallFormLayout";
+import { BigFormLayout } from "../layout/BigFormLayout";
 import { BaseConfirmModal } from "../shared/BaseConfirmModal";
 import { EditableNameLabel } from "../shared/EditableNameLabel";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
@@ -68,7 +69,20 @@ export const UserSettings: FunctionComponent = () => {
         }
     }
 
-    return <SmallFormLayout>
+    const close = () => {
+        dispatch(resetBoundsSet());
+        navigate(Paths.HomePage);
+    }
+
+    return <BigFormLayout
+            buttons={
+                <>
+                    <Button onClick={close}>
+                        Close
+                    </Button>
+                </>
+            }
+        >
         <table>
             <tbody>
                 <tr>
@@ -121,5 +135,5 @@ export const UserSettings: FunctionComponent = () => {
             </tbody>
 
         </table>
-    </SmallFormLayout>
+    </BigFormLayout>
 }

@@ -41,7 +41,7 @@ export const TourDataSwipeContainer: FunctionComponent = () => {
             <LoadingSpinner />
         </div>)
     }
-    content.push(<TourData key='tourdata-current'/>)
+    content.push(<TourData key='tourdata-current' />)
     if (hasNextTrack) {
         content.push(<div key='tourdata-next'>
             <LoadingSpinner />
@@ -49,27 +49,20 @@ export const TourDataSwipeContainer: FunctionComponent = () => {
     }
 
     const KeyboardSwipeable = bindKeyboard(SwipeableViews);
-    return <div>
+    return <div className="info-bar-content">
         <KeyboardSwipeable onChangeIndex={e => selectTrack(currentIndex - (hasPrevTrack ? 1 : 0) + e)}
             index={hasPrevTrack ? 1 : 0} enableMouseEvents className="w-full">
             {
                 content
             }
-        </KeyboardSwipeable><div className={`flex flex-row ${hasNextTrack && hasPrevTrack ? 'justify-between' : 'justify-center'}`}>
-            {
-                hasPrevTrack ?
-                    <Button onClick={() => selectTrack(currentIndex - 1)}>
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                    </Button>
-                    : <></>
-            }
-            {
-                hasNextTrack ?
-                    <Button onClick={() => selectTrack(currentIndex + 1)}>
-                        <FontAwesomeIcon icon={faChevronRight} />
-                    </Button>
-                    : <></>
-            }
+        </KeyboardSwipeable>
+        <div className='flex flex-row justify-between absolute bottom-0 w-full'>
+            <Button disabled={!hasPrevTrack} onClick={() => selectTrack(currentIndex - 1)}>
+                <FontAwesomeIcon icon={faChevronLeft} />
+            </Button>
+            <Button disabled={!hasNextTrack} onClick={() => selectTrack(currentIndex + 1)}>
+                <FontAwesomeIcon icon={faChevronRight} />
+            </Button>
         </div>
     </div>
 }

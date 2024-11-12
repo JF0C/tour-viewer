@@ -2,7 +2,7 @@ $primary: #1c1d25;
 $primary-half: #1c1d258f;
 $secondary: rgb(64, 59, 51);
 
-$mobile-info-bar-height: 300px;
+$mobile-info-bar-height: 40vh;
 $desktop-info-bar-width: 300px;
 
 .App {
@@ -31,6 +31,10 @@ $desktop-info-bar-width: 300px;
 
 .bg-primary {
   background-color: $primary;
+}
+
+.bg-secondary {
+  background-color: $secondary;
 }
 
 .App-link {
@@ -177,6 +181,10 @@ td {
   color: white;
 }
 
+.MuiDrawer-paper {
+  overflow: hidden;
+}
+
 .MuiInputBase-root input {
   font-size: medium;
   color: white;
@@ -188,11 +196,16 @@ td {
 }
 
 .info-bar-drawer .MuiPaper-root {
+  overflow: hidden;
   background-color: $secondary;
   color: white;
 }
 
 @media screen and (max-width: 767px) {
+  .info-bar-content {
+    max-height: $mobile-info-bar-height;
+  }
+
   .info-bar-drawer {
     max-height: $mobile-info-bar-height;
     top: auto !important;
@@ -225,13 +238,13 @@ td {
     height: 70vh;
   }
 
-  .info-bar-drawer.full .info-bar-drawer {
+  .info-bar-drawer.full .info-bar-content {
     max-height: 100vh;
   }
 }
 
 @media screen and (min-width: 768px) {
-  .info-bar-drawer {
+  .info-bar-content {
     max-width: $desktop-info-bar-width;
   }
 }

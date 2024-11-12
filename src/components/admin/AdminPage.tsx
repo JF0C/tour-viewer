@@ -9,6 +9,7 @@ import { Roles } from "../../constants/Rolenames";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { resetBoundsSet } from "../../store/trackStateReducer";
+import { BigFormLayout } from "../layout/BigFormLayout";
 
 export const AdminPage: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -23,9 +24,10 @@ export const AdminPage: FunctionComponent = () => {
         return <LoadingSpinner />
     }
     const loadUsers = () => {
-        dispatch(loadUsersAdmin({ 
-                page: adminState.pagination.page, 
-                count: adminState.pagination.itemsPerPage }))
+        dispatch(loadUsersAdmin({
+            page: adminState.pagination.page,
+            count: adminState.pagination.itemsPerPage
+        }))
             .then(() => dispatch(loadAvailableRoles()));
     }
     if ((adminState.users === undefined || adminState.availableRoles === undefined) && !adminState.loading) {
@@ -37,19 +39,21 @@ export const AdminPage: FunctionComponent = () => {
         navigate(Paths.HomePage);
     }
 
-    return <div className="flex flex-col w-full p-4">
-
+    return <BigFormLayout
+        buttons={
+            <>
+                <Button onClick={loadUsers}>
+                    Reload
+                </Button>
+                <Button onClick={closeAdminPage}>
+                    Done
+                </Button>
+            </>
+        }
+    >
         <div className="flex flex-row flex-wrap gap-4">
             <UserList />
             <UserDetail />
         </div>
-        <div>
-            <Button onClick={closeAdminPage}>
-                Done
-            </Button>
-            <Button onClick={loadUsers}>
-                Reload
-            </Button>
-        </div>
-    </div>
+    </BigFormLayout>
 }

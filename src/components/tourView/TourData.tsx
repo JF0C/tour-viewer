@@ -67,8 +67,8 @@ export const TourData: FunctionComponent = () => {
     const endDate = selectedTracks[selectedTracks.length - 1].data.points[0].time;
 
 
-    return <div className="w-full flex flex-col h-full">
-        <div className="w-full flex flex-row justify-between items-center text-xl font-bold">
+    return <div className="w-full flex flex-col h-full info-bar-content">
+        <div className="p-2 w-full flex flex-row justify-between items-center text-xl font-bold bg-primary">
             {
                 trackNumber !== '' ?
                     <div>
@@ -87,7 +87,7 @@ export const TourData: FunctionComponent = () => {
                 </Button>
             </div>
         </div>
-        <div className="flex-1 overflow-y-scroll">
+        <div className="flex-1 overflow-y-scroll p-2">
             <table className="w-full">
                 <tbody>
                     <tr>

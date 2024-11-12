@@ -27,19 +27,19 @@ export const BlogPostDetails: FunctionComponent<BlogPostDetailsProps> = (props) 
         dispatch(setSelectedBlogpost(undefined));
     }
 
-    return <div className="info-bar-drawer flex flex-col">
-        <div className="flex flex-row justify-between text-xl items-center">
+    return <div className="flex flex-col info-bar-content">
+        <div className="p-2 flex flex-row justify-between text-xl items-center bg-primary">
             <div className="font-bold flex-1">
                 {props.blogPost.title}
             </div>
             <div className="flex flex-row">
                 <InfobarMaxButton />
-                <Button onClick={close}>
+                <Button onClick={close} style={{ minWidth: '20px' }}>
                     <FontAwesomeIcon icon={faX} />
                 </Button>
             </div>
         </div>
-        <div className="flex-1 overflow-y-scroll">
+        <div className="p-2 flex-1 overflow-y-scroll">
             <div className="py-2">
                 {props.blogPost.message}
             </div>

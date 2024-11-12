@@ -29,7 +29,7 @@ export const Infobar: FunctionComponent = () => {
         onClose={closeInfobar}
         onOpen={() => dispatch(showInfobar(true))}
     >
-        <div className="h-full p-2 overflow-clip md:mt-12">
+        <div className="h-full overflow-clip md:mt-12 ">
             {
                 isEditingBlogPost ? <BlogPostEditor /> :
                     selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost} /> :
