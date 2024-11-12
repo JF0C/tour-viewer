@@ -64,20 +64,20 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
 
                     <div className={`absolute top-0 h-full w-full`}>
                         {
-                            props.onClose ? 
-                            <div className="absolute top-0 right-0">
-                                <Button onClick={() => props.onClose?.()}>
-                                    <FontAwesomeIcon icon={faX} />
-                                </Button>
-                            </div>
-                            :<></>
+                            props.onClose ?
+                                <div className="absolute top-0 right-0">
+                                    <Button variant='contained' onClick={() => props.onClose?.()}>
+                                        <FontAwesomeIcon icon={faX} />
+                                    </Button>
+                                </div>
+                                : <></>
                         }
                         {
                             props.allowFullSizeView ?
                                 <div className="absolute top-0 w-full h-full flex justify-center items-center">
                                     <div onClick={() => showFullSize(i)} className="group mx-8 h-full w-full cursor-pointer
                                         pointer-cursor flex justify-center items-center">
-                                        <FontAwesomeIcon className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" icon={faImage} />
+                                        <FontAwesomeIcon size='2xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" icon={faImage} />
                                     </div>
                                 </div>
                                 : <></>
