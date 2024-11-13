@@ -44,7 +44,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
         <AppBar sx={{ backgroundColor: '#201f23', zIndex: 5000 }}>
             <CustomizedSnackbar />
             <div className="flex flex-row justify-between items-center truncate">
-                <div>
+                <div className='w-16'>
                     {
                         isLoggedId ?
                         (
@@ -63,7 +63,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
                 <div className='p-2 text-2xl md:text-3xl truncate'>
                     Tour Viewer
                 </div>
-                <div>
+                <div className='w-16 truncate'>
                     <UserIcon />
                 </div>
 

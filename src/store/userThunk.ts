@@ -82,5 +82,6 @@ export const deleteProfilePictureRequest = createResponseDeleteThunk<UserDto, vo
 export const setProfilePictureParametersRequest = createPostThunk<UserDto, ProfilePictureParametersDto>(
     'set-profile-picuture-parameters',
     () => `${ApiUrls.BaseUrl + ApiUrls.ProfilePictureParametersEndpoint}`,
-    async (response) => await response.json()
+    async (response) => await response.json(),
+    (request) => JSON.stringify(JSON.stringify(request))
 );

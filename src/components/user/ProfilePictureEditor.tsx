@@ -62,10 +62,11 @@ export const ProfilePictureEditor: FunctionComponent<ProfilePictureEditorProps> 
         if (!clickPosition) {
             return;
         }
-        setMovedPosition({
+        const coordinates = {
             x: e.clientX - clickPosition.x,
             y: e.clientY - clickPosition.y
-        });
+        }
+        setMovedPosition(coordinates);
     }
 
     const moveImageTouch = (e: React.TouchEvent) => {

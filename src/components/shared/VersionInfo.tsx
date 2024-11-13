@@ -15,7 +15,7 @@ export const VersionInfo: FunctionComponent = () => {
         return <LoadingSpinner/>;
     }
 
-    return <div style={{ color: 'white' }} className="p-2 text-lg">
+    return <div style={{ color: 'white' }} className="p-2 text-lg w-full flex flex-row justify-center">
         {systemState.version}
     </div>
 }

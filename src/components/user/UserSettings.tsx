@@ -76,11 +76,11 @@ export const UserSettings: FunctionComponent = () => {
 
     return <BigFormLayout
             buttons={
-                <>
+                <div className="w-full flex flex-row justify-center">
                     <Button onClick={close}>
                         Close
                     </Button>
-                </>
+                </div>
             }
         >
         <table>
