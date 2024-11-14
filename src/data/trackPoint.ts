@@ -3,4 +3,5 @@ export type TrackPoint = {
     latitude: number;
     longitude: number;
     time: number;
+    velocity: number;
 }
