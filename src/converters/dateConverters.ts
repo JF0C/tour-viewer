@@ -7,6 +7,17 @@ export const millisToDateString = (millis: number) => {
     return `${day}.${month}.${date.getFullYear()}`
 }
 
+export const millisToTimeString = (millis: number) => {
+    const date = new Date(millis);
+    const hours = date.getHours();
+    const hourStr = hours < 10 ? '0' + hours.toString() : hours.toString();
+    const minutes = date.getMinutes();
+    const minuteStr = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+    const seconds = date.getSeconds();
+    const secondStr = seconds < 10 ? '0' + seconds.toString() : seconds.toString();
+    return `${hourStr}:${minuteStr}:${secondStr}`
+}
+
 export const millisToUtcDate = (millis: number) => {
     const date = new Date(millis);
     const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
