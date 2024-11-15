@@ -1,6 +1,7 @@
-import { Slider } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, Slider } from '@mui/material';
 import * as d3 from 'd3';
 import { FunctionComponent, useMemo, useRef, useState } from "react";
+import { movingAverage, savGol } from '../../converters/dataFilters';
 import { millisToTimeString } from '../../converters/dateConverters';
 import { TrackPoint } from "../../data/trackPoint";
 
@@ -17,10 +18,17 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     const marginBottom = 25;
     const sliderMax = 10000;
     const divRef = useRef<HTMLDivElement>(null);
+    const dataZoomLevels = [1, 10, 20, 50]
+    type filterNames = 'savgol' | 'avg 50';
+    const filters = ['savgol', 'avg 50'];
+
     const [rerender, setRerender] = useState(true);
     const [scrollState, setScrollState] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [dataZoom, setDataZoom] = useState<number>(20);
+    const [filter, setFilter] = useState<filterNames>('avg 50')
 
-    const svg = useMemo(() => {
+    const [svg, windowSize] = useMemo(() => {
         const svg = d3.create('svg')
             .attr('width', width)
             .attr('height', height)
@@ -28,11 +36,15 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
             .attr('style', 'max-width: 100%; height: auto; height: intrinsic;');
 
         const allTimes = props.points.map(p => p.time);
-        const allValues = props.points.map(p => props.selector(p));
+        const allValuesUnfiltered = props.points.map(p => props.selector(p));
+        const allValues = filter === 'savgol' ? savGol(allValuesUnfiltered) :
+            filter === 'avg 50' ? movingAverage(allValuesUnfiltered, { windowSize: 50 })
+                : allValuesUnfiltered;
+        // const allValues = savGol(allValuesUnfiltered);
 
         const size = allTimes.length;
 
-        const windowSize = size / 20;
+        const windowSize = size / dataZoom;
 
         const slideSize = size - windowSize;
 
@@ -54,7 +66,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
 
         const x = d3.scaleLinear(timeRange, [marginLeft, width - margin])
 
-        const valueRange = [Math.min(...allValues), Math.max(...allValues)];
+        const valueRange = [Math.min(...allValues, 0), Math.max(...allValues)];
 
         const y = d3.scaleLinear(valueRange, [height - marginBottom, margin])
 
@@ -62,8 +74,9 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
             .x(d => x(d.time))
             .y(d => y(d.value));
 
-        const data = props.points.map(p => { return { time: p.time, value: props.selector(p) } })
+        let data = props.points.map(p => { return { time: p.time, value: props.selector(p) } })
 
+        data = times.map((t, i) => { return { time: t, value: values[i] } })
         svg.append("g")
             .attr("transform", `translate(${marginLeft},0)`)
             .call(d3.axisLeft(y).ticks(height / 40))
@@ -88,13 +101,47 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
 
         svg.append("path")
             .attr("fill", "none")
-            .attr("stroke", "white")
+            .attr("stroke", "#1976d2")
             .attr("stroke-width", 1.5)
-            .attr("d", line(data))
-            .on('click', (e) => console.log(e));
+            .attr("d", line(data));
 
-        return svg.node();
-    }, [props, scrollState])
+        if (values[selectedIndex]) {
+            const selectedTime = times[selectedIndex];
+            const selectedValue = values[selectedIndex];
+            const selectedPoint = [x(selectedTime), y(selectedValue)]
+            const lastValue = x(times[times.length - 1]);
+
+            svg.append('circle')
+                .attr('id', 'selected-point')
+                .attr('r', 5)
+                .attr('fill', 'white')
+                .attr('cx', selectedPoint[0])
+                .attr('cy', selectedPoint[1]);
+
+            const textWidth = 70;
+            const textLeft = lastValue - selectedPoint[0] < textWidth ? textWidth : 0;
+
+            svg.append('text')
+                .attr('x', selectedPoint[0] - textLeft)
+                .attr('y', selectedPoint[1] - 30)
+                .attr('fill', 'white')
+                .text(millisToTimeString(selectedTime));
+
+            svg.append('text')
+                .attr('x', selectedPoint[0] - textLeft)
+                .attr('y', selectedPoint[1] - 15)
+                .attr('fill', 'white')
+                .text(`${selectedValue.toFixed(1)} km/h`)
+
+            svg.append('text')
+                .attr('x', selectedPoint[0] - textLeft)
+                .attr('y', selectedPoint[1] - 15)
+                .attr('fill', 'white')
+                .text(`${selectedValue.toFixed(1)} km/h`)
+        }
+
+        return [svg.node(), windowSize];
+    }, [props, scrollState, selectedIndex, dataZoom, filter])
 
     if (divRef.current) {
         divRef.current.replaceChildren(svg!);
@@ -105,8 +152,39 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     }
 
     return <div className='w-full p-2'>
+        <div className='flex flex-row gap-2'>
+            <FormControl fullWidth>
+                <InputLabel id='data-zoom-label'>
+                    Zoom
+                </InputLabel>
+                <Select size='small' label='Zoom' labelId='data-zoom-level'
+                    sx={{ color: 'white' }}
+                    onChange={(e) => setDataZoom(Number(e.target.value))}>
+                    {
+                        dataZoomLevels.map(z => <MenuItem key={z} value={z}>{z}x</MenuItem>)
+                    }
+                </Select>
+            </FormControl>
+            <FormControl fullWidth>
+                <InputLabel id='filter-selector-label'>
+                    Filter
+                </InputLabel>
+                <Select defaultValue={'avg 50'} size='small' label='Filter' labelId='filter-selector-label' sx={{ color: 'white' }}
+                    onChange={(e) => setFilter(e.target.value as filterNames)}>
+                    {
+                        filters.map(f => <MenuItem key={f} value={f}>{f}</MenuItem>)
+                    }
+                </Select>
+            </FormControl>
+
+        </div>
+        <Slider min={0} max={windowSize} onChange={(_e, v) => {
+            typeof v === 'number' ? setSelectedIndex(v) : setSelectedIndex(v[0])
+        }} />
         <div className='overflow-x-scroll w-full' ref={divRef}>
         </div>
-        <Slider min={0} max={sliderMax} onChange={(e, v) => { typeof v === 'number' ? setScrollState(v) : setScrollState(v[0]) }} />
+        <Slider min={0} max={sliderMax} onChange={(_e, v) => {
+            typeof v === 'number' ? setScrollState(v) : setScrollState(v[0])
+        }} />
     </div>
 }
