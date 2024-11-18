@@ -4,6 +4,8 @@ import { FunctionComponent, useMemo, useRef, useState } from "react";
 import { movingAverage, savGol } from '../../converters/dataFilters';
 import { millisToTimeString } from '../../converters/dateConverters';
 import { TrackPoint } from "../../data/trackPoint";
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { setDataPointLocation } from '../../store/trackStateReducer';
 
 export type TourGraphBaseProps = {
     points: TrackPoint[],
@@ -11,6 +13,8 @@ export type TourGraphBaseProps = {
 }
 
 export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
+    const dispatch = useAppDispatch();
+    const dataPointLocation = useAppSelector((state) => state.track.dataPointLocation);
     const height = 300;
     const width = 400;
     const margin = 10;
@@ -18,7 +22,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     const marginBottom = 25;
     const sliderMax = 10000;
     const divRef = useRef<HTMLDivElement>(null);
-    const dataZoomLevels = [1, 10, 20, 50]
+    const dataZoomLevels = [1, 10, 20, 50];
     type filterNames = 'savgol' | 'avg 50';
     const filters = ['savgol', 'avg 50'];
 
@@ -26,9 +30,9 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     const [scrollState, setScrollState] = useState(0);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [dataZoom, setDataZoom] = useState<number>(20);
-    const [filter, setFilter] = useState<filterNames>('avg 50')
+    const [filter, setFilter] = useState<filterNames>('avg 50');
 
-    const [svg, windowSize] = useMemo(() => {
+    const [svg, windowSize, slidePosition] = useMemo(() => {
         const svg = d3.create('svg')
             .attr('width', width)
             .attr('height', height)
@@ -48,7 +52,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
 
         const slideSize = size - windowSize;
 
-        const slidePosition = slideSize * scrollState / sliderMax;
+        const slidePosition = Math.floor(slideSize * scrollState / sliderMax);
 
         const times: number[] = [];
 
@@ -114,7 +118,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
             svg.append('circle')
                 .attr('id', 'selected-point')
                 .attr('r', 5)
-                .attr('fill', 'white')
+                .attr('fill', 'red')
                 .attr('cx', selectedPoint[0])
                 .attr('cy', selectedPoint[1]);
 
@@ -140,8 +144,23 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
                 .text(`${selectedValue.toFixed(1)} km/h`)
         }
 
-        return [svg.node(), windowSize];
+        return [svg.node(), windowSize, slidePosition];
     }, [props, scrollState, selectedIndex, dataZoom, filter])
+
+
+    const selectedIndexChange = (index: number) => {
+        setSelectedIndex(index);
+        const point = props.points[slidePosition + index];
+
+        const coordinates = {
+            latitude: point.latitude,
+            longitude: point.longitude
+        };
+        if (dataPointLocation?.latitude !== coordinates.latitude
+            || dataPointLocation?.longitude !== coordinates.longitude) {
+            dispatch(setDataPointLocation(coordinates));
+        }
+    }
 
     if (divRef.current) {
         divRef.current.replaceChildren(svg!);
@@ -157,7 +176,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
                 <InputLabel id='data-zoom-label'>
                     Zoom
                 </InputLabel>
-                <Select size='small' label='Zoom' labelId='data-zoom-level'
+                <Select defaultValue={20} size='small' label='Zoom' labelId='data-zoom-level'
                     sx={{ color: 'white' }}
                     onChange={(e) => setDataZoom(Number(e.target.value))}>
                     {
@@ -179,7 +198,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
 
         </div>
         <Slider min={0} max={windowSize} onChange={(_e, v) => {
-            typeof v === 'number' ? setSelectedIndex(v) : setSelectedIndex(v[0])
+            typeof v === 'number' ? selectedIndexChange(v) : selectedIndexChange(v[0])
         }} />
         <div className='overflow-x-scroll w-full' ref={divRef}>
         </div>

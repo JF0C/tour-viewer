@@ -15,6 +15,7 @@ import { TourBounds } from "./TourBounds";
 import { TrackLine } from "./TrackLine";
 import { InfoBarHandle } from "./InfoBarHandle";
 import MarkerClusterGroup from 'react-leaflet-cluster'
+import { GraphDataPoint } from "./GraphDataPoint";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -92,5 +93,6 @@ export const TourMap: FunctionComponent = () => {
         <BlogPostMapLocationEditor />
         <SecondaryClickCountdown />
         <InfoBarHandle />
+        <GraphDataPoint />
     </MapContainer>
 }

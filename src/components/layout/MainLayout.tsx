@@ -21,7 +21,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const isLoggedId = useAppSelector((state) => Boolean(state.auth.user));
+    const isLoggedIn = useAppSelector((state) => Boolean(state.auth.user));
     const tourState = useAppSelector((state) => state.tour);
 
     const location = useLocation();
@@ -31,11 +31,10 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     if (!isHomepage && dataSelectorBarState !== 'hide') {
         dispatch(setDataBarState('hide'));
     }
-    if (tourState.defaultTourId === undefined && !tourState.loading) {
+    if (tourState.defaultTourId === undefined && !tourState.loading && isLoggedIn) {
         dispatch(getSelectedTourId())
             .unwrap()
             .then(tourId => {
-                console.log('selected tour id: ' + tourId);
                 dispatch(loadTourRequest(tourId));
             });
     }
@@ -46,7 +45,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             <div className="flex flex-row justify-between items-center truncate">
                 <div className='w-16'>
                     {
-                        isLoggedId ?
+                        isLoggedIn ?
                         (
                             isHomepage ?
                             <Button onClick={() => setSidebarOpen(!sidebarOpen)}>

@@ -21,6 +21,7 @@ export interface ITrackEntity {
 export interface ITrackState {
     loading: boolean;
     boundsSet: boolean;
+    dataPointLocation?: CoordinatesDto;
     targetCoordinates?: CoordinatesDto;
     tracks: ITrackEntity[];
 }
@@ -88,6 +89,9 @@ export const trackStateSlice = createSlice({
             if (track) {
                 track.bounds = action.payload.bounds;
             }
+        },
+        setDataPointLocation(state, action: PayloadAction<CoordinatesDto | undefined>) {
+            state.dataPointLocation = action.payload;
         },
         setBoundsSet(state) {
             state.boundsSet = true;
@@ -187,5 +191,6 @@ export const {
     setBoundsSet,
     resetBoundsSet,
     startLoadingTrack,
-    setTargetCoordinates
+    setTargetCoordinates,
+    setDataPointLocation
 } = trackStateSlice.actions;
