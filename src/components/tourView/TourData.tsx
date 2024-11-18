@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { showInfobar } from "../../store/tourStateReducer";
 import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 import { Participant } from "../tourEditing/Participant";
+import { TourGraphBase } from "./TourGraphBase";
 
 export const TourData: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -62,6 +63,10 @@ export const TourData: FunctionComponent = () => {
     const movementTime = selectedTracks
         .map(t => t.data.totalMovementTime)
         .reduce((a, b) => a + b);
+
+    const points = selectedTracks
+        .map(t => t.data.points)
+        .reduce((a, b) => [...a, ...b])
 
     const startDate = selectedTracks[0].data.points[0].time;
     const endDate = selectedTracks[selectedTracks.length - 1].data.points[0].time;
@@ -164,6 +169,7 @@ export const TourData: FunctionComponent = () => {
                     </tr>
                 </tbody>
             </table>
+            <TourGraphBase points={points} selector={p => p.velocity} />
         </div>
     </div>
 }

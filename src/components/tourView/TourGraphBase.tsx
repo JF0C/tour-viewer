@@ -6,6 +6,7 @@ import { millisToTimeString } from '../../converters/dateConverters';
 import { TrackPoint } from "../../data/trackPoint";
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { setDataPointLocation } from '../../store/trackStateReducer';
+import { CoordinatesDto } from '../../dtos/coordinatesDto';
 
 export type TourGraphBaseProps = {
     points: TrackPoint[],
@@ -147,19 +148,33 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
         return [svg.node(), windowSize, slidePosition];
     }, [props, scrollState, selectedIndex, dataZoom, filter])
 
+    const setDataMarkerPosition = (coordinates: CoordinatesDto) => {
+        if (dataPointLocation?.latitude !== coordinates.latitude
+            || dataPointLocation?.longitude !== coordinates.longitude) {
+            dispatch(setDataPointLocation(coordinates));
+        }
+    }
 
     const selectedIndexChange = (index: number) => {
         setSelectedIndex(index);
         const point = props.points[slidePosition + index];
 
-        const coordinates = {
+        setDataMarkerPosition({
             latitude: point.latitude,
             longitude: point.longitude
-        };
-        if (dataPointLocation?.latitude !== coordinates.latitude
-            || dataPointLocation?.longitude !== coordinates.longitude) {
-            dispatch(setDataPointLocation(coordinates));
-        }
+        });
+    }
+
+    const scrollStateChange = (scroll: number) => {
+        setScrollState(scroll);
+        const slideSize = props.points.length - windowSize;
+        const sliderPosition = Math.floor(scroll / sliderMax * slideSize);
+        const point = props.points[sliderPosition + selectedIndex];
+
+        setDataMarkerPosition({
+            latitude: point.latitude,
+            longitude: point.longitude
+        });
     }
 
     if (divRef.current) {
@@ -203,7 +218,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
         <div className='overflow-x-scroll w-full' ref={divRef}>
         </div>
         <Slider min={0} max={sliderMax} onChange={(_e, v) => {
-            typeof v === 'number' ? setScrollState(v) : setScrollState(v[0])
+            typeof v === 'number' ? scrollStateChange(v) : scrollStateChange(v[0])
         }} />
     </div>
 }
