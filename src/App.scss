@@ -253,6 +253,8 @@ td {
   }
 }
 
-.graph-data-point {
-  z-index: 2000;
+@media screen and (min-width: 768px) {
+  .full-screen-info-bar-placeholder {
+    height: 50px;
+  }
 }

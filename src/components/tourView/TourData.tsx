@@ -169,7 +169,7 @@ export const TourData: FunctionComponent = () => {
                     </tr>
                 </tbody>
             </table>
-            <TourGraphBase points={points} selector={p => p.velocity} />
+            <TourGraphBase points={points} />
         </div>
     </div>
 }

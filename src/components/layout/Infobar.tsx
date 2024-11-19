@@ -29,12 +29,16 @@ export const Infobar: FunctionComponent = () => {
         onClose={closeInfobar}
         onOpen={() => dispatch(showInfobar(true))}
     >
-        <div className="h-full overflow-clip md:mt-12 ">
+        <div className="flex flex-col h-full">
+        <div className="full-screen-info-bar-placeholder flex-none"></div>
+        <div className="flex-1 overflow-y-scroll">
             {
                 isEditingBlogPost ? <BlogPostEditor /> :
                     selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost} /> :
                         <TourDataSwipeContainer />
             }
+        </div>
+
         </div>
     </SwipeableDrawer>
 }
