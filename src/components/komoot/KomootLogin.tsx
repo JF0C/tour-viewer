@@ -25,6 +25,7 @@ export const KomootLogin: FunctionComponent = () => {
     return <SmallFormLayout buttons={<>
         <Button onClick={login}>Login</Button>
     </>}>
+        <div>Login to Komoot</div>
         <Input placeholder="email" onKeyUp={keyUp} onChange={e => setEmail(e.target.value)} type="text" />
         <Input placeholder="password" onKeyUp={keyUp} onChange={e => setPassword(e.target.value)} type="password" />
     </SmallFormLayout>

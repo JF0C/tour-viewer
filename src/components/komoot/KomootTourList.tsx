@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Button, Pagination } from "@mui/material";
 import { komootToursRequest } from "../../store/komootThunk";
 import { KomootTourListItem } from "./KomootTourListItem";
+import { BigFormLayout } from "../layout/BigFormLayout";
 
 
 export const KomootTourList: FunctionComponent = () => {
@@ -33,11 +34,13 @@ export const KomootTourList: FunctionComponent = () => {
         }))
     }
 
-    return <div>
-        {
-            komootState.komootTourData._embedded.tours.map(t => <KomootTourListItem tour={t} />)
-        }
+    return <BigFormLayout>
+        <div className="flex flex-row flex-wrap gap-2">
+            {
+                komootState.komootTourData._embedded.tours.map(t => <KomootTourListItem tour={t} />)
+            }
+        </div>
         <Pagination sx={{ color: 'white' }} page={komootState.tourPagination.page} count={komootState.tourPagination.totalPages} siblingCount={0} boundaryCount={1}
             onChange={(e: any, page: number) => changePage(page)} />
-    </div>
+    </BigFormLayout>
 }

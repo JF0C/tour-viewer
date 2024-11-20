@@ -96,7 +96,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                                 &nbsp;Add Post
                             </Button>
                         </div>
-                        <NavLink to={Paths.KomootTourLoaderPage}>
+                        <NavLink to={Paths.KomootTourLoaderPage} onClick={props.closeSidebar}>
                             <Button>
                                 Import from Komoot
                             </Button>

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PaginationState } from "./paginationState";
 import { komootLoginRequest, komootToursRequest } from "./komootThunk";
 import { KomootTourResponseDto } from "../dtos/komootTourResponseDto";
@@ -9,6 +9,7 @@ export interface IKomootState {
     userId?: number;
     tourPagination: PaginationState;
     komootTourData?: KomootTourResponseDto;
+    selectedTours: string[]
 }
 
 const initialState: IKomootState = {
@@ -18,7 +19,8 @@ const initialState: IKomootState = {
         itemsPerPage: 10,
         totalItems: 0,
         totalPages: 0
-    }
+    },
+    selectedTours: []
 }
 
 export const komootSlice = createSlice({
@@ -28,6 +30,14 @@ export const komootSlice = createSlice({
         resetKomootUser(state) {
             state.userId = undefined;
             state.authString = undefined;
+        },
+        toggleSelectedTour(state, action: PayloadAction<string>) {
+            if (state.selectedTours.includes(action.payload)) {
+                state.selectedTours = state.selectedTours.filter(x => x !== action.payload);
+            }
+            else {
+                state.selectedTours.push(action.payload);
+            }
         }
     },
     extraReducers: (builder) => {
@@ -79,5 +89,5 @@ export const komootSlice = createSlice({
     }
 });
 
-export const { resetKomootUser } = komootSlice.actions;
+export const { resetKomootUser, toggleSelectedTour } = komootSlice.actions;
 export const komootStateReducer = komootSlice.reducer;

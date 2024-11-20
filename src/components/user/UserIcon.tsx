@@ -8,6 +8,7 @@ import { logoutRequest } from "../../store/authThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ProfilePicture } from "./ProfilePicture";
 import { setUserDetail } from "../../store/userStateReducer";
+import { resetKomootUser } from "../../store/komootStateReducer";
 
 export const UserIcon: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -19,10 +20,11 @@ export const UserIcon: FunctionComponent = () => {
 
     const logout = () => {
         setMenuOpen(false);
+        dispatch(resetKomootUser());
         dispatch(logoutRequest())
             .unwrap()
             .catch()
-            .then(() => navigate(Paths.LoginPage))
+            .then(() => navigate(Paths.LoginPage));
     }
 
     if (!user) {

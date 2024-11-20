@@ -28,7 +28,7 @@ export const KomootTourLoader: FunctionComponent = () => {
         loadTours();
     }
     return <div>
-        {komootState.userId}
+        <div>Import Komoot Tours</div>
         <KomootTourList />
     </div>
 }
