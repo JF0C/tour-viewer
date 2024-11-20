@@ -1,15 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { LoginDto } from "../dtos/loginDto";
+
+export const basicAuthorization = (login: LoginDto) =>
+    btoa(`${login.email}:${login.password}`);
 
 export const createThrowingAsyncThunk = <Tout, Tin>(name: string,
     fetchFunction: (arg: Tin, body?: string) => Promise<Response>,
-    parseFunction: (response: Response) => Promise<Tout>,
+    parseFunction: (response: Response, arg: Tin | undefined) => Promise<Tout>,
     bodyFunction?: (arg: Tin) => string) => {
     return createAsyncThunk(name, async (arg: Tin) => {
         const response = await fetchFunction(arg, bodyFunction?.(arg) ?? JSON.stringify(arg));
         if (!response.ok) {
             throw new Error(await response.text());
         }
-        return await parseFunction(response);
+        return await parseFunction(response, arg);
     });
 }
 
@@ -58,6 +62,20 @@ export const createGetThunk = <Tout, Tin>(name: string, url: (arg: Tin) => strin
         credentials: 'include'
     }), parseFunction);
 }
+
+export const createAuthenticatedGetThunk = <Tout, Tin>(
+    name: string, 
+    url: (arg: Tin) => string,
+    authFunction: (arg: Tin) => string,
+    parseFunction: (response: Response, arg: Tin | undefined) => Promise<Tout>) => {
+    return createThrowingAsyncThunk(name, (arg: Tin) => fetch(url(arg), {
+        method: 'GET',
+        headers: {
+            'Authorization': `Basic ${authFunction(arg)}`
+        }
+    }), parseFunction);
+}
+
 
 export const createDeleteThunk = <Tin>(name: string, url: (arg: Tin) => string,
     bodyFunction?: (arg: Tin) => string) => {

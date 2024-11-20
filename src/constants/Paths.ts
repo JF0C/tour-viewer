@@ -19,4 +19,6 @@ export class Paths {
     public static readonly ResetPasswordPage = '/reset-password'
     public static readonly UserSettingsPage = '/user-settings'
     public static readonly UserProfilePage = '/user'
+
+    public static readonly KomootTourLoaderPage = '/komoot-tour-loader'
 }

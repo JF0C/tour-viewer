@@ -29,4 +29,7 @@ export class ApiUrls
     public static readonly TourEndpoint = '/Tour'
     public static readonly TrackEndpoint = '/Track'
     public static readonly BlogPostEndpoint = '/BlogPost'
+
+    public static readonly KomootLoginUrl = 'https://api.komoot.de/v006/account/email'
+    public static readonly KomootApiUrl = 'https://www.komoot.de/api/v007/users'
 }

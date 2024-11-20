@@ -12,6 +12,7 @@ import { UserSettings } from "../user/UserSettings";
 import { AdminPage } from "../admin/AdminPage";
 import { ResetPassword } from "../authentication/ResetPassword";
 import { UserProfile } from "../user/UserProfile";
+import { KomootTourLoader } from "../komoot/KomootTourLoader";
 
 
 export const RouterOutlet: FunctionComponent = () => {
@@ -30,5 +31,7 @@ export const RouterOutlet: FunctionComponent = () => {
         
         <Route path={Paths.CreateTourPage} element={<CreateTour />} />
         <Route path={Paths.EditTourPage} element={<EditTour />} />
+
+        <Route path={Paths.KomootTourLoaderPage} element={<KomootTourLoader />} />
     </Routes>
 }

@@ -8,6 +8,7 @@ import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest,
 import { changeUsernameRequest, deleteUserRequest, registerRequest } from "./userThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
 import { getAppVersion } from "./systemThunk";
+import { komootLoginRequest, komootToursRequest } from "./komootThunk";
 
 export interface INotificationState {
     message?: string;
@@ -211,6 +212,14 @@ export const NotificationSlice = createSlice({
 
         builder.addCase(getAppVersion.rejected, (_state, action) => {
             snackError('loading version', action.error);
+        });
+
+        builder.addCase(komootLoginRequest.rejected, (_state, action) => {
+            snackError('logging into Komoot', action.error);
+        });
+
+        builder.addCase(komootToursRequest.rejected, (_state, action) => {
+            snackError('loading Komoot tours', action.error);
         });
     }
 });

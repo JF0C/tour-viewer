@@ -8,6 +8,7 @@ import { blogPostStateReducer } from './blogPostStateReducer';
 import { notificationReducer } from './notificationStateReducer';
 import { userStateReducer } from './userStateReducer';
 import { systemStateReducer } from './systemStateReducer';
+import { komootStateReducer } from './komootStateReducer';
 
 export const store = configureStore({
     reducer: {
@@ -18,7 +19,8 @@ export const store = configureStore({
         blog: blogPostStateReducer,
         admin: adminStateReducer,
         notification: notificationReducer,
-        system: systemStateReducer
+        system: systemStateReducer,
+        komoot: komootStateReducer
     }
 });
 
