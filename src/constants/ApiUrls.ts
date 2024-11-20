@@ -31,5 +31,5 @@ export class ApiUrls
     public static readonly BlogPostEndpoint = '/BlogPost'
 
     public static readonly KomootLoginUrl = 'https://api.komoot.de/v006/account/email'
-    public static readonly KomootApiUrl = 'https://www.komoot.de/api/v007/users'
+    public static readonly KomootApiUrl = 'https://www.komoot.de/api/v007'
 }
