@@ -40,6 +40,7 @@ export const komootSlice = createSlice({
             }
             else {
                 state.toursToDownload.push(action.payload);
+                state.toursToDownload.sort((a, b) => a.date - b.date);
             }
         },
         clearKomootSelectedTours(state) {

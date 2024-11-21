@@ -70,11 +70,6 @@ export const EditTour: FunctionComponent = () => {
             <ConfirmModal type='error' onConfirm={deleteTour}
                 message={`Do you really want to delete tour ${tourState.editingTour.name}`}
                 buttonContent={<>Delete</>} />
-            <NavLink to={Paths.KomootTourStartPage}>
-                <Button>
-                    Import from Komoot
-                </Button>
-            </NavLink>
             <Button onClick={reloadTour}>Reload</Button>
             {
                 tourState.editingTour.id === 0 ?
@@ -114,6 +109,11 @@ export const EditTour: FunctionComponent = () => {
         <UserSearch>
             <ParticipantResultView />
         </UserSearch>
+        <NavLink to={Paths.KomootTourStartPage}>
+            <Button>
+                Import Tracks from Komoot
+            </Button>
+        </NavLink>
         <TrackList onReload={reloadTour} />
     </BigFormLayout>
 }

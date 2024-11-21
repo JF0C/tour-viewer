@@ -3,6 +3,8 @@ import { FunctionComponent, useState } from "react";
 import { komootLoginRequest } from "../../store/komootThunk";
 import { useAppDispatch } from "../../store/store";
 import { SmallFormLayout } from "../layout/SmallFormLayout";
+import { NavLink } from "react-router-dom";
+import { Paths } from "../../constants/Paths";
 
 export const KomootLogin: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -23,6 +25,11 @@ export const KomootLogin: FunctionComponent = () => {
     }
 
     return <SmallFormLayout buttons={<>
+        <NavLink to={Paths.EditTourPage}>
+            <Button>
+                Back
+            </Button>
+        </NavLink>
         <Button onClick={login}>Login</Button>
     </>}>
         <div>Login to Komoot</div>

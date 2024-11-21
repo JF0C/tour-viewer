@@ -62,7 +62,7 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         className={`swipe-container-image full-size-image ${props.rounded ? 'rounded-lg' : ''}`}
                         src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
 
-                    <div className={`absolute top-0 h-full w-full`}>
+                    <div className={`absolute top-0 h-full w-full group`}>
                         {
                             props.onClose ?
                                 <div className="absolute top-0 right-0">
@@ -75,7 +75,7 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         {
                             props.allowFullSizeView ?
                                 <div className="absolute top-0 w-full h-full flex justify-center items-center">
-                                    <div onClick={() => showFullSize(i)} className="group mx-8 h-full w-full cursor-pointer
+                                    <div onClick={() => showFullSize(i)} className="mx-8 h-full w-full cursor-pointer
                                         pointer-cursor flex justify-center items-center">
                                         <FontAwesomeIcon size='2xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" icon={faImage} />
                                     </div>
@@ -85,9 +85,10 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         {
                             index > 0 ?
                                 <div className="absolute top-0 h-full flex flex-col justify-center">
-                                    <Button onClick={previousImage} sx={{ color: 'white', minWidth: '20px' }}>
-                                        <FontAwesomeIcon icon={faChevronLeft} />
-                                    </Button>
+                                    <div className="cursor-pointer p-2" onClick={previousImage} style={{color: 'white'}}>
+                                        <FontAwesomeIcon size='xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" 
+                                            icon={faChevronLeft} />
+                                    </div>
                                 </div>
                                 : <></>
                         }
@@ -107,9 +108,10 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
                         {
                             index < (imageCount - 1) ?
                                 <div className="absolute top-0 right-0 h-full flex flex-col justify-center">
-                                    <Button onClick={nextImage} sx={{ color: 'white', minWidth: '20px' }}>
-                                        <FontAwesomeIcon icon={faChevronRight} />
-                                    </Button>
+                                    <div className="cursor-pointer p-2" onClick={nextImage} style={{color: 'white'}}>
+                                        <FontAwesomeIcon size='xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" 
+                                            icon={faChevronRight} />
+                                    </div>
                                 </div>
                                 : <></>
                         }

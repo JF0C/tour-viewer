@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { clearKomootSelectedTours } from "../../store/komootStateReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faX } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight, faX } from "@fortawesome/free-solid-svg-icons";
 
 
 export const KomootTourList: FunctionComponent = () => {
@@ -46,6 +46,12 @@ export const KomootTourList: FunctionComponent = () => {
 
     return <BigFormLayout buttons={
         <div className="flex flex-row w-full justify-between">
+        <NavLink to={Paths.EditTourPage}>
+            <Button>
+                <FontAwesomeIcon icon={faArrowLeft} />
+                &nbsp;Back
+            </Button>
+        </NavLink>
             <Button onClick={clearSelected} color='error' disabled={invalid}>
                 <FontAwesomeIcon icon={faX} />
                 &nbsp;Clear
