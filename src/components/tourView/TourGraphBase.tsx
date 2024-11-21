@@ -23,8 +23,8 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     const sliderMax = 10000;
     const divRef = useRef<HTMLDivElement>(null);
     const dataZoomLevels = [1, 10, 20, 50];
-    type filterNames = 'savgol' | 'avg 50';
-    const filters = ['savgol', 'avg 50'];
+    type filterNames = 'savgol' | 'avg 50' | 'none';
+    const filters = ['savgol', 'avg 50', 'none'];
     const selectors = [
         {
             name: 'Velocity',
@@ -35,6 +35,11 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
             name: 'Elevation',
             selector: (point: TrackPoint) => point.elevation,
             unit: 'm'
+        },
+        {
+            name: 'Slope',
+            selector: (point: TrackPoint) => point.slope,
+            unit: 'm/m'
         }
     ]
 
