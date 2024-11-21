@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PaginationState } from "./paginationState";
-import { komootLoginRequest, komootToursRequest } from "./komootThunk";
+import { komootGpxTourRequest, komootLoginRequest, komootToursRequest } from "./komootThunk";
 import { KomootTourResponseDto } from "../dtos/komootTourResponseDto";
+import { GpxTourDownload } from "../data/gpxTourDownload";
+import { createTrackRequest } from "./trackThunk";
+import { ExternalSources } from "../constants/ExternalSources";
 
 export interface IKomootState {
     loading: boolean;
@@ -9,7 +12,7 @@ export interface IKomootState {
     userId?: number;
     tourPagination: PaginationState;
     komootTourData?: KomootTourResponseDto;
-    selectedTours: string[]
+    toursToDownload: GpxTourDownload[];
 }
 
 const initialState: IKomootState = {
@@ -20,7 +23,7 @@ const initialState: IKomootState = {
         totalItems: 0,
         totalPages: 0
     },
-    selectedTours: []
+    toursToDownload: []
 }
 
 export const komootSlice = createSlice({
@@ -31,12 +34,24 @@ export const komootSlice = createSlice({
             state.userId = undefined;
             state.authString = undefined;
         },
-        toggleSelectedTour(state, action: PayloadAction<string>) {
-            if (state.selectedTours.includes(action.payload)) {
-                state.selectedTours = state.selectedTours.filter(x => x !== action.payload);
+        toggleSelectedKomootTour(state, action: PayloadAction<GpxTourDownload>) {
+            if (state.toursToDownload.find(t => t.id === action.payload.id)) {
+                state.toursToDownload = state.toursToDownload.filter(x => x.id !== action.payload.id);
             }
             else {
-                state.selectedTours.push(action.payload);
+                state.toursToDownload.push(action.payload);
+            }
+        },
+        clearKomootSelectedTours(state) {
+            state.toursToDownload = [];
+        },
+        removeSelectedKomootTour(state, action: PayloadAction<string>) {
+            state.toursToDownload = state.toursToDownload.filter(x => x.id !== action.payload);
+        },
+        changeKomootTourName(state, action: PayloadAction<{id: string, name: string}>) {
+            const tour = state.toursToDownload.find(t => t.id === action.payload.id);
+            if (tour) {
+                tour.name = action.payload.name;
             }
         }
     },
@@ -86,8 +101,61 @@ export const komootSlice = createSlice({
             };
             state.loading = false;
         });
+
+        builder.addCase(komootGpxTourRequest.pending, (state, action) => {
+            const tour = state.toursToDownload.find(t => t.id === action.meta.arg.tourId);
+            if (tour) {
+                tour.state = 'loading';
+            }
+        });
+        builder.addCase(komootGpxTourRequest.fulfilled, (state, action) => {
+            const tour = state.toursToDownload.find(t => t.id === action.meta.arg.tourId);
+            if (tour) {
+                tour.data = action.payload;
+            }
+        });
+        builder.addCase(komootGpxTourRequest.rejected, (state, action) => {
+            const tour = state.toursToDownload.find(t => t.id === action.meta.arg.tourId);
+            if (tour) {
+                tour.state = 'error';
+            }
+        });
+
+        builder.addCase(createTrackRequest.pending, (state, action) => {
+            if (action.meta.arg.externalSource !== ExternalSources.Komoot) {
+                return;
+            }
+            const tour = state.toursToDownload.find(t => t.id === action.meta.arg.externalId);
+            if (tour) {
+                tour.state = 'loading'
+            }
+        });
+        builder.addCase(createTrackRequest.fulfilled, (state, action) => {
+            if (action.meta.arg.externalSource !== ExternalSources.Komoot) {
+                return;
+            }
+            const tour = state.toursToDownload.find(t => t.id === action.meta.arg.externalId);
+            if (tour) {
+                tour.state = 'finished'
+            }
+        });
+        builder.addCase(createTrackRequest.rejected, (state, action) => {
+            if (action.meta.arg.externalSource !== ExternalSources.Komoot) {
+                return;
+            }
+            const tour = state.toursToDownload.find(t => t.id === action.meta.arg.externalId);
+            if (tour) {
+                tour.state = 'error'
+            }
+        });
     }
 });
 
-export const { resetKomootUser, toggleSelectedTour } = komootSlice.actions;
+export const {
+    resetKomootUser,
+    toggleSelectedKomootTour,
+    changeKomootTourName,
+    removeSelectedKomootTour,
+    clearKomootSelectedTours
+} = komootSlice.actions;
 export const komootStateReducer = komootSlice.reducer;

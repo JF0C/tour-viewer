@@ -7,6 +7,7 @@ import { EditTrackDto } from "../dtos/editTrackDto"
 import { createDeleteThunk, createPostThunk, createPutThunk } from "./thunkBase"
 import { ITrackEntity } from "./trackStateReducer"
 import { enqueueSnackbar } from "notistack"
+import { LoadTrackRequestDto } from "../dtos/loadTrackRequestDto"
 
 export const deleteTrackRequest = createDeleteThunk<number>(
     'delete-track',
@@ -20,8 +21,8 @@ export const createTrackRequest = createPostThunk<number, EditTrackDto>(
 );
 
 export const loadTrackRequest = createAsyncThunk('load-track',
-    async (fileReference: string): Promise<ITrackEntity> => {
-        const response = await fetch(`${ApiUrls.BaseUrl}/trk/${fileReference}.gpx`, {
+    async (request: LoadTrackRequestDto): Promise<ITrackEntity> => {
+        const response = await fetch(`${ApiUrls.BaseUrl}/trk/${request.fileReference}.gpx`, {
             credentials: 'include',
             headers: {
                 'Accept': 'application/xml'
@@ -29,9 +30,9 @@ export const loadTrackRequest = createAsyncThunk('load-track',
         });
 
         if (!response.ok) {
-            enqueueSnackbar(`error loading track: ${fileReference}`, { variant: 'error' });
+            enqueueSnackbar(`error loading track: ${request.name}`, { variant: 'error' });
             return {
-                fileReference: fileReference,
+                fileReference: request.fileReference,
                 selected: true,
                 loading: false,
                 data: {
@@ -52,10 +53,10 @@ export const loadTrackRequest = createAsyncThunk('load-track',
         }
 
         return {
-            fileReference: fileReference,
+            fileReference: request.fileReference,
             selected: true,
             loading: false,
-            data: parseGpxText(await response.text())
+            data: parseGpxText(await response.text(), request.name)
         };
     }
 );

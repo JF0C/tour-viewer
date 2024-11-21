@@ -2,7 +2,7 @@ import { parseGPX } from "@we-gold/gpxjs";
 import { TrackData } from "../data/trackData";
 import { haversine } from "./haversine";
 
-export const parseGpxText = (data: string): TrackData => {
+export const parseGpxText = (data: string, name: string): TrackData => {
     const [gpx, error] = parseGPX(data);
     if (error) throw error
     const track = gpx.tracks[0];
@@ -31,7 +31,7 @@ export const parseGpxText = (data: string): TrackData => {
     }
 
     const trackData: TrackData = {
-        name: track.name ?? '',
+        name: name,
         distance: track.distance.total,
         elevation: {
             average: track.elevation.average ?? 0,

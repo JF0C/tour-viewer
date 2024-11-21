@@ -39,7 +39,10 @@ export const TourMap: FunctionComponent = () => {
         if ((missingTracks?.length ?? 0) > 0) {
             for (let missing of missingTracks!) {
                 dispatch(startLoadingTrack(missing.fileReference));
-                dispatch(loadTrackRequest(missing.fileReference));
+                dispatch(loadTrackRequest({
+                    fileReference: missing.fileReference,
+                    name: missing.name
+                }));
             }
         }
         else {

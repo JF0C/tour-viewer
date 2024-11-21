@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { millisToUtcDate } from "../../converters/dateConverters";
 import { useAppDispatch, useAppSelector } from "../../store/store";
@@ -70,6 +70,11 @@ export const EditTour: FunctionComponent = () => {
             <ConfirmModal type='error' onConfirm={deleteTour}
                 message={`Do you really want to delete tour ${tourState.editingTour.name}`}
                 buttonContent={<>Delete</>} />
+            <NavLink to={Paths.KomootTourStartPage}>
+                <Button>
+                    Import from Komoot
+                </Button>
+            </NavLink>
             <Button onClick={reloadTour}>Reload</Button>
             {
                 tourState.editingTour.id === 0 ?

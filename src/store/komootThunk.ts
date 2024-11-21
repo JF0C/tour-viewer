@@ -1,6 +1,8 @@
 import { ApiUrls } from "../constants/ApiUrls";
 import { KomootLoginResponseDto } from "../dtos/komootLoginResponseDto";
 import { KomootPageRequestDto } from "../dtos/komootPageRequestDto";
+import { KomootTourCoordinatesDto } from "../dtos/komootTourCoordinatesDto";
+import { KomootTourRequestDto } from "../dtos/komootTourRequestDto";
 import { KomootTourResponseDto } from "../dtos/komootTourResponseDto";
 import { LoginDto } from "../dtos/loginDto";
 import { basicAuthorization, createAuthenticatedGetThunk } from "./thunkBase";
@@ -24,9 +26,19 @@ export const komootToursRequest = createAuthenticatedGetThunk<KomootTourResponse
         `?sort_types=&type=tour_recorded&sort_field=date&sort_direction=desc` +
         `&name=&status=private&hl=de&page=${pageRequest.page - 1}&limit=${pageRequest.count}`,
     (pageRequest) => pageRequest.authString,
-    async (response) => {
-        const result = await response.json();
-        console.log(result);
-        return result;
-    }
+    async (response) => await response.json()
+)
+
+export const komootTourCoordinatesRequest = createAuthenticatedGetThunk<KomootTourCoordinatesDto, KomootTourRequestDto>(
+    'komoot-tour-coordinates',
+    (request) => `${ApiUrls.KomootApiUrl}/tours/${request.tourId}/coordinates`,
+    (request) => request.authString,
+    async (response) => await response.json()
+)
+
+export const komootGpxTourRequest = createAuthenticatedGetThunk<string, KomootTourRequestDto>(
+    'komoot-tour-coordinates',
+    (request) => `${ApiUrls.KomootApiUrl}/tours/${request.tourId}.gpx`,
+    (request) => request.authString,
+    async (response) => await response.text()
 )

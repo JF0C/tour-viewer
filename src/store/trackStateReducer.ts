@@ -112,7 +112,7 @@ export const trackStateSlice = createSlice({
             let trackEntity = state.tracks.find(t => t.fileReference === action.payload.fileReference);
 
             if (!trackEntity) {
-                state.tracks.push({
+                trackEntity = {
                     fileReference: action.payload.fileReference,
                     selected: action.payload.selected,
                     data: action.payload.data,
@@ -123,7 +123,8 @@ export const trackStateSlice = createSlice({
                         north: 0,
                         east: 0
                     }
-                });
+                };
+                state.tracks.push(trackEntity);
             }
             else {
                 trackEntity.data = action.payload.data;

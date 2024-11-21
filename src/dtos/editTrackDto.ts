@@ -4,4 +4,6 @@ export type EditTrackDto = {
     name: string;
     tourPosition: number;
     data: string;
+    externalId?: string;
+    externalSource?: string;
 }

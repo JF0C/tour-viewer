@@ -20,5 +20,6 @@ export class Paths {
     public static readonly UserSettingsPage = '/user-settings'
     public static readonly UserProfilePage = '/user'
 
-    public static readonly KomootTourLoaderPage = '/komoot-tour-loader'
+    public static readonly KomootTourStartPage = '/komoot-tour-start'
+    public static readonly KomootTourDownloadPage = '/komoot-tour-download'
 }
