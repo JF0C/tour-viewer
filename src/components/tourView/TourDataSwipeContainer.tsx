@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { TourData } from "./TourData";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { TourGraphBase } from "./TourGraphBase";
 
 export const TourDataSwipeContainer: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -48,6 +49,10 @@ export const TourDataSwipeContainer: FunctionComponent = () => {
         </div>)
     }
 
+    const points = selectedTracks
+        .map(t => t.data.points)
+        .reduce((a, b) => [...a, ...b])
+
     const KeyboardSwipeable = bindKeyboard(SwipeableViews);
     return <div className="info-bar-content">
         <KeyboardSwipeable onChangeIndex={e => selectTrack(currentIndex - (hasPrevTrack ? 1 : 0) + e)}
@@ -56,7 +61,14 @@ export const TourDataSwipeContainer: FunctionComponent = () => {
                 content
             }
         </KeyboardSwipeable>
-        
+        <div className="p-2">
+            {
+                selectedTracks.length === 1 ?
+                    <TourGraphBase points={points} />
+                    : <></>
+            }
+        </div>
+
         <div className='flex flex-row justify-between absolute bottom-0 w-full'>
             <Button disabled={!hasPrevTrack} onClick={() => selectTrack(currentIndex - 1)}>
                 <FontAwesomeIcon icon={faChevronLeft} />

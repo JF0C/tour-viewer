@@ -63,7 +63,6 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
         const allValues = filter === 'savgol' ? savGol(allValuesUnfiltered) :
             filter === 'avg 50' ? movingAverage(allValuesUnfiltered, { windowSize: 50 })
                 : allValuesUnfiltered;
-        // const allValues = savGol(allValuesUnfiltered);
 
         const size = allTimes.length;
 
