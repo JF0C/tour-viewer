@@ -28,7 +28,7 @@ export const parseGpxText = (data: string, name: string): TrackData => {
 
         const dh = (next.elevation ?? 0) - (current.elevation ?? 0);
         const slope = dh / Math.max(dist, 0.1);
-        slopes.push(slope);
+        slopes.push(100 * slope);
 
         if (dt < 30000 && dt > 0) {
             movementTime += dt;
@@ -51,11 +51,11 @@ export const parseGpxText = (data: string, name: string): TrackData => {
             longitude: p.longitude ?? 0,
             time: p.time?.valueOf() ?? 0,
             velocity: velocities[i],
-            slope: slopes[i]
+            slope: 0
         }}),
         totalTime: totalTime,
         totalMovementTime: movementTime
     };
-    console.log(trackData);
+    
     return trackData;
 }

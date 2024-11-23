@@ -5,7 +5,7 @@ import { movingAverage, savGol } from '../../converters/dataFilters';
 import { millisToTimeString } from '../../converters/dateConverters';
 import { TrackPoint } from "../../data/trackPoint";
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { setDataPointLocation } from '../../store/trackStateReducer';
+import { setDataPointLocation, setGraphDataBounds, setGraphDataSource } from '../../store/trackStateReducer';
 import { CoordinatesDto } from '../../dtos/coordinatesDto';
 
 export type TourGraphBaseProps = {
@@ -15,6 +15,7 @@ export type TourGraphBaseProps = {
 export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     const dispatch = useAppDispatch();
     const dataPointLocation = useAppSelector((state) => state.track.dataPointLocation);
+    const trackGraphData = useAppSelector((state) => state.track.graphData);
     const height = 300;
     const width = 400;
     const margin = 10;
@@ -39,7 +40,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
         {
             name: 'Slope',
             selector: (point: TrackPoint) => point.slope,
-            unit: 'm/m'
+            unit: '%'
         }
     ]
 
@@ -50,7 +51,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     const [filter, setFilter] = useState<filterNames>('avg 50');
     const [selector, setSelector] = useState(selectors[0]);
 
-    const [svg, windowSize, slidePosition] = useMemo(() => {
+    const [svg, windowSize, slidePosition, valueBounds] = useMemo(() => {
         const svg = d3.create('svg')
             .attr('width', width)
             .attr('height', height)
@@ -90,7 +91,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
 
         const valueRange = [Math.min(...allValues, 0), Math.max(...allValues)];
 
-        const y = d3.scaleLinear(valueRange, [height - marginBottom, margin])
+        const y = d3.scaleLinear(valueRange, [height - marginBottom, margin]);
 
         const line = d3.line<{ time: number, value: number }>()
             .x(d => x(d.time))
@@ -156,8 +157,24 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
                 .text(`${selectedValue.toFixed(1)} ${selector.unit}`);
         }
 
-        return [svg.node(), windowSize, slidePosition];
+        return [svg.node(), windowSize, slidePosition, valueRange];
     }, [props, scrollState, selectedIndex, dataZoom, filter, selector])
+
+    if (trackGraphData.min !== valueBounds[0] || trackGraphData.max !== valueBounds[1]) {
+        dispatch(setGraphDataBounds({ min: valueBounds[0], max: valueBounds[1] }));
+    }
+    
+    const setTrackDataSource = (name: string) => {
+        const selectorSource = name === 'Velocity' ? 'velocity' :
+            name === 'Slope' ? 'slope' :
+                name === 'Elevation' ? 'elevation' :
+                    undefined;
+        dispatch(setGraphDataSource(selectorSource));
+    }
+
+    if (trackGraphData.selectedValue !== selector.name.toLowerCase()) {
+        setTrackDataSource(selector.name);
+    }
 
     const setDataMarkerPosition = (coordinates: CoordinatesDto) => {
         if (dataPointLocation?.latitude !== coordinates.latitude
@@ -171,6 +188,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
         if (!newSelector) {
             return;
         }
+        setTrackDataSource(name);
         setSelector(newSelector);
     }
 
@@ -211,7 +229,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
                     Data
                 </InputLabel>
                 <Select defaultValue={selectors[0].name} size='small' label='Data' labelId='data-selector-label'
-                    sx={{color: 'white'}} onChange={e => changeSelector(e.target.value)}>
+                    sx={{ color: 'white' }} onChange={e => changeSelector(e.target.value)}>
                     {
                         selectors.map(s => <MenuItem key={s.name} value={s.name}>{s.name}</MenuItem>)
                     }

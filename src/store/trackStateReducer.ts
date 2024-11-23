@@ -24,12 +24,25 @@ export interface ITrackState {
     dataPointLocation?: CoordinatesDto;
     targetCoordinates?: CoordinatesDto;
     tracks: ITrackEntity[];
+    graphData: {
+        selectedValue?: 'velocity' | 'elevation' | 'slope',
+        min: number,
+        max: number,
+        minColor: { r: number, g: number, b: number },
+        maxColor: { r: number, g: number, b: number }
+    }
 }
 
 const initialState: ITrackState = {
     loading: false,
     boundsSet: false,
-    tracks: []
+    tracks: [],
+    graphData: {
+        min: 0,
+        max: 0,
+        minColor: { r: 0, g: 0, b: 255 },
+        maxColor: { r: 255, g: 0, b: 0 }
+    }
 }
 
 export const trackStateSlice = createSlice({
@@ -101,6 +114,13 @@ export const trackStateSlice = createSlice({
         },
         setTargetCoordinates(state, action: PayloadAction<CoordinatesDto | undefined>) {
             state.targetCoordinates = action.payload;
+        },
+        setGraphDataBounds(state, action: PayloadAction<{min: number, max: number}>) {
+            state.graphData.min = action.payload.min;
+            state.graphData.max = action.payload.max;
+        },
+        setGraphDataSource(state, action: PayloadAction<'velocity' | 'elevation' | 'slope' | undefined>) {
+            state.graphData.selectedValue = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -193,5 +213,7 @@ export const {
     resetBoundsSet,
     startLoadingTrack,
     setTargetCoordinates,
-    setDataPointLocation
+    setDataPointLocation,
+    setGraphDataBounds,
+    setGraphDataSource
 } = trackStateSlice.actions;
