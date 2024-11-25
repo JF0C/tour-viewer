@@ -53,7 +53,7 @@ export const KomootTourDownload: FunctionComponent = () => {
     }
 
     const startDownloads = () => {
-        const nextTrackPosition = editingTour.tracks
+        const nextTrackPosition = editingTour.tracks.length === 0 ? 1 : editingTour.tracks
             .map(t => t.tourPosition).reduce((a, b) => Math.max(a, b)) + 1;
         selectedTours.forEach((tour, index) => {
             dispatch(komootGpxTourRequest({

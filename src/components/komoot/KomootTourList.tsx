@@ -70,7 +70,7 @@ export const KomootTourList: FunctionComponent = () => {
         <div className="flex flex-row flex-wrap gap-2">
             {
                 komootState.komootTourData._embedded.tours.map(t =>
-                    <KomootTourListItem tour={{
+                    <KomootTourListItem key={t.id} tour={{
                         id: t.id,
                         name: t.name,
                         distance: t.distance,
