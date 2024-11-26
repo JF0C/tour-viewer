@@ -1,17 +1,24 @@
 import { FunctionComponent } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { Roles } from "../../constants/Rolenames";
-import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { stravaClientIdRequest, stravaTokenRequest } from "../../store/stravaThunk";
+import { useSearchParams } from "react-router-dom";
 import { ApiUrls } from "../../constants/ApiUrls";
+import { Roles } from "../../constants/Rolenames";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { stravaClientIdRequest, stravaTokenRequest } from "../../store/stravaThunk";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { loadLoggedInUser } from "../../store/userThunk";
+import { StravaActivityList } from "./StravaActivityList";
 
 export const StravaTourLoader: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const isContributor = useAppSelector((state) => state.auth.user?.roles.includes(Roles.Contributor)) ?? false;
+    const authState = useAppSelector((state) => state.auth);
+    const isContributor = authState.user?.roles.includes(Roles.Contributor) ?? false;
     const stravaState = useAppSelector((state) => state.strava);
     const [searchParams] = useSearchParams();
+
+    if (!authState.user && !authState.fetchUserAttempted) {
+        dispatch(loadLoggedInUser());
+        return <div>reauthorization</div>
+    }
 
     if (!isContributor) {
         return <div>unauthorized</div>
@@ -27,8 +34,9 @@ export const StravaTourLoader: FunctionComponent = () => {
     }
 
     if (!stravaState.tokenData) {
-        if (searchParams.has('code')) {
-            dispatch(stravaTokenRequest(searchParams.get('code')!));
+        if (searchParams.has('code') && !stravaState.authenticationFailed) {
+            dispatch(stravaTokenRequest(searchParams.get('code')!))
+                .then(() => searchParams.delete('code'));
             return <></>
         }
         else {
@@ -37,11 +45,12 @@ export const StravaTourLoader: FunctionComponent = () => {
                 `&response_type=code` +
                 `&scope=activity:read_all`
                 // + `&approval_prompt=force`
-            navigate(authorizationUrl);
+            document.location.href = authorizationUrl;
         }
     }
 
     return <div>
-
+        <div>{stravaState.tokenData?.accessToken}</div>
+        <StravaActivityList/>
     </div>
 }

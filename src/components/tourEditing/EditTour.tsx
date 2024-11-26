@@ -114,6 +114,11 @@ export const EditTour: FunctionComponent = () => {
                 Import Tracks from Komoot
             </Button>
         </NavLink>
+        <NavLink to={Paths.StravaTourStartPage}>
+            <Button>
+                Import Tracks from Strava
+            </Button>
+        </NavLink>
         <TrackList onReload={reloadTour} />
     </BigFormLayout>
 }
