@@ -61,24 +61,24 @@ export const KomootTourDownload: FunctionComponent = () => {
                 userId: komootState.userId!,
                 authString: komootState.authString!
             })).unwrap()
-            .then((gpx) => {
-                dispatch(createTrackRequest({
-                    tourId: editingTour.id,
-                    id: 0,
-                    name: tour.name,
-                    data: gpx,
-                    tourPosition: nextTrackPosition + index,
-                    externalId: tour.id,
-                    externalSource: ExternalSources.Komoot
-                }));
-            });
+                .then((gpx) => {
+                    dispatch(createTrackRequest({
+                        tourId: editingTour.id,
+                        id: 0,
+                        name: tour.name,
+                        data: gpx,
+                        tourPosition: nextTrackPosition + index,
+                        externalId: tour.id,
+                        externalSource: ExternalSources.Komoot
+                    }));
+                });
         });
     }
 
     return <BigFormLayout buttons={
         <div className="flex flex-row w-full justify-between">
             <NavLink to={isLoading ? Paths.KomootTourDownloadPage : Paths.KomootTourStartPage} onClick={reloadTour}>
-                <Button onClick={() => {}} disabled={isLoading}>
+                <Button onClick={() => { }} disabled={isLoading}>
                     <FontAwesomeIcon icon={faArrowLeft} />
                     &nbsp;Back
                 </Button>
@@ -86,15 +86,19 @@ export const KomootTourDownload: FunctionComponent = () => {
             <Button color='success' onClick={startDownloads} disabled={isLoading || !isEditingTour}>
                 <FontAwesomeIcon icon={faDownload} />
                 &nbsp;
-                { isFailed ? 'Retry Failed Tracks' : 'Load Tracks' }
+                {isFailed ? 'Retry Failed Tracks' : 'Load Tracks'}
             </Button>
         </div>
     }>
+        <div className="w-full text-xl font-bold flex flex-row justify-center">
+            <img width="30" src="icon/komoot-icon.png" alt='komoot-icon' />
+            &nbsp;Start Downloads
+        </div>
         <div className="flex flex-row flex-wrap gap-2">
             {
                 selectedTours.map(t =>
                     <KomootTourListItem tour={t}>
-                        <TrackDownloadContent track={t} />    
+                        <TrackDownloadContent track={t} />
                     </KomootTourListItem>
                 )
             }

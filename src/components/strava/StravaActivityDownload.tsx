@@ -88,6 +88,10 @@ export const StravaActivityDownload: FunctionComponent = () => {
             </Button>
         </div>
     }>
+        <div className="w-full text-xl font-bold flex flex-row justify-center">
+            <img width="30" src="icon/strava-icon.png" alt='komoot-icon' />
+            &nbsp;Start Downloads
+        </div>
         <div className="flex flex-row flex-wrap gap-2">
             {
                 tracksToDownload.map(t => 

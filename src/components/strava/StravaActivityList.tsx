@@ -60,8 +60,9 @@ export const StravaActivityList: FunctionComponent = () => {
             </NavLink>
         </div>
     }>
-        <div className="w-full text-center text-xl font-bold">
-            Select Tours for Import
+        <div className="w-full flex flex-row justify-center text-xl font-bold">
+            <img width="30" src="icon/strava-icon.png" alt='komoot-icon' />
+            &nbsp;Select Tours for Import
         </div>
         <div className="flex flex-row flex-wrap gap-2">
             {

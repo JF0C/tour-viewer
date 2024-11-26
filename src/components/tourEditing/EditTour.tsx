@@ -111,11 +111,15 @@ export const EditTour: FunctionComponent = () => {
         </UserSearch>
         <NavLink to={Paths.KomootTourStartPage}>
             <Button>
+                <img width={20} src="icon/komoot-icon.png" alt='komoot-icon'/>
+                &nbsp;
                 Import Tracks from Komoot
             </Button>
         </NavLink>
         <NavLink to={Paths.StravaTourStartPage}>
             <Button>
+                <img width={20} src="icon/strava-icon.png" alt='komoot-icon'/>
+                &nbsp;
                 Import Tracks from Strava
             </Button>
         </NavLink>

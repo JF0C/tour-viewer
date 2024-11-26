@@ -32,7 +32,11 @@ export const KomootLogin: FunctionComponent = () => {
         </NavLink>
         <Button onClick={login}>Login</Button>
     </>}>
-        <div>Login to Komoot</div>
+        <div className="w-full flex flex-row justify-center font-bold text-xl">
+            <img width="30" src="icon/komoot-icon.png" alt='komoot-icon'/>
+            &nbsp;
+            Login to Komoot
+        </div>
         <Input placeholder="email" onKeyUp={keyUp} onChange={e => setEmail(e.target.value)} type="text" />
         <Input placeholder="password" onKeyUp={keyUp} onChange={e => setPassword(e.target.value)} type="password" />
     </SmallFormLayout>
