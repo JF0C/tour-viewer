@@ -6,7 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { BigFormLayout } from "../layout/BigFormLayout";
-import { TrackConfirmContent } from "./TrackConfirmContent";
+import { TrackDownloadContent } from "./TrackDownloadContent";
 import { KomootTourListItem } from "./KomootTourListItem";
 import { komootGpxTourRequest } from "../../store/komootThunk";
 import { KomootLogin } from "./KomootLogin";
@@ -96,7 +96,7 @@ export const KomootTourDownload: FunctionComponent = () => {
                     <KomootTourListItem tour={t}>
                         {
                             t.state === 'ready' ?
-                                <TrackConfirmContent tour={t} />
+                                <TrackDownloadContent tour={t} />
                             : t.state
                         }
                     </KomootTourListItem>

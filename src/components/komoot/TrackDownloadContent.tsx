@@ -8,11 +8,11 @@ import { EditableNameLabel } from "../shared/EditableNameLabel";
 import { useAppDispatch } from "../../store/store";
 import { changeKomootTourName, removeSelectedKomootTour } from "../../store/komootStateReducer";
 
-export type TrackConfirmContentProps = {
+export type TrackDownloadContentProps = {
     tour: GpxTourDownload
 }
 
-export const TrackConfirmContent: FunctionComponent<TrackConfirmContentProps> = (props) => {
+export const TrackDownloadContent: FunctionComponent<TrackDownloadContentProps> = (props) => {
     const dispatch = useAppDispatch();
 
     const changeName = (id: string, name: string) => {
