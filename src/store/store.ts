@@ -9,6 +9,7 @@ import { notificationReducer } from './notificationStateReducer';
 import { userStateReducer } from './userStateReducer';
 import { systemStateReducer } from './systemStateReducer';
 import { komootStateReducer } from './komootStateReducer';
+import { stravaStateReducer } from './stravaStateReducer';
 
 export const store = configureStore({
     reducer: {
@@ -20,7 +21,8 @@ export const store = configureStore({
         admin: adminStateReducer,
         notification: notificationReducer,
         system: systemStateReducer,
-        komoot: komootStateReducer
+        komoot: komootStateReducer,
+        strava: stravaStateReducer
     }
 });
 

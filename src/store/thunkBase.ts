@@ -66,12 +66,13 @@ export const createGetThunk = <Tout, Tin>(name: string, url: (arg: Tin) => strin
 export const createAuthenticatedGetThunk = <Tout, Tin>(
     name: string, 
     url: (arg: Tin) => string,
+    authScheme: 'Basic' | 'Bearer',
     authFunction: (arg: Tin) => string,
     parseFunction: (response: Response, arg: Tin | undefined) => Promise<Tout>) => {
     return createThrowingAsyncThunk(name, (arg: Tin) => fetch(url(arg), {
         method: 'GET',
         headers: {
-            'Authorization': `Basic ${authFunction(arg)}`
+            'Authorization': `${authScheme} ${authFunction(arg)}`
         }
     }), parseFunction);
 }

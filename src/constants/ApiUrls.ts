@@ -30,6 +30,13 @@ export class ApiUrls
     public static readonly TrackEndpoint = '/Track'
     public static readonly BlogPostEndpoint = '/BlogPost'
 
+    public static readonly ExternalSourceEndpoint = '/ExternalTrackSource'
+    public static readonly StravaClientIdEndpoint = '/StravaClientId'
+    public static readonly StravaTokenEndpoint = '/StravaToken'
+
     public static readonly KomootLoginUrl = 'https://api.komoot.de/v006/account/email'
     public static readonly KomootApiUrl = 'https://www.komoot.de/api/v007'
+
+    public static readonly StravaAuthorizationUrl = 'https://www.strava.com/oauth/authorize'
+    public static readonly StravaApiUrl = 'https://strava.com/api/v3'
 }

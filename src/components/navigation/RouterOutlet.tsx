@@ -14,6 +14,7 @@ import { ResetPassword } from "../authentication/ResetPassword";
 import { UserProfile } from "../user/UserProfile";
 import { KomootTourLoader } from "../komoot/KomootTourLoader";
 import { KomootTourDownload } from "../komoot/KomootTourDownload";
+import { StravaTourLoader } from "../strava/StravaTourLoader";
 
 
 export const RouterOutlet: FunctionComponent = () => {
@@ -35,5 +36,7 @@ export const RouterOutlet: FunctionComponent = () => {
 
         <Route path={Paths.KomootTourStartPage} element={<KomootTourLoader />} />
         <Route path={Paths.KomootTourDownloadPage} element={<KomootTourDownload />} />
+
+        <Route path={Paths.StravaTourStartPage} element={<StravaTourLoader />} />
     </Routes>
 }
