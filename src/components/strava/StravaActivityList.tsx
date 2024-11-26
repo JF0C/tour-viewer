@@ -13,7 +13,7 @@ import { clearToursToDownload } from "../../store/stravaStateReducer";
 export const StravaActivityList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const stravaState = useAppSelector((state) => state.strava);
-    const invalid = stravaState.toursToDownload.length === 0;
+    const invalid = stravaState.tracksToDownload.length === 0;
 
     if (stravaState.tokenData === undefined || stravaState.authenticationFailed) {
         return <div>authentication error</div>
@@ -52,7 +52,7 @@ export const StravaActivityList: FunctionComponent = () => {
                 <FontAwesomeIcon icon={faX} />
                 &nbsp;Clear
             </Button>
-            <NavLink to={invalid ? Paths.KomootTourStartPage : Paths.KomootTourDownloadPage}>
+            <NavLink to={invalid ? Paths.StravaTourStartPage : Paths.StravaDownloadPage}>
                 <Button disabled={invalid}>
                     <FontAwesomeIcon icon={faArrowRight} />
                     &nbsp;Continue

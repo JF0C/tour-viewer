@@ -1,4 +1,4 @@
-export type GpxTourDownload = {
+export type TrackDownloadItem = {
     id: string;
     name: string;
     date: number;

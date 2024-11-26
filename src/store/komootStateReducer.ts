@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PaginationState } from "./paginationState";
 import { komootGpxTourRequest, komootLoginRequest, komootToursRequest } from "./komootThunk";
 import { KomootTourResponseDto } from "../dtos/komoot/komootTourResponseDto";
-import { GpxTourDownload } from "../data/gpxTourDownload";
+import { TrackDownloadItem } from "../data/trackDownloadItem";
 import { createTrackRequest } from "./trackThunk";
 import { ExternalSources } from "../constants/ExternalSources";
 
@@ -12,7 +12,7 @@ export interface IKomootState {
     userId?: number;
     tourPagination: PaginationState;
     komootTourData?: KomootTourResponseDto;
-    toursToDownload: GpxTourDownload[];
+    toursToDownload: TrackDownloadItem[];
 }
 
 const initialState: IKomootState = {
@@ -34,7 +34,7 @@ export const komootSlice = createSlice({
             state.userId = undefined;
             state.authString = undefined;
         },
-        toggleSelectedKomootTour(state, action: PayloadAction<GpxTourDownload>) {
+        toggleSelectedKomootTour(state, action: PayloadAction<TrackDownloadItem>) {
             if (state.toursToDownload.find(t => t.id === action.payload.id)) {
                 state.toursToDownload = state.toursToDownload.filter(x => x.id !== action.payload.id);
             }

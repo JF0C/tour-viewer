@@ -24,4 +24,5 @@ export class Paths {
     public static readonly KomootTourDownloadPage = '/komoot-tour-download'
 
     public static readonly StravaTourStartPage = '/strava'
+    public static readonly StravaDownloadPage = '/strava-download'
 }

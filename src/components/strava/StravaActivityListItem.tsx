@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { GpxTourDownload } from "../../data/gpxTourDownload";
+import { TrackDownloadItem } from "../../data/trackDownloadItem";
 import { millisToDateString } from "../../converters/dateConverters";
 import { enqueueSnackbar } from "notistack";
 import { Limits } from "../../constants/Limits";
@@ -8,12 +8,12 @@ import { addTourToDownload, removeTourToDownload } from "../../store/stravaState
 
 export type StravaActivityListItemProps = {
     children?: ReactNode;
-    tour: GpxTourDownload;
+    tour: TrackDownloadItem;
 }
 
 export const StravaActivityListItem: FunctionComponent<StravaActivityListItemProps> = (props) => {
     const dispatch = useAppDispatch();
-    const toursToDownload = useAppSelector((state) => state.strava.toursToDownload);
+    const toursToDownload = useAppSelector((state) => state.strava.tracksToDownload);
     const isSelected = Boolean(toursToDownload.find(t => t.id === props.tour.id));
 
     const toggleTourToDownload = () => {

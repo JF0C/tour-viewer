@@ -94,11 +94,7 @@ export const KomootTourDownload: FunctionComponent = () => {
             {
                 selectedTours.map(t =>
                     <KomootTourListItem tour={t}>
-                        {
-                            t.state === 'ready' ?
-                                <TrackDownloadContent tour={t} />
-                            : t.state
-                        }
+                        <TrackDownloadContent track={t} />    
                     </KomootTourListItem>
                 )
             }

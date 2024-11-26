@@ -12,6 +12,7 @@ import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { UserIcon } from "../user/UserIcon";
 import { Infobar } from "./Infobar";
 import { Paths } from "../../constants/Paths";
+import { loadLoggedInUser } from "../../store/userThunk";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -23,10 +24,15 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const isLoggedIn = useAppSelector((state) => Boolean(state.auth.user));
     const tourState = useAppSelector((state) => state.tour);
+    const authState = useAppSelector((state) => state.auth);
 
     const location = useLocation();
     const isHomepage = location.pathname === '/';
     const dataSelectorBarState = tourState.dataSelectorBarState;
+
+    if (!authState.user && !authState.fetchUserAttempted && !authState.loading) {
+        dispatch(loadLoggedInUser());
+    }
 
     if (!isHomepage && dataSelectorBarState !== 'hide') {
         dispatch(setDataBarState('hide'));

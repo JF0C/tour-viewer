@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthToken } from "../data/authToken";
 import { PaginationState } from "./paginationState";
-import { stravaActivitiesRequest, stravaClientIdRequest, stravaTokenRequest } from "./stravaThunk";
-import { GpxTourDownload } from "../data/gpxTourDownload";
+import { stravaActivitiesRequest, stravaActivityDetailRequest, stravaClientIdRequest, stravaTokenRequest } from "./stravaThunk";
+import { TrackDownloadItem } from "../data/trackDownloadItem";
 import { StravaActivityDto } from "../dtos/strava/stravaActivityDto";
+import { createTrackRequest } from "./trackThunk";
+import { ExternalSources } from "../constants/ExternalSources";
 
 export interface IStravaState {
     loading: boolean;
@@ -11,7 +13,7 @@ export interface IStravaState {
     tokenData?: AuthToken;
     authenticationFailed: boolean;
     tourPagination: PaginationState;
-    toursToDownload: GpxTourDownload[];
+    tracksToDownload: TrackDownloadItem[];
     tours?: StravaActivityDto[];
 }
 
@@ -24,24 +26,30 @@ const initialState: IStravaState = {
         totalItems: 0,
         totalPages: 0
     },
-    toursToDownload: []
+    tracksToDownload: []
 }
 
 export const stravaSlice = createSlice({
     name: 'stravaState',
     initialState: initialState,
     reducers: {
-        addTourToDownload(state, action: PayloadAction<GpxTourDownload>) {
-            if (state.toursToDownload.find(t => t.id === action.payload.id)) {
+        addTourToDownload(state, action: PayloadAction<TrackDownloadItem>) {
+            if (state.tracksToDownload.find(t => t.id === action.payload.id)) {
                 return;
             }
-            state.toursToDownload.push(action.payload);
+            state.tracksToDownload.push(action.payload);
         },
         removeTourToDownload(state, action: PayloadAction<string>) {
-            state.toursToDownload = state.toursToDownload.filter(t => t.id !== action.payload);
+            state.tracksToDownload = state.tracksToDownload.filter(t => t.id !== action.payload);
         },
         clearToursToDownload(state) {
-            state.toursToDownload = [];
+            state.tracksToDownload = [];
+        },
+        renameStravaActivity(state, action: PayloadAction<{id: string, name: string}>) {
+            const activity = state.tracksToDownload.find(t => t.id === action.payload.id);
+            if (activity) {
+                activity.name = action.payload.name;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -98,13 +106,61 @@ export const stravaSlice = createSlice({
                 state.authenticationFailed = true;
             }
         });
+
+        builder.addCase(stravaActivityDetailRequest.pending, (state, action) => {
+            const tour = state.tracksToDownload.find(t => t.id === action.meta.arg.activityId);
+            if (tour) {
+                tour.state = 'loading';
+            }
+        });
+        builder.addCase(stravaActivityDetailRequest.fulfilled, (state, action) => {
+            const tour = state.tracksToDownload.find(t => t.id === action.meta.arg.activityId);
+            if (tour) {
+                tour.data = action.payload;
+            }
+        });
+        builder.addCase(stravaActivityDetailRequest.rejected, (state, action) => {
+            const tour = state.tracksToDownload.find(t => t.id === action.meta.arg.activityId);
+            if (tour) {
+                tour.state = 'error';
+            }
+        });
+
+        builder.addCase(createTrackRequest.pending, (state, action) => {
+            if (action.meta.arg.externalSource !== ExternalSources.Strava) {
+                return;
+            }
+            const tour = state.tracksToDownload.find(t => t.id === action.meta.arg.externalId);
+            if (tour) {
+                tour.state = 'loading'
+            }
+        });
+        builder.addCase(createTrackRequest.fulfilled, (state, action) => {
+            if (action.meta.arg.externalSource !== ExternalSources.Strava) {
+                return;
+            }
+            const tour = state.tracksToDownload.find(t => t.id === action.meta.arg.externalId);
+            if (tour) {
+                tour.state = 'finished'
+            }
+        });
+        builder.addCase(createTrackRequest.rejected, (state, action) => {
+            if (action.meta.arg.externalSource !== ExternalSources.Komoot) {
+                return;
+            }
+            const tour = state.tracksToDownload.find(t => t.id === action.meta.arg.externalId);
+            if (tour) {
+                tour.state = 'error'
+            }
+        });
     }
 })
 
 export const {
     addTourToDownload,
     removeTourToDownload,
-    clearToursToDownload
+    clearToursToDownload,
+    renameStravaActivity
 } = stravaSlice.actions;
 
 export const stravaStateReducer = stravaSlice.reducer;

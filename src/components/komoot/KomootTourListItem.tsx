@@ -4,10 +4,10 @@ import { toggleSelectedKomootTour } from "../../store/komootStateReducer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Limits } from "../../constants/Limits";
 import { enqueueSnackbar } from "notistack";
-import { GpxTourDownload } from "../../data/gpxTourDownload";
+import { TrackDownloadItem } from "../../data/trackDownloadItem";
 
 export type KomootTourListItemProps = {
-    tour: GpxTourDownload;
+    tour: TrackDownloadItem;
     children?: ReactNode;
 }
 
