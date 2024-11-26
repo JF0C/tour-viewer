@@ -1,7 +1,7 @@
 import { ApiUrls } from "../constants/ApiUrls";
-import { StravaRequestDto } from "../dtos/stravaRequestDto";
-import { StravaUserDto } from "../dtos/stravaUserDto";
-import { TokenResponseDto } from "../dtos/tokenResponseDto";
+import { StravaRequestDto } from "../dtos/strava/stravaRequestDto";
+import { StravaUserDto } from "../dtos/strava/stravaUserDto";
+import { TokenResponseDto } from "../dtos/shared/tokenResponseDto";
 import { createAuthenticatedGetThunk, createGetThunk } from "./thunkBase";
 
 export const stravaClientIdRequest = createGetThunk<string, void>(

@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { UserDetailDto } from "../../dtos/userDetailDto";
+import { UserDetailDto } from "../../dtos/user/userDetailDto";
 import { TourListItem } from "../tourView/TourListItem";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";

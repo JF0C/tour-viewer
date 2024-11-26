@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { ApiUrls } from "../constants/ApiUrls"
 import { parseGpxText } from "../converters/trackDataParser"
-import { ChangeTrackNameDto } from "../dtos/changeTrackNameDto"
-import { ChangeTrackPositionDto } from "../dtos/changeTrackPositionDto"
-import { EditTrackDto } from "../dtos/editTrackDto"
+import { ChangeTrackNameDto } from "../dtos/track/changeTrackNameDto"
+import { ChangeTrackPositionDto } from "../dtos/track/changeTrackPositionDto"
+import { EditTrackDto } from "../dtos/track/editTrackDto"
 import { createDeleteThunk, createPostThunk, createPutThunk } from "./thunkBase"
 import { ITrackEntity } from "./trackStateReducer"
 import { enqueueSnackbar } from "notistack"
-import { LoadTrackRequestDto } from "../dtos/loadTrackRequestDto"
+import { LoadTrackRequestDto } from "../dtos/track/loadTrackRequestDto"
 
 export const deleteTrackRequest = createDeleteThunk<number>(
     'delete-track',

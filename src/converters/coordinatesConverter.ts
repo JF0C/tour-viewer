@@ -1,5 +1,5 @@
 import { LatLng } from "leaflet";
-import { CoordinatesDto } from "../dtos/coordinatesDto";
+import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
 
 export const latLngToCoordinates = (latLng: LatLng): CoordinatesDto => {
     return {

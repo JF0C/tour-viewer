@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PaginationState } from "./paginationState";
 import { komootGpxTourRequest, komootLoginRequest, komootToursRequest } from "./komootThunk";
-import { KomootTourResponseDto } from "../dtos/komootTourResponseDto";
+import { KomootTourResponseDto } from "../dtos/komoot/komootTourResponseDto";
 import { GpxTourDownload } from "../data/gpxTourDownload";
 import { createTrackRequest } from "./trackThunk";
 import { ExternalSources } from "../constants/ExternalSources";

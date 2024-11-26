@@ -1,7 +1,7 @@
 import { ApiUrls } from "../constants/ApiUrls";
-import { CreateCommentDto } from "../dtos/createCommentDto";
-import { DeleteCommentDto } from "../dtos/deleteCommentDto";
-import { EditCommentDto } from "../dtos/editCommentDto";
+import { CreateCommentDto } from "../dtos/comment/createCommentDto";
+import { DeleteCommentDto } from "../dtos/comment/deleteCommentDto";
+import { EditCommentDto } from "../dtos/comment/editCommentDto";
 import { createDeleteThunk, createPostThunk, createPutThunk } from "./thunkBase";
 
 export const createCommentRequest = createPostThunk<number, CreateCommentDto>(

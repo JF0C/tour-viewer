@@ -1,9 +1,9 @@
 import { ApiUrls } from "../constants/ApiUrls";
-import { ChangeUsernameDto } from "../dtos/changeUsernameDto";
-import { PagedResult } from "../dtos/pagedResult";
-import { PageRequestDto } from "../dtos/pageRequestDto";
-import { RoleAssignmentDto } from "../dtos/roleAssignmentDto";
-import { UserDto } from "../dtos/userDto";
+import { ChangeUsernameDto } from "../dtos/user/changeUsernameDto";
+import { PagedResult } from "../dtos/shared/pagedResult";
+import { PageRequestDto } from "../dtos/shared/pageRequestDto";
+import { RoleAssignmentDto } from "../dtos/admin/roleAssignmentDto";
+import { UserDto } from "../dtos/user/userDto";
 import { createDeleteThunk, createGetThunk, createResponseDeleteThunk, createResponsePutThunk } from "./thunkBase";
 
 export const loadUsersAdmin = createGetThunk<PagedResult<UserDto>, PageRequestDto>(

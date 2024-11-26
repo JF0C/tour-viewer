@@ -1,8 +1,8 @@
 import { Roles } from "../constants/Rolenames";
-import { BlogPostDto } from "../dtos/blogPostDto";
-import { CommentDto } from "../dtos/commentDto";
-import { TourDto } from "../dtos/tourDto";
-import { UserDetailDto } from "../dtos/userDetailDto";
+import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
+import { CommentDto } from "../dtos/comment/commentDto";
+import { TourDto } from "../dtos/tour/tourDto";
+import { UserDetailDto } from "../dtos/user/userDetailDto";
 import { setEditingBlogpost } from "./blogPostStateReducer";
 import { searchBlogPostsForUser } from "./blogPostThunk";
 import { AppDispatch, RootState } from "./store";

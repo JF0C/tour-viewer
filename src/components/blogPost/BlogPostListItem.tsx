@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { BlogPostDto } from "../../dtos/blogPostDto";
+import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
 import { Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faMapPin } from "@fortawesome/free-solid-svg-icons";

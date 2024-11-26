@@ -1,12 +1,12 @@
 import { ApiUrls } from "../constants/ApiUrls";
-import { BlogPostDto } from "../dtos/blogPostDto";
-import { BlogpostPageRequestDto } from "../dtos/blogPostPageRequestDto";
-import { ChangeBlogPostLocationDto } from "../dtos/changeBlogPostLocationDto";
-import { ChangeBlogPostMessageDto } from "../dtos/changeBlogPostMessageDto";
-import { ChangeBlogPostTitleDto } from "../dtos/changeBlogPostTitleDto";
-import { ChangeBlogPostTrackDto } from "../dtos/changeBlogPostTrackDto";
-import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
-import { PagedResult } from "../dtos/pagedResult";
+import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
+import { BlogpostPageRequestDto } from "../dtos/blogPost/blogPostPageRequestDto";
+import { ChangeBlogPostLocationDto } from "../dtos/blogPost/changeBlogPostLocationDto";
+import { ChangeBlogPostMessageDto } from "../dtos/blogPost/changeBlogPostMessageDto";
+import { ChangeBlogPostTitleDto } from "../dtos/blogPost/changeBlogPostTitleDto";
+import { ChangeBlogPostTrackDto } from "../dtos/blogPost/changeBlogPostTrackDto";
+import { CreateBlogPostDto } from "../dtos/blogPost/createBlogPostDto";
+import { PagedResult } from "../dtos/shared/pagedResult";
 import { createDeleteThunk, createGetThunk, createPostThunk, createPutThunk } from "./thunkBase";
 
 export const blogpostRequestToUrl = (request: BlogpostPageRequestDto) => {

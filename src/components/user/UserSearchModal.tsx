@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { UserSearch } from "./UserSearch";
 import { UserSearchResult } from "./UserSearchResult";
-import { UserReferenceDto } from "../../dtos/userReferenceDto";
+import { UserReferenceDto } from "../../dtos/user/userReferenceDto";
 import { setUserDetail } from "../../store/userStateReducer";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";

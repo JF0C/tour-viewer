@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import http from 'axios';
 import { ApiUrls } from "../constants/ApiUrls";
-import { CreateUserDto } from "../dtos/createUserDto";
-import { FileUploadDto } from "../dtos/fileUploadDto";
-import { PagedResult } from "../dtos/pagedResult";
-import { ProfilePictureParametersDto } from "../dtos/profilePictureParametersDto";
-import { UserDto } from "../dtos/userDto";
-import { UserPageRequestDto } from "../dtos/userPageRequestDto";
-import { UserReferenceDto } from "../dtos/userReferenceDto";
+import { CreateUserDto } from "../dtos/user/createUserDto";
+import { FileUploadDto } from "../dtos/shared/fileUploadDto";
+import { PagedResult } from "../dtos/shared/pagedResult";
+import { ProfilePictureParametersDto } from "../dtos/user/profilePictureParametersDto";
+import { UserDto } from "../dtos/user/userDto";
+import { UserPageRequestDto } from "../dtos/user/userPageRequestDto";
+import { UserReferenceDto } from "../dtos/user/userReferenceDto";
 import { createDeleteThunk, createGetThunk, createPostThunk, createResponseDeleteThunk, createResponsePutThunk } from "./thunkBase";
 
 export const loadLoggedInUser = createGetThunk<UserDto, void>(

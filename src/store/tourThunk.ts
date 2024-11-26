@@ -1,11 +1,11 @@
 import { ApiUrls } from "../constants/ApiUrls";
-import { ChangeParticipantDto } from "../dtos/changeParticipantDto";
-import { ChangeTourStartDateDto } from "../dtos/changeTourStartDateDto";
-import { CreateTourDto } from "../dtos/createTourDto";
-import { PagedResult } from "../dtos/pagedResult";
-import { RenameTourDto } from "../dtos/renameTourDto";
-import { TourDto } from "../dtos/tourDto";
-import { TourPageRequestDto } from "../dtos/tourPageRequestDto";
+import { ChangeParticipantDto } from "../dtos/tour/changeParticipantDto";
+import { ChangeTourStartDateDto } from "../dtos/tour/changeTourStartDateDto";
+import { CreateTourDto } from "../dtos/tour/createTourDto";
+import { PagedResult } from "../dtos/shared/pagedResult";
+import { RenameTourDto } from "../dtos/tour/renameTourDto";
+import { TourDto } from "../dtos/tour/tourDto";
+import { TourPageRequestDto } from "../dtos/tour/tourPageRequestDto";
 import { createDeleteThunk, createGetThunk, createPostThunk, createPutThunk } from "./thunkBase";
 
 export const tourRequestToUrl = (request: TourPageRequestDto) => {

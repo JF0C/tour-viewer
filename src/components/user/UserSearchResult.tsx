@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useAppSelector } from "../../store/store";
 import { Button } from "@mui/material";
-import { UserReferenceDto } from "../../dtos/userReferenceDto";
+import { UserReferenceDto } from "../../dtos/user/userReferenceDto";
 
 export type UserSearchResultProps = {
     onUserSelected: (user: UserReferenceDto) => void

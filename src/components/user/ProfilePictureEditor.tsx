@@ -2,7 +2,7 @@ import { faEdit, faFloppyDisk, faImage, faTrash, faX } from "@fortawesome/free-s
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Slider } from "@mui/material";
 import { FunctionComponent, useRef, useState } from "react";
-import { UserDto } from "../../dtos/userDto";
+import { UserDto } from "../../dtos/user/userDto";
 import { useAppDispatch } from "../../store/store";
 import { deleteProfilePictureRequest, setProfilePictureParametersRequest, uploadProfilePictureRequest } from "../../store/userThunk";
 import { ConfirmModal } from "../shared/ConfirmModal";

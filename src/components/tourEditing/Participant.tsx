@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { useAppDispatch } from "../../store/store";
 import { removeEditingTourParticipant, showInfobar } from "../../store/tourStateReducer";
-import { UserReferenceDto } from "../../dtos/userReferenceDto";
+import { UserReferenceDto } from "../../dtos/user/userReferenceDto";
 import { setUserDetail } from "../../store/userStateReducer";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";

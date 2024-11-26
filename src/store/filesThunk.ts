@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { FileUploadDto } from "../dtos/fileUploadDto";
+import { FileUploadDto } from "../dtos/shared/fileUploadDto";
 import { ApiUrls } from "../constants/ApiUrls";
 import http from 'axios';
 import { createDeleteThunk } from "./thunkBase";

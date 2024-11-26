@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserDto } from "../dtos/userDto";
+import { UserDto } from "../dtos/user/userDto";
 import { addRoleRequest, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, removeRoleRequest, validateUserAdmin } from "./adminThunk";
 import { PaginationState } from "./paginationState";
 

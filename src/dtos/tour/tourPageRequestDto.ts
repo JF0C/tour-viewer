@@ -1,4 +1,4 @@
-import { PageRequestDto } from "./pageRequestDto";
+import { PageRequestDto } from "../shared/pageRequestDto";
 
 export type TourPageRequestDto = {
     participantId?: number

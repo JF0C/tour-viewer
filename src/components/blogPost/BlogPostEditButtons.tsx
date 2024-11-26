@@ -2,7 +2,7 @@ import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { CreateBlogPostDto } from "../../dtos/createBlogPostDto";
+import { CreateBlogPostDto } from "../../dtos/blogPost/createBlogPostDto";
 import { ConfirmModal } from "../shared/ConfirmModal";
 
 export type BlogPostEditButtonsProps = {

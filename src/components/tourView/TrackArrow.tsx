@@ -1,7 +1,7 @@
 import L from "leaflet";
 import { FunctionComponent } from "react";
 import { Marker } from "react-leaflet";
-import { CoordinatesDto } from "../../dtos/coordinatesDto";
+import { CoordinatesDto } from "../../dtos/shared/coordinatesDto";
 import { useAppSelector } from "../../store/store";
 
 export type TrackArrowProps = {

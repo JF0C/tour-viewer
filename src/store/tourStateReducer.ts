@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserReferenceDto } from "../dtos/userReferenceDto";
-import { TourDto } from "../dtos/tourDto";
+import { UserReferenceDto } from "../dtos/user/userReferenceDto";
+import { TourDto } from "../dtos/tour/tourDto";
 import { PaginationState } from "./paginationState";
 import { createTourRequest, deleteTourRequest, getSelectedTourId, loadTourRequest, renameTourRequest, searchTours, setSelectedTourId } from "./tourThunk";
-import { EditTrackDto } from "../dtos/editTrackDto";
+import { EditTrackDto } from "../dtos/track/editTrackDto";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 
 export interface IEditTour {

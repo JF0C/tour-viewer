@@ -1,9 +1,9 @@
 import { ApiUrls } from "../constants/ApiUrls";
-import { ChangePasswordDto } from "../dtos/changePasswordDto";
-import { LoginDto } from "../dtos/loginDto";
-import { ResetPasswordDto } from "../dtos/resetPasswordDto";
-import { UserDto } from "../dtos/userDto";
-import { ValidateCodeDto } from "../dtos/validateCodeDto";
+import { ChangePasswordDto } from "../dtos/user/changePasswordDto";
+import { LoginDto } from "../dtos/auth/loginDto";
+import { ResetPasswordDto } from "../dtos/auth/resetPasswordDto";
+import { UserDto } from "../dtos/user/userDto";
+import { ValidateCodeDto } from "../dtos/auth/validateCodeDto";
 import { createPostThunk, createPutThunk } from "./thunkBase";
 
 export const loginRequest = createPostThunk<UserDto, LoginDto>(

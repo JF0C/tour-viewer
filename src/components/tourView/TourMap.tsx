@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { haversine } from "../../converters/haversine";
-import { BlogPostDto } from "../../dtos/blogPostDto";
-import { CoordinatesDto } from "../../dtos/coordinatesDto";
+import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
+import { CoordinatesDto } from "../../dtos/shared/coordinatesDto";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
 import { startLoadingTrack } from "../../store/trackStateReducer";

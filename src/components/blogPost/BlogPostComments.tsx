@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { BlogPostDto } from "../../dtos/blogPostDto";
+import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
 import { CommentListItem } from "./CommentListItem";
 import { CreateCommentInput } from "./CreateCommentInput";
 

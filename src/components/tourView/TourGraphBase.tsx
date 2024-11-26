@@ -6,7 +6,7 @@ import { millisToTimeString } from '../../converters/dateConverters';
 import { TrackPoint } from "../../data/trackPoint";
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { setDataPointLocation, setGraphDataBounds, setGraphDataSource } from '../../store/trackStateReducer';
-import { CoordinatesDto } from '../../dtos/coordinatesDto';
+import { CoordinatesDto } from '../../dtos/shared/coordinatesDto';
 
 export type TourGraphBaseProps = {
     points: TrackPoint[]

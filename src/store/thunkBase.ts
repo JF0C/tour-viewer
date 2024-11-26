@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { LoginDto } from "../dtos/loginDto";
+import { LoginDto } from "../dtos/auth/loginDto";
 
 export const basicAuthorization = (login: LoginDto) =>
     btoa(`${login.email}:${login.password}`);

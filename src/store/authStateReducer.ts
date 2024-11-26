@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UserDto } from "../dtos/userDto";
+import { UserDto } from "../dtos/user/userDto";
 import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
 import { changeUsernameRequest, deleteProfilePictureRequest, deleteUserRequest, loadLoggedInUser, registerRequest, setProfilePictureParametersRequest, uploadProfilePictureRequest } from "./userThunk";
 

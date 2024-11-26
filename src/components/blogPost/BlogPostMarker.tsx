@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { FunctionComponent, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
-import { BlogPostDto } from "../../dtos/blogPostDto";
+import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
 import { setEditingBlogpost, setOpenMarker } from "../../store/blogPostStateReducer";
 import { loadBlogPostDetailRequest } from "../../store/blogPostThunk";
 import { isAllowedToEditBlogpost } from "../../store/stateHelpers";

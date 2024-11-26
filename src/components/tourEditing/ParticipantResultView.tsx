@@ -1,5 +1,5 @@
 import { Checkbox } from "@mui/material";
-import { UserReferenceDto } from "../../dtos/userReferenceDto";
+import { UserReferenceDto } from "../../dtos/user/userReferenceDto";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { FunctionComponent } from "react";
 import { removeEditingTourParticipant, addEditingTourParticipant, setEditingTour } from "../../store/tourStateReducer";

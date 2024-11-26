@@ -1,4 +1,4 @@
-import { EntityBaseDto } from "./entityBaseDto";
+import { EntityBaseDto } from "../shared/entityBaseDto";
 
 export type UserDto = EntityBaseDto & {
     id: number;

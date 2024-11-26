@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { fullDateString } from "../../converters/dateConverters";
-import { CommentDto } from "../../dtos/commentDto";
+import { CommentDto } from "../../dtos/comment/commentDto";
 import { isAllowedToEditComment } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { EditableTextField } from "../shared/EditableTextField";

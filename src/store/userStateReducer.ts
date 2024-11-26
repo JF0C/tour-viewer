@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserDetailDto } from "../dtos/userDetailDto";
-import { UserReferenceDto } from "../dtos/userReferenceDto";
+import { UserDetailDto } from "../dtos/user/userDetailDto";
+import { UserReferenceDto } from "../dtos/user/userReferenceDto";
 import { PaginationState } from "./paginationState";
 import { searchUsers } from "./userThunk";
 import { searchToursForUser } from "./tourThunk";

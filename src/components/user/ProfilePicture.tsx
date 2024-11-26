@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
-import { UserReferenceDto } from "../../dtos/userReferenceDto";
+import { UserReferenceDto } from "../../dtos/user/userReferenceDto";
 import { ApiUrls } from "../../constants/ApiUrls";
-import { ProfilePictureParametersDto } from "../../dtos/profilePictureParametersDto";
+import { ProfilePictureParametersDto } from "../../dtos/user/profilePictureParametersDto";
 
 export type ProfilePictureProps = {
     user: UserReferenceDto,

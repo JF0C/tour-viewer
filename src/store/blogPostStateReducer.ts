@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BlogPostDto } from "../dtos/blogPostDto";
-import { CoordinatesDto } from "../dtos/coordinatesDto";
-import { CreateBlogPostDto } from "../dtos/createBlogPostDto";
+import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
+import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
+import { CreateBlogPostDto } from "../dtos/blogPost/createBlogPostDto";
 import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "./blogPostThunk";
 import { deleteImageRequest, uploadImageRequest } from "./filesThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";

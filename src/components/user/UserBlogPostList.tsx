@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { UserDetailDto } from "../../dtos/userDetailDto";
+import { UserDetailDto } from "../../dtos/user/userDetailDto";
 import { BlogPostListItem } from "../blogPost/BlogPostListItem";
 
 export type UserBlogPostListProps = {

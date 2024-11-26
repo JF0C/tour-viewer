@@ -1,10 +1,10 @@
 import { ApiUrls } from "../constants/ApiUrls";
-import { KomootLoginResponseDto } from "../dtos/komootLoginResponseDto";
-import { KomootPageRequestDto } from "../dtos/komootPageRequestDto";
-import { KomootTourCoordinatesDto } from "../dtos/komootTourCoordinatesDto";
-import { KomootTourRequestDto } from "../dtos/komootTourRequestDto";
-import { KomootTourResponseDto } from "../dtos/komootTourResponseDto";
-import { LoginDto } from "../dtos/loginDto";
+import { KomootLoginResponseDto } from "../dtos/komoot/komootLoginResponseDto";
+import { KomootPageRequestDto } from "../dtos/komoot/komootPageRequestDto";
+import { KomootTourCoordinatesDto } from "../dtos/komoot/komootTourCoordinatesDto";
+import { KomootTourRequestDto } from "../dtos/komoot/komootTourRequestDto";
+import { KomootTourResponseDto } from "../dtos/komoot/komootTourResponseDto";
+import { LoginDto } from "../dtos/auth/loginDto";
 import { basicAuthorization, createAuthenticatedGetThunk } from "./thunkBase";
 
 export const komootLoginRequest = createAuthenticatedGetThunk<KomootLoginResponseDto, LoginDto>(

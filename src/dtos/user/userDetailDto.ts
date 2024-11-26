@@ -1,6 +1,6 @@
-import { BlogPostDto } from "./blogPostDto"
-import { PagedResult } from "./pagedResult"
-import { TourDto } from "./tourDto"
+import { BlogPostDto } from "../blogPost/blogPostDto"
+import { PagedResult } from "../shared/pagedResult"
+import { TourDto } from "../tour/tourDto"
 
 export type UserDetailDto = {
     id: number

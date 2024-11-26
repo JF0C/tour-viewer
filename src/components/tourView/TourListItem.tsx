@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { Roles } from "../../constants/Rolenames";
 import { millisToDateString } from "../../converters/dateConverters";
-import { TourDto } from "../../dtos/tourDto";
+import { TourDto } from "../../dtos/tour/tourDto";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setEditingTour } from "../../store/tourStateReducer";
 import { loadTourRequest, setSelectedTourId } from "../../store/tourThunk";

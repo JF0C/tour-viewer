@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react"
-import { UserDto } from "../../dtos/userDto"
+import { UserDto } from "../../dtos/user/userDto"
 import { useAppDispatch, useAppSelector } from "../../store/store"
 import { setUserForEditing } from "../../store/adminStateReducer"
 

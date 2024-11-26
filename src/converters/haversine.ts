@@ -1,4 +1,4 @@
-import { CoordinatesDto } from "../dtos/coordinatesDto"
+import { CoordinatesDto } from "../dtos/shared/coordinatesDto"
 
 const asin = Math.asin
 const cos = Math.cos

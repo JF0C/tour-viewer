@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest, loadTrackRequest } from "./trackThunk";
 import { TrackData } from "../data/trackData";
-import { CoordinatesDto } from "../dtos/coordinatesDto";
+import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
 
 export interface BoundsInternal {
     south: number;
