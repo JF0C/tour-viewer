@@ -20,6 +20,12 @@ export const stravaTokenRequest = createGetThunk<TokenResponseDto, string>(
     async (response) => await response.json()
 )
 
+export const stravaRefreshRequest = createGetThunk<TokenResponseDto, string>(
+    'strava-refresh',
+    (refreshToken) => `${ApiUrls.BaseUrl + ApiUrls.ExternalSourceEndpoint + ApiUrls.StravaRefreshEndpoint}?refreshToken=${refreshToken}`,
+    async (response) => await response.json()
+)
+
 export const stravaUserInfoRequest = createAuthenticatedGetThunk<StravaUserDto, StravaRequestDto>(
     'strava-user-info',
     () => `${ApiUrls.StravaApiUrl}/`,

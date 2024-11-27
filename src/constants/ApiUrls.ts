@@ -33,6 +33,7 @@ export class ApiUrls
     public static readonly ExternalSourceEndpoint = '/ExternalTrackSource'
     public static readonly StravaClientIdEndpoint = '/StravaClientId'
     public static readonly StravaTokenEndpoint = '/StravaToken'
+    public static readonly StravaRefreshEndpoint = '/StravaRefresh'
 
     public static readonly KomootLoginUrl = 'https://api.komoot.de/v006/account/email'
     public static readonly KomootApiUrl = 'https://www.komoot.de/api/v007'

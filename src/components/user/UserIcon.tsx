@@ -5,10 +5,10 @@ import { FunctionComponent, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { logoutRequest } from "../../store/authThunk";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { ProfilePicture } from "./ProfilePicture";
-import { setUserDetail } from "../../store/userStateReducer";
 import { resetKomootUser } from "../../store/komootStateReducer";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { setUserDetail } from "../../store/userStateReducer";
+import { ProfilePicture } from "./ProfilePicture";
 
 export const UserIcon: FunctionComponent = () => {
     const dispatch = useAppDispatch();

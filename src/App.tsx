@@ -10,6 +10,7 @@ import { ApiUrls } from './constants/ApiUrls';
 import theme from './materialUiConfig';
 import { store } from './store/store';
 import { FullSizeImageView } from './components/shared/FullSizeImageView';
+import { CookiesProvider } from 'react-cookie';
 
 function App() {
   if (document.location.href.includes('localhost:3000')) {
@@ -26,12 +27,14 @@ function App() {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <BrowserRouter>
-            <MainLayout>
-              <FullSizeImageView />
-              <RouterOutlet />
-            </MainLayout>
-          </BrowserRouter>
+          <CookiesProvider>
+            <BrowserRouter>
+              <MainLayout>
+                <FullSizeImageView />
+                <RouterOutlet />
+              </MainLayout>
+            </BrowserRouter>
+          </CookiesProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </Provider>

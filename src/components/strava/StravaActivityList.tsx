@@ -9,14 +9,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { clearToursToDownload } from "../../store/stravaStateReducer";
+import { useCookies } from "react-cookie";
+import { ExternalSources } from "../../constants/ExternalSources";
 
 export const StravaActivityList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
+    const [, setCookie] = useCookies([ExternalSources.Strava]);
     const stravaState = useAppSelector((state) => state.strava);
     const invalid = stravaState.tracksToDownload.length === 0;
 
     if (stravaState.tokenData === undefined || stravaState.authenticationFailed) {
         return <div>authentication error</div>
+    }
+
+    const stravaLogout = () => {
+        setCookie(ExternalSources.Strava, null);
     }
 
     const changePage = (page: number) => {
@@ -42,12 +49,18 @@ export const StravaActivityList: FunctionComponent = () => {
 
     return <BigFormLayout buttons={
         <div className="flex flex-row w-full justify-between">
-        <NavLink to={Paths.EditTourPage}>
-            <Button>
-                <FontAwesomeIcon icon={faArrowLeft} />
-                &nbsp;Back
-            </Button>
-        </NavLink>
+            <NavLink to={Paths.EditTourPage}>
+                <Button>
+                    <FontAwesomeIcon icon={faArrowLeft} />
+                    &nbsp;Back
+                </Button>
+            </NavLink>
+            <NavLink to={Paths.EditTourPage} onClick={stravaLogout}>
+                <Button color="warning">
+                    <FontAwesomeIcon icon={faX} />
+                    &nbsp;Logout
+                </Button>
+            </NavLink>
             <Button onClick={clearSelected} color='error' disabled={invalid}>
                 <FontAwesomeIcon icon={faX} />
                 &nbsp;Clear

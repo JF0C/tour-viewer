@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthToken } from "../data/authToken";
 import { PaginationState } from "./paginationState";
-import { stravaActivitiesRequest, stravaActivityDetailRequest, stravaClientIdRequest, stravaTokenRequest } from "./stravaThunk";
+import { stravaActivitiesRequest, stravaActivityDetailRequest, stravaClientIdRequest, stravaRefreshRequest, stravaTokenRequest } from "./stravaThunk";
 import { TrackDownloadItem } from "../data/trackDownloadItem";
 import { StravaActivityDto } from "../dtos/strava/stravaActivityDto";
 import { createTrackRequest } from "./trackThunk";
@@ -152,6 +152,22 @@ export const stravaSlice = createSlice({
             if (tour) {
                 tour.state = 'error'
             }
+        });
+
+        builder.addCase(stravaRefreshRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(stravaRefreshRequest.fulfilled, (state, action) => {
+            state.tokenData = {
+                accessToken: action.payload.access_token,
+                refreshToken: action.payload.refresh_token,
+                expiresAt: action.payload.expires_at,
+                expiresIn: action.payload.expires_in
+            };
+            state.loading = false;
+        });
+        builder.addCase(stravaRefreshRequest.rejected, (state) => {
+            state.loading = false;
         });
     }
 })
