@@ -22,9 +22,12 @@ export const StravaTourLoader: FunctionComponent = () => {
     const [searchParams] = useSearchParams();
 
     if (editingTour.id === 0 && searchParams.has('state')) {
-        dispatch(loadTourRequest(Number(searchParams.get('state'))))
-            .unwrap()
-            .then((tour) => dispatch(setEditingTour(tour)));
+        const stateParam = Number(searchParams.get('state'));
+        if (stateParam) {
+            dispatch(loadTourRequest(Number(searchParams.get('state'))))
+                .unwrap()
+                .then((tour) => dispatch(setEditingTour(tour)));
+        }
     }
 
     if (!isContributor) {

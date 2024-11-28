@@ -54,7 +54,9 @@ export const SecondaryClickCountdown = () => {
         if (progress >= 1.0) {
             return false;
         }
-        return true;
+        else {
+            return true;
+        }
     }
 
     const loopMethod = (cont: boolean) => {
@@ -73,6 +75,6 @@ export const SecondaryClickCountdown = () => {
         loopMethod(true);
     }
 
-    return <Polygon positions={points}>
+    return <Polygon fillOpacity={.6} stroke={false} positions={points}>
     </Polygon>
 }

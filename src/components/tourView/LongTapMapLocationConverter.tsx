@@ -29,7 +29,6 @@ export const LongTapMapLocationConverter: FunctionComponent = () => {
     }
 
     if (mapState.releasePosition) {
-        console.log(mapState.releasePosition);
         dispatch(setReleasePosition());
         dispatch(setClickedEvent());
         mapClickEnd(dispatch, mapState, selectedTracks, isContributor, isEditingBlogPost);
