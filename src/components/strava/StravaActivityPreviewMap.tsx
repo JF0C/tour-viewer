@@ -20,7 +20,7 @@ export const StravaActivityPreviewMap: FunctionComponent<StravaActivityPreviewMa
     return <MapContainer zoomControl={false} id={props.track.id}
         doubleClickZoom={false} dragging={false}
         scrollWheelZoom={false} touchZoom={false} attributionControl={false}
-        style={{ userSelect: 'none', width: 100, height: 100 }}
+        style={{ userSelect: 'none' }}
         bounds={bounds}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

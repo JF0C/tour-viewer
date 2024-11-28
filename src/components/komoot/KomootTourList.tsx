@@ -66,7 +66,7 @@ export const KomootTourList: FunctionComponent = () => {
     }>
         <div className="w-full text-xl font-bold flex flex-row justify-center">
             <img width="30" src="icon/komoot-icon.png" alt='komoot-icon'/>
-            &nbsp;Select Tours for Import
+            &nbsp;Select Tracks for Import
         </div>
         <div className="flex flex-row flex-wrap gap-2">
             {
