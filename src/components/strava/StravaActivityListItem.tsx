@@ -5,6 +5,7 @@ import { millisToDateString } from "../../converters/dateConverters";
 import { enqueueSnackbar } from "notistack";
 import { Limits } from "../../constants/Limits";
 import { addTourToDownload, removeTourToDownload } from "../../store/stravaStateReducer";
+import { StravaActivityPreviewMap } from "./StravaActivityPreviewMap";
 
 export type StravaActivityListItemProps = {
     children?: ReactNode;
@@ -36,8 +37,8 @@ export const StravaActivityListItem: FunctionComponent<StravaActivityListItemPro
 
     return <div className="flex flex-col md:flex-row border border-white rounded-md cursor-pointer"
         onClick={toggleTourToDownload}>
-        <div>
-
+        <div style={{width: 100, height: 100}}>
+            <StravaActivityPreviewMap track={props.tour} />
         </div>
         <div className="flex flex-col p-2 rounded-b-md md:rounded-r-md" style={{ backgroundColor: (isSelected && !props.children) ? 'green' : undefined }}>
             {

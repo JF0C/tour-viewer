@@ -14,8 +14,9 @@ export const TourBounds: FunctionComponent = () => {
     if (!trackState.boundsSet) {
         dispatch(setBoundsSet());
         map.eachLayer(l => {
-            if (l.options.attribution === Layers.RoutesLayer)
-            l.removeFrom(map)
+            if (l.options.attribution === Layers.RoutesLayer) {
+                l.removeFrom(map)
+            }
         });
         const bounds = trackState.tracks.find(t => t.selected)?.bounds;
         let south = bounds?.south;
