@@ -2,7 +2,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { changeEditingBlogpostMessage, changeEditingBlogpostTitle, setEditingBlogpost, setMarkerPosition } from "../../store/blogPostStateReducer";
+import { changeEditingBlogpostMessage, changeEditingBlogpostTitle, setEditingBlogpost } from "../../store/blogPostStateReducer";
 import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "../../store/blogPostThunk";
 import { isAllowedToCreate, updateEditingBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
@@ -16,6 +16,7 @@ import { BlogPostLocationEditor } from "./BlogPostLocationEditor";
 import { BlogPostTrackSelector } from "./BlogPostTrackSelector";
 import { ImageUpload } from "./ImageUpload";
 import { InfobarMaxButton } from "../shared/InfobarMaxButton";
+import { setMarkerPosition } from "../../store/mapStateReducer";
 
 export const BlogPostEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();

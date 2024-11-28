@@ -5,11 +5,12 @@ import { FunctionComponent, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
-import { setEditingBlogpost, setOpenMarker } from "../../store/blogPostStateReducer";
+import { setEditingBlogpost } from "../../store/blogPostStateReducer";
 import { loadBlogPostDetailRequest } from "../../store/blogPostThunk";
 import { isAllowedToEditBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ImageSwipeContainer } from "./ImageSwipeContainer";
+import { setMarkerReferenceId } from "../../store/mapStateReducer";
 
 export type BlogPostMarkerProps = {
     blogPost: BlogPostDto
@@ -19,8 +20,8 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
     const dispatch = useAppDispatch();
     const allowedToEdit = useAppSelector((state) => isAllowedToEditBlogpost(state, props.blogPost));
     const editingId = useAppSelector((state) => state.blog.editingBlogPost?.id);
-    const markerPosition = useAppSelector((state) => state.blog.markerPosition);
-    const openMarker = useAppSelector((state) => state.blog.openMarker);
+    const markerPosition = useAppSelector((state) => state.map.markerPosition);
+    const openMarker = useAppSelector((state) => state.map.markerReferenceId);
 
     const markerRef = useRef<any>(null);
 
@@ -48,7 +49,7 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
 
     if (openMarker === props.blogPost.id && markerRef && markerRef.current) {
         setTimeout(() => markerRef.current.openPopup(), 5000);
-        dispatch(setOpenMarker());
+        dispatch(setMarkerReferenceId());
     }
 
     return <Marker icon={MarkerIcons.postWhite} ref={markerRef}

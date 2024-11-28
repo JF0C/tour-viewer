@@ -16,6 +16,8 @@ import { TrackLine } from "./TrackLine";
 import { InfoBarHandle } from "./InfoBarHandle";
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import { GraphDataPoint } from "./GraphDataPoint";
+import { LongTapMapEventProvider } from "./LongTapMapEventProvider";
+import { LongTapMapLocationConverter } from "./LongTapMapLocationConverter";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -38,8 +40,9 @@ export const TourMap: FunctionComponent = () => {
             .find(tr => tr.fileReference === t.fileReference));
         if ((missingTracks?.length ?? 0) > 0) {
             for (let missing of missingTracks!) {
-                dispatch(startLoadingTrack(missing.fileReference));
+                dispatch(startLoadingTrack({fileReference: missing.fileReference, id: missing.id}));
                 dispatch(loadTrackRequest({
+                    id: missing.id,
                     fileReference: missing.fileReference,
                     name: missing.name,
                     tourPosition: missing.tourPosition
@@ -81,22 +84,26 @@ export const TourMap: FunctionComponent = () => {
     }
     const blogPostElements: any[] = blogPosts.map(b => <BlogPostMarker key={b.id} blogPost={b} />)
 
-    return <MapContainer center={[48.136805, 11.578965]} zoom={13} zoomControl={false}
-        scrollWheelZoom={true} touchZoom={true} style={{ userSelect: 'none' }}>
-        {content}
-        <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <MarkerClusterGroup polygonOptions={{smoothFactor: 1, noClip: true}}>
-            {
-                blogPostElements
-            }
-        </MarkerClusterGroup>
-        <TourBounds />
-        <BlogPostMapLocationEditor />
-        <SecondaryClickCountdown />
-        <InfoBarHandle />
-        <GraphDataPoint />
-    </MapContainer>
+    return <LongTapMapEventProvider>
+        <MapContainer center={[48.136805, 11.578965]} zoom={13} zoomControl={false}
+            scrollWheelZoom={true} touchZoom={true} style={{ userSelect: 'none' }}>
+            {content}
+            <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <MarkerClusterGroup polygonOptions={{ smoothFactor: 1, noClip: true }}>
+                {
+                    blogPostElements
+                }
+            </MarkerClusterGroup>
+            <TourBounds />
+            <BlogPostMapLocationEditor />
+            <SecondaryClickCountdown />
+            <InfoBarHandle />
+            <GraphDataPoint />
+            <LongTapMapLocationConverter />
+        </MapContainer>
+    </LongTapMapEventProvider>
+
 }

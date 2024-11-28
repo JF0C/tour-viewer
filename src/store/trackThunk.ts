@@ -5,7 +5,7 @@ import { ChangeTrackNameDto } from "../dtos/track/changeTrackNameDto"
 import { ChangeTrackPositionDto } from "../dtos/track/changeTrackPositionDto"
 import { EditTrackDto } from "../dtos/track/editTrackDto"
 import { createDeleteThunk, createPostThunk, createPutThunk } from "./thunkBase"
-import { ITrackEntity } from "./trackStateReducer"
+import { TrackEntity } from "../data/trackEntity"
 import { enqueueSnackbar } from "notistack"
 import { LoadTrackRequestDto } from "../dtos/track/loadTrackRequestDto"
 
@@ -21,8 +21,7 @@ export const createTrackRequest = createPostThunk<number, EditTrackDto>(
 );
 
 export const loadTrackRequest = createAsyncThunk('load-track',
-    async (request: LoadTrackRequestDto): Promise<ITrackEntity> => {
-        console.log('requesting: ' + JSON.stringify(request));
+    async (request: LoadTrackRequestDto): Promise<TrackEntity> => {
         const response = await fetch(`${ApiUrls.BaseUrl}/trk/${request.fileReference}.gpx`, {
             credentials: 'include',
             headers: {
@@ -33,6 +32,7 @@ export const loadTrackRequest = createAsyncThunk('load-track',
         if (!response.ok) {
             enqueueSnackbar(`error loading track: ${request.name}`, { variant: 'error' });
             return {
+                id: request.id,
                 fileReference: request.fileReference,
                 selected: true,
                 loading: false,
@@ -55,6 +55,7 @@ export const loadTrackRequest = createAsyncThunk('load-track',
         }
 
         return {
+            id: request.id,
             fileReference: request.fileReference,
             selected: true,
             loading: false,

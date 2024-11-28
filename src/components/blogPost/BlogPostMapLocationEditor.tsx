@@ -1,25 +1,22 @@
 import { LatLng } from "leaflet";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent } from "react";
 import { Marker, useMap, useMapEvents } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { Roles } from "../../constants/Rolenames";
-import { Timeouts } from "../../constants/Timeouts";
 import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
 import { trackClosestToPoint } from "../../converters/trackDataClosestToPoint";
-import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setClickedEvent, setEditingBlogpost, setMapCenter, setMarkerPosition, setZoomLevel } from "../../store/blogPostStateReducer";
+import { changeEditingBlogpostPosition, changeEditingBlogpostTrack } from "../../store/blogPostStateReducer";
+import { setClickedEvent, setMapCenter, setMarkerDragging, setMarkerPosition, setZoomLevel } from "../../store/mapStateReducer";
+import { mapClickEnd } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
 
 export const BlogPostMapLocationEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const isContributor = useAppSelector((state) => state.auth.user?.roles.includes(Roles.Contributor));
     const selectedTracks = useAppSelector((state) => state.track.tracks.filter(t => t.selected) ?? []);
-    const tourTracks = useAppSelector((state) => state.tour.selectedTour?.tracks);
+    const isContributor = useAppSelector((state) => state.auth.user?.roles.includes(Roles.Contributor) ?? false);
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
-    const markerPosition = useAppSelector((state) => state.blog.markerPosition);
-    const clickedTime = useAppSelector((state) => state.blog.clickedEvent.time);
-    const clickedLocation = useAppSelector((state) => state.blog.clickedEvent.location);
-    const [dragging, setDragging] = useState(false);
+    const mapState = useAppSelector((state) => state.map);
     const barState = useAppSelector((state) => state.tour.dataSelectorBarState);
 
     const map = useMap();
@@ -31,12 +28,14 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
         }));
         dispatch(setMarkerPosition(latLngToCoordinates(endposition)));
         
-        const fileId = trackClosestToPoint(selectedTracks, { latitude: endposition.lat, longitude: endposition.lng })?.fileReference ?? '';
-        const trackId = tourTracks?.find(t => t.fileReference === fileId)?.id ?? 0;
-        dispatch(changeEditingBlogpostTrack({trackId: trackId, trackFileReference: fileId}));
-        setTimeout(() => setDragging(false), 50);
-    }
+        const track = trackClosestToPoint(selectedTracks, { latitude: endposition.lat, longitude: endposition.lng });
 
+        dispatch(changeEditingBlogpostTrack({
+            trackId: track?.id ?? 0,
+            trackFileReference: track?.fileReference ?? ''
+        }));
+        setTimeout(() => dispatch(setMarkerDragging(false)), 50);
+    }
 
     useMapEvents({
         move() {
@@ -62,44 +61,20 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
             dispatch(setZoomLevel(e.target._zoom));
         },
         mouseup() {
-            if (dragging) {
-                return;
-            }
-            const timeDelta = (new Date().valueOf()) - clickedTime;
-            if (timeDelta > Timeouts.CreateBlogPostHold && isContributor && clickedLocation) {
-                dispatch(setMarkerPosition(clickedLocation));
-                if (!isEditingBlogPost) {
-                    const fileId = trackClosestToPoint(selectedTracks, clickedLocation)?.fileReference ?? '';
-                    const trackId = tourTracks?.find(t => t.fileReference === fileId)?.id ?? 0;
-                    dispatch(setEditingBlogpost({
-                        id: 0,
-                        latitude: clickedLocation.latitude,
-                        longitude: clickedLocation.longitude,
-                        title: '',
-                        message: '',
-                        images: [],
-                        trackId: trackId,
-                        trackFileReference: fileId
-                    }))
-                }
-                else {
-                    dispatch(changeEditingBlogpostPosition(clickedLocation));
-                }
-            }
-            dispatch(setClickedEvent(undefined));
+            mapClickEnd(dispatch, mapState, selectedTracks, isContributor, isEditingBlogPost);
         }
     });
 
-    if (isEditingBlogPost && markerPosition) {
+    if (isEditingBlogPost && mapState.markerPosition) {
         return <Marker eventHandlers={
             {
                 dragstart() {
-                    setDragging(true)
+                    dispatch(setMarkerDragging(true))
                 },
                 dragend(e) {
                     dragEnd(e.target._latlng)
                 }
-            }} icon={MarkerIcons.postNew} draggable position={coordinatesToLatLng(markerPosition)}>
+            }} icon={MarkerIcons.postNew} draggable position={coordinatesToLatLng(mapState.markerPosition)}>
 
         </Marker>
     }

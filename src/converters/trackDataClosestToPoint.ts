@@ -1,8 +1,8 @@
 import { TrackPoint } from "../data/trackPoint";
 import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
-import { ITrackEntity } from "../store/trackStateReducer";
+import { TrackEntity } from "../data/trackEntity";
 
-export const trackClosestToPoint = (tracks: ITrackEntity[], point: CoordinatesDto): ITrackEntity | null => {
+export const trackClosestToPoint = (tracks: TrackEntity[], point: CoordinatesDto): TrackEntity | null => {
     if (tracks.length === 0) return null;
     let closestTrack = tracks[0];
     let distance = pointDistance(closestTrack.data.points[0], point);

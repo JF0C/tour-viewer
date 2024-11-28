@@ -28,7 +28,7 @@ export const CreateTour: FunctionComponent = () => {
 
     if (!initialized) {
         setInitialized(true)
-        dispatch(setEditingTourStartDate(new Date().valueOf()))
+        dispatch(setEditingTourStartDate(Date.now()))
     }
 
     const saveTour = () => {

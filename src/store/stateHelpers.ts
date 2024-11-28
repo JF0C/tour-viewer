@@ -1,10 +1,14 @@
 import { Roles } from "../constants/Rolenames";
+import { Timeouts } from "../constants/Timeouts";
+import { trackClosestToPoint } from "../converters/trackDataClosestToPoint";
+import { TrackEntity } from "../data/trackEntity";
 import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
 import { CommentDto } from "../dtos/comment/commentDto";
 import { TourDto } from "../dtos/tour/tourDto";
 import { UserDetailDto } from "../dtos/user/userDetailDto";
-import { setEditingBlogpost } from "./blogPostStateReducer";
+import { changeEditingBlogpostPosition, setEditingBlogpost } from "./blogPostStateReducer";
 import { searchBlogPostsForUser } from "./blogPostThunk";
+import { IMapState, setClickedEvent, setMarkerPosition } from "./mapStateReducer";
 import { AppDispatch, RootState } from "./store";
 import { searchToursForUser } from "./tourThunk";
 
@@ -77,3 +81,38 @@ export const loadUserDetail = (dispatch: AppDispatch, detailedUser: UserDetailDt
         author: detailedUser.id
     }))
 }
+
+export const mapClickEnd = (dispatch: AppDispatch,
+    mapState: IMapState,
+    selectedTracks: TrackEntity[],
+    isContributor: boolean,
+    isEditingBlogPost: boolean
+) => {
+
+    if (mapState.isDraggingMarker) {
+        return;
+    }
+
+    const timeDelta = Date.now() - mapState.clickedEvent.time;
+    if (timeDelta > Timeouts.CreateBlogPostHold && isContributor && mapState.clickedEvent.location) {
+        dispatch(setMarkerPosition(mapState.clickedEvent.location));
+        if (!isEditingBlogPost) {
+            const track = trackClosestToPoint(selectedTracks, mapState.clickedEvent.location);
+            dispatch(setEditingBlogpost({
+                id: 0,
+                latitude: mapState.clickedEvent.location.latitude,
+                longitude: mapState.clickedEvent.location.longitude,
+                title: '',
+                message: '',
+                images: [],
+                trackId: track?.id ?? 0,
+                trackFileReference: track?.fileReference ?? ''
+            }))
+        }
+        else {
+            dispatch(changeEditingBlogpostPosition(mapState.clickedEvent.location));
+        }
+    }
+    dispatch(setClickedEvent(undefined));
+}
+

@@ -6,9 +6,10 @@ import { faImage, faMapPin } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setFullSizeImages, setOpenMarker } from "../../store/blogPostStateReducer";
+import { setFullSizeImages } from "../../store/blogPostStateReducer";
 import { loadTourRequest } from "../../store/tourThunk";
 import { setTargetCoordinates } from "../../store/trackStateReducer";
+import { setMarkerReferenceId } from "../../store/mapStateReducer";
 
 export type BlogPostListItemProps = {
     blogPost: BlogPostDto
@@ -26,14 +27,14 @@ export const BlogPostListItem: FunctionComponent<BlogPostListItemProps> = (props
                     .then(() =>
                         setTimeout(() => {
                             dispatch(setTargetCoordinates(props.blogPost.coordinates));
-                            dispatch(setOpenMarker(props.blogPost.id));
+                            dispatch(setMarkerReferenceId(props.blogPost.id));
                         }, 1000)
                     );
             }
         }
         else {
             dispatch(setTargetCoordinates(props.blogPost.coordinates));
-            dispatch(setOpenMarker(props.blogPost.id));
+            dispatch(setMarkerReferenceId(props.blogPost.id));
         }
         navigate(Paths.HomePage);
     }

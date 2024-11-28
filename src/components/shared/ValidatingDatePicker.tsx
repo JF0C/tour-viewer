@@ -15,8 +15,8 @@ export const ValidatingDatePicker: FunctionComponent<ValidatingDatePickerProps> 
 
     const validateDate = (ticks: number) => {
         const date = ticks;
-        const fromDate = new Date().valueOf() - 1000 * 60 * 60 * 24 * 365 * 10;
-        const toDate = new Date().valueOf() + 1000 * 60 * 60 * 24 * 365;
+        const fromDate = Date.now() - 1000 * 60 * 60 * 24 * 365 * 10;
+        const toDate = Date.now() + 1000 * 60 * 60 * 24 * 365;
         return fromDate < date && date < toDate
     }
 

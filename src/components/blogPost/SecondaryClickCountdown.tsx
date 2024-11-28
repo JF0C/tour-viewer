@@ -6,15 +6,17 @@ import { useState } from "react";
 import { isAllowedToCreate } from "../../store/stateHelpers";
 
 export const SecondaryClickCountdown = () => {
-    const position = useAppSelector((state) => state.blog.clickedEvent.location);
-    const clickedTime = useAppSelector((state) => state.blog.clickedEvent.time);
+    const mapState = useAppSelector((state) => state.map);
+    const position = mapState.clickedEvent.location;
+    const clickedTime = mapState.clickedEvent.time;
+    const isDraggingMarker = mapState.isDraggingMarker;
     const canEdit = useAppSelector((state) => isAllowedToCreate(state));
     const map = useMap();
 
     const [points, setPoints] = useState<LatLng[]>([]);
     const [running, setRunning] = useState(false);
 
-    if (!position || !canEdit) {
+    if (!position || !canEdit || isDraggingMarker) {
         if (points.length > 0) {
             setPoints([]);
         }
@@ -45,7 +47,7 @@ export const SecondaryClickCountdown = () => {
     }
 
     const timeStep = (): boolean => {
-        const progress = Math.min((new Date().valueOf() - clickedTime) / Timeouts.CreateBlogPostHold, 1.0);
+        const progress = Math.min((Date.now() - clickedTime) / Timeouts.CreateBlogPostHold, 1.0);
         if (progress > 0.25) {
             renderCircleSegment(progress);
         }

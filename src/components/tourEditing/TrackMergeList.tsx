@@ -35,6 +35,7 @@ export const TrackMergeList: FunctionComponent = () => {
                 dispatch(clearTracks());
                 for(let track of tour.tracks) {
                     dispatch(loadTrackRequest({
+                        id: track.id,
                         fileReference: track.fileReference,
                         name: track.name,
                         tourPosition: track.tourPosition

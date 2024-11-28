@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { ITrackEntity } from "../../store/trackStateReducer";
+import { TrackEntity } from "../../data/trackEntity";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { millisToDateString } from "../../converters/dateConverters";
 import { addTrackToMerge, removeTrackToMerge } from "../../store/tourStateReducer";
@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckSquare } from "@fortawesome/free-solid-svg-icons";
 
 export type TrackMergeItemProps = {
-    track: ITrackEntity
+    track: TrackEntity
 }
 
 export const TrackMergeItem: FunctionComponent<TrackMergeItemProps> = (props) => {

@@ -1,8 +1,8 @@
 import { GpxPoint } from "../data/gpxPoint";
-import { ITrackEntity } from "../store/trackStateReducer";
+import { TrackEntity } from "../data/trackEntity";
 import { gpxFromPoints } from "./gpxFromPoints";
 
-export const mergeTracksToGpx = (tracks: ITrackEntity[], name: string): string => {
+export const mergeTracksToGpx = (tracks: TrackEntity[], name: string): string => {
     const numberOfPoints = tracks.map(t => t.data.points.length)
         .reduce((a, b) => a + b)
     const points: GpxPoint[] = new Array<GpxPoint>(numberOfPoints);

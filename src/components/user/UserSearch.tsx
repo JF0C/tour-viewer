@@ -25,7 +25,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (props) => {
 
     const filterUsers = (username: string) => {
         setUsernameFilter(username);
-        const currentTime = new Date().valueOf();
+        const currentTime = Date.now();
         if (currentTime < lastSearchTime + debounceInterval) {
             return;
         }

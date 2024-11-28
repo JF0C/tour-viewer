@@ -1,30 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest, loadTrackRequest } from "./trackThunk";
-import { TrackData } from "../data/trackData";
 import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
-
-export interface BoundsInternal {
-    south: number;
-    west: number;
-    north: number;
-    east: number;
-}
-
-export interface ITrackEntity {
-    fileReference: string;
-    data: TrackData;
-    selected: boolean;
-    loading: boolean;
-    tourPosition: number;
-    bounds?: BoundsInternal;
-}
+import { BoundsInternal, TrackEntity } from "../data/trackEntity";
 
 export interface ITrackState {
     loading: boolean;
     boundsSet: boolean;
     dataPointLocation?: CoordinatesDto;
     targetCoordinates?: CoordinatesDto;
-    tracks: ITrackEntity[];
+    tracks: TrackEntity[];
     graphData: {
         selectedValue?: 'velocity' | 'elevation' | 'slope',
         min: number,
@@ -62,14 +46,15 @@ export const trackStateSlice = createSlice({
                 t.bounds = undefined;
             }
         },
-        startLoadingTrack(state, action: PayloadAction<string>) {
-            const track = state.tracks.find(t => t.fileReference === action.payload);
+        startLoadingTrack(state, action: PayloadAction<{fileReference: string, id: number}>) {
+            const track = state.tracks.find(t => t.fileReference === action.payload.fileReference);
             if (track) {
                 track.loading = true;
             }
             else {
                 state.tracks.push({
-                    fileReference: action.payload,
+                    id: action.payload.id,
+                    fileReference: action.payload.fileReference,
                     data: {
                         name: '',
                         elevation: {
@@ -135,6 +120,7 @@ export const trackStateSlice = createSlice({
 
             if (!trackEntity) {
                 trackEntity = {
+                    id: action.payload.id,
                     fileReference: action.payload.fileReference,
                     selected: action.payload.selected,
                     data: action.payload.data,
@@ -150,6 +136,7 @@ export const trackStateSlice = createSlice({
                 state.tracks.push(trackEntity);
             }
             else {
+                trackEntity.id = action.payload.id;
                 trackEntity.data = action.payload.data;
                 trackEntity.fileReference = action.payload.fileReference;
                 trackEntity.selected = action.payload.selected;

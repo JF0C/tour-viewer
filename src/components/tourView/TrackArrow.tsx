@@ -31,7 +31,7 @@ const calcShowEvery = (zoomLevel: number): number => {
 }
 
 export const TrackArrow: FunctionComponent<TrackArrowProps> = (props) => {
-    const zoomLevel = useAppSelector((state) => state.blog.zoomLevel);
+    const zoomLevel = useAppSelector((state) => state.map.zoomLevel);
 
     const arrowAngle = (from: CoordinatesDto, to: CoordinatesDto) => {
         var dy = to.latitude - from.latitude;

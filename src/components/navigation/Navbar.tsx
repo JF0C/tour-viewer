@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Paths } from '../../constants/Paths';
 import { Roles } from '../../constants/Rolenames';
-import { setEditingBlogpost, setMarkerPosition } from '../../store/blogPostStateReducer';
+import { setEditingBlogpost } from '../../store/blogPostStateReducer';
 import { isAllowedToCreate } from '../../store/stateHelpers';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { resetEditingTour, setEditingTour } from '../../store/tourStateReducer';
@@ -13,6 +13,7 @@ import { resetBoundsSet } from '../../store/trackStateReducer';
 import { TourSelector } from '../tourView/TourSelector';
 import { UserSearchModal } from '../user/UserSearchModal';
 import { VersionInfo } from '../shared/VersionInfo';
+import { setMarkerPosition } from '../../store/mapStateReducer';
 
 export type NavbarProps = {
     closeSidebar: () => void
@@ -25,7 +26,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
     const isContributor = user?.roles.includes(Roles.Contributor);
     const tour = useAppSelector((state) => state.tour.selectedTour);
     const canEdit = useAppSelector((state) => isAllowedToCreate(state));
-    const mapCenter = useAppSelector((state) => state.blog.mapCenter);
+    const mapCenter = useAppSelector((state) => state.map.mapCenter);
 
     const editCurrentTour = () => {
         props.closeSidebar();

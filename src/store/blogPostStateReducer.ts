@@ -1,37 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
-import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
 import { CreateBlogPostDto } from "../dtos/blogPost/createBlogPostDto";
 import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "./blogPostThunk";
-import { deleteImageRequest, uploadImageRequest } from "./filesThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
-
-export interface ClickedEvent {
-    time: number;
-    location?: CoordinatesDto;
-}
+import { deleteImageRequest, uploadImageRequest } from "./filesThunk";
 
 export interface IBlogPostState {
     loading: boolean;
     editingBlogPost?: CreateBlogPostDto;
     selectedBlogPost?: BlogPostDto;
     coordinatesChanged: boolean;
-    markerPosition?: CoordinatesDto;
-    mapCenter?: CoordinatesDto;
-    zoomLevel: number;
-    clickedEvent: ClickedEvent;
     fullSizeImages: string[];
     selectedFullSizeImage?: string;
-    openMarker?: number;
 }
 
 const initialState: IBlogPostState = {
     loading: false,
     coordinatesChanged: false,
-    clickedEvent: {
-        time: 0
-    },
-    zoomLevel: 13,
     fullSizeImages: []
 }
 
@@ -46,24 +31,8 @@ export const BlogPostSlice = createSlice({
         setSelectedBlogpost(state, action: PayloadAction<BlogPostDto | undefined>) {
             state.selectedBlogPost = action.payload;
         },
-        setMarkerPosition(state, action: PayloadAction<CoordinatesDto | undefined>) {
-            state.markerPosition = action.payload;
-        },
-        setZoomLevel(state, action: PayloadAction<number>) {
-            state.zoomLevel = action.payload;
-        },
-        setClickedEvent(state, action: PayloadAction<CoordinatesDto | undefined>) {
-            state.clickedEvent.location = action.payload;
-            state.clickedEvent.time = new Date().valueOf();
-        },
         resetCoordinatesChanged(state) {
             state.coordinatesChanged = false;
-        },
-        setMapCenter(state, action: PayloadAction<CoordinatesDto | undefined>) {
-            state.mapCenter = action.payload;
-        },
-        setOpenMarker(state, action: PayloadAction<number | undefined>) {
-            state.openMarker = action.payload
         },
         changeEditingBlogpostPosition(state, action: PayloadAction<{ latitude: number, longitude: number }>) {
             if (state.editingBlogPost) {
@@ -232,8 +201,14 @@ export const BlogPostSlice = createSlice({
 
 export const blogPostStateReducer = BlogPostSlice.reducer;
 
-export const { setEditingBlogpost, changeEditingBlogpostPosition, changeEditingBlogpostTrack,
-    changeEditingBlogpostTitle, changeEditingBlogpostMessage, addImageReferenceToEditingBlogpost,
-    setMarkerPosition, setMapCenter, resetCoordinatesChanged, setClickedEvent, setZoomLevel,
-    setSelectedBlogpost, setFullSizeImages, setOpenMarker
+export const {
+    setEditingBlogpost,
+    changeEditingBlogpostPosition,
+    changeEditingBlogpostTrack,
+    changeEditingBlogpostTitle,
+    changeEditingBlogpostMessage,
+    addImageReferenceToEditingBlogpost,
+    resetCoordinatesChanged,
+    setSelectedBlogpost,
+    setFullSizeImages
 } = BlogPostSlice.actions

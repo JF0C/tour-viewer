@@ -2,18 +2,19 @@ import { faCheck, faLocation, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, resetCoordinatesChanged, setMarkerPosition } from "../../store/blogPostStateReducer";
+import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, resetCoordinatesChanged } from "../../store/blogPostStateReducer";
 import { changeBlogPostLocationRequest } from "../../store/blogPostThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
 import { updateEditingBlogpost } from "../../store/stateHelpers";
 import { trackClosestToPoint } from "../../converters/trackDataClosestToPoint";
+import { setMarkerPosition } from "../../store/mapStateReducer";
 
 export const BlogPostLocationEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const blogPost = useAppSelector((state) => state.blog.editingBlogPost);
     const coordinatesChanged = useAppSelector((state) => state.blog.coordinatesChanged);
-    const mapCenter = useAppSelector((state) => state.blog.mapCenter);
+    const mapCenter = useAppSelector((state) => state.map.mapCenter);
     const tourId = useAppSelector((state) => state.tour.selectedTour?.id);
     const selectedTracks = useAppSelector((state) => state.track.tracks.filter(t => t.selected));
     const tourTracks = useAppSelector((state) => state.tour.selectedTour?.tracks);

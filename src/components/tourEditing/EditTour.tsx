@@ -54,6 +54,7 @@ export const EditTour: FunctionComponent = () => {
             .then((tour) => {
                 dispatch(setEditingTour(tour));
                 tour.tracks.forEach(t => dispatch(loadTrackRequest({
+                    id: t.id,
                     fileReference: t.fileReference,
                     name: t.name,
                     tourPosition: t.tourPosition

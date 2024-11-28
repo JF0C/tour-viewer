@@ -3,12 +3,13 @@ import { FunctionComponent, ReactNode } from "react";
 import { Marker, Popup, useMap } from "react-leaflet";
 import { Layers } from "../../constants/Layers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { ITrackEntity, setBounds } from "../../store/trackStateReducer";
+import { setBounds } from "../../store/trackStateReducer";
 import { TrackArrow } from "./TrackArrow";
 import { MarkerIcons } from "../../constants/MarkerIcons";
+import { TrackEntity } from "../../data/trackEntity";
 
 export type TrackLineProps = {
-    track: ITrackEntity,
+    track: TrackEntity,
     startMarker?: boolean
 }
 
