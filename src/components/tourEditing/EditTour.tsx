@@ -6,7 +6,7 @@ import { millisToUtcDate } from "../../converters/dateConverters";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setEditingTour, setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
 import { changeTourStartDateRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "../../store/tourThunk";
-import { resetBoundsSet } from "../../store/trackStateReducer";
+import { clearTracks, resetBoundsSet } from "../../store/trackStateReducer";
 import { BigFormLayout } from "../layout/BigFormLayout";
 import { ConfirmModal } from "../shared/ConfirmModal";
 import { EditableDateLabel } from "../shared/EditableDateLabel";
@@ -15,6 +15,9 @@ import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { UserSearch } from "../user/UserSearch";
 import { TrackList } from "./TrackList";
 import { ParticipantResultView } from "./ParticipantResultView";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCodeMerge } from "@fortawesome/free-solid-svg-icons";
+import { loadTrackRequest } from "../../store/trackThunk";
 
 
 export const EditTour: FunctionComponent = () => {
@@ -45,13 +48,22 @@ export const EditTour: FunctionComponent = () => {
     }
 
     const reloadTour = () => {
+        dispatch(clearTracks());
         dispatch(loadTourRequest(tourState.editingTour.id))
             .unwrap()
-            .then((tour) => dispatch(setEditingTour(tour)))
+            .then((tour) => {
+                dispatch(setEditingTour(tour));
+                tour.tracks.forEach(t => dispatch(loadTrackRequest({
+                    fileReference: t.fileReference,
+                    name: t.name,
+                    tourPosition: t.tourPosition
+                })));
+            });
     }
 
     const cancelEditing = () => {
         dispatch(resetBoundsSet());
+        reloadTour();
         navigate(Paths.HomePage);
     }
 
@@ -113,14 +125,21 @@ export const EditTour: FunctionComponent = () => {
             <Button>
                 <img width={20} src="icon/komoot-icon.png" alt='komoot-icon'/>
                 &nbsp;
-                Import Tracks from Komoot
+                Import from Komoot
             </Button>
         </NavLink>
         <NavLink to={Paths.StravaTourStartPage}>
             <Button>
                 <img width={20} src="icon/strava-icon.png" alt='komoot-icon'/>
                 &nbsp;
-                Import Tracks from Strava
+                Import from Strava
+            </Button>
+        </NavLink>
+        <NavLink to={Paths.MergeTracksPage}>
+            <Button>
+                <FontAwesomeIcon icon={faCodeMerge}/>
+                &nbsp;
+                Merge Tracks
             </Button>
         </NavLink>
         <TrackList onReload={reloadTour} />

@@ -41,7 +41,8 @@ export const TourMap: FunctionComponent = () => {
                 dispatch(startLoadingTrack(missing.fileReference));
                 dispatch(loadTrackRequest({
                     fileReference: missing.fileReference,
-                    name: missing.name
+                    name: missing.name,
+                    tourPosition: missing.tourPosition
                 }));
             }
         }

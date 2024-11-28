@@ -15,6 +15,7 @@ export interface ITrackEntity {
     data: TrackData;
     selected: boolean;
     loading: boolean;
+    tourPosition: number;
     bounds?: BoundsInternal;
 }
 
@@ -84,7 +85,8 @@ export const trackStateSlice = createSlice({
                         totalMovementTime: 1,
                     },
                     selected: false,
-                    loading: true
+                    loading: true,
+                    tourPosition: 0
                 })
             }
         },
@@ -136,6 +138,7 @@ export const trackStateSlice = createSlice({
                     fileReference: action.payload.fileReference,
                     selected: action.payload.selected,
                     data: action.payload.data,
+                    tourPosition: action.payload.tourPosition,
                     loading: false,
                     bounds: {
                         south: 0,
@@ -151,12 +154,14 @@ export const trackStateSlice = createSlice({
                 trackEntity.fileReference = action.payload.fileReference;
                 trackEntity.selected = action.payload.selected;
                 trackEntity.loading = false;
+                trackEntity.tourPosition = action.payload.tourPosition;
             }
             
             state.boundsSet = false;
             for (let t of state.tracks) {
                 t.bounds = undefined;
             }
+            state.tracks = state.tracks.sort((a, b) => a.tourPosition - b.tourPosition)
         });
         builder.addCase(loadTrackRequest.rejected, (state) => {
             state.loading = false;

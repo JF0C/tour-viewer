@@ -12,6 +12,7 @@ export interface IEditTour {
     startDate: number;
     participants: UserReferenceDto[];
     tracks: EditTrackDto[];
+    tracksToMerge: string[];
 }
 
 export interface ITourState {
@@ -45,7 +46,8 @@ const initialState: ITourState = {
         name: '',
         startDate: 0,
         participants: [],
-        tracks: []
+        tracks: [],
+        tracksToMerge: []
     }
 }
 
@@ -79,7 +81,8 @@ export const tourStateSlice = createSlice({
                 name: '',
                 startDate: 0,
                 participants: [],
-                tracks: []
+                tracks: [],
+                tracksToMerge: []
             };
         },
         setEditingTourName(state, action: PayloadAction<string>) {
@@ -111,6 +114,17 @@ export const tourStateSlice = createSlice({
                     data: t.fileReference
                 }
             })
+        },
+        clearTracksToMerge(state) {
+            state.editingTour.tracksToMerge = [];
+        },
+        addTrackToMerge(state, action: PayloadAction<string>) {
+            if (!state.editingTour.tracksToMerge.includes(action.payload)) {
+                state.editingTour.tracksToMerge.push(action.payload);
+            }
+        },
+        removeTrackToMerge(state, action: PayloadAction<string>) {
+            state.editingTour.tracksToMerge = state.editingTour.tracksToMerge.filter(t => t !== action.payload);
         }
     },
     extraReducers: (builder) => {
@@ -224,8 +238,18 @@ export const tourStateSlice = createSlice({
 })
 
 export const tourStateReducer = tourStateSlice.reducer;
-export const { setRadioGroup, showInfobar,
-    resetEditingTour, setEditingTourName, setEditingTourStartDate,
-    addEditingTourParticipant, removeEditingTourParticipant,
-    setEditingTour, setDataBarState, setInfoBarFull
+export const {
+    setRadioGroup,
+    showInfobar,
+    resetEditingTour,
+    setEditingTourName,
+    setEditingTourStartDate,
+    addEditingTourParticipant,
+    removeEditingTourParticipant,
+    setEditingTour,
+    setDataBarState,
+    setInfoBarFull,
+    clearTracksToMerge,
+    addTrackToMerge,
+    removeTrackToMerge
 } = tourStateSlice.actions;

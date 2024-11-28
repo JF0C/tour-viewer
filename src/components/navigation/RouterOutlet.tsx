@@ -16,6 +16,7 @@ import { KomootTourLoader } from "../komoot/KomootTourLoader";
 import { KomootTourDownload } from "../komoot/KomootTourDownload";
 import { StravaTourLoader } from "../strava/StravaTourLoader";
 import { StravaActivityDownload } from "../strava/StravaActivityDownload";
+import { TrackMergeList } from "../tourEditing/TrackMergeList";
 
 
 export const RouterOutlet: FunctionComponent = () => {
@@ -34,6 +35,7 @@ export const RouterOutlet: FunctionComponent = () => {
         
         <Route path={Paths.CreateTourPage} element={<CreateTour />} />
         <Route path={Paths.EditTourPage} element={<EditTour />} />
+        <Route path={Paths.MergeTracksPage} element={<TrackMergeList />} />
 
         <Route path={Paths.KomootTourStartPage} element={<KomootTourLoader />} />
         <Route path={Paths.KomootTourDownloadPage} element={<KomootTourDownload />} />

@@ -22,6 +22,7 @@ export const createTrackRequest = createPostThunk<number, EditTrackDto>(
 
 export const loadTrackRequest = createAsyncThunk('load-track',
     async (request: LoadTrackRequestDto): Promise<ITrackEntity> => {
+        console.log('requesting: ' + JSON.stringify(request));
         const response = await fetch(`${ApiUrls.BaseUrl}/trk/${request.fileReference}.gpx`, {
             credentials: 'include',
             headers: {
@@ -35,6 +36,7 @@ export const loadTrackRequest = createAsyncThunk('load-track',
                 fileReference: request.fileReference,
                 selected: true,
                 loading: false,
+                tourPosition: 0,
                 data: {
                     name: 'failed to load',
                     elevation: {
@@ -56,6 +58,7 @@ export const loadTrackRequest = createAsyncThunk('load-track',
             fileReference: request.fileReference,
             selected: true,
             loading: false,
+            tourPosition: request.tourPosition,
             data: parseGpxText(await response.text(), request.name)
         };
     }

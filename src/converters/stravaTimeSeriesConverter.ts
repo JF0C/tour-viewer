@@ -1,7 +1,7 @@
+import { GpxPoint } from "../data/gpxPoint";
 import { StravaActivityDetailDto } from "../dtos/strava/stravaActivityDetailDto";
 import { StravaActivityDetailRequestDto } from "../dtos/strava/stravaActivityDetailRequestDto";
-
-type GpxPoint = { lat: number, lon: number, ele: number, time: number }
+import { gpxFromPoints } from "./gpxFromPoints";
 
 export const stravaTimeSeriesToGpx = (input: StravaActivityDetailDto, metadata: StravaActivityDetailRequestDto): string => {
     const points: GpxPoint[] = new Array<GpxPoint>(input[0].data.length);
@@ -15,23 +15,5 @@ export const stravaTimeSeriesToGpx = (input: StravaActivityDetailDto, metadata: 
         }
     }
 
-    const result = `<?xml version="1.0" encoding="UTF-8"?>
-<gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" creator="TourViewer" version="1.1" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata>
-    <name>${metadata.name}</name>
-      <time>${new Date(metadata.start_date).toISOString()}</time>
-  </metadata>
-  <trk>
-    <name>${metadata.name}</name>
-    <type>cycling</type>
-    <trkseg>
-        ${points.map(p => `<trkpt lat="${p.lat}" lon="${p.lon}">
-<ele>${p.ele}</ele>
-<time>${new Date(p.time).toISOString()}</time>
-</trkpt>`)}
-    </trkseg>
-  </trk>
-</gpx>`
-
-    return result;
+    return gpxFromPoints(points, metadata.name, metadata.start_date);
 }
