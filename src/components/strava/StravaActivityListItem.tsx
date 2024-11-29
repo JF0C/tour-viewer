@@ -5,7 +5,6 @@ import { millisToDateString } from "../../converters/dateConverters";
 import { enqueueSnackbar } from "notistack";
 import { Limits } from "../../constants/Limits";
 import { addTourToDownload, removeTourToDownload } from "../../store/stravaStateReducer";
-import { StravaActivityPreviewMap } from "./StravaActivityPreviewMap";
 
 export type StravaActivityListItemProps = {
     children?: ReactNode;
@@ -33,12 +32,13 @@ export const StravaActivityListItem: FunctionComponent<StravaActivityListItemPro
             dispatch(addTourToDownload(props.tour));
         }
     }
-    
+    const thumbnailTitle = `thumbnail for strava ${props.tour.id}`
+    const thumbnailUrl = `https://jf0c.github.io/track-thumbnail/?track=${props.tour.previewImageUrl}&width=100&height=100`;
 
     return <div className="flex flex-col md:flex-row border border-white rounded-md cursor-pointer"
         onClick={toggleTourToDownload}>
-        <div style={{width: 100, height: 100}}>
-            <StravaActivityPreviewMap track={props.tour} />
+        <div className="rounded-t-md md:rounded-t-none md:rounded-l-md w-24" style={{ height: 100, overflow: 'clip'}}>
+            <iframe title={thumbnailTitle} src={thumbnailUrl} />
         </div>
         <div className="flex flex-col p-2 rounded-b-md md:rounded-r-md" style={{ backgroundColor: (isSelected && !props.children) ? 'green' : undefined }}>
             {
