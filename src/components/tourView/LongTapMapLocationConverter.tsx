@@ -3,8 +3,9 @@ import { useMap } from "react-leaflet";
 import { setClickedEvent } from "../../store/mapStateReducer";
 import { setReleasePosition, setTapPosition } from "../../store/mapStateReducer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { mapClickEnd } from "../../store/stateHelpers";
+import { mapClickEnd, markerDragEnd } from "../../store/stateHelpers";
 import { Roles } from "../../constants/Rolenames";
+import { CoordinatesDto } from "../../dtos/shared/coordinatesDto";
 
 export const LongTapMapLocationConverter: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -15,23 +16,32 @@ export const LongTapMapLocationConverter: FunctionComponent = () => {
 
     const map = useMap();
 
-    if (mapState.tapPosition) {
+    const tapPositionToCoordinates = (screenPosition: {x: number, y: number}): CoordinatesDto => {
         const bounds = map.getBounds();
-        const latRatio = mapState.tapPosition.y / (window.innerHeight - 52);
+        const latRatio = screenPosition.y / (window.innerHeight - 52);
         const lat = (1-latRatio) * bounds.getNorth() + latRatio * bounds.getSouth();
-        const lngRatio = mapState.tapPosition.x / window.innerWidth;
+        const lngRatio = screenPosition.x / window.innerWidth;
         const lng = (1-lngRatio) * bounds.getWest() + lngRatio * bounds.getEast();
-        dispatch(setTapPosition());
-        dispatch(setClickedEvent({
+        return {
             latitude: lat,
             longitude: lng
-        }));
+        };
+    }
+
+    if (mapState.tapPosition) {
+        const coordinates = tapPositionToCoordinates(mapState.tapPosition);
+        dispatch(setTapPosition());
+        dispatch(setClickedEvent(coordinates));
     }
 
     if (mapState.releasePosition) {
+        mapClickEnd(dispatch, mapState, selectedTracks, isContributor, isEditingBlogPost);
+        if (mapState.isDraggingMarker) {
+            const coordinates = tapPositionToCoordinates(mapState.releasePosition)
+            markerDragEnd(dispatch, coordinates, selectedTracks);
+        }
         dispatch(setReleasePosition());
         dispatch(setClickedEvent());
-        mapClickEnd(dispatch, mapState, selectedTracks, isContributor, isEditingBlogPost);
     }
     return <></>
 }

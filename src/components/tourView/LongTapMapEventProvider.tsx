@@ -13,14 +13,14 @@ export const LongTapMapEventProvider: FunctionComponent<LongTapMapEventProviderP
         dispatch(setTapPosition({x: e.clientX, y: e.clientY - 52}));
     }
 
-    const touchEnd = () => {
-        dispatch(setReleasePosition({x: 0, y: 0}))
+    const touchEnd = (e: Touch) => {
+        dispatch(setReleasePosition({x: e.clientX, y: e.clientY - 52}));
     }
 
     return <div className="w-full h-full"
         onTouchStart={(e) => touchStart(e.touches[0])}
-        onTouchEnd={touchEnd}
-        onTouchCancel={touchEnd}>
+        onTouchEnd={(e) => touchEnd(e.changedTouches[0])}
+        onTouchCancel={(e) => touchEnd(e.changedTouches[0])}>
         {props.children}
     </div>
 }

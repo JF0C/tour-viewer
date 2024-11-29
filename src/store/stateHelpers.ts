@@ -4,11 +4,12 @@ import { trackClosestToPoint } from "../converters/trackDataClosestToPoint";
 import { TrackEntity } from "../data/trackEntity";
 import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
 import { CommentDto } from "../dtos/comment/commentDto";
+import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
 import { TourDto } from "../dtos/tour/tourDto";
 import { UserDetailDto } from "../dtos/user/userDetailDto";
-import { changeEditingBlogpostPosition, setEditingBlogpost } from "./blogPostStateReducer";
+import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setEditingBlogpost } from "./blogPostStateReducer";
 import { searchBlogPostsForUser } from "./blogPostThunk";
-import { IMapState, setClickedEvent, setMarkerPosition } from "./mapStateReducer";
+import { IMapState, setClickedEvent, setMarkerDragging, setMarkerPosition } from "./mapStateReducer";
 import { AppDispatch, RootState } from "./store";
 import { searchToursForUser } from "./tourThunk";
 
@@ -116,3 +117,18 @@ export const mapClickEnd = (dispatch: AppDispatch,
     dispatch(setClickedEvent(undefined));
 }
 
+export const markerDragEnd = (dispatch: AppDispatch,
+    endPosition: CoordinatesDto,
+    selectedTracks: TrackEntity[]
+) => {
+    dispatch(changeEditingBlogpostPosition(endPosition));
+    dispatch(setMarkerPosition(endPosition));
+    
+    const track = trackClosestToPoint(selectedTracks, endPosition);
+
+    dispatch(changeEditingBlogpostTrack({
+        trackId: track?.id ?? 0,
+        trackFileReference: track?.fileReference ?? ''
+    }));
+    setTimeout(() => dispatch(setMarkerDragging(false)), 50);
+}

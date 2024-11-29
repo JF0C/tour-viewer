@@ -4,10 +4,8 @@ import { Marker, useMap, useMapEvents } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { Roles } from "../../constants/Rolenames";
 import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
-import { trackClosestToPoint } from "../../converters/trackDataClosestToPoint";
-import { changeEditingBlogpostPosition, changeEditingBlogpostTrack } from "../../store/blogPostStateReducer";
-import { setClickedEvent, setMapCenter, setMarkerDragging, setMarkerPosition, setZoomLevel } from "../../store/mapStateReducer";
-import { mapClickEnd } from "../../store/stateHelpers";
+import { setClickedEvent, setMapCenter, setMarkerDragging, setZoomLevel } from "../../store/mapStateReducer";
+import { mapClickEnd, markerDragEnd } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
 
@@ -22,19 +20,7 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
     const map = useMap();
 
     const dragEnd = (endposition: LatLng) => {
-        dispatch(changeEditingBlogpostPosition({
-            latitude: endposition.lat,
-            longitude: endposition.lng
-        }));
-        dispatch(setMarkerPosition(latLngToCoordinates(endposition)));
-        
-        const track = trackClosestToPoint(selectedTracks, { latitude: endposition.lat, longitude: endposition.lng });
-
-        dispatch(changeEditingBlogpostTrack({
-            trackId: track?.id ?? 0,
-            trackFileReference: track?.fileReference ?? ''
-        }));
-        setTimeout(() => dispatch(setMarkerDragging(false)), 50);
+        markerDragEnd(dispatch, latLngToCoordinates(endposition), selectedTracks);
     }
 
     useMapEvents({
