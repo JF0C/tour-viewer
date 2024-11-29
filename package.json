@@ -51,9 +51,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start local",
-    "prebuild": "mv ../tour_viewer_backend/TourViewer/wwwroot/img ../tour_viewer_backend/TourViewer/img && mv ../tour_viewer_backend/TourViewer/wwwroot/trk ../tour_viewer_backend/TourViewer/trk",
     "build": "BUILD_PATH='../tour_viewer_backend/TourViewer/wwwroot' react-scripts build",
-    "postbuild": "mv ../tour_viewer_backend/TourViewer/img ../tour_viewer_backend/TourViewer/wwwroot/img && mv ../tour_viewer_backend/TourViewer/trk ../tour_viewer_backend/TourViewer/wwwroot/trk",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
