@@ -11,6 +11,7 @@ import theme from './materialUiConfig';
 import { store } from './store/store';
 import { FullSizeImageView } from './components/shared/FullSizeImageView';
 import { CookiesProvider } from 'react-cookie';
+import 'leaflet/dist/leaflet.css';
 
 function App() {
   if (document.location.href.includes('localhost:3000')) {
