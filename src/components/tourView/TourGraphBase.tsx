@@ -192,8 +192,11 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     }
 
     const selectedIndexChange = (index: number) => {
-        setSelectedIndex(index);
-        const point = props.points[slidePosition + index];
+        const localIndex = Math.floor(index);
+        const dataIndex = Math.floor(localIndex + slidePosition);
+        
+        setSelectedIndex(localIndex);
+        const point = props.points[dataIndex];
 
         setDataMarkerPosition({
             latitude: point.latitude,
@@ -202,7 +205,8 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
     }
 
     const scrollStateChange = (scroll: number) => {
-        setScrollState(scroll);
+        const localIndex = Math.floor(scroll);
+        setScrollState(localIndex);
         const slideSize = props.points.length - windowSize;
         const sliderPosition = Math.floor(scroll / sliderMax * slideSize);
         const point = props.points[sliderPosition + selectedIndex];

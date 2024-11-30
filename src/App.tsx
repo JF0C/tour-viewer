@@ -3,7 +3,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import './App.scss';
 import { MainLayout } from './components/layout/MainLayout';
 import { RouterOutlet } from './components/navigation/RouterOutlet';
 import { ApiUrls } from './constants/ApiUrls';
@@ -11,6 +10,8 @@ import theme from './materialUiConfig';
 import { store } from './store/store';
 import { FullSizeImageView } from './components/shared/FullSizeImageView';
 import { CookiesProvider } from 'react-cookie';
+import 'leaflet/dist/leaflet.css';
+import './App.scss';
 
 function App() {
   if (document.location.href.includes('localhost:3000')) {

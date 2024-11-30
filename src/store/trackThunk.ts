@@ -20,6 +20,29 @@ export const createTrackRequest = createPostThunk<number, EditTrackDto>(
     async (response) => Number(await response.text())
 );
 
+const failedToLoadTrack = (id: number, fileReference: string) => { 
+    return {
+    id: id,
+    fileReference: fileReference,
+    selected: true,
+    loading: false,
+    tourPosition: 0,
+    data: {
+        name: 'failed to load',
+        elevation: {
+            average: 0,
+            maximum: 0,
+            minimum: 0,
+            positive: 0,
+            negative: 0
+        },
+        distance: 1,
+        totalTime: 1,
+        totalMovementTime: 1,
+        points: []
+    }
+}};
+
 export const loadTrackRequest = createAsyncThunk('load-track',
     async (request: LoadTrackRequestDto): Promise<TrackEntity> => {
         const response = await fetch(`${ApiUrls.BaseUrl}/trk/${request.fileReference}.gpx`, {
@@ -31,37 +54,25 @@ export const loadTrackRequest = createAsyncThunk('load-track',
 
         if (!response.ok) {
             enqueueSnackbar(`error loading track: ${request.name}`, { variant: 'error' });
+            return failedToLoadTrack(request.id, request.fileReference);
+        }
+
+        try {
+            const parsedTrackData = parseGpxText(await response.text(), request.name);
             return {
                 id: request.id,
                 fileReference: request.fileReference,
                 selected: true,
                 loading: false,
-                tourPosition: 0,
-                data: {
-                    name: 'failed to load',
-                    elevation: {
-                        average: 0,
-                        maximum: 0,
-                        minimum: 0,
-                        positive: 0,
-                        negative: 0
-                    },
-                    distance: 1,
-                    totalTime: 1,
-                    totalMovementTime: 1,
-                    points: []
-                }
-            }
+                tourPosition: request.tourPosition,
+                data: parsedTrackData
+            };
         }
-
-        return {
-            id: request.id,
-            fileReference: request.fileReference,
-            selected: true,
-            loading: false,
-            tourPosition: request.tourPosition,
-            data: parseGpxText(await response.text(), request.name)
-        };
+        catch (e) {
+            enqueueSnackbar(`erorr loading track: ${request.name}: ${JSON.stringify(e)}`,
+                { variant: 'error' });
+            return failedToLoadTrack(request.id, request.fileReference);
+        }
     }
 );
 
