@@ -14,6 +14,7 @@ import { TourSelector } from '../tourView/TourSelector';
 import { UserSearchModal } from '../user/UserSearchModal';
 import { VersionInfo } from '../shared/VersionInfo';
 import { setMarkerPosition } from '../../store/mapStateReducer';
+import { MapSelector } from '../tourView/MapSelector';
 
 export type NavbarProps = {
     closeSidebar: () => void
@@ -62,7 +63,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
     }
 
     return <ul className='nav-list flex flex-col gap-2 items-start h-full'>
-        <div className='flex-1'>
+        <div className='flex-1 flex flex-col'>
             <div className="h-16 placeholder"></div>
             <NavLink onClick={() => { props.closeSidebar(); dispatch(resetBoundsSet()) }} to={Paths.HomePage}>
                 <Button>
@@ -110,6 +111,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                     </NavLink>
                     : <></>
             }
+        <MapSelector />
         </div>
         <VersionInfo />
     </ul>

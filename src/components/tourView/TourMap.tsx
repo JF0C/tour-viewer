@@ -18,12 +18,14 @@ import MarkerClusterGroup from 'react-leaflet-cluster'
 import { GraphDataPoint } from "./GraphDataPoint";
 import { LongTapMapEventProvider } from "./LongTapMapEventProvider";
 import { LongTapMapLocationConverter } from "./LongTapMapLocationConverter";
+import { useMapProvider } from "../../hooks/mapProviderHook";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tour = useAppSelector((state) => state.tour.selectedTour);
     const trackState = useAppSelector((state) => state.track);
     const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
+    const [mapProvider, ] = useMapProvider();
 
     let content = <></>
 
@@ -89,8 +91,8 @@ export const TourMap: FunctionComponent = () => {
             scrollWheelZoom={true} touchZoom={true} style={{ userSelect: 'none' }}>
             {content}
             <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution={mapProvider.attribution}
+                url={mapProvider.url}
             />
             <MarkerClusterGroup polygonOptions={{ smoothFactor: 1, noClip: true }}>
                 {
