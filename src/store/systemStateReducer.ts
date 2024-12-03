@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { getAppVersion } from "./systemThunk"
+import { cleanupImagesAndTracks, getAppVersion } from "./systemThunk"
 
 export interface ISystemState {
-    version?: string
-    loading: boolean
+    version?: string;
+    loading: boolean;
+    cleanupResult: string[];
 }
 
 const initialState: ISystemState = {
-    loading: false
+    loading: false,
+    cleanupResult: []
 }
 
 export const systemStateSlice = createSlice({
@@ -27,6 +29,17 @@ export const systemStateSlice = createSlice({
         builder.addCase(getAppVersion.fulfilled, (state, action) => {
             state.loading = false;
             state.version = action.payload;
+        });
+
+        builder.addCase(cleanupImagesAndTracks.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(cleanupImagesAndTracks.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(cleanupImagesAndTracks.fulfilled, (state, action) => {
+            state.loading = false;
+            state.cleanupResult = action.payload;
         });
     }
 })

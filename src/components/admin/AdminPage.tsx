@@ -10,6 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { resetBoundsSet } from "../../store/trackStateReducer";
 import { BigFormLayout } from "../layout/BigFormLayout";
+import { BaseConfirmModal } from "../shared/BaseConfirmModal";
+import { cleanupImagesAndTracks } from "../../store/systemThunk";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBroom } from "@fortawesome/free-solid-svg-icons";
+import { CleanupView } from "./cleanupView";
 
 export const AdminPage: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -39,6 +44,14 @@ export const AdminPage: FunctionComponent = () => {
         navigate(Paths.HomePage);
     }
 
+    const dryRunCleanup = () => {
+        dispatch(cleanupImagesAndTracks(true));
+    }
+
+    const cleanup = () => {
+        dispatch(cleanupImagesAndTracks(false));
+    }
+
     return <BigFormLayout
         buttons={
             <>
@@ -54,6 +67,11 @@ export const AdminPage: FunctionComponent = () => {
         <div className="flex flex-row flex-wrap gap-4">
             <UserList />
             <UserDetail />
+            <BaseConfirmModal onOpen={dryRunCleanup} onConfirm={cleanup} confirmType='warning'
+                confirmText={'Cleanup'}
+                buttonContent={<Button><FontAwesomeIcon icon={faBroom} />&nbsp;Cleanup</Button>}>
+                    <CleanupView />
+            </BaseConfirmModal>
         </div>
     </BigFormLayout>
 }

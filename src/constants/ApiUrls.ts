@@ -6,6 +6,7 @@ export class ApiUrls
     // public static BaseUrl = 'https://localhost:7271'
 
     public static readonly VersionEndpoint = '/System/Version'
+    public static readonly CleanupEndpoint = '/System/Cleanup'
 
     public static readonly ImageEndpoint = '/img'
     public static readonly ImageControlEndpoint = '/Image'
