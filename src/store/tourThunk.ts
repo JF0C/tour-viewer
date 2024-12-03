@@ -80,7 +80,7 @@ export const deleteTourRequest = createDeleteThunk<number>(
     (tourId) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${tourId}`
 );
 
-export const getSelectedTourId = createGetThunk<number, void>(
+export const getDefaultTourId = createGetThunk<number, void>(
     'get-selected-tour-id',
     () => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/SelectedId`,
     async (response) => Number(await response.text())

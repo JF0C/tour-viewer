@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserReferenceDto } from "../dtos/user/userReferenceDto";
 import { TourDto } from "../dtos/tour/tourDto";
 import { PaginationState } from "./paginationState";
-import { createTourRequest, deleteTourRequest, getSelectedTourId, loadTourRequest, renameTourRequest, searchTours, setSelectedTourId } from "./tourThunk";
+import { createTourRequest, deleteTourRequest, getDefaultTourId, loadTourRequest, renameTourRequest, searchTours, setSelectedTourId } from "./tourThunk";
 import { EditTrackDto } from "../dtos/track/editTrackDto";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 
@@ -18,7 +18,7 @@ export interface IEditTour {
 export interface ITourState {
     loading: boolean;
     tours: TourDto[];
-    defaultTourId?: number;
+    selectedTourId?: number;
     selectedTour?: TourDto;
     tourPagination: PaginationState;
     showInfoBar: boolean;
@@ -165,7 +165,7 @@ export const tourStateSlice = createSlice({
             state.selectedTour.tracks = state.selectedTour.tracks
                 .sort((a, b) => a.tourPosition - b.tourPosition);
             state.selectedTour.startDate = new Date(state.selectedTour.startDate).valueOf();
-            console.log(action.payload)
+            state.selectedTourId = action.payload.id;
         })
         builder.addCase(loadTourRequest.rejected, (state) => {
             state.loading = false;
@@ -212,16 +212,16 @@ export const tourStateSlice = createSlice({
             state.loading = false;
         })
 
-        builder.addCase(getSelectedTourId.pending, (state) => {
+        builder.addCase(getDefaultTourId.pending, (state) => {
             state.loading = true;
         })
-        builder.addCase(getSelectedTourId.fulfilled, (state, action) =>{
+        builder.addCase(getDefaultTourId.fulfilled, (state, action) =>{
             state.loading = false;
-            state.defaultTourId = action.payload
+            state.selectedTourId = action.payload
         })
-        builder.addCase(getSelectedTourId.rejected, (state) => {
+        builder.addCase(getDefaultTourId.rejected, (state) => {
             state.loading = false;
-            state.defaultTourId = 0;
+            state.selectedTourId = 0;
         })
 
         builder.addCase(setSelectedTourId.pending, (state) => {
@@ -229,7 +229,7 @@ export const tourStateSlice = createSlice({
         })
         builder.addCase(setSelectedTourId.fulfilled, (state, action) => {
             state.loading = false;
-            state.defaultTourId = action.meta.arg;
+            state.selectedTourId = action.meta.arg;
         })
         builder.addCase(setSelectedTourId.rejected, (state) => {
             state.loading = false;

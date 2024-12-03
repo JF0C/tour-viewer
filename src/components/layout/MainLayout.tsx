@@ -5,7 +5,7 @@ import { FunctionComponent, ReactNode, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
-import { getSelectedTourId, loadTourRequest } from "../../store/tourThunk";
+import { getDefaultTourId, loadTourRequest } from "../../store/tourThunk";
 import { Navbar } from "../navigation/Navbar";
 import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
@@ -13,6 +13,7 @@ import { UserIcon } from "../user/UserIcon";
 import { Infobar } from "./Infobar";
 import { Paths } from "../../constants/Paths";
 import { loadLoggedInUser } from "../../store/userThunk";
+import { useSelectedTourId } from "../../hooks/selectedTourHook";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -25,7 +26,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const isLoggedIn = useAppSelector((state) => Boolean(state.auth.user));
     const tourState = useAppSelector((state) => state.tour);
     const authState = useAppSelector((state) => state.auth);
-
+    const [selectedTourId, setSelectedTourId] = useSelectedTourId();
     const location = useLocation();
     const isHomepage = location.pathname === '/';
     const dataSelectorBarState = tourState.dataSelectorBarState;
@@ -37,12 +38,21 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     if (!isHomepage && dataSelectorBarState !== 'hide') {
         dispatch(setDataBarState('hide'));
     }
-    if (tourState.defaultTourId === undefined && !tourState.loading && isLoggedIn) {
-        dispatch(getSelectedTourId())
+
+    if (selectedTourId === null && !tourState.loading && isLoggedIn) {
+        dispatch(getDefaultTourId())
             .unwrap()
             .then(tourId => {
                 dispatch(loadTourRequest(tourId));
             });
+    }
+
+    if (!tourState.selectedTourId && !tourState.loading && isLoggedIn && selectedTourId) {
+        dispatch(loadTourRequest(selectedTourId));
+    }
+
+    if (tourState.selectedTourId && tourState.selectedTourId !== selectedTourId) {
+        setSelectedTourId(tourState.selectedTourId);
     }
 
     return <div className="h-full main-layout flex flex-col">

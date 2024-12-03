@@ -21,7 +21,7 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const user = useAppSelector((state) => state.auth.user);
-    const defaultTourId = useAppSelector((state) => state.tour.defaultTourId);
+    const defaultTourId = useAppSelector((state) => state.tour.selectedTourId);
     const isAdmin = user?.roles.includes(Roles.Admin);
     const canEdit = (isAdmin || props.tour.participants.find(p => p.id === user?.id)) ?? false;
 
@@ -42,6 +42,7 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
             })
     }
     const setAsDefaultTour = () => {
+        if (!isAdmin) return;
         dispatch(setSelectedTourId(props.tour.id));
     }
 
@@ -63,13 +64,13 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
             : <></>
         }
         {
-            isAdmin && defaultTourId !== props.tour.id? <Button onClick={setAsDefaultTour}>
+            defaultTourId !== props.tour.id? <Button onClick={setAsDefaultTour}>
                 <FontAwesomeIcon icon={faSquare}/>
             </Button>
             : <></>
         }
         {
-            isAdmin && defaultTourId === props.tour.id ?
+            defaultTourId === props.tour.id ?
             <Button>
                 <FontAwesomeIcon icon={faCheckSquare}/>
             </Button>
