@@ -9,10 +9,12 @@ import { TrackEntity } from "../../data/trackEntity";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setBounds } from "../../store/trackStateReducer";
 import { TrackArrow } from "./TrackArrow";
+import { DataColoredTrackLine } from "./DataColoredTrackLine";
 
 export type TrackLineProps = {
     track: TrackEntity,
-    startMarker?: boolean
+    startMarker?: boolean,
+    dataColor?: boolean
 }
 
 export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
@@ -83,7 +85,11 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
         props.track.data.pointsHundredth;
     
     return <>
-        <Polyline positions={pointSource.map(p => [p.latitude, p.longitude])} color={trackColor} />
+        {
+            props.dataColor ?
+            <DataColoredTrackLine track={props.track} /> :
+            <Polyline positions={pointSource.map(p => [p.latitude, p.longitude])} color={trackColor} />
+        }
         {
             props.startMarker ?
                 <Marker icon={MarkerIcons.blue}

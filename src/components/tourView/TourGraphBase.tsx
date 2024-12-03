@@ -142,16 +142,18 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
 
             const textWidth = 70;
             const textLeft = lastValue - selectedPoint[0] < textWidth ? textWidth : 0;
+            const textBottom = Math.max(...values) > 0.8 * valueRange[1];
+            const bottomOffset = textBottom ? 50 : 0;
 
             svg.append('text')
                 .attr('x', selectedPoint[0] - textLeft)
-                .attr('y', selectedPoint[1] - 30)
+                .attr('y', selectedPoint[1] - 30 + bottomOffset)
                 .attr('fill', 'white')
                 .text(millisToTimeString(selectedTime));
 
             svg.append('text')
                 .attr('x', selectedPoint[0] - textLeft)
-                .attr('y', selectedPoint[1] - 15)
+                .attr('y', selectedPoint[1] - 15 + bottomOffset)
                 .attr('fill', 'white')
                 .text(`${selectedValue.toFixed(1)} ${selector.unit}`);
         }

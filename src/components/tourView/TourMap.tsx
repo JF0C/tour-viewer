@@ -22,7 +22,8 @@ import { useMapProvider } from "../../hooks/mapProviderHook";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const tour = useAppSelector((state) => state.tour.selectedTour);
+    const tourState = useAppSelector((state) => state.tour);
+    const tour = tourState.selectedTour;
     const trackState = useAppSelector((state) => state.track);
     const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
     const [mapProvider, ] = useMapProvider();
@@ -55,6 +56,7 @@ export const TourMap: FunctionComponent = () => {
             const selectedTracks = trackState.tracks.filter(t => t.selected);
             const firstTrackName = selectedTracks.length > 0 ? selectedTracks[0].fileReference : '';
             const tracks = [];
+            const showDataColor = selectedTracks.length === 1 && tourState.showInfoBar;
             for (let k = 0; k < selectedTracks.length; k++) {
                 const track = selectedTracks[k];
                 let showStartMarker = track.fileReference === firstTrackName;
@@ -72,7 +74,7 @@ export const TourMap: FunctionComponent = () => {
                     const distance = haversine(end, start);
                     showStartMarker ||= distance > 10000;
                 }
-                tracks.push(<TrackLine key={track.fileReference} track={track} startMarker={showStartMarker} />);
+                tracks.push(<TrackLine key={track.fileReference} dataColor={showDataColor} track={track} startMarker={showStartMarker} />);
             }
             content = <>{tracks}</>;
             for (let t of (tour?.tracks ?? [])) {

@@ -3,6 +3,7 @@ import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest,
 import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
 import { TrackEntity } from "../data/trackEntity";
 import { GeoBounds } from "../data/geoBounds";
+import { Color } from "../data/color";
 
 export interface ITrackState {
     loading: boolean;
@@ -14,8 +15,8 @@ export interface ITrackState {
         selectedValue?: 'velocity' | 'elevation' | 'slope',
         min: number,
         max: number,
-        minColor: { r: number, g: number, b: number },
-        maxColor: { r: number, g: number, b: number }
+        minColor: Color,
+        maxColor: Color
     }
 }
 
