@@ -8,12 +8,11 @@ import { setEditingTour } from "../../store/tourStateReducer";
 import { loadTourRequest } from "../../store/tourThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { StravaActivityList } from "./StravaActivityList";
-import { useCookies } from "react-cookie";
-import { ExternalSources } from "../../constants/ExternalSources";
+import { useStravaRefreshToken } from "../../hooks/stravaRefreshTokenHook";
 
 export const StravaTourLoader: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const [cookies, setCookie] = useCookies([ExternalSources.Strava])
+    const [refreshToken, setRefreshToken] = useStravaRefreshToken();
 
     const authState = useAppSelector((state) => state.auth);
     const isContributor = authState.user?.roles.includes(Roles.Contributor) ?? false;
@@ -54,14 +53,14 @@ export const StravaTourLoader: FunctionComponent = () => {
     }
 
     if (!stravaState.tokenData) {
-        if (cookies.strava?.refreshToken) {
-            dispatch(stravaRefreshRequest(cookies.strava.refreshToken))
+        if (refreshToken) {
+            dispatch(stravaRefreshRequest(refreshToken))
                 .unwrap()
                 .then((tokenResponse) => {
-                    setCookie(ExternalSources.Strava, { refreshToken: tokenResponse.refresh_token })
+                    setRefreshToken(tokenResponse.refresh_token);
                 })
                 .catch(() => {
-                    setCookie(ExternalSources.Strava, null);
+                    setRefreshToken(null);
                     redirectToStravaAuthorization();
                 });
             return <></>
@@ -71,7 +70,7 @@ export const StravaTourLoader: FunctionComponent = () => {
                 .unwrap()
                 .then((tokenResponse) => {
                     searchParams.delete('code');
-                    setCookie(ExternalSources.Strava, { refreshToken: tokenResponse.refresh_token })
+                    setRefreshToken(tokenResponse.refresh_token);
                 });
             return <></>
         }

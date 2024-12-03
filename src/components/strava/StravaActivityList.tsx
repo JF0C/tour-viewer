@@ -9,12 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { clearToursToDownload } from "../../store/stravaStateReducer";
-import { useCookies } from "react-cookie";
-import { ExternalSources } from "../../constants/ExternalSources";
+import { useStravaRefreshToken } from "../../hooks/stravaRefreshTokenHook";
 
 export const StravaActivityList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const [, setCookie] = useCookies([ExternalSources.Strava]);
+    const [, setRefreshToken] = useStravaRefreshToken();
     const stravaState = useAppSelector((state) => state.strava);
     const invalid = stravaState.tracksToDownload.length === 0;
 
@@ -23,7 +22,7 @@ export const StravaActivityList: FunctionComponent = () => {
     }
 
     const stravaLogout = () => {
-        setCookie(ExternalSources.Strava, null);
+        setRefreshToken(null);
     }
 
     const changePage = (page: number) => {

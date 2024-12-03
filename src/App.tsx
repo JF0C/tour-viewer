@@ -9,7 +9,6 @@ import { ApiUrls } from './constants/ApiUrls';
 import theme from './materialUiConfig';
 import { store } from './store/store';
 import { FullSizeImageView } from './components/shared/FullSizeImageView';
-import { CookiesProvider } from 'react-cookie';
 import 'leaflet/dist/leaflet.css';
 import './App.scss';
 
@@ -28,14 +27,12 @@ function App() {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <CookiesProvider>
-            <BrowserRouter>
-              <MainLayout>
-                <FullSizeImageView />
-                <RouterOutlet />
-              </MainLayout>
-            </BrowserRouter>
-          </CookiesProvider>
+          <BrowserRouter>
+            <MainLayout>
+              <FullSizeImageView />
+              <RouterOutlet />
+            </MainLayout>
+          </BrowserRouter>
         </LocalizationProvider>
       </ThemeProvider>
     </Provider>
