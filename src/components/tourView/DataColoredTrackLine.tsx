@@ -13,7 +13,6 @@ export const DataColoredTrackLine: FunctionComponent<DataColoredTrackLineProps> 
     const [rerender, setRerender] = useState(false);
 
     const memoizedLines = useMemo(() => {
-        console.log("creating colored track line")
         const lines: ReactNode[] = [];
         const mixColor = (c1: Color, c2: Color, f: number): Color => {
             return {
