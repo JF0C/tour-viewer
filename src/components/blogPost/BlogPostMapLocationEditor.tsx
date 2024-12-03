@@ -4,10 +4,11 @@ import { Marker, useMap, useMapEvents } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { Roles } from "../../constants/Rolenames";
 import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
-import { setClickedEvent, setMapCenter, setMarkerDragging, setZoomLevel } from "../../store/mapStateReducer";
+import { setClickedEvent, setMapBounds, setMapCenter, setMarkerDragging, setZoomLevel } from "../../store/mapStateReducer";
 import { mapClickEnd, markerDragEnd } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
+import { latLngToGeoBounds } from "../../converters/bounds";
 
 export const BlogPostMapLocationEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -24,8 +25,9 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
     }
 
     useMapEvents({
-        move() {
+        moveend() {
             dispatch(setMapCenter(latLngToCoordinates(map.getCenter())));
+            dispatch(setMapBounds(latLngToGeoBounds(map.getBounds())))
             if (barState !== 'small') {
                 dispatch(setDataBarState('small'));
             }

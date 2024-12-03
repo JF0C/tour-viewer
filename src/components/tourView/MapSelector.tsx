@@ -15,8 +15,9 @@ export const MapSelector: FunctionComponent = () => {
 
     return <div className="p-2">
         <FormControl>
-            <InputLabel id="map-provider-select-label">Map Provider</InputLabel>
+            <InputLabel sx={{color:'white'}} id="map-provider-select-label">Map Provider</InputLabel>
             <Select
+                sx={{color: 'white'}}
                 labelId="map-provider-select-label"
                 id="map-provider-select"
                 label="Map Provider"

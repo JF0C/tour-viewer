@@ -20,7 +20,7 @@ export const createTrackRequest = createPostThunk<number, EditTrackDto>(
     async (response) => Number(await response.text())
 );
 
-const failedToLoadTrack = (id: number, fileReference: string) => { 
+const failedToLoadTrack = (id: number, fileReference: string): TrackEntity => { 
     return {
     id: id,
     fileReference: fileReference,
@@ -39,7 +39,9 @@ const failedToLoadTrack = (id: number, fileReference: string) => {
         distance: 1,
         totalTime: 1,
         totalMovementTime: 1,
-        points: []
+        points: [],
+        pointsTenth: [],
+        pointsHundredth: []
     }
 }};
 

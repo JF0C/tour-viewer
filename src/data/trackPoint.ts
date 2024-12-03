@@ -5,4 +5,5 @@ export type TrackPoint = {
     time: number;
     velocity: number;
     slope: number;
+    distance: number;
 }

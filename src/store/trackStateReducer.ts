@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest, loadTrackRequest } from "./trackThunk";
 import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
-import { BoundsInternal, TrackEntity } from "../data/trackEntity";
+import { TrackEntity } from "../data/trackEntity";
+import { GeoBounds } from "../data/geoBounds";
 
 export interface ITrackState {
     loading: boolean;
@@ -66,6 +67,8 @@ export const trackStateSlice = createSlice({
                         },
                         distance: 0,
                         points: [],
+                        pointsTenth: [],
+                        pointsHundredth: [],
                         totalTime: 1,
                         totalMovementTime: 1,
                     },
@@ -78,7 +81,7 @@ export const trackStateSlice = createSlice({
         clearTracks(state) {
             state.tracks = [];
         },
-        setBounds(state, action: PayloadAction<{ fileReference: string, bounds: BoundsInternal }>) {
+        setBounds(state, action: PayloadAction<{ fileReference: string, bounds: GeoBounds }>) {
             const track = state.tracks.find(t => t.fileReference === action.payload.fileReference);
             if (track?.bounds) {
                 track.bounds.south = action.payload.bounds.south;

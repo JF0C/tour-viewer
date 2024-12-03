@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
+import { GeoBounds } from "../data/geoBounds";
 
 export interface IMapState {
     tapPosition?: {x: number, y: number}
@@ -13,12 +14,19 @@ export interface IMapState {
     mapCenter?: CoordinatesDto;
     zoomLevel: number;
     markerReferenceId?: number;
+    viewBounds: GeoBounds;
 }
 
 const initialState: IMapState = {
     clickedEvent: {time: 0},
     isDraggingMarker: false,
-    zoomLevel: 13
+    zoomLevel: 13,
+    viewBounds: {
+        north: 0,
+        west: 0,
+        south: 0,
+        east: 0
+    }
 }
 
 const mapSlice = createSlice({
@@ -47,6 +55,9 @@ const mapSlice = createSlice({
         setMapCenter(state, action: PayloadAction<CoordinatesDto | undefined>) {
             state.mapCenter = action.payload;
         },
+        setMapBounds(state, action: PayloadAction<GeoBounds>) {
+            state.viewBounds = action.payload;
+        },
         setMarkerReferenceId(state, action: PayloadAction<number | undefined>) {
             state.markerReferenceId = action.payload;
         }
@@ -62,5 +73,6 @@ export const {
     setMarkerPosition,
     setZoomLevel,
     setMapCenter,
-    setMarkerReferenceId
+    setMarkerReferenceId,
+    setMapBounds
 } = mapSlice.actions;

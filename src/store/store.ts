@@ -25,7 +25,11 @@ export const store = configureStore({
         komoot: komootStateReducer,
         strava: stravaStateReducer,
         map: mapStateReducer
-    }
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        immutableCheck: { warnAfter: 512 },
+        serializableCheck: { warnAfter: 512 },
+    })
 });
 
 export type RootState = ReturnType<typeof store.getState>

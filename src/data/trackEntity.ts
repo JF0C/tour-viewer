@@ -1,11 +1,5 @@
+import { GeoBounds } from "./geoBounds";
 import { TrackData } from "./trackData";
-
-export type BoundsInternal = {
-    south: number;
-    west: number;
-    north: number;
-    east: number;
-}
 
 export type TrackEntity = {
     id: number;
@@ -14,5 +8,5 @@ export type TrackEntity = {
     selected: boolean;
     loading: boolean;
     tourPosition: number;
-    bounds?: BoundsInternal;
+    bounds?: GeoBounds;
 }
