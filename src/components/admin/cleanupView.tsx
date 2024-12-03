@@ -15,6 +15,7 @@ export const CleanupView: FunctionComponent = () => {
 
     return <div className="overflow-y-scroll h-full w-96">
         {
+            systemState.cleanupResult.length === 0 ? 'nothing to cleanup' :
             systemState.cleanupResult.map(x => <div>{x}</div>)
         }
     </div>

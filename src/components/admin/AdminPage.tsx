@@ -67,11 +67,11 @@ export const AdminPage: FunctionComponent = () => {
         <div className="flex flex-row flex-wrap gap-4">
             <UserList />
             <UserDetail />
-            <BaseConfirmModal onOpen={dryRunCleanup} onConfirm={cleanup} confirmType='warning'
-                confirmText={'Cleanup'}
-                buttonContent={<Button><FontAwesomeIcon icon={faBroom} />&nbsp;Cleanup</Button>}>
-                    <CleanupView />
-            </BaseConfirmModal>
         </div>
+        <BaseConfirmModal onOpen={dryRunCleanup} onConfirm={cleanup} confirmType='warning'
+            confirmText={'Cleanup'}
+            buttonContent={<Button><FontAwesomeIcon icon={faBroom} />&nbsp;Cleanup Images and Tracks</Button>}>
+                <CleanupView />
+        </BaseConfirmModal>
     </BigFormLayout>
 }
