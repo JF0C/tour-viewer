@@ -35,8 +35,6 @@ export const TourMap: FunctionComponent = () => {
 
     const blogPosts: BlogPostDto[] = [];
 
-    console.log()
-
     if (trackState.loading || trackState.tracks.find(t => t.loading)) {
         content = <OverallLoadingSpinner />
     }
@@ -93,7 +91,6 @@ export const TourMap: FunctionComponent = () => {
     }
     else {
         const tracks: ReactNode[] = [];
-        console.log(Colors.teal600);
         tourState.tours.forEach((t, i) => {
             tracks.push(<TrackLine key={t.id} dataColor={false} color={Colors.colorCircle(i)}
             startMarker track={parseTourPreview(t)} />)

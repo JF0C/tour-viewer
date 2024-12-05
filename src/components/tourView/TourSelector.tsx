@@ -23,7 +23,7 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
     const deselectTour = () => {
         setOpen(false);
         storeSelectedTourId(null);
-        dispatch(setSelectedTourId(0))
+        dispatch(setSelectedTourId(0));
         dispatch(resetSelectedTour());
     }
 
