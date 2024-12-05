@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import { useAppSelector } from "../../store/store";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { CleanupItem } from "./cleanupItem";
 
 export const CleanupView: FunctionComponent = () => {
     const systemState = useAppSelector((state) => state.system);
@@ -13,10 +14,10 @@ export const CleanupView: FunctionComponent = () => {
         </>
     }
 
-    return <div className="overflow-y-scroll h-full w-96">
+    return <div style={{maxHeight: '60vh'}} className="overflow-y-scroll w-96 grid grid-cols-2 gap-2">
         {
             systemState.cleanupResult.length === 0 ? 'nothing to cleanup' :
-            systemState.cleanupResult.map(x => <div>{x}</div>)
+            systemState.cleanupResult.map(x => <CleanupItem data={x}/>)
         }
     </div>
 }

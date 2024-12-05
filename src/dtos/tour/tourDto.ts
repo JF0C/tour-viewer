@@ -6,5 +6,6 @@ export type TourDto = EntityBaseDto & {
     name: string;
     startDate: number;
     tracks: TrackDto[];
+    author?: UserReferenceDto;
     participants: UserReferenceDto[];
 }
