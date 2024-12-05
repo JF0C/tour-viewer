@@ -1,8 +1,11 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
+import MarkerClusterGroup from 'react-leaflet-cluster';
 import { haversine } from "../../converters/haversine";
+import { parseTourPreview } from "../../converters/trackPreviewParser";
 import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
 import { CoordinatesDto } from "../../dtos/shared/coordinatesDto";
+import { useMapProvider } from "../../hooks/mapProviderHook";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
 import { startLoadingTrack } from "../../store/trackStateReducer";
@@ -11,14 +14,13 @@ import { BlogPostMapLocationEditor } from "../blogPost/BlogPostMapLocationEditor
 import { BlogPostMarker } from "../blogPost/BlogPostMarker";
 import { SecondaryClickCountdown } from "../blogPost/SecondaryClickCountdown";
 import { OverallLoadingSpinner } from "../shared/OverallLoadingSpinner";
-import { TourBounds } from "./TourBounds";
-import { TrackLine } from "./TrackLine";
-import { InfoBarHandle } from "./InfoBarHandle";
-import MarkerClusterGroup from 'react-leaflet-cluster'
 import { GraphDataPoint } from "./GraphDataPoint";
+import { InfoBarHandle } from "./InfoBarHandle";
 import { LongTapMapEventProvider } from "./LongTapMapEventProvider";
 import { LongTapMapLocationConverter } from "./LongTapMapLocationConverter";
-import { useMapProvider } from "../../hooks/mapProviderHook";
+import { TourBounds } from "./TourBounds";
+import { TrackLine } from "./TrackLine";
+import { Colors } from "../../constants/Colors";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -27,16 +29,18 @@ export const TourMap: FunctionComponent = () => {
     const trackState = useAppSelector((state) => state.track);
     const infobarOpen = useAppSelector((state) => state.view.infobarOpen);
     const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
-    const [mapProvider, ] = useMapProvider();
+    const [mapProvider] = useMapProvider();
 
     let content = <></>
 
     const blogPosts: BlogPostDto[] = [];
 
+    console.log()
+
     if (trackState.loading || trackState.tracks.find(t => t.loading)) {
         content = <OverallLoadingSpinner />
     }
-    else {
+    else if (tourState.selectedTourId) {
         if (dataSelectorBarState === 'hide') {
             dispatch(setDataBarState('show'));
         }
@@ -86,6 +90,15 @@ export const TourMap: FunctionComponent = () => {
                 }
             }
         }
+    }
+    else {
+        const tracks: ReactNode[] = [];
+        console.log(Colors.teal600);
+        tourState.tours.forEach((t, i) => {
+            tracks.push(<TrackLine key={t.id} dataColor={false} color={Colors.colorCircle(i)}
+            startMarker track={parseTourPreview(t)} />)
+        });
+        content = <>{tracks}</>
     }
     const blogPostElements: any[] = blogPosts.map(b => <BlogPostMarker key={b.id} blogPost={b} />)
 

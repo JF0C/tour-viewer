@@ -8,8 +8,8 @@ import { Roles } from "../../constants/Rolenames";
 import { millisToDateString } from "../../converters/dateConverters";
 import { TourDto } from "../../dtos/tour/tourDto";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setEditingTour } from "../../store/tourStateReducer";
-import { loadTourRequest, setSelectedTourId } from "../../store/tourThunk";
+import { setEditingTour, setSelectedTourId } from "../../store/tourStateReducer";
+import { loadTourRequest } from "../../store/tourThunk";
 import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons";
 
 export type TourListItemProps = {
@@ -21,11 +21,12 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const user = useAppSelector((state) => state.auth.user);
-    const defaultTourId = useAppSelector((state) => state.tour.selectedTourId);
+    const selectedTourId = useAppSelector((state) => state.tour.selectedTourId);
     const isAdmin = user?.roles.includes(Roles.Admin);
     const canEdit = (isAdmin || props.tour.participants.find(p => p.id === user?.id)) ?? false;
 
     const selectTour = (tourId: number) => {
+        dispatch(setSelectedTourId(tourId))
         dispatch(loadTourRequest(tourId))
             .unwrap()
             .catch()
@@ -40,10 +41,6 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
                 dispatch(setEditingTour(tour))
                 navigate(Paths.EditTourPage);
             })
-    }
-    const setAsDefaultTour = () => {
-        if (!isAdmin) return;
-        dispatch(setSelectedTourId(props.tour.id));
     }
 
     return <div key={'tour' + props.tour.id} className="flex flex-row">
@@ -64,17 +61,9 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
             : <></>
         }
         {
-            defaultTourId !== props.tour.id? <Button onClick={setAsDefaultTour}>
-                <FontAwesomeIcon icon={faSquare}/>
-            </Button>
-            : <></>
-        }
-        {
-            defaultTourId === props.tour.id ?
-            <Button>
-                <FontAwesomeIcon icon={faCheckSquare}/>
-            </Button>
-            :<></>
+            selectedTourId === props.tour.id
+                ? <FontAwesomeIcon icon={faCheckSquare}/>
+                : <FontAwesomeIcon icon={faSquare}/>
         }
     </div>
 }

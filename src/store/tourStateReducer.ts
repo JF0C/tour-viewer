@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserReferenceDto } from "../dtos/user/userReferenceDto";
 import { TourDto } from "../dtos/tour/tourDto";
-import { PaginationState } from "./paginationState";
-import { createTourRequest, deleteTourRequest, getDefaultTourId, loadTourRequest, renameTourRequest, searchTours, setSelectedTourId } from "./tourThunk";
 import { EditTrackDto } from "../dtos/track/editTrackDto";
+import { UserReferenceDto } from "../dtos/user/userReferenceDto";
+import { PaginationState } from "./paginationState";
+import { createTourRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
+import { LocalStorageKeys } from "../constants/LocalStorageKeys";
 
 export interface IEditTour {
     id: number;
@@ -19,8 +20,8 @@ export interface ITourState {
     loading: boolean;
     tours: TourDto[];
     toursLoaded: boolean;
-    selectedTourId?: number;
     selectedTour?: TourDto;
+    selectedTourId?: number;
     tourPagination: PaginationState;
     dataSelectorBarState: 'show' | 'small' | 'hide';
     editingTour: IEditTour;
@@ -56,6 +57,9 @@ export const tourStateSlice = createSlice({
         setDataBarState(state, action: PayloadAction<'show' | 'small' | 'hide'>) {
             state.dataSelectorBarState = action.payload;
         },
+        setSelectedTourId(state, action: PayloadAction<number | undefined>) {
+            state.selectedTourId = action.payload;
+        },
         setRadioGroup(state, action: PayloadAction<{ groupId: string, activeItem?: string }>) {
             let entry = state.radioGroups.find(x => x.groupId === action.payload.groupId);
             if (!entry) {
@@ -66,6 +70,9 @@ export const tourStateSlice = createSlice({
                 return;
             }
             entry.activeItem = action.payload.activeItem;
+        },
+        resetSelectedTour(state) {
+            state.selectedTour = undefined;
         },
         resetEditingTour(state) {
             state.editingTour = {
@@ -139,6 +146,9 @@ export const tourStateSlice = createSlice({
             state.tours = action.payload.items;
             for (let t of state.tours) {
                 t.startDate = new Date(t.startDate).valueOf();
+                for (let point of t.previewTrack) {
+                    point.time = new Date(point.time).valueOf();
+                }
             }
             state.tourPagination.page = action.payload.page;
             state.tourPagination.totalItems = action.payload.totalItems;
@@ -160,7 +170,10 @@ export const tourStateSlice = createSlice({
             state.selectedTour.tracks = state.selectedTour.tracks
                 .sort((a, b) => a.tourPosition - b.tourPosition);
             state.selectedTour.startDate = new Date(state.selectedTour.startDate).valueOf();
-            state.selectedTourId = action.payload.id;
+            localStorage.setItem(LocalStorageKeys.SelectedTourIdKey, JSON.stringify(action.payload.id));
+            for (let point of state.selectedTour.previewTrack) {
+                point.time = new Date(point.time).valueOf();
+            }
         })
         builder.addCase(loadTourRequest.rejected, (state) => {
             state.loading = false;
@@ -205,36 +218,15 @@ export const tourStateSlice = createSlice({
         })
         builder.addCase(createTrackRequest.rejected, (state) => {
             state.loading = false;
-        })
-
-        builder.addCase(getDefaultTourId.pending, (state) => {
-            state.loading = true;
-        })
-        builder.addCase(getDefaultTourId.fulfilled, (state, action) =>{
-            state.loading = false;
-            state.selectedTourId = action.payload
-        })
-        builder.addCase(getDefaultTourId.rejected, (state) => {
-            state.loading = false;
-            state.selectedTourId = 0;
-        })
-
-        builder.addCase(setSelectedTourId.pending, (state) => {
-            state.loading = true;
-        })
-        builder.addCase(setSelectedTourId.fulfilled, (state, action) => {
-            state.loading = false;
-            state.selectedTourId = action.meta.arg;
-        })
-        builder.addCase(setSelectedTourId.rejected, (state) => {
-            state.loading = false;
-        })
+        });
     }
 })
 
 export const tourStateReducer = tourStateSlice.reducer;
 export const {
     setRadioGroup,
+    setSelectedTourId,
+    resetSelectedTour,
     resetEditingTour,
     setEditingTourName,
     setEditingTourStartDate,

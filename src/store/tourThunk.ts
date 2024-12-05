@@ -85,9 +85,3 @@ export const getDefaultTourId = createGetThunk<number, void>(
     () => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/SelectedId`,
     async (response) => Number(await response.text())
 )
-
-export const setSelectedTourId = createPostThunk<number, number>(
-    'set-selected-tour-id',
-    (tourId) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/SelectedId/${tourId}`,
-    async (response) => Number(await response.text())
-)

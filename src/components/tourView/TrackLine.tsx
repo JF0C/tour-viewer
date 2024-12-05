@@ -3,7 +3,7 @@ import { FunctionComponent, ReactNode } from "react";
 import { Marker, Polyline, Popup } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { geoToLatLngBounds } from "../../converters/bounds";
-import { boundsFromLatLngTrack } from "../../converters/boundsFromLatLngTrack";
+import { boundsFromLatLngTrack } from "../../converters/bounds";
 import { trackInMapBounds } from "../../converters/trackInMapBounds";
 import { TrackEntity } from "../../data/trackEntity";
 import { useAppDispatch, useAppSelector } from "../../store/store";
@@ -13,6 +13,7 @@ import { DataColoredTrackLine } from "./DataColoredTrackLine";
 
 export type TrackLineProps = {
     track: TrackEntity,
+    color?: string,
     startMarker?: boolean,
     dataColor?: boolean
 }
@@ -26,7 +27,7 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
     const bounds = trackState.tracks.find(t => t.fileReference === props.track.fileReference && t.bounds)?.bounds;
     const mapBounds = mapState.viewBounds;
 
-    if (!props.track.selected) {
+    if (!props.track.selected || props.track.data.points.length === 0) {
         return <></>
     }
 
@@ -37,9 +38,8 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
         }
     }
 
-    const trackColor = referencedTrack === props.track.fileReference ? 'red' : 'black'
+    const trackColor = referencedTrack === props.track.fileReference ? 'red' : (props.color ?? 'black')
     const lastPoint = props.track.data.points[props.track.data.points.length - 1]
-
 
     let startLabel = 'Start';
     let endLabel = props.track.data.name;

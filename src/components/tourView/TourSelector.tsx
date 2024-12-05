@@ -1,12 +1,13 @@
+import { faList } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FunctionComponent, useState } from "react";
+import { useSelectedTourId } from "../../hooks/selectedTourHook";
+import { setEditingBlogpost } from "../../store/blogPostStateReducer";
+import { useAppDispatch } from "../../store/store";
+import { resetSelectedTour, setSelectedTourId } from "../../store/tourStateReducer";
+import { clearTracks } from "../../store/trackStateReducer";
 import { BaseConfirmModal } from "../shared/BaseConfirmModal";
 import { TourList } from "./TourList";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faList } from "@fortawesome/free-solid-svg-icons";
-import { useAppDispatch } from "../../store/store";
-import { clearTracks } from "../../store/trackStateReducer";
-import { setEditingBlogpost } from "../../store/blogPostStateReducer";
-import { useSelectedTourId } from "../../hooks/selectedTourHook";
 
 export type TourSelectorProps = {
     onSelected: () => void;
@@ -17,10 +18,13 @@ export type TourSelectorProps = {
 export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
-    const [, setSelectedTourId] = useSelectedTourId();
+    const [, storeSelectedTourId] = useSelectedTourId();
 
     const deselectTour = () => {
-        setSelectedTourId(null);
+        setOpen(false);
+        storeSelectedTourId(null);
+        dispatch(setSelectedTourId(0))
+        dispatch(resetSelectedTour());
     }
 
     return <BaseConfirmModal onConfirm={() => setOpen(false)} 

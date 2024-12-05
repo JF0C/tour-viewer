@@ -1,15 +1,14 @@
 import * as React from 'react';
-
-const selectedTourIdKey = 'selected-tour-id';
+import { LocalStorageKeys } from '../constants/LocalStorageKeys';
 
 export const useSelectedTourId = (): [number | null, (newValue: number | null) => void] => {
-    const [selectedTourId, setSelectedTourId] = React.useState<number | null>(
-        JSON.parse(localStorage.getItem(selectedTourIdKey) ?? 'null')
+    const [selectedTourId, storeSelectedTourId] = React.useState<number | null>(
+        JSON.parse(localStorage.getItem(LocalStorageKeys.SelectedTourIdKey) ?? 'null')
     );
 
     React.useEffect(() => {
-        localStorage.setItem(selectedTourIdKey, JSON.stringify(selectedTourId));
+        localStorage.setItem(LocalStorageKeys.SelectedTourIdKey, JSON.stringify(selectedTourId));
     }, [selectedTourId]);
 
-    return [selectedTourId, setSelectedTourId];
+    return [selectedTourId, storeSelectedTourId];
 };
