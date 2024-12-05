@@ -11,6 +11,7 @@ import { systemStateReducer } from './systemStateReducer';
 import { komootStateReducer } from './komootStateReducer';
 import { stravaStateReducer } from './stravaStateReducer';
 import { mapStateReducer } from './mapStateReducer';
+import { viewStateReducer } from './viewState';
 
 export const store = configureStore({
     reducer: {
@@ -24,7 +25,8 @@ export const store = configureStore({
         system: systemStateReducer,
         komoot: komootStateReducer,
         strava: stravaStateReducer,
-        map: mapStateReducer
+        map: mapStateReducer,
+        view: viewStateReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         immutableCheck: { warnAfter: 512 },

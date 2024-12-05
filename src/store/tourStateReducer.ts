@@ -18,11 +18,10 @@ export interface IEditTour {
 export interface ITourState {
     loading: boolean;
     tours: TourDto[];
+    toursLoaded: boolean;
     selectedTourId?: number;
     selectedTour?: TourDto;
     tourPagination: PaginationState;
-    showInfoBar: boolean;
-    infoBarFull: boolean;
     dataSelectorBarState: 'show' | 'small' | 'hide';
     editingTour: IEditTour;
     radioGroups: { groupId: string, activeItem?: string }[];
@@ -30,8 +29,7 @@ export interface ITourState {
 
 const initialState: ITourState = {
     loading: false,
-    showInfoBar: false,
-    infoBarFull: false,
+    toursLoaded: false,
     dataSelectorBarState: 'hide',
     tours: [],
     tourPagination: {
@@ -55,12 +53,6 @@ export const tourStateSlice = createSlice({
     name: 'tourState',
     initialState: initialState,
     reducers: {
-        showInfobar(state, action: PayloadAction<boolean>) {
-            state.showInfoBar = action.payload;
-        },
-        setInfoBarFull(state, action: PayloadAction<boolean>) {
-            state.infoBarFull = action.payload;
-        },
         setDataBarState(state, action: PayloadAction<'show' | 'small' | 'hide'>) {
             state.dataSelectorBarState = action.payload;
         },
@@ -140,6 +132,7 @@ export const tourStateSlice = createSlice({
 
         builder.addCase(searchTours.pending, (state) => {
             state.loading = true;
+            state.toursLoaded = false;
         })
         builder.addCase(searchTours.fulfilled, (state, action) => {
             state.loading = false;
@@ -150,10 +143,12 @@ export const tourStateSlice = createSlice({
             state.tourPagination.page = action.payload.page;
             state.tourPagination.totalItems = action.payload.totalItems;
             state.tourPagination.totalPages = action.payload.totalPages;
+            state.toursLoaded = true;
         })
         builder.addCase(searchTours.rejected, (state) => {
             state.loading = false;
             state.tours = [];
+            state.toursLoaded = true;
         })
 
         builder.addCase(loadTourRequest.pending, (state) => {
@@ -240,7 +235,6 @@ export const tourStateSlice = createSlice({
 export const tourStateReducer = tourStateSlice.reducer;
 export const {
     setRadioGroup,
-    showInfobar,
     resetEditingTour,
     setEditingTourName,
     setEditingTourStartDate,
@@ -248,7 +242,6 @@ export const {
     removeEditingTourParticipant,
     setEditingTour,
     setDataBarState,
-    setInfoBarFull,
     clearTracksToMerge,
     addTrackToMerge,
     removeTrackToMerge

@@ -1,19 +1,17 @@
-import { faBars, faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AppBar, Button, SwipeableDrawer } from "@mui/material";
-import { FunctionComponent, ReactNode, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { AppBar, SwipeableDrawer } from "@mui/material";
+import { FunctionComponent, ReactNode } from "react";
+import { useLocation } from "react-router-dom";
+import { useSelectedTourId } from "../../hooks/selectedTourHook";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/tourStateReducer";
-import { getDefaultTourId, loadTourRequest } from "../../store/tourThunk";
+import { loadTourRequest, searchTours } from "../../store/tourThunk";
+import { loadLoggedInUser } from "../../store/userThunk";
 import { Navbar } from "../navigation/Navbar";
 import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
 import { TourSelectorBar } from "../tourView/DataSelectorBar";
-import { UserIcon } from "../user/UserIcon";
+import { AppBarContent } from "./AppBarContent";
 import { Infobar } from "./Infobar";
-import { Paths } from "../../constants/Paths";
-import { loadLoggedInUser } from "../../store/userThunk";
-import { useSelectedTourId } from "../../hooks/selectedTourHook";
+import { setMenubarOpen } from "../../store/viewState";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -21,11 +19,10 @@ export type MainLayoutProps = {
 
 export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const isLoggedIn = useAppSelector((state) => Boolean(state.auth.user));
     const tourState = useAppSelector((state) => state.tour);
     const authState = useAppSelector((state) => state.auth);
+    const viewState = useAppSelector((state) => state.view);
     const [selectedTourId, setSelectedTourId] = useSelectedTourId();
     const location = useLocation();
     const isHomepage = location.pathname === '/';
@@ -39,12 +36,11 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
         dispatch(setDataBarState('hide'));
     }
 
-    if (selectedTourId === null && !tourState.loading && isLoggedIn) {
-        dispatch(getDefaultTourId())
-            .unwrap()
-            .then(tourId => {
-                dispatch(loadTourRequest(tourId));
-            });
+    if (selectedTourId === null && !tourState.loading && isLoggedIn && !tourState.toursLoaded) {
+        dispatch(searchTours({
+            page: tourState.tourPagination.page,
+            count: tourState.tourPagination.itemsPerPage
+        }));
     }
 
     if (!tourState.selectedTourId && !tourState.loading && isLoggedIn && selectedTourId) {
@@ -55,34 +51,14 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
         setSelectedTourId(tourState.selectedTourId);
     }
 
+    const setInfobarOpen = (open: boolean) => {
+        dispatch(setMenubarOpen(open));
+    }
+
     return <div className="h-full main-layout flex flex-col">
         <AppBar sx={{ backgroundColor: '#201f23', zIndex: 5000 }}>
             <CustomizedSnackbar />
-            <div className="flex flex-row justify-between items-center truncate">
-                <div className='w-16'>
-                    {
-                        isLoggedIn ?
-                        (
-                            isHomepage ?
-                            <Button onClick={() => setSidebarOpen(!sidebarOpen)}>
-                                <FontAwesomeIcon icon={faBars} />
-                            </Button>
-                            :
-                            <Button onClick={() => navigate(Paths.HomePage)}>
-                                <FontAwesomeIcon icon={faHome}/>
-                            </Button>
-                        )
-                        :<></>
-                    }
-                </div>
-                <div className='p-2 text-2xl md:text-3xl truncate'>
-                    Tour Viewer
-                </div>
-                <div className='w-16 truncate'>
-                    <UserIcon />
-                </div>
-
-            </div>
+            <AppBarContent />
         </AppBar>
         <TourSelectorBar />
         <div className="h-12 flex-none">
@@ -90,12 +66,12 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
         <div className="flex-1 flex flex-col md:flex-row flex-wrap overflow-y-scroll">
             <SwipeableDrawer
                 anchor="left"
-                open={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                onOpen={() => setSidebarOpen(true)}
+                open={viewState.menubarOpen}
+                onClose={() => setInfobarOpen(false)}
+                onOpen={() => setInfobarOpen(true)}
             >
                 <div id="sidebar-content" className="w-44 h-full">
-                    <Navbar closeSidebar={() => setSidebarOpen(false)} />
+                    <Navbar closeSidebar={() => setInfobarOpen(false)} />
                 </div>
             </SwipeableDrawer>
             <div className="main-content flex-1 overflow-y-scroll flex flex-col">

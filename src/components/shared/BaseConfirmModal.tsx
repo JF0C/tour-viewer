@@ -15,6 +15,7 @@ export type BaseConfirmModalProps = {
     onConfirm: () => void;
     disableConfirm?: boolean;
     onOpen?: () => void;
+    onCancel?: () => void;
 }
 
 export const BaseConfirmModal: FunctionComponent<BaseConfirmModalProps> = (props) => {
@@ -46,7 +47,7 @@ export const BaseConfirmModal: FunctionComponent<BaseConfirmModalProps> = (props
                     <div className={`flex flex-row items-center ${props.hideCancel ? 'justify-center' : 'justify-between'}`}>
                         {
                             !props.hideCancel ?
-                                <Button color={props.cancelType ?? 'primary'} onClick={() => setModalOpen(false)}>
+                                <Button color={props.cancelType ?? 'primary'} onClick={() => { props.onCancel?.(); setModalOpen(false); }}>
                                     {props.cancelText ?? 'Cancel'}
                                 </Button>
                                 : <></>

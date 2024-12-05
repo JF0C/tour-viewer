@@ -4,16 +4,16 @@ import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { millisToDateString, millisToTimeSpan } from "../../converters/dateConverters";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { showInfobar } from "../../store/tourStateReducer";
 import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 import { Participant } from "../tourEditing/Participant";
+import { setInfobarOpen } from "../../store/viewState";
 
 export const TourData: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tracks = useAppSelector((state) => state.track.tracks);
     const selectedTracks = tracks.filter(t => t.selected);
     const tour = useAppSelector((state) => state.tour.selectedTour);
-    const infobarOpen = useAppSelector((state) => state.tour.showInfoBar);
+    const infobarOpen = useAppSelector((state) => state.view.infobarOpen);
 
     if (!infobarOpen) {
         return <></>
@@ -25,7 +25,7 @@ export const TourData: FunctionComponent = () => {
                 No Tour Selected
             </div>
             <Button style={{ minWidth: '20px' }}
-                onClick={() => dispatch(showInfobar(false))}>
+                onClick={() => dispatch(setInfobarOpen(false))}>
                 <FontAwesomeIcon icon={faX} />
             </Button>
         </div>
@@ -87,7 +87,7 @@ export const TourData: FunctionComponent = () => {
             <div className="flex flex-row">
                 <InfobarMaxButton />
                 <Button style={{ minWidth: '20px' }}
-                    onClick={() => dispatch(showInfobar(false))}>
+                    onClick={() => dispatch(setInfobarOpen(false))}>
                     <FontAwesomeIcon icon={faX} />
                 </Button>
             </div>

@@ -1,26 +1,26 @@
 import { FunctionComponent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Button } from "@mui/material";
-import { setInfoBarFull } from "../../store/tourStateReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCompress, faExpand } from "@fortawesome/free-solid-svg-icons";
+import { setInfoBarLarge } from "../../store/viewState";
 
 export const InfobarMaxButton : FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const infoBarFull = useAppSelector((state) => state.tour.infoBarFull);
+    const infobarLarge = useAppSelector((state) => state.view.infobarLarge);
 
     if (window.innerWidth > 768) {
         return <></>
     }
 
     const toggleInfoBarFull = () => {
-        dispatch(setInfoBarFull(!infoBarFull));
+        dispatch(setInfoBarLarge(!infobarLarge));
     }
 
     return <div>
         <Button onClick={toggleInfoBarFull}>
             {
-                infoBarFull 
+                infobarLarge 
                 ? <FontAwesomeIcon icon={faCompress}/>
                 : <FontAwesomeIcon icon={faExpand} />
             }

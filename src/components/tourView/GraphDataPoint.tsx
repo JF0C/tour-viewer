@@ -4,7 +4,7 @@ import { Marker } from "react-leaflet";
 import L from "leaflet";
 
 export const GraphDataPoint: FunctionComponent = () => {
-    const infobarOpen = useAppSelector((state) => state.tour.showInfoBar);
+    const infobarOpen = useAppSelector((state) => state.view.infobarOpen);
     const coordinates = useAppSelector((state) => state.track.dataPointLocation);
     const selectedTrackCount = useAppSelector((state) => state.track.tracks.filter(t => t.selected).length);
     const outerRadius = 30;
