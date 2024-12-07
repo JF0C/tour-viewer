@@ -2,7 +2,6 @@ import { FunctionComponent, ReactNode } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { haversine } from "../../converters/haversine";
-import { parseTourPreview } from "../../converters/trackPreviewParser";
 import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
 import { CoordinatesDto } from "../../dtos/shared/coordinatesDto";
 import { useMapProvider } from "../../hooks/mapProviderHook";
@@ -19,8 +18,8 @@ import { InfoBarHandle } from "./InfoBarHandle";
 import { LongTapMapEventProvider } from "./LongTapMapEventProvider";
 import { LongTapMapLocationConverter } from "./LongTapMapLocationConverter";
 import { TourBounds } from "./TourBounds";
+import { TourPreview } from "./TourPreview";
 import { TrackLine } from "./TrackLine";
-import { Colors } from "../../constants/Colors";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -90,12 +89,11 @@ export const TourMap: FunctionComponent = () => {
         }
     }
     else {
-        const tracks: ReactNode[] = [];
+        const previews: ReactNode[] = [];
         tourState.tours.forEach((t, i) => {
-            tracks.push(<TrackLine key={t.id} dataColor={false} color={Colors.colorCircle(i)}
-            startMarker track={parseTourPreview(t)} />)
+            previews.push(<TourPreview key={i} tour={t} index={i} />)
         });
-        content = <>{tracks}</>
+        content = <>{previews}</>
     }
     const blogPostElements: any[] = blogPosts.map(b => <BlogPostMarker key={b.id} blogPost={b} />)
 

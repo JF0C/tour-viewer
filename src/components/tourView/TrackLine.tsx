@@ -33,7 +33,7 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
 
     if (bounds) {
         const boundsLatLng = geoToLatLngBounds(bounds);
-        if(!trackInMapBounds(boundsLatLng, geoToLatLngBounds(mapBounds))) {
+        if (!trackInMapBounds(boundsLatLng, geoToLatLngBounds(mapBounds))) {
             return <></>
         }
     }
@@ -81,20 +81,20 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
     }
 
     const pointSource = zoomLevel > 15 ? props.track.data.points :
-        zoomLevel > 10 ? props.track.data.pointsTenth : 
-        props.track.data.pointsHundredth;
-    
+        zoomLevel > 10 ? props.track.data.pointsTenth :
+            props.track.data.pointsHundredth;
+
     return <>
         {
             props.dataColor ?
-            <DataColoredTrackLine track={props.track} /> :
-            <Polyline positions={pointSource.map(p => [p.latitude, p.longitude])} color={trackColor} />
+                <DataColoredTrackLine track={props.track} /> :
+                <Polyline positions={pointSource.map(p => [p.latitude, p.longitude])} color={trackColor} />
         }
         {
             props.startMarker ?
                 <Marker icon={MarkerIcons.blue}
-                    position={[props.track.data.points[0].latitude, 
-                        props.track.data.points[0].longitude]}>
+                    position={[props.track.data.points[0].latitude,
+                    props.track.data.points[0].longitude]}>
                     <Popup>
                         <div className="flex flex-col justify-center items-center">
                             <div className="font-bold text-xl">

@@ -25,7 +25,7 @@ export const MapSelector: FunctionComponent = () => {
                 value={mapProvider.name}
                 onChange={handleChange}
             >
-                {MapProviders.map(m => <MenuItem value={m.name}>{m.name}</MenuItem>)}
+                {MapProviders.map(m => <MenuItem key={m.name} value={m.name}>{m.name}</MenuItem>)}
             </Select>
         </FormControl>
     </div>
