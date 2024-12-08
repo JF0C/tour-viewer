@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { BigFormLayout } from "../layout/BigFormLayout";
 import { StravaActivityListItem } from "./StravaActivityListItem";
@@ -10,12 +10,16 @@ import { NavLink } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { clearToursToDownload } from "../../store/stravaStateReducer";
 import { useStravaRefreshToken } from "../../hooks/stravaRefreshTokenHook";
+import { CustomDatePicker } from "../shared/CustomDatePicker";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
 
 export const StravaActivityList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const [, setRefreshToken] = useStravaRefreshToken();
     const stravaState = useAppSelector((state) => state.strava);
     const invalid = stravaState.tracksToDownload.length === 0;
+    const [startDate, setStartDate] = useState<Date | undefined>();
+    const [endDate, setEndDate] = useState<Date | undefined>();
 
     if (stravaState.tokenData === undefined || stravaState.authenticationFailed) {
         return <div>authentication error</div>
@@ -26,10 +30,58 @@ export const StravaActivityList: FunctionComponent = () => {
     }
 
     const changePage = (page: number) => {
+        let endEpoch = endDate?.valueOf();
+        if (endEpoch) {
+            endEpoch /= 1000;
+        }
+        let startEpoch = startDate?.valueOf();
+        if (startEpoch) {
+            startEpoch /= 1000;
+        }
         dispatch(stravaActivitiesRequest({
             token: stravaState.tokenData!.accessToken,
             page: page,
-            count: stravaState.tourPagination.itemsPerPage
+            count: stravaState.tourPagination.itemsPerPage,
+            before: endEpoch,
+            after: startEpoch
+        }));
+    }
+
+    const searchForStartDate = (date: Date | undefined) => {
+        setStartDate(date);
+        let endEpoch = endDate?.valueOf();
+        if (endEpoch) {
+            endEpoch /= 1000;
+        }
+        let startEpoch = date?.valueOf();
+        if (startEpoch) {
+            startEpoch /= 1000;
+        }
+        dispatch(stravaActivitiesRequest({
+            token: stravaState.tokenData!.accessToken,
+            page: stravaState.tourPagination.page,
+            count: stravaState.tourPagination.itemsPerPage,
+            before: endEpoch,
+            after: startEpoch
+        }));
+    }
+
+    const searchForEndDate = (date: Date | undefined) => {
+        setEndDate(date);
+        let endEpoch = date?.valueOf();
+        if (endEpoch) {
+            endEpoch /= 1000;
+        }
+        let startEpoch = startDate?.valueOf();
+        if (startEpoch) {
+            startEpoch /= 1000;
+        }
+        dispatch(stravaActivitiesRequest({
+            token: stravaState.tokenData!.accessToken,
+            page: stravaState.tourPagination.page,
+            count: stravaState.tourPagination.itemsPerPage,
+            before: endEpoch,
+            after: startEpoch
         }));
     }
 
@@ -77,7 +129,12 @@ export const StravaActivityList: FunctionComponent = () => {
             &nbsp;Select Tracks for Import
         </div>
         <div className="flex flex-row flex-wrap gap-2">
+            <CustomDatePicker label="From" value={startDate} onChange={d => searchForStartDate(d)} />
+            <CustomDatePicker label="To" value={endDate} onChange={d => searchForEndDate(d)} />
+        </div>
+        <div className="flex flex-row flex-wrap gap-2">
             {
+                stravaState.loading ? <LoadingSpinner /> :
                 stravaState.tours.map(t =>
                     <StravaActivityListItem key={t.id} tour={{
                         id: t.id.toString(),

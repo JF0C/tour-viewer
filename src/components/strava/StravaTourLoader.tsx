@@ -2,13 +2,12 @@ import { FunctionComponent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ApiUrls } from "../../constants/ApiUrls";
 import { Roles } from "../../constants/Rolenames";
+import { useStravaRefreshToken } from "../../hooks/stravaRefreshTokenHook";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { stravaClientIdRequest, stravaRefreshRequest, stravaTokenRequest } from "../../store/stravaThunk";
 import { setEditingTour } from "../../store/tourStateReducer";
 import { loadTourRequest } from "../../store/tourThunk";
-import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { StravaActivityList } from "./StravaActivityList";
-import { useStravaRefreshToken } from "../../hooks/stravaRefreshTokenHook";
 
 export const StravaTourLoader: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -31,10 +30,6 @@ export const StravaTourLoader: FunctionComponent = () => {
 
     if (!isContributor) {
         return <div>unauthorized</div>
-    }
-
-    if (stravaState.loading) {
-        return <LoadingSpinner />
     }
 
     if (!stravaState.clientId) {

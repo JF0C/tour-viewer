@@ -36,7 +36,9 @@ export const stravaUserInfoRequest = createAuthenticatedGetThunk<StravaUserDto, 
 
 export const stravaActivitiesRequest = createAuthenticatedGetThunk<StravaActivityDto[], StravaActivitiesRequestDto>(
     'strava-activities',
-    (request) => `${ApiUrls.StravaApiUrl}/athlete/activities?page=${request.page}&perPage=${request.count}`,
+    (request) => `${ApiUrls.StravaApiUrl}/athlete/activities?` +
+        `page=${request.page}&perPage=${request.count}` +
+        `${request.before ? '&before=' + request.before : ''}${request.after ? '&after=' + request.after : ''}`,
     'Bearer',
     (request) => request.token,
     async (response) => await response.json()
