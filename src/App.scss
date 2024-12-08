@@ -206,6 +206,10 @@ td {
   left: 85px
 }
 
+.date-picker label:not(.MuiInputLabel-shrink) {
+  margin-top: -7px;
+}
+
 .MuiInputBase-root textarea {
   font-size: medium;
   color: white;
