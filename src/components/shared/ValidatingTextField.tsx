@@ -3,7 +3,7 @@ import { FunctionComponent, useState } from "react"
 
 export type ValidatingTextFieldProps = {
     name: string
-    rows: number
+    rows?: number
     value?: string
     onChange?: (value: string) => void
     minLength?: number

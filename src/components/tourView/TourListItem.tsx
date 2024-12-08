@@ -43,7 +43,12 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
             })
     }
 
-    return <div key={'tour' + props.tour.id} className="flex flex-row">
+    return <div key={'tour' + props.tour.id} className="flex flex-row items-center">
+        {
+            selectedTourId === props.tour.id
+                ? <FontAwesomeIcon icon={faCheckSquare} />
+                : <FontAwesomeIcon icon={faSquare} />
+        }
         <Button sx={{ width: '100%' }} onClick={() => selectTour(props.tour.id)}>
             <div className="flex flex-row items-center w-full justify-between" >
                 <div>
@@ -58,12 +63,7 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
             canEdit ? <Button onClick={() => editTour(props.tour.id)}>
                 <FontAwesomeIcon icon={faEdit} />
             </Button>
-            : <></>
-        }
-        {
-            selectedTourId === props.tour.id
-                ? <FontAwesomeIcon icon={faCheckSquare}/>
-                : <FontAwesomeIcon icon={faSquare}/>
+                : <></>
         }
     </div>
 }

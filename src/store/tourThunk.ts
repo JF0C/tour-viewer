@@ -38,7 +38,7 @@ export const searchToursForUser = createGetThunk<PagedResult<TourDto>, TourPageR
     async (response) => await response.json()
 )
 
-export const createTourRequest = createPostThunk<Number, CreateTourDto>(
+export const createTourRequest = createPostThunk<number, CreateTourDto>(
     'create-tour',
     () => ApiUrls.BaseUrl + ApiUrls.TourEndpoint, (async (response) => {
         return Number(await response.text())

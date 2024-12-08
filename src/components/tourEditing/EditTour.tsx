@@ -1,3 +1,5 @@
+import { faCodeMerge } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -7,17 +9,14 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setEditingTour, setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
 import { changeTourStartDateRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "../../store/tourThunk";
 import { clearTracks, resetBoundsSet } from "../../store/trackStateReducer";
+import { loadTrackRequest } from "../../store/trackThunk";
 import { BigFormLayout } from "../layout/BigFormLayout";
 import { ConfirmModal } from "../shared/ConfirmModal";
 import { EditableDateLabel } from "../shared/EditableDateLabel";
 import { EditableNameLabel } from "../shared/EditableNameLabel";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { UserSearch } from "../user/UserSearch";
+import { TourParticipants } from "./TourParticipants";
 import { TrackList } from "./TrackList";
-import { ParticipantResultView } from "./ParticipantResultView";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCodeMerge } from "@fortawesome/free-solid-svg-icons";
-import { loadTrackRequest } from "../../store/trackThunk";
 
 
 export const EditTour: FunctionComponent = () => {
@@ -119,30 +118,31 @@ export const EditTour: FunctionComponent = () => {
                 </tr>
             </tbody>
         </table>
-        <UserSearch>
-            <ParticipantResultView />
-        </UserSearch>
-        <NavLink to={Paths.KomootTourStartPage}>
-            <Button>
-                <img width={20} src="icon/komoot-icon.png" alt='komoot-icon'/>
-                &nbsp;
-                Import from Komoot
-            </Button>
-        </NavLink>
-        <NavLink to={Paths.StravaTourStartPage}>
-            <Button>
-                <img width={20} src="icon/strava-icon.png" alt='komoot-icon'/>
-                &nbsp;
-                Import from Strava
-            </Button>
-        </NavLink>
-        <NavLink to={Paths.MergeTracksPage}>
-            <Button>
-                <FontAwesomeIcon icon={faCodeMerge}/>
-                &nbsp;
-                Merge Tracks
-            </Button>
-        </NavLink>
+        <TourParticipants />
+        <div className="flex flex-row flex-wrap">
+            <NavLink to={Paths.KomootTourStartPage}>
+                <Button>
+                    <img width={20} src="icon/komoot-icon.png" alt='komoot-icon'/>
+                    &nbsp;
+                    Komoot
+                </Button>
+            </NavLink>
+            <NavLink to={Paths.StravaTourStartPage}>
+                <Button>
+                    <img width={20} src="icon/strava-icon.png" alt='komoot-icon'/>
+                    &nbsp;
+                    Strava
+                </Button>
+            </NavLink>
+            <NavLink to={Paths.MergeTracksPage}>
+                <Button>
+                    <FontAwesomeIcon icon={faCodeMerge}/>
+                    &nbsp;
+                    Merge Tracks
+                </Button>
+            </NavLink>
+
+        </div>
         <TrackList onReload={reloadTour} />
     </BigFormLayout>
 }

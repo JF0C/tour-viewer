@@ -5,7 +5,7 @@ import { ValidatingTextField } from "./ValidatingTextField";
 export type EditableTextFieldProps = {
     value: string;
     name: string;
-    rows: number;
+    rows?: number;
     onApply: (value: string) => void;
     minLength?: number
     maxLength?: number
@@ -17,7 +17,7 @@ export const EditableTextField: FunctionComponent<EditableTextFieldProps> = (pro
     const [isValid, setIsValid] = useState(false);
 
     return <EditableLabel canConfirm={isValid && (props.value !== currentValue)} label={props.value} 
-        className={props.className}
+        className={props.className} buttonsAsColumn
         editor={
         <ValidatingTextField rows={props.rows} value={props.value}
             name={props.name} onChange={v => setCurrentValue(v)}

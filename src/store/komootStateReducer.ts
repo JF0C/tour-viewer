@@ -84,7 +84,7 @@ export const komootSlice = createSlice({
                 action.payload.page.totalPages,
                 state.tourPagination.totalPages
             );
-            for (let tour of state.komootTourData._embedded.tours) {
+            for (let tour of state.komootTourData._embedded?.tours ?? []) {
                 tour.date = new Date(tour.date).valueOf();
                 tour.changed_at = new Date(tour.changed_at).valueOf();
             }

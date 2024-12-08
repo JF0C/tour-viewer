@@ -9,6 +9,7 @@ export type EditableLabelProps = {
     onApplyChange: () => void;
     canConfirm: boolean;
     className?: string;
+    buttonsAsColumn?: boolean;
 }
 
 export const EditableLabel: FunctionComponent<EditableLabelProps> = (props) => {
@@ -19,7 +20,7 @@ export const EditableLabel: FunctionComponent<EditableLabelProps> = (props) => {
         <div className={`flex-1 ${props.className}`}>
             { props.editor }
         </div>
-        <div className="flex flex-row gap-2 items-center">
+        <div className={`flex ${props.buttonsAsColumn ? 'flex-col': 'flex-row'} gap-2 items-center`}>
             <Button sx={{minWidth: '20px'}} color="warning" onClick={() => setEditing(false)}>
                 <FontAwesomeIcon icon={faX} />
             </Button>

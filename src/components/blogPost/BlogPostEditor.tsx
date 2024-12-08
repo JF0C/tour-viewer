@@ -123,8 +123,8 @@ export const BlogPostEditor: FunctionComponent = () => {
             <ImageUpload />
             <BlogPostTrackSelector />
             <BlogPostLocationEditor />
-            <EditableTextField className="flex-none w-full" value={blogPost.message === '' ? '<no message>' : blogPost.message}
-                rows={10} name='Blog Post Message' onApply={changeMessage} minLength={0} maxLength={1000} />
+            <EditableTextField className="" value={blogPost.message === '' ? '<no message>' : blogPost.message}
+                name='Blog Post Message' onApply={changeMessage} minLength={0} maxLength={1000} />
 
             <div className="flex md:hidden flex-row gap-2 justify-center">
                 <BlogPostEditButtons blogPost={blogPost}

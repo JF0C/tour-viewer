@@ -25,7 +25,8 @@ export const komootToursRequest = createAuthenticatedGetThunk<KomootTourResponse
     'komoot-tours',
     (pageRequest) => `${ApiUrls.KomootApiUrl}/users/${pageRequest.userId}/tours/` +
         `?sort_types=&type=tour_recorded&sort_field=date&sort_direction=desc` +
-        `&name=&status=private&hl=de&page=${pageRequest.page - 1}&limit=${pageRequest.count}`,
+        `&name=${pageRequest.name ?? ''}&status=private&hl=de&page=${pageRequest.page - 1}&limit=${pageRequest.count}` +
+        `&start_date=${pageRequest.startDate?.toISOString() ?? ''}&end_date=${pageRequest.endDate?.toISOString() ?? ''}`,
     'Basic',
     (pageRequest) => pageRequest.authString,
     async (response) => await response.json()

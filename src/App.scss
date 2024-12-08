@@ -173,9 +173,11 @@ td {
   background-color: $primary;
   color: white;
 }
+
 .leaflet-popup-tip {
   background-color: $primary;
 }
+
 .leaflet-popup-close-button {
   display: none;
 }
@@ -192,6 +194,16 @@ td {
 .MuiInputBase-root input {
   font-size: medium;
   color: white;
+}
+
+.date-picker input {
+  padding: 0;
+  padding-left: 10px;
+  width: 120px;
+}
+
+.date-picker .reset-button {
+  left: 85px
 }
 
 .MuiInputBase-root textarea {
@@ -219,13 +231,13 @@ td {
     top: auto !important;
     transition: all .2s ease-in-out;
   }
-  
+
   .info-bar-drawer .MuiModal-backdrop {
     max-height: $mobile-info-bar-height;
     top: auto !important;
     transition: all .2s ease-in-out;
   }
-  
+
   .info-bar-drawer .MuiPaper-root {
     max-height: $mobile-info-bar-height;
     transition: all .2s ease-in-out;
@@ -235,12 +247,12 @@ td {
     max-height: 100vh;
     height: 70vh;
   }
-  
+
   .info-bar-drawer.full .MuiModal-backdrop {
     max-height: 100vh;
     height: 70vh;
   }
-  
+
   .info-bar-drawer.full .MuiPaper-root {
     max-height: 100vh;
     height: 70vh;

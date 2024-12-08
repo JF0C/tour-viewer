@@ -63,27 +63,27 @@ export const BlogPostLocationEditor: FunctionComponent = () => {
 
         const fileId = trackClosestToPoint(selectedTracks, mapCenter)?.fileReference ?? '';
         const trackId = tourTracks?.find(t => t.fileReference === fileId)?.id ?? 0;
-        dispatch(changeEditingBlogpostTrack({trackId: trackId, trackFileReference: fileId}));
+        dispatch(changeEditingBlogpostTrack({ trackId: trackId, trackFileReference: fileId }));
     }
 
-    return <div>
-        Coordinates:&nbsp;
-        {blogPost.latitude.toFixed(4)}, {blogPost.longitude.toFixed(4)}
-        <Button onClick={startEditingBlogPostTrack}>
+    return <div className="flex flex-row flex-wrap items-center">
+        <div style={{ color: coordinatesChanged ? '#1976d2' : 'white' }}>
+            Coordinates:&nbsp;
+            {blogPost.latitude.toFixed(4)}, {blogPost.longitude.toFixed(4)}
+        </div>
+        <Button sx={{ minWidth: '20px' }} onClick={startEditingBlogPostTrack}>
             <FontAwesomeIcon icon={faLocation} />
         </Button>
         {
-            coordinatesChanged ?
-                <Button onClick={changeLocation}>
-                    <FontAwesomeIcon icon={faCheck} />
-                </Button>
-                : <></>
-        }
-        {
-            coordinatesChanged ?
-                <Button color='error' onClick={resetLocation}>
-                    <FontAwesomeIcon icon={faX} />
-                </Button>
+            (coordinatesChanged && blogPost.id !== 0) ?
+                <>
+                    <Button onClick={changeLocation}>
+                        <FontAwesomeIcon icon={faCheck} />
+                    </Button>
+                    <Button color='error' onClick={resetLocation}>
+                        <FontAwesomeIcon icon={faX} />
+                    </Button>
+                </>
                 : <></>
         }
     </div>

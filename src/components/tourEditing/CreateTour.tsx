@@ -5,8 +5,8 @@ import { Paths } from "../../constants/Paths";
 import { Roles } from "../../constants/Rolenames";
 import { millisToUtcDate } from "../../converters/dateConverters";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
-import { createTourRequest } from "../../store/tourThunk";
+import { setEditingTour, setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
+import { createTourRequest, loadTourRequest } from "../../store/tourThunk";
 import { resetBoundsSet } from "../../store/trackStateReducer";
 import { SmallFormLayout } from "../layout/SmallFormLayout";
 import { ValidatingDatePicker } from "../shared/ValidatingDatePicker";
@@ -36,7 +36,13 @@ export const CreateTour: FunctionComponent = () => {
             name: tour.name,
             startDate: millisToUtcDate(tour.startDate),
             participantIds: tour.participants.map(p => p.id)
-        })).unwrap().then(() => navigate(Paths.EditTourPage));
+        })).unwrap().then((tid) => {
+            dispatch(loadTourRequest(tid))
+                .unwrap()
+                .then((tour) => dispatch(setEditingTour(tour))
+            )
+            navigate(Paths.EditTourPage)
+        });
     }
 
     return <SmallFormLayout buttons={

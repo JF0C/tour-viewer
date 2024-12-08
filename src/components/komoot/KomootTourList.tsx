@@ -1,20 +1,25 @@
-import { FunctionComponent } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { Button, Pagination } from "@mui/material";
-import { komootToursRequest } from "../../store/komootThunk";
-import { KomootTourListItem } from "./KomootTourListItem";
-import { BigFormLayout } from "../layout/BigFormLayout";
+import { faArrowLeft, faArrowRight, faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Pagination, TextField } from "@mui/material";
+import { FunctionComponent, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { clearKomootSelectedTours } from "../../store/komootStateReducer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight, faX } from "@fortawesome/free-solid-svg-icons";
+import { komootToursRequest } from "../../store/komootThunk";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { BigFormLayout } from "../layout/BigFormLayout";
+import { CustomDatePicker } from "../shared/CustomDatePicker";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { KomootTourListItem } from "./KomootTourListItem";
 
 
 export const KomootTourList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const komootState = useAppSelector((state) => state.komoot);
     const invalid = komootState.toursToDownload.length === 0;
+    const [nameFilter, setNameFilter] = useState<string |undefined>();
+    const [startDate, setStartDate] = useState<Date | undefined>();
+    const [endDate, setEndDate] = useState<Date | undefined>();
 
     const loadTours = () => {
         dispatch(komootToursRequest({
@@ -36,7 +41,49 @@ export const KomootTourList: FunctionComponent = () => {
             page: page,
             count: komootState.tourPagination.itemsPerPage,
             userId: komootState.userId!,
-            authString: komootState.authString!
+            authString: komootState.authString!,
+            name: nameFilter,
+            startDate: startDate,
+            endDate: endDate
+        }))
+    }
+
+    const searchForName = (name: string) => {
+        setNameFilter(name);
+        dispatch(komootToursRequest({
+            page: komootState.tourPagination.page,
+            count: komootState.tourPagination.itemsPerPage,
+            userId: komootState.userId!,
+            authString: komootState.authString!,
+            name: name,
+            startDate: startDate,
+            endDate: endDate
+        }))
+    }
+
+    const searchForStartDate = (date: Date | undefined) => {
+        setStartDate(date);
+        dispatch(komootToursRequest({
+            page: komootState.tourPagination.page,
+            count: komootState.tourPagination.itemsPerPage,
+            userId: komootState.userId!,
+            authString: komootState.authString!,
+            name: nameFilter,
+            startDate: date,
+            endDate: endDate
+        }))
+    }
+
+    const searchForEndDate = (date: Date | undefined) => {
+        setEndDate(date);
+        dispatch(komootToursRequest({
+            page: komootState.tourPagination.page,
+            count: komootState.tourPagination.itemsPerPage,
+            userId: komootState.userId!,
+            authString: komootState.authString!,
+            name: nameFilter,
+            startDate: startDate,
+            endDate: date
         }))
     }
 
@@ -69,8 +116,14 @@ export const KomootTourList: FunctionComponent = () => {
             &nbsp;Select Tracks for Import
         </div>
         <div className="flex flex-row flex-wrap gap-2">
+            <TextField value={nameFilter} label='Tour name' size='small' onChange={e => searchForName(e.target.value)}/>
+            <CustomDatePicker label="From" value={startDate} onChange={d => searchForStartDate(d)}/>
+            <CustomDatePicker label="To" value={endDate} onChange={d => searchForEndDate(d)} />
+        </div>
+        <div className="flex flex-row flex-wrap gap-2">
             {
-                komootState.komootTourData._embedded.tours.map(t =>
+                komootState.loading ? <LoadingSpinner /> :
+                komootState.komootTourData._embedded?.tours.map(t =>
                     <KomootTourListItem key={t.id} tour={{
                         id: t.id,
                         name: t.name,

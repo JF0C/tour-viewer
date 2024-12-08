@@ -1,7 +1,7 @@
 import { KomootTourDto } from "./komootTourDto"
 
 export type KomootTourResponseDto = {
-    _embedded: {
+    _embedded?: {
         tours: KomootTourDto[]
     }
     page: {
