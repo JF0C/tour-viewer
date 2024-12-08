@@ -112,7 +112,7 @@ export const EditTour: FunctionComponent = () => {
                         Start Date
                     </td>
                     <td>
-                        <EditableDateLabel value={tourState.editingTour.startDate}
+                        <EditableDateLabel label="Start Date" value={tourState.editingTour.startDate}
                             onApply={changeTourStartDate} />
                     </td>
                 </tr>

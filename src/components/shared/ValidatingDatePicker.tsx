@@ -1,9 +1,9 @@
-import { DatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
 import { FunctionComponent, useState } from "react";
+import { CustomDatePicker } from "./CustomDatePicker";
 
 export type ValidatingDatePickerProps = {
     value: number;
+    label: string;
     onChange: (ticks: number) => void;
     validCallback: (isValid: boolean) => void;
 }
@@ -34,7 +34,7 @@ export const ValidatingDatePicker: FunctionComponent<ValidatingDatePickerProps> 
     }
 
     return <div>
-        <DatePicker defaultValue={dayjs(new Date(props.value))} format="DD.MM.YYYY" onChange={e => { onDateInput(e?.toDate().valueOf() ?? 0) }} />
+        <CustomDatePicker label={props.label} value={new Date(props.value)} onChange={d => onDateInput(d?.valueOf() ?? Date.now())} />
         <div className="text-xs" style={{ color: 'red' }}>{valid ? '' : 'Date must be bigger than 10 years ago and smaller than 1 year in the future'}</div>
     </div>
 }

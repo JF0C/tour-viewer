@@ -54,7 +54,7 @@ export const CreateTour: FunctionComponent = () => {
         <ValidatingInput name="Name" minLength={3} maxLength={100}
             onChange={n => dispatch(setEditingTourName(n))} inputType="text"
             validCallback={v => setNameValid(v)} />
-        <ValidatingDatePicker value={tour.startDate} validCallback={v => setDateValid(v)}
+        <ValidatingDatePicker label="Start Date" value={tour.startDate} validCallback={v => setDateValid(v)}
             onChange={v => dispatch(setEditingTourStartDate(v))} />
         <TourParticipants />
     </SmallFormLayout>
