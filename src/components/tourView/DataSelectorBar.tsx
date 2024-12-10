@@ -31,7 +31,7 @@ export const TourSelectorBar: FunctionComponent = () => {
             </div>
         </div>
         <div id='data-selector-bar-handle' className={`flex flex-row w-full absolute justify-center ${barState}`}>
-            <div id='selector-bar-inner-handle' style={{ zIndex: 1000 }} 
+            <div onMouseEnter={expandBar} id='selector-bar-inner-handle' style={{ zIndex: 1000 }} 
                 className={`selector-field rounded-md border-black ${barState}`}>
                 <Button sx={{ minWidth: '20px', minHeight: '10px' }} onClick={expandBar}>
                     <FontAwesomeIcon icon={faChevronDown} />

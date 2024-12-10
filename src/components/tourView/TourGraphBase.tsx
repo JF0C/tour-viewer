@@ -92,8 +92,6 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
 
         const y = d3.scaleLinear(valueRange, [height - marginBottom, margin]);
 
-        const localValueRange = [Math.min(...values), Math.max(...values)];
-
         const line = d3.line<{ time: number, value: number }>()
             .x(d => x(d.time))
             .y(d => y(d.value));
@@ -160,7 +158,7 @@ export const TourGraphBase: FunctionComponent<TourGraphBaseProps> = (props) => {
                 .text(`${selectedValue.toFixed(1)} ${selector.unit}`);
         }
 
-        return [svg.node(), windowSize, slidePosition, localValueRange];
+        return [svg.node(), windowSize, slidePosition, valueRange];
     }, [props, scrollState, selectedIndex, dataZoom, filter, selector])
 
     if (trackGraphData.min !== valueBounds[0] || trackGraphData.max !== valueBounds[1]) {
