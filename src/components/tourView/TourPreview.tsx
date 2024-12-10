@@ -64,7 +64,7 @@ export const TourPreview: FunctionComponent<TourPreviewProps> = (props) => {
             tourTracks.map((t, i) => <PreviewTrackLine key={`tour-${props.index}-preview-${i}`} 
                 color={color} track={t} />)
         }
-        <Marker eventHandlers={{ click: loadFullTour }} icon={MarkerIcons.black} position={markerCenter}>
+        <Marker eventHandlers={{ click: loadFullTour }} icon={MarkerIcons.openTour} position={markerCenter}>
         </Marker>
     </>
 }

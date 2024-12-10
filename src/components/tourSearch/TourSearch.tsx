@@ -17,7 +17,7 @@ export const TourPreviewPagination: FunctionComponent = () => {
         dispatch(setInfobarOpen(false))
     }
     return <div className="info-bar-content flex flex-col" >
-        <div className="p-2 flex flex-row justify-between text-xl items-center bg-primary">
+        <div className="p-2 flex flex-row justify-between text-xl items-center bg-primary mb-2">
             <div className="font-bold flex-1">
                 {tourState.tours.length} of {tourState.tourPagination.totalItems} Tours
             </div>
@@ -31,7 +31,7 @@ export const TourPreviewPagination: FunctionComponent = () => {
             tourState.loading ? <LoadingSpinner /> :
                 <div className="p-2 flex flex-col gap-2">
                     <TourFilterControls />
-                    <div className="flex flex-row flex-wrap gap-2">
+                    <div className="flex flex-row flex-wrap gap-2 py-2">
                         {
                             tourState.tours.map((t, i) => <SearchResultItem key={'tour-result-' + t.id} index={i} tour={t} />)
                         }

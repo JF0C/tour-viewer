@@ -6,6 +6,7 @@ import { FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { setTourSearchFilter } from "../../store/tourStateReducer";
+import { AthleteSelector } from "./AthleteSelector";
 
 export const TourFilterControls: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -36,7 +37,6 @@ export const TourFilterControls: FunctionComponent = () => {
             <FormControl fullWidth size="small">
                 <InputLabel id="year-select-label">Year</InputLabel>
                 <Select
-                    sx={{ color: 'white' }}
                     labelId="year-select-label"
                     id="tour-year-select"
                     value={tourState.tourSearchFilter.year ?? 0}
@@ -97,6 +97,6 @@ export const TourFilterControls: FunctionComponent = () => {
                 </div>
                 : <></>
         }
-
+        <AthleteSelector />
     </div>
 }

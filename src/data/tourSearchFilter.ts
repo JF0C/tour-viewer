@@ -3,4 +3,5 @@ export type TourSearchFilter = {
     year?: number;
     month?: number;
     participantId?: number;
+    participantName?: string;
 }

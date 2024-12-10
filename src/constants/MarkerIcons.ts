@@ -12,6 +12,7 @@ import markerIconViolet from '../icon/marker-icon-2x-violet.png'
 import markerIconBlogPost from '../icon/blogpost-marker.png'
 import markerIconMoveFrom from '../icon/blogpost-marker-old-position.png'
 import markerIconMoveTo from '../icon/blogpost-marker-new-position.png'
+import markerOpenTour from '../icon/open-tour-marker.png'
 
 export class MarkerIcons {
     public static readonly blue = L.icon({
@@ -115,6 +116,15 @@ export class MarkerIcons {
 
     public static readonly postOld = L.icon({
         iconUrl: markerIconMoveFrom,
+        shadowUrl: markerShadow,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    public static readonly openTour = L.icon({
+        iconUrl: markerOpenTour,
         shadowUrl: markerShadow,
         iconSize: [25, 41],
         iconAnchor: [12, 41],

@@ -30,13 +30,13 @@ export const TourSearchPagination: FunctionComponent = () => {
             page={tourState.tourPagination.page}
             onChange={(e: any, page: number) => changePage(page)} />
         <FormControl size="small">
-            <InputLabel id="page-size-label">Tours</InputLabel>
+            <InputLabel id="page-size-label">Count</InputLabel>
             <Select
                 sx={{ color: 'white', width: '80px' }}
                 labelId="page-size-label"
                 id="page-size-select"
                 value={tourState.tourPagination.itemsPerPage}
-                label="Tours"
+                label="Count"
                 onChange={(e) => changePageSize(Number(e.target.value))}
             >
                 {

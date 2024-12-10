@@ -1,6 +1,7 @@
 $primary: #1c1d25;
 $primary-half: #1c1d258f;
 $secondary: rgb(64, 59, 51);
+$button-font-color: #1976d2;
 
 $mobile-info-bar-height: 40vh;
 $desktop-info-bar-width: 300px;
@@ -95,6 +96,30 @@ td {
 
 .MuiTextField-root label {
   color: rgba(255, 255, 255, 0.5);
+}
+
+.MuiSelect-select.MuiInputBase-input {
+  font-size: medium;
+  color: white
+}
+
+.MuiFormControl-root label {
+  font-size: 16px;
+  color:rgba(255, 255, 255, 0.5);
+}
+
+.MuiFormControl-root .MuiInputBase-root {
+  line-height: 1em;
+}
+
+.athlete-select-field input {
+  cursor: pointer;
+  user-select: none;
+}
+
+#track-select {
+  font-size: large;
+  color: $button-font-color;
 }
 
 .selector-field {
