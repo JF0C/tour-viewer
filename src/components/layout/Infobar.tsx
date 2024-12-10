@@ -6,11 +6,13 @@ import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setSelectedBlogpost } from "../../store/blogPostStateReducer";
 import { setInfobarOpen } from "../../store/viewState";
+import { TourPreviewPagination } from "../tourSearch/TourSearch";
 
 export const Infobar: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
     const selectedBlogPost = useAppSelector((state) => state.blog.selectedBlogPost);
+    const tourIsSelected = useAppSelector((state) => state.tour.selectedTour);
     const infoBarVisible = useAppSelector((state) => state.view.infobarOpen) || isEditingBlogPost || Boolean(selectedBlogPost);
     const infoBarLarge = useAppSelector((state) => state.view.infobarLarge);
 
@@ -34,8 +36,9 @@ export const Infobar: FunctionComponent = () => {
         <div className="flex-1 overflow-y-scroll">
             {
                 isEditingBlogPost ? <BlogPostEditor /> :
-                    selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost} /> :
-                        <TourDataSwipeContainer />
+                selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost} /> :
+                tourIsSelected ? <TourDataSwipeContainer /> :
+                <TourPreviewPagination />
             }
         </div>
 

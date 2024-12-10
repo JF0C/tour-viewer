@@ -58,7 +58,6 @@ export const TourPreview: FunctionComponent<TourPreviewProps> = (props) => {
     }
 
     const color = Colors.colorCircle(props.index);
-
     
     return <>
         {

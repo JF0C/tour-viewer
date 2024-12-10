@@ -91,7 +91,7 @@ export const TourMap: FunctionComponent = () => {
     else {
         const previews: ReactNode[] = [];
         tourState.tours.forEach((t, i) => {
-            previews.push(<TourPreview key={i} tour={t} index={i} />)
+            previews.push(<TourPreview key={'tour-preview-' + t.id} tour={t} index={i} />)
         });
         content = <>{previews}</>
     }

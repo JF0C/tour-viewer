@@ -6,15 +6,8 @@ import { PaginationState } from "./paginationState";
 import { createTourRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { LocalStorageKeys } from "../constants/LocalStorageKeys";
-
-export interface IEditTour {
-    id: number;
-    name: string;
-    startDate: number;
-    participants: UserReferenceDto[];
-    tracks: EditTrackDto[];
-    tracksToMerge: string[];
-}
+import { EditingTour } from "../data/editingTour";
+import { TourSearchFilter } from "../data/tourSearchFilter";
 
 export interface ITourState {
     loading: boolean;
@@ -23,8 +16,9 @@ export interface ITourState {
     selectedTour?: TourDto;
     selectedTourId?: number;
     tourPagination: PaginationState;
+    tourSearchFilter: TourSearchFilter;
     dataSelectorBarState: 'show' | 'small' | 'hide';
-    editingTour: IEditTour;
+    editingTour: EditingTour;
     radioGroups: { groupId: string, activeItem?: string }[];
 }
 
@@ -39,6 +33,7 @@ const initialState: ITourState = {
         totalPages: 1,
         itemsPerPage: 10
     },
+    tourSearchFilter: {},
     radioGroups: [],
     editingTour: {
         id: 0,
@@ -124,6 +119,9 @@ export const tourStateSlice = createSlice({
         },
         removeTrackToMerge(state, action: PayloadAction<string>) {
             state.editingTour.tracksToMerge = state.editingTour.tracksToMerge.filter(t => t !== action.payload);
+        },
+        setTourSearchFilter(state, action: PayloadAction<TourSearchFilter>) {
+            state.tourSearchFilter = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -236,5 +234,6 @@ export const {
     setDataBarState,
     clearTracksToMerge,
     addTrackToMerge,
-    removeTrackToMerge
+    removeTrackToMerge,
+    setTourSearchFilter
 } = tourStateSlice.actions;
