@@ -9,7 +9,7 @@ import { setUserDetail } from "../../store/userStateReducer";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { setSelectedBlogpost } from "../../store/blogPostStateReducer";
-import { setInfobarOpen } from "../../store/viewState";
+import { setInfobarOpen } from "../../store/viewStateReducer";
 
 export type ParticipantProps = {
     user: UserReferenceDto;

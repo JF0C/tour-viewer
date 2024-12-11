@@ -6,7 +6,7 @@ import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
 import { CoordinatesDto } from "../../dtos/shared/coordinatesDto";
 import { useMapProvider } from "../../hooks/mapProviderHook";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setDataBarState } from "../../store/tourStateReducer";
+import { setDataBarState } from "../../store/viewStateReducer";
 import { startLoadingTrack } from "../../store/trackStateReducer";
 import { loadTrackRequest } from "../../store/trackThunk";
 import { BlogPostMapLocationEditor } from "../blogPost/BlogPostMapLocationEditor";
@@ -20,14 +20,15 @@ import { LongTapMapLocationConverter } from "./LongTapMapLocationConverter";
 import { TourBounds } from "./TourBounds";
 import { TourPreview } from "./TourPreview";
 import { TrackLine } from "./TrackLine";
+import { BlogPostView } from "../blogPostSearch/BlogPostView";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tourState = useAppSelector((state) => state.tour);
     const tour = tourState.selectedTour;
     const trackState = useAppSelector((state) => state.track);
-    const infobarOpen = useAppSelector((state) => state.view.infobarOpen);
-    const dataSelectorBarState = useAppSelector((state) => state.tour.dataSelectorBarState);
+    const viewState = useAppSelector((state) => state.view);
+    const dataSelectorBarState = useAppSelector((state) => state.view.dataSelectorBarState);
     const [mapProvider] = useMapProvider();
 
     let content = <></>
@@ -36,6 +37,9 @@ export const TourMap: FunctionComponent = () => {
 
     if (trackState.loading || trackState.tracks.find(t => t.loading)) {
         content = <OverallLoadingSpinner />
+    }
+    else if(viewState.mapMode === 'blogPosts') {
+        content = <BlogPostView />
     }
     else if (tourState.selectedTourId) {
         if (dataSelectorBarState === 'hide') {
@@ -58,7 +62,7 @@ export const TourMap: FunctionComponent = () => {
             const selectedTracks = trackState.tracks.filter(t => t.selected);
             const firstTrackName = selectedTracks.length > 0 ? selectedTracks[0].fileReference : '';
             const tracks = [];
-            const showDataColor = selectedTracks.length === 1 && infobarOpen;
+            const showDataColor = selectedTracks.length === 1 && viewState.infobarOpen;
             for (let k = 0; k < selectedTracks.length; k++) {
                 const track = selectedTracks[k];
                 let showStartMarker = track.fileReference === firstTrackName;

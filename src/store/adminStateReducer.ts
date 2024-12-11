@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/user/userDto";
 import { addRoleRequest, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, removeRoleRequest, validateUserAdmin } from "./adminThunk";
 import { PaginationState } from "./paginationState";
+import { setDateNumbers } from "./stateHelpers";
 
 export interface IAdminState
 {
@@ -27,12 +28,14 @@ const updateUser = (state: IAdminState, changedUser: UserDto) => {
         state.userForEditing.username = changedUser.username;
         state.userForEditing.roles = changedUser.roles;
         state.userForEditing.validated = changedUser.validated;
+        state.userForEditing.modified = changedUser.modified;
     }
     const user = state.users?.find(u => u.id === changedUser.id);
     if (user) {
         user.roles = changedUser.roles;
         user.validated = changedUser.validated;
         user.username = changedUser.username;
+        user.modified = changedUser.modified;
     }
 }
 
@@ -56,6 +59,11 @@ export const adminSlice = createSlice({
         })
         builder.addCase(loadUsersAdmin.fulfilled, (state, action) => {
             state.users = action.payload.items;
+
+            for (let u of state.users) {
+                setDateNumbers(u);
+            }
+
             state.pagination.totalItems = action.payload.totalItems;
             state.pagination.totalPages = action.payload.totalPages;
             state.pagination.page = action.payload.page;

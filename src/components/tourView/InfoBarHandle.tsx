@@ -3,7 +3,7 @@ import { FunctionComponent } from "react"
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { faInfoCircle, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { setInfobarOpen } from "../../store/viewState";
+import { setInfobarOpen } from "../../store/viewStateReducer";
 
 export const InfoBarHandle: FunctionComponent = () => {
     const dispatch = useAppDispatch();

@@ -5,7 +5,7 @@ import { FunctionComponent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setMenubarOpen } from "../../store/viewState";
+import { setMenubarOpen } from "../../store/viewStateReducer";
 import { UserIcon } from "../user/UserIcon";
 
 export const AppBarContent: FunctionComponent = () => {

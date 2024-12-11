@@ -5,6 +5,7 @@ import { TrackEntity } from "../data/trackEntity";
 import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
 import { CommentDto } from "../dtos/comment/commentDto";
 import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
+import { EntityBaseDto } from "../dtos/shared/entityBaseDto";
 import { TourDto } from "../dtos/tour/tourDto";
 import { UserDetailDto } from "../dtos/user/userDetailDto";
 import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setEditingBlogpost } from "./blogPostStateReducer";
@@ -132,4 +133,11 @@ export const markerDragEnd = (dispatch: AppDispatch,
         trackFileReference: track?.fileReference ?? ''
     }));
     setTimeout(() => dispatch(setMarkerDragging(false)), 50);
+}
+
+export const setDateNumbers = (entity: EntityBaseDto) => {
+    entity.created = new Date(entity.created).valueOf();
+    if (entity.modified) {
+        entity.modified = new Date(entity.modified).valueOf();
+    }
 }

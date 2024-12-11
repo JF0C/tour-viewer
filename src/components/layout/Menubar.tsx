@@ -1,7 +1,7 @@
 import { SwipeableDrawer } from "@mui/material";
 import { FunctionComponent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setInfobarOpen, setMenubarOpen } from "../../store/viewState";
+import { setInfobarOpen, setMenubarOpen } from "../../store/viewStateReducer";
 import { Navbar } from "../navigation/Navbar";
 import { setEditingBlogpost, setSelectedBlogpost } from "../../store/blogPostStateReducer";
 

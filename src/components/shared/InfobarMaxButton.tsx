@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCompress, faExpand } from "@fortawesome/free-solid-svg-icons";
-import { setInfoBarLarge } from "../../store/viewState";
+import { setInfoBarLarge } from "../../store/viewStateReducer";
 
 export const InfobarMaxButton : FunctionComponent = () => {
     const dispatch = useAppDispatch();

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { TourSelector } from "./TourSelector";
 import { TrackSelector } from "./TrackSelector";
 import { Button } from "@mui/material";
-import { setDataBarState } from "../../store/tourStateReducer";
+import { setDataBarState } from "../../store/viewStateReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,7 +11,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 export const TourSelectorBar: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tour = useAppSelector((state) => state.tour.selectedTour);
-    const barState = useAppSelector((state) => state.tour.dataSelectorBarState);
+    const barState = useAppSelector((state) => state.view.dataSelectorBarState);
 
     if (barState === 'hide') {
         return <></>
@@ -25,6 +25,7 @@ export const TourSelectorBar: FunctionComponent = () => {
         <div id='data-selector-bar-content' className={`flex flex-row w-full absolute justify-center ${barState}`}>
             <div style={{ zIndex: 1000 }} className="selector-field rounded-md border-black flex flex-row flex-wrap">
                 <div className={`${barState} flex flex-row flex-wrap`}>
+
                     <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
                     <TrackSelector />
                 </div>

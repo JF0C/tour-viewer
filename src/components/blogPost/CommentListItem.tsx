@@ -47,7 +47,7 @@ export const CommentListItem: FunctionComponent<CommentListItemProps> = (props) 
             <div className="text-sm">
                 {props.comment.author.username}
                 &nbsp;-&nbsp;
-                {fullDateString(props.comment.created)}
+                {fullDateString(new Date(props.comment.created))}
             </div>
             <div className="flex flex-row">
                 {

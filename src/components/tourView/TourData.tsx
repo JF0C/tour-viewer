@@ -6,7 +6,7 @@ import { millisToDateString, millisToTimeSpan } from "../../converters/dateConve
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 import { Participant } from "../tourEditing/Participant";
-import { setInfobarOpen } from "../../store/viewState";
+import { setInfobarOpen } from "../../store/viewStateReducer";
 
 export const TourData: FunctionComponent = () => {
     const dispatch = useAppDispatch();

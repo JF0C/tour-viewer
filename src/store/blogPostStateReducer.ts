@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
 import { CreateBlogPostDto } from "../dtos/blogPost/createBlogPostDto";
-import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "./blogPostThunk";
+import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest, searchBlogPostRequest } from "./blogPostThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
 import { deleteImageRequest, uploadImageRequest } from "./filesThunk";
+import { PaginationState } from "./paginationState";
+import { BlogPostSearchFilter } from "../data/blogPostSearchFilter";
+import { setDateNumbers } from "./stateHelpers";
 
 export interface IBlogPostState {
     loading: boolean;
@@ -12,12 +15,25 @@ export interface IBlogPostState {
     coordinatesChanged: boolean;
     fullSizeImages: string[];
     selectedFullSizeImage?: string;
+
+    blogPosts: BlogPostDto[];
+    pagination: PaginationState;
+    filter: BlogPostSearchFilter;
 }
 
 const initialState: IBlogPostState = {
     loading: false,
     coordinatesChanged: false,
-    fullSizeImages: []
+    fullSizeImages: [],
+
+    blogPosts: [],
+    pagination: {
+        page: 1,
+        itemsPerPage: 10,
+        totalPages: 0,
+        totalItems: 0
+    },
+    filter: {}
 }
 
 export const BlogPostSlice = createSlice({
@@ -155,13 +171,11 @@ export const BlogPostSlice = createSlice({
         });
         builder.addCase(loadBlogPostDetailRequest.fulfilled, (state, action) => {
             state.loading = false;
-            state.selectedBlogPost = action.payload;
-            state.selectedBlogPost.created = new Date(state.selectedBlogPost.created);
-            if (state.selectedBlogPost.comments) {
-                for (let comment of state.selectedBlogPost.comments) {
-                    comment.created = new Date(comment.created);
-                }
+            for (let c of action.payload.comments ?? []) {
+                setDateNumbers(c);
             }
+            state.selectedBlogPost = action.payload;
+            setDateNumbers(state.selectedBlogPost);
         });
         builder.addCase(loadBlogPostDetailRequest.rejected, (state) => {
             state.loading = false;
@@ -195,6 +209,27 @@ export const BlogPostSlice = createSlice({
         });
         builder.addCase(deleteCommentRequest.rejected, (state) => {
             state.loading = false;
+        });
+
+        builder.addCase(searchBlogPostRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(searchBlogPostRequest.fulfilled, (state, action) => {
+            state.loading = false;
+            state.blogPosts = action.payload.items;
+            for (let b of state.blogPosts) {
+                setDateNumbers(b);
+                for (let c of b.comments ?? []) {
+                    setDateNumbers(c);
+                }
+            }
+            state.pagination.page = action.payload.page;
+            state.pagination.totalPages = action.payload.totalPages;
+            state.pagination.totalItems = action.payload.totalItems;
+        });
+        builder.addCase(searchBlogPostRequest.rejected, (state) => {
+            state.loading = false;
+            state.blogPosts = [];
         });
     }
 })

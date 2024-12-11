@@ -11,7 +11,7 @@ import { systemStateReducer } from './systemStateReducer';
 import { komootStateReducer } from './komootStateReducer';
 import { stravaStateReducer } from './stravaStateReducer';
 import { mapStateReducer } from './mapStateReducer';
-import { viewStateReducer } from './viewState';
+import { viewStateReducer } from './viewStateReducer';
 
 export const store = configureStore({
     reducer: {

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import { setInfobarOpen } from "../../store/viewState";
+import { setInfobarOpen } from "../../store/viewStateReducer";
 import { TourFilterControls } from "./TourFilterControls";
 import { SearchResultItem } from "./SearchResultItem";
 import { TourSearchPagination } from "./TourSearchPagination";

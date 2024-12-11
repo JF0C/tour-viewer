@@ -7,7 +7,7 @@ import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coord
 import { setClickedEvent, setMapBounds, setMapCenter, setMarkerDragging, setZoomLevel } from "../../store/mapStateReducer";
 import { mapClickEnd, markerDragEnd } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setDataBarState } from "../../store/tourStateReducer";
+import { setDataBarState } from "../../store/viewStateReducer";
 import { latLngToGeoBounds } from "../../converters/bounds";
 
 export const BlogPostMapLocationEditor: FunctionComponent = () => {
@@ -17,7 +17,7 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
     const isTourSelected = useAppSelector((state) => state.tour.selectedTour !== undefined);
     const mapState = useAppSelector((state) => state.map);
-    const barState = useAppSelector((state) => state.tour.dataSelectorBarState);
+    const barState = useAppSelector((state) => state.view.dataSelectorBarState);
 
     const map = useMap();
 

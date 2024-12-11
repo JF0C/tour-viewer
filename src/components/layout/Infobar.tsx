@@ -5,7 +5,7 @@ import { BlogPostEditor } from "../blogPost/BlogPostEditor";
 import { TourDataSwipeContainer } from "../tourView/TourDataSwipeContainer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setSelectedBlogpost } from "../../store/blogPostStateReducer";
-import { setInfobarOpen } from "../../store/viewState";
+import { setInfobarOpen } from "../../store/viewStateReducer";
 import { TourPreviewPagination } from "../tourSearch/TourSearch";
 
 export const Infobar: FunctionComponent = () => {

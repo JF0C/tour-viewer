@@ -8,6 +8,7 @@ import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { LocalStorageKeys } from "../constants/LocalStorageKeys";
 import { EditingTour } from "../data/editingTour";
 import { TourSearchFilter } from "../data/tourSearchFilter";
+import { setDateNumbers } from "./stateHelpers";
 
 export interface ITourState {
     loading: boolean;
@@ -17,7 +18,6 @@ export interface ITourState {
     selectedTourId?: number;
     tourPagination: PaginationState;
     tourSearchFilter: TourSearchFilter;
-    dataSelectorBarState: 'show' | 'small' | 'hide';
     editingTour: EditingTour;
     radioGroups: { groupId: string, activeItem?: string }[];
 }
@@ -25,7 +25,6 @@ export interface ITourState {
 const initialState: ITourState = {
     loading: false,
     toursLoaded: false,
-    dataSelectorBarState: 'hide',
     tours: [],
     tourPagination: {
         page: 1,
@@ -49,9 +48,6 @@ export const tourStateSlice = createSlice({
     name: 'tourState',
     initialState: initialState,
     reducers: {
-        setDataBarState(state, action: PayloadAction<'show' | 'small' | 'hide'>) {
-            state.dataSelectorBarState = action.payload;
-        },
         setSelectedTourId(state, action: PayloadAction<number | undefined>) {
             state.selectedTourId = action.payload;
         },
@@ -147,6 +143,10 @@ export const tourStateSlice = createSlice({
                 for (let point of t.previewTrack) {
                     point.time = new Date(point.time).valueOf();
                 }
+                setDateNumbers(t);
+                for (let track of t.tracks) {
+                    setDateNumbers(track);
+                }
             }
             state.tourPagination.page = action.payload.page;
             state.tourPagination.totalItems = action.payload.totalItems;
@@ -171,6 +171,10 @@ export const tourStateSlice = createSlice({
             localStorage.setItem(LocalStorageKeys.SelectedTourIdKey, JSON.stringify(action.payload.id));
             for (let point of state.selectedTour.previewTrack) {
                 point.time = new Date(point.time).valueOf();
+            }
+            setDateNumbers(state.selectedTour);
+            for (let track of state.selectedTour.tracks) {
+                setDateNumbers(track);
             }
         })
         builder.addCase(loadTourRequest.rejected, (state) => {
@@ -231,7 +235,6 @@ export const {
     addEditingTourParticipant,
     removeEditingTourParticipant,
     setEditingTour,
-    setDataBarState,
     clearTracksToMerge,
     addTrackToMerge,
     removeTrackToMerge,

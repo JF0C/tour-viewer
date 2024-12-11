@@ -3,7 +3,8 @@ import { FunctionComponent, ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelectedTourId } from "../../hooks/selectedTourHook";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setDataBarState, setSelectedTourId } from "../../store/tourStateReducer";
+import { setSelectedTourId } from "../../store/tourStateReducer";
+import { setDataBarState } from "../../store/viewStateReducer";
 import { loadTourRequest, searchTours } from "../../store/tourThunk";
 import { loadLoggedInUser } from "../../store/userThunk";
 import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
@@ -21,10 +22,10 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
     const isLoggedIn = useAppSelector((state) => Boolean(state.auth.user));
     const tourState = useAppSelector((state) => state.tour);
     const authState = useAppSelector((state) => state.auth);
+    const dataSelectorBarState = useAppSelector((state) => state.view.dataSelectorBarState);
     const [selectedTourId, storeSelectedTourId] = useSelectedTourId();
     const location = useLocation();
     const isHomepage = location.pathname === '/';
-    const dataSelectorBarState = tourState.dataSelectorBarState;
 
     if (!authState.user && !authState.fetchUserAttempted && !authState.loading) {
         dispatch(loadLoggedInUser());

@@ -5,6 +5,7 @@ import { PaginationState } from "./paginationState";
 import { searchUsers } from "./userThunk";
 import { searchToursForUser } from "./tourThunk";
 import { searchBlogPostsForUser } from "./blogPostThunk";
+import { setDateNumbers } from "./stateHelpers";
 
 export interface IUserState {
     users?: UserReferenceDto[];
@@ -45,7 +46,7 @@ export const userStateSlice = createSlice({
             state.users = action.payload.items;
             state.userPagination.totalItems = action.payload.totalItems;
             state.userPagination.page = action.payload.page;
-            state.userPagination.totalPages = action.payload.totalPages
+            state.userPagination.totalPages = action.payload.totalPages;
             state.loading = false;
             console.log(action.payload)
         });

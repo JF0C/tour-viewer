@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { UserDto } from "../dtos/user/userDto";
 import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
 import { changeUsernameRequest, deleteProfilePictureRequest, deleteUserRequest, loadLoggedInUser, registerRequest, setProfilePictureParametersRequest, uploadProfilePictureRequest } from "./userThunk";
+import { setDateNumbers } from "./stateHelpers";
 
 
 export interface IAuthState {
@@ -27,6 +28,7 @@ export const authStateSlice = createSlice({
         builder.addCase(loginRequest.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload;
+            setDateNumbers(state.user);
         });
         builder.addCase(loginRequest.rejected, (state) => {
             state.loading = false;
@@ -50,6 +52,9 @@ export const authStateSlice = createSlice({
             state.fetchUserAttempted = true;
             state.loading = false;
             state.user = action.payload ?? state.user;
+            if (state.user) {
+                setDateNumbers(state.user);
+            }
         });
         builder.addCase(loadLoggedInUser.rejected, (state) => {
             state.fetchUserAttempted = true;
@@ -125,6 +130,7 @@ export const authStateSlice = createSlice({
         })
         builder.addCase(resetPasswordRequest.fulfilled, (state, action) => {
             state.user = action.payload;
+            setDateNumbers(state.user);
             state.loading = false;
         })
         builder.addCase(resetPasswordRequest.rejected, (state) => {
@@ -137,6 +143,7 @@ export const authStateSlice = createSlice({
         builder.addCase(uploadProfilePictureRequest.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload;
+            setDateNumbers(state.user);
         })
         builder.addCase(uploadProfilePictureRequest.rejected, (state) => {
             state.loading = false;
@@ -148,6 +155,7 @@ export const authStateSlice = createSlice({
         builder.addCase(deleteProfilePictureRequest.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload;
+            setDateNumbers(state.user);
         })
         builder.addCase(deleteProfilePictureRequest.rejected, (state) => {
             state.loading = false;
@@ -159,6 +167,7 @@ export const authStateSlice = createSlice({
         builder.addCase(setProfilePictureParametersRequest.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload;
+            setDateNumbers(state.user);
         })
         builder.addCase(setProfilePictureParametersRequest.rejected, (state) => {
             state.loading = false;
