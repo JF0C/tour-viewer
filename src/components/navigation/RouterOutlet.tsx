@@ -17,6 +17,7 @@ import { KomootTourDownload } from "../komoot/KomootTourDownload";
 import { StravaTourLoader } from "../strava/StravaTourLoader";
 import { StravaActivityDownload } from "../strava/StravaActivityDownload";
 import { TrackMergeList } from "../tourEditing/TrackMergeList";
+import { BlogPostLabelManager } from "../blogPost/BlogPostLabelManager";
 
 
 export const RouterOutlet: FunctionComponent = () => {
@@ -32,6 +33,8 @@ export const RouterOutlet: FunctionComponent = () => {
 
         <Route path={Paths.UserSettingsPage} element={<UserSettings />} />
         <Route path={Paths.UserProfilePage} element={<UserProfile />} />
+
+        <Route path={Paths.BlogPostLabelsPage} element={<BlogPostLabelManager />} />
         
         <Route path={Paths.CreateTourPage} element={<CreateTour />} />
         <Route path={Paths.EditTourPage} element={<EditTour />} />

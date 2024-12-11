@@ -1,4 +1,4 @@
-import { faEdit, faHome, faImage, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faHome, faImage, faPlus, faTags, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@mui/material';
 import { FunctionComponent } from 'react';
@@ -49,7 +49,8 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
             message: '',
             latitude: mapCenter.latitude,
             longitude: mapCenter.longitude,
-            images: []
+            images: [],
+            labels: []
         }));
         dispatch(setMarkerPosition({
             latitude: mapCenter.latitude,
@@ -100,6 +101,16 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                         </div>
                     </>
                     : <></>
+            }
+            {
+                isContributor ?
+                <NavLink to={Paths.BlogPostLabelsPage} onClick={props.closeSidebar}>
+                    <Button>
+                        <FontAwesomeIcon icon={faTags}/>
+                        &nbsp;Manage Labels
+                    </Button>
+                </NavLink>
+                :<></>
             }
             {
                 isAdmin ?

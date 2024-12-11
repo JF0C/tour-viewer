@@ -16,6 +16,8 @@ export class Paths {
     public static readonly EditTourPage = '/edit-tour'
     public static readonly MergeTracksPage = '/merge-tracks'
 
+    public static readonly BlogPostLabelsPage = '/blogpost-labels'
+
     public static readonly LoginPage = '/login'
     public static readonly RegisterPage = '/register'
     public static readonly RequestCodePage = '/request-code'

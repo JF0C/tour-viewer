@@ -9,7 +9,7 @@ import { EntityBaseDto } from "../dtos/shared/entityBaseDto";
 import { TourDto } from "../dtos/tour/tourDto";
 import { UserDetailDto } from "../dtos/user/userDetailDto";
 import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setEditingBlogpost } from "./blogPostStateReducer";
-import { searchBlogPostsForUser } from "./blogPostThunk";
+import { loadBlogPostDetailRequest, searchBlogPostsForUser } from "./blogPostThunk";
 import { IMapState, setClickedEvent, setMarkerDragging, setMarkerPosition } from "./mapStateReducer";
 import { AppDispatch, RootState } from "./store";
 import { searchToursForUser } from "./tourThunk";
@@ -53,23 +53,9 @@ export const isAllowedToEditComment = (state: RootState, comment: CommentDto): b
 }
 
 export const updateEditingBlogpost = (dispatch: AppDispatch, tour: TourDto, blogPostId: number) => {
-    for (let track of tour.tracks) {
-        for (let blog of track.blogPosts) {
-            if (blog.id === blogPostId) {
-                dispatch(setEditingBlogpost({
-                    id: blog.id,
-                    latitude: blog.coordinates.latitude,
-                    longitude: blog.coordinates.longitude,
-                    trackId: track.id,
-                    trackFileReference: track.fileReference,
-                    title: blog.title,
-                    message: blog.message,
-                    images: blog.images.map(i => i.imageId),
-                    labels: blog.labels
-                }));
-            }
-        }
-    }
+    dispatch(loadBlogPostDetailRequest(blogPostId))
+        .unwrap()
+        .then(b => dispatch(setEditingBlogpost(b)));
 }
 
 export const loadUserDetail = (dispatch: AppDispatch, detailedUser: UserDetailDto) => {
@@ -102,16 +88,27 @@ export const mapClickEnd = (dispatch: AppDispatch,
         dispatch(setMarkerPosition(mapState.clickedEvent.location));
         if (!isEditingBlogPost) {
             const track = trackClosestToPoint(selectedTracks, mapState.clickedEvent.location);
+
             dispatch(setEditingBlogpost({
                 id: 0,
-                latitude: mapState.clickedEvent.location.latitude,
-                longitude: mapState.clickedEvent.location.longitude,
+                author: { username: '', id: 0 },
+                coordinates: {
+                    latitude: mapState.clickedEvent.location.latitude,
+                    longitude: mapState.clickedEvent.location.longitude,
+                },
                 title: '',
                 message: '',
                 images: [],
-                trackId: track?.id ?? 0,
-                trackFileReference: track?.fileReference ?? '',
-                labels: []
+                track: {
+                    id: track?.id ?? 0,
+                    created: 0,
+                    tourPosition: track?.tourPosition ?? 0,
+                    name: track?.data.name ?? '',
+                    fileReference: track?.fileReference ?? '',
+                    blogPosts: []
+                },
+                labels: [],
+                created: 0
             }));
         }
         else {

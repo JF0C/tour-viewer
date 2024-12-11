@@ -1,15 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TourDto } from "../dtos/tour/tourDto";
-import { EditTrackDto } from "../dtos/track/editTrackDto";
-import { UserReferenceDto } from "../dtos/user/userReferenceDto";
-import { PaginationState } from "./paginationState";
-import { createTourRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
-import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { LocalStorageKeys } from "../constants/LocalStorageKeys";
 import { EditingTour } from "../data/editingTour";
 import { TourSearchFilter } from "../data/tourSearchFilter";
+import { TourDto } from "../dtos/tour/tourDto";
+import { UserReferenceDto } from "../dtos/user/userReferenceDto";
+import { loadBlogPostDetailRequest } from "./blogPostThunk";
+import { PaginationState } from "./paginationState";
 import { setDateNumbers } from "./stateHelpers";
-import { reloadBlogPostForTour } from "./blogPostThunk";
+import { createTourRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
+import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 
 export interface ITourState {
     loading: boolean;
@@ -223,7 +222,7 @@ export const tourStateSlice = createSlice({
             state.loading = false;
         });
 
-        builder.addCase(reloadBlogPostForTour.fulfilled, (state, action) => {
+        builder.addCase(loadBlogPostDetailRequest.fulfilled, (state, action) => {
             if (!state.selectedTour) {return;}
             for (let track of state.selectedTour.tracks) {
                 for (let index in track.blogPosts) {

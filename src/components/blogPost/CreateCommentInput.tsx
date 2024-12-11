@@ -2,7 +2,7 @@ import { Button, TextField } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import { useAppDispatch } from "../../store/store";
 import { createCommentRequest } from "../../store/commentThunk";
-import { loadBlogPostDetailRequest, reloadBlogPostForTour } from "../../store/blogPostThunk";
+import { loadBlogPostDetailRequest } from "../../store/blogPostThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 

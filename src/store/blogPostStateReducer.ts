@@ -47,8 +47,27 @@ export const BlogPostSlice = createSlice({
     name: 'blogpostState',
     initialState: initialState,
     reducers: {
-        setEditingBlogpost(state, action: PayloadAction<CreateBlogPostDto | undefined>) {
-            state.editingBlogPost = action.payload;
+        setSelectedBlogPost(state, action: PayloadAction<BlogPostDto | undefined>) {
+            state.selectedBlogPost = action.payload;
+        },
+        setEditingBlogpost(state, action: PayloadAction<BlogPostDto | undefined>) {
+            const blogPost = action.payload;
+            if (blogPost) {
+                state.editingBlogPost = {
+                    id: blogPost.id,
+                    trackId: blogPost.track.id,
+                    trackFileReference: blogPost.track.fileReference,
+                    images: blogPost.images.map(i => i.imageId),
+                    title: blogPost.title,
+                    message: blogPost.message,
+                    latitude: blogPost.coordinates.latitude,
+                    longitude: blogPost.coordinates.longitude,
+                    labels: blogPost.labels
+                }
+            }
+            else {
+                state.editingBlogPost = undefined;
+            }
             state.coordinatesChanged = false;
         },
         setSelectedBlogpost(state, action: PayloadAction<BlogPostDto | undefined>) {
@@ -64,7 +83,7 @@ export const BlogPostSlice = createSlice({
                 state.coordinatesChanged = true;
             }
         },
-        changeEditingBlogpostTrack(state, action: PayloadAction<{trackId: number, trackFileReference: string}>) {
+        changeEditingBlogpostTrack(state, action: PayloadAction<{ trackId: number, trackFileReference: string }>) {
             if (state.editingBlogPost) {
                 state.editingBlogPost.trackId = action.payload.trackId;
                 state.editingBlogPost.trackFileReference = action.payload.trackFileReference;
@@ -92,7 +111,7 @@ export const BlogPostSlice = createSlice({
                 }
             }
         },
-        setFullSizeImages(state, action: PayloadAction<{items: string[], selectedItem?: string}>) {
+        setFullSizeImages(state, action: PayloadAction<{ items: string[], selectedItem?: string }>) {
             state.fullSizeImages = action.payload.items;
             state.selectedFullSizeImage = action.payload.selectedItem;
         },
@@ -186,11 +205,6 @@ export const BlogPostSlice = createSlice({
         });
         builder.addCase(loadBlogPostDetailRequest.fulfilled, (state, action) => {
             state.loading = false;
-            for (let c of action.payload.comments ?? []) {
-                setDateNumbers(c);
-            }
-            state.selectedBlogPost = action.payload;
-            setDateNumbers(state.selectedBlogPost);
         });
         builder.addCase(loadBlogPostDetailRequest.rejected, (state) => {
             state.loading = false;
@@ -289,6 +303,7 @@ export const BlogPostSlice = createSlice({
 export const blogPostStateReducer = BlogPostSlice.reducer;
 
 export const {
+    setSelectedBlogPost,
     setEditingBlogpost,
     changeEditingBlogpostPosition,
     changeEditingBlogpostTrack,

@@ -1,16 +1,16 @@
 import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
-import { FunctionComponent, useRef } from "react";
+import { FunctionComponent, useRef, useState } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { MarkerIcons } from "../../constants/MarkerIcons";
 import { BlogPostDto } from "../../dtos/blogPost/blogPostDto";
-import { setEditingBlogpost } from "../../store/blogPostStateReducer";
 import { loadBlogPostDetailRequest } from "../../store/blogPostThunk";
+import { setMarkerReferenceId } from "../../store/mapStateReducer";
 import { isAllowedToEditBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ImageSwipeContainer } from "./ImageSwipeContainer";
-import { setMarkerReferenceId } from "../../store/mapStateReducer";
+import { setEditingBlogpost, setSelectedBlogPost } from "../../store/blogPostStateReducer";
 
 export type BlogPostMarkerProps = {
     blogPost: BlogPostDto
@@ -19,9 +19,12 @@ export type BlogPostMarkerProps = {
 export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) => {
     const dispatch = useAppDispatch();
     const allowedToEdit = useAppSelector((state) => isAllowedToEditBlogpost(state, props.blogPost));
-    const editingId = useAppSelector((state) => state.blog.editingBlogPost?.id);
+    const blogPostState = useAppSelector((state) => state.blog);
+    const editingId = blogPostState.editingBlogPost?.id;
     const markerPosition = useAppSelector((state) => state.map.markerPosition);
     const openMarker = useAppSelector((state) => state.map.markerReferenceId);
+
+    const [blogPost, setBlogPost] = useState<BlogPostDto | undefined>(undefined);
 
     const markerRef = useRef<any>(null);
 
@@ -30,22 +33,18 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]} />
     }
 
-    const startEditing = () => {
-        dispatch(setEditingBlogpost({
-            id: props.blogPost.id,
-            trackId: props.blogPost.track.id,
-            trackFileReference: props.blogPost.track.fileReference,
-            images: props.blogPost.images.map(i => i.imageId),
-            title: props.blogPost.title,
-            message: props.blogPost.message,
-            latitude: props.blogPost.coordinates.latitude,
-            longitude: props.blogPost.coordinates.longitude,
-            labels: props.blogPost.labels
-        }))
+    const loadDetails = () => {
+        dispatch(loadBlogPostDetailRequest(props.blogPost.id))
+            .unwrap()
+            .then(b => setBlogPost(b));
     }
 
-    const viewBlogPostDetail = () => {
-        dispatch(loadBlogPostDetailRequest(props.blogPost.id));
+    const openDetails = () => {
+        dispatch(setSelectedBlogPost(blogPost));
+    }
+
+    const startEditing = () => {
+        dispatch(setEditingBlogpost(blogPost));
     }
 
     if (openMarker === props.blogPost.id && markerRef && markerRef.current) {
@@ -53,7 +52,8 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
         dispatch(setMarkerReferenceId());
     }
 
-    return <Marker icon={MarkerIcons.postWhite} ref={markerRef}
+    return <Marker icon={MarkerIcons.postWhite} ref={markerRef} 
+        eventHandlers={{click: loadDetails}}
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]}>
         <Popup className="marker-popup">
             <div className="flex flex-col justify-center items-center">
@@ -69,7 +69,7 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
                     : <></>
                 }
                 <div>
-                    <Button onClick={viewBlogPostDetail}>
+                    <Button onClick={openDetails}>
                         <FontAwesomeIcon icon={faEye} />
                         &nbsp;Details
                     </Button>

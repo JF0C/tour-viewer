@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { changeEditingBlogpostMessage, changeEditingBlogpostTitle, setEditingBlogpost } from "../../store/blogPostStateReducer";
-import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest, reloadBlogPostForTour } from "../../store/blogPostThunk";
+import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "../../store/blogPostThunk";
 import { isAllowedToCreate, updateEditingBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
@@ -17,6 +17,7 @@ import { BlogPostTrackSelector } from "./BlogPostTrackSelector";
 import { ImageUpload } from "./ImageUpload";
 import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 import { setMarkerPosition } from "../../store/mapStateReducer";
+import { BlogPostLabelEditor } from "./BlogPostLabelEditor";
 
 export const BlogPostEditor: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -68,7 +69,8 @@ export const BlogPostEditor: FunctionComponent = () => {
                 title: title
             }))
             .unwrap()
-            .then(() => dispatch(loadBlogPostDetailRequest(blogPost.id)))
+            .then(() => dispatch(loadBlogPostDetailRequest(blogPost.id))
+                .unwrap().then((b) => dispatch(setEditingBlogpost(b))));
         }
     }
 
@@ -80,7 +82,8 @@ export const BlogPostEditor: FunctionComponent = () => {
                 message: message
             }))
             .unwrap()
-            .then(() => dispatch(loadBlogPostDetailRequest(blogPost.id)));
+            .then(() => dispatch(loadBlogPostDetailRequest(blogPost.id))
+                .unwrap().then((b) => dispatch(setEditingBlogpost(b))));
         }
     }
 
@@ -124,6 +127,7 @@ export const BlogPostEditor: FunctionComponent = () => {
             <ImageUpload />
             <BlogPostTrackSelector />
             <BlogPostLocationEditor />
+            <BlogPostLabelEditor />
             <EditableTextField className="" value={blogPost.message === '' ? '<no message>' : blogPost.message}
                 name='Blog Post Message' onApply={changeMessage} minLength={0} maxLength={1000} />
 

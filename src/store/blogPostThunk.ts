@@ -7,6 +7,7 @@ import { ChangeBlogPostTitleDto } from "../dtos/blogPost/changeBlogPostTitleDto"
 import { ChangeBlogPostTrackDto } from "../dtos/blogPost/changeBlogPostTrackDto";
 import { CreateBlogPostDto } from "../dtos/blogPost/createBlogPostDto";
 import { PagedResult } from "../dtos/shared/pagedResult";
+import { setDateNumbers } from "./stateHelpers";
 import { createDeleteThunk, createGetThunk, createPostThunk, createPutThunk } from "./thunkBase";
 
 export const blogpostRequestToUrl = (request: BlogpostPageRequestDto) => {
@@ -33,13 +34,14 @@ export const blogpostRequestToUrl = (request: BlogpostPageRequestDto) => {
 export const loadBlogPostDetailRequest = createGetThunk<BlogPostDto, number>(
     'get-blogpost',
     (blogPostId) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`,
-    async (response) => await response.json()
-);
-
-export const reloadBlogPostForTour = createGetThunk<BlogPostDto, number>(
-    'reload-blogpost-for-tour',
-    (blogPostId) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`,
-    async (response) => await response.json()
+    async (response) => {
+        const blogPost = await response.json();
+        for (let c of blogPost.comments ?? []) {
+            setDateNumbers(c);
+        }
+        setDateNumbers(blogPost);
+        return blogPost;
+    }
 );
 
 export const createBlogPostRequest = createPostThunk<number, CreateBlogPostDto>(

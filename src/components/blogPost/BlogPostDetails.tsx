@@ -10,6 +10,7 @@ import { Participant } from "../tourEditing/Participant";
 import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 import { BlogPostComments } from "./BlogPostComments";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { BlogPostLabel } from "./BlogPostLabel";
 
 export type BlogPostDetailsProps = {
     blogPost: BlogPostDto
@@ -40,11 +41,14 @@ export const BlogPostDetails: FunctionComponent<BlogPostDetailsProps> = (props) 
             </div>
         </div>
         <div className="p-2 flex-1 overflow-y-scroll">
-            <div className="py-2">
-                {props.blogPost.message}
-            </div>
-            <div className="flex flex-wrap pb-2">
+            <div className="flex flex-wrap gap-2">
                 <Participant user={props.blogPost.author} linkToProfile canRemove={false} />
+                {
+                    props.blogPost.labels.map(l => <BlogPostLabel label={l} />)
+                }
+            </div>
+            <div className="pb-2">
+                {props.blogPost.message}
             </div>
             <div className="w-full flex flex-row justify-center">
                 <div className="w-44 md:w-full">
