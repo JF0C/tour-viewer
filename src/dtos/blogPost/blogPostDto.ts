@@ -12,5 +12,6 @@ export type BlogPostDto = EntityBaseDto & {
     images: ImageReferenceDto[],
     coordinates: CoordinatesDto,
     author: UserReferenceDto,
-    comments?: CommentDto[]
+    comments?: CommentDto[],
+    labels: string[]
 }

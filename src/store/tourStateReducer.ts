@@ -9,6 +9,7 @@ import { LocalStorageKeys } from "../constants/LocalStorageKeys";
 import { EditingTour } from "../data/editingTour";
 import { TourSearchFilter } from "../data/tourSearchFilter";
 import { setDateNumbers } from "./stateHelpers";
+import { reloadBlogPostForTour } from "./blogPostThunk";
 
 export interface ITourState {
     loading: boolean;
@@ -221,6 +222,17 @@ export const tourStateSlice = createSlice({
         builder.addCase(createTrackRequest.rejected, (state) => {
             state.loading = false;
         });
+
+        builder.addCase(reloadBlogPostForTour.fulfilled, (state, action) => {
+            if (!state.selectedTour) {return;}
+            for (let track of state.selectedTour.tracks) {
+                for (let index in track.blogPosts) {
+                    if (track.blogPosts[index].id === action.payload.id) {
+                        track.blogPosts[index] = action.payload;
+                    }
+                }
+            }
+        })
     }
 })
 

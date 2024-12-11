@@ -7,6 +7,7 @@ import { deleteImageRequest, uploadImageRequest } from "./filesThunk";
 import { PaginationState } from "./paginationState";
 import { BlogPostSearchFilter } from "../data/blogPostSearchFilter";
 import { setDateNumbers } from "./stateHelpers";
+import { addLabelToBlogPostRequest, loadBlogPostLabelsRequest, removeLabelFromBlogPostRequest } from "./blogPostLabelThunk";
 
 export interface IBlogPostState {
     loading: boolean;
@@ -16,7 +17,10 @@ export interface IBlogPostState {
     fullSizeImages: string[];
     selectedFullSizeImage?: string;
 
+    availableLabels: string[];
+    availableLabelsLoaded: boolean;
     blogPosts: BlogPostDto[];
+    blogPostsLoaded: boolean;
     pagination: PaginationState;
     filter: BlogPostSearchFilter;
 }
@@ -26,7 +30,10 @@ const initialState: IBlogPostState = {
     coordinatesChanged: false,
     fullSizeImages: [],
 
+    availableLabelsLoaded: false,
+    availableLabels: [],
     blogPosts: [],
+    blogPostsLoaded: false,
     pagination: {
         page: 1,
         itemsPerPage: 10,
@@ -73,6 +80,11 @@ export const BlogPostSlice = createSlice({
                 state.editingBlogPost.message = action.payload;
             }
         },
+        addEditingBlogPostLabel(state, action: PayloadAction<string>) {
+            if (state.editingBlogPost && !state.editingBlogPost.labels.includes(action.payload)) {
+                state.editingBlogPost.labels.push(action.payload);
+            }
+        },
         addImageReferenceToEditingBlogpost(state, action: PayloadAction<string>) {
             if (state.editingBlogPost) {
                 if (!state.editingBlogPost.images.includes(action.payload)) {
@@ -83,6 +95,9 @@ export const BlogPostSlice = createSlice({
         setFullSizeImages(state, action: PayloadAction<{items: string[], selectedItem?: string}>) {
             state.fullSizeImages = action.payload.items;
             state.selectedFullSizeImage = action.payload.selectedItem;
+        },
+        setBlogPostSearchFilter(state, action: PayloadAction<BlogPostSearchFilter>) {
+            state.filter = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -109,7 +124,7 @@ export const BlogPostSlice = createSlice({
         builder.addCase(changeBlogPostMessageRequest.pending, (state) => {
             state.loading = true;
         });
-        builder.addCase(changeBlogPostMessageRequest.fulfilled, (state) => {
+        builder.addCase(changeBlogPostMessageRequest.fulfilled, (state, action) => {
             state.loading = false;
         });
         builder.addCase(changeBlogPostMessageRequest.rejected, (state) => {
@@ -216,6 +231,7 @@ export const BlogPostSlice = createSlice({
         });
         builder.addCase(searchBlogPostRequest.fulfilled, (state, action) => {
             state.loading = false;
+            state.blogPostsLoaded = true;
             state.blogPosts = action.payload.items;
             for (let b of state.blogPosts) {
                 setDateNumbers(b);
@@ -224,15 +240,51 @@ export const BlogPostSlice = createSlice({
                 }
             }
             state.pagination.page = action.payload.page;
+            state.pagination.itemsPerPage = action.meta.arg.count;
             state.pagination.totalPages = action.payload.totalPages;
             state.pagination.totalItems = action.payload.totalItems;
         });
         builder.addCase(searchBlogPostRequest.rejected, (state) => {
             state.loading = false;
+            state.blogPostsLoaded = true;
             state.blogPosts = [];
         });
+
+        builder.addCase(addLabelToBlogPostRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(addLabelToBlogPostRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(addLabelToBlogPostRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(removeLabelFromBlogPostRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(removeLabelFromBlogPostRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(removeLabelFromBlogPostRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(loadBlogPostLabelsRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(loadBlogPostLabelsRequest.fulfilled, (state, action) => {
+            state.loading = false;
+            state.availableLabels = action.payload;
+            state.availableLabelsLoaded = true;
+        });
+        builder.addCase(loadBlogPostLabelsRequest.rejected, (state) => {
+            state.loading = false;
+            state.availableLabels = [];
+            state.availableLabelsLoaded = true;
+        });
     }
-})
+});
 
 export const blogPostStateReducer = BlogPostSlice.reducer;
 
@@ -245,5 +297,6 @@ export const {
     addImageReferenceToEditingBlogpost,
     resetCoordinatesChanged,
     setSelectedBlogpost,
-    setFullSizeImages
+    setFullSizeImages,
+    setBlogPostSearchFilter
 } = BlogPostSlice.actions

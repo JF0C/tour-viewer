@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { changeEditingBlogpostMessage, changeEditingBlogpostTitle, setEditingBlogpost } from "../../store/blogPostStateReducer";
-import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "../../store/blogPostThunk";
+import { changeBlogPostMessageRequest, changeBlogPostTitleRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest, reloadBlogPostForTour } from "../../store/blogPostThunk";
 import { isAllowedToCreate, updateEditingBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loadTourRequest } from "../../store/tourThunk";
@@ -43,7 +43,8 @@ export const BlogPostEditor: FunctionComponent = () => {
                 longitude: blogPost.latitude,
                 images: blogPost.images,
                 trackId: blogPost.trackId,
-                trackFileReference: blogPost.trackFileReference
+                trackFileReference: blogPost.trackFileReference,
+                labels: blogPost.labels
             }))
                 .unwrap()
                 .then((blogPostId) => {
@@ -79,7 +80,7 @@ export const BlogPostEditor: FunctionComponent = () => {
                 message: message
             }))
             .unwrap()
-            .then(() => dispatch(loadBlogPostDetailRequest(blogPost.id)))
+            .then(() => dispatch(loadBlogPostDetailRequest(blogPost.id)));
         }
     }
 

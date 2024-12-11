@@ -39,7 +39,8 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
             title: props.blogPost.title,
             message: props.blogPost.message,
             latitude: props.blogPost.coordinates.latitude,
-            longitude: props.blogPost.coordinates.longitude
+            longitude: props.blogPost.coordinates.longitude,
+            labels: props.blogPost.labels
         }))
     }
 
@@ -60,6 +61,13 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
                     {props.blogPost.title}
                 </div>
                 <ImageSwipeContainer allowFullSizeView images={props.blogPost.images?.map(i => i.imageId) ?? []}/>
+                {
+                    props.blogPost.message ?
+                    <div className="pt-2 max-w-48 text-left flex-none truncate">
+                        {props.blogPost.message}
+                    </div>
+                    : <></>
+                }
                 <div>
                     <Button onClick={viewBlogPostDetail}>
                         <FontAwesomeIcon icon={faEye} />

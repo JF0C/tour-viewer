@@ -64,7 +64,8 @@ export const updateEditingBlogpost = (dispatch: AppDispatch, tour: TourDto, blog
                     trackFileReference: track.fileReference,
                     title: blog.title,
                     message: blog.message,
-                    images: blog.images.map(i => i.imageId)
+                    images: blog.images.map(i => i.imageId),
+                    labels: blog.labels
                 }));
             }
         }
@@ -109,8 +110,9 @@ export const mapClickEnd = (dispatch: AppDispatch,
                 message: '',
                 images: [],
                 trackId: track?.id ?? 0,
-                trackFileReference: track?.fileReference ?? ''
-            }))
+                trackFileReference: track?.fileReference ?? '',
+                labels: []
+            }));
         }
         else {
             dispatch(changeEditingBlogpostPosition(mapState.clickedEvent.location));

@@ -34,7 +34,13 @@ export const loadBlogPostDetailRequest = createGetThunk<BlogPostDto, number>(
     'get-blogpost',
     (blogPostId) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`,
     async (response) => await response.json()
-)
+);
+
+export const reloadBlogPostForTour = createGetThunk<BlogPostDto, number>(
+    'reload-blogpost-for-tour',
+    (blogPostId) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`,
+    async (response) => await response.json()
+);
 
 export const createBlogPostRequest = createPostThunk<number, CreateBlogPostDto>(
     'create-blogpost',

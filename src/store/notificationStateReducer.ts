@@ -2,13 +2,14 @@ import { createSlice, SerializedError } from "@reduxjs/toolkit";
 import { enqueueSnackbar } from "notistack";
 import { addRoleRequest, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, removeRoleRequest, validateUserAdmin } from "./adminThunk";
 import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
-import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest } from "./blogPostThunk";
+import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest, searchBlogPostRequest } from "./blogPostThunk";
 import { addParticipantRequest, changeTourStartDateRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeParticipantRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { changeUsernameRequest, deleteUserRequest, registerRequest } from "./userThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
 import { getAppVersion } from "./systemThunk";
 import { komootLoginRequest, komootToursRequest } from "./komootThunk";
+import { addLabelToBlogPostRequest, createLabelRequest, deleteLabelRequest, loadBlogPostLabelsRequest, removeLabelFromBlogPostRequest } from "./blogPostLabelThunk";
 
 export interface INotificationState {
     message?: string;
@@ -152,6 +153,10 @@ export const NotificationSlice = createSlice({
             snackError('deleting blog post', action.error);
         });
 
+        builder.addCase(searchBlogPostRequest.rejected, (_state, action) => {
+            snackError('loading blog posts', action.error);
+        });
+
         builder.addCase(loadUsersAdmin.rejected, (_state, action) => {
             snackError('loading users', action.error);
         });
@@ -220,6 +225,32 @@ export const NotificationSlice = createSlice({
 
         builder.addCase(komootToursRequest.rejected, (_state, action) => {
             snackError('loading Komoot tours', action.error);
+        });
+
+        builder.addCase(createLabelRequest.rejected, (_state, action) => {
+            snackError(`creating label "${action.meta.arg}"`, action.error);
+        });
+        builder.addCase(createLabelRequest.fulfilled, (_state, action) => {
+            enqueueSnackbar(`Label "${action.meta.arg}" created`, { variant: 'success' });
+        });
+
+        builder.addCase(deleteLabelRequest.rejected, (_state, action) => {
+            snackError(`deleting label "${action.meta.arg}"`, action.error);
+        });
+        builder.addCase(deleteLabelRequest.fulfilled, (_state, action) => {
+            enqueueSnackbar(`Label "${action.meta.arg}" deleted`, { variant: 'success' });
+        });
+
+        builder.addCase(addLabelToBlogPostRequest.rejected, (_state, action) => {
+            snackError(`adding label "${action.meta.arg}"`);
+        });
+
+        builder.addCase(removeLabelFromBlogPostRequest.rejected, (_state, action) => {
+            snackError(`removing label "${action.meta.arg}"`);
+        });
+
+        builder.addCase(loadBlogPostLabelsRequest.rejected, (_state, action) => {
+            snackError('loading blog post labels');
         });
     }
 });

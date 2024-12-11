@@ -7,4 +7,5 @@ export type CreateBlogPostDto = {
     latitude: number;
     longitude: number;
     images: string[];
+    labels: string[];
 }

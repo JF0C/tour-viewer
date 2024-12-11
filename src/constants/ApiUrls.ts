@@ -30,6 +30,7 @@ export class ApiUrls
     public static readonly TourEndpoint = '/Tour'
     public static readonly TrackEndpoint = '/Track'
     public static readonly BlogPostEndpoint = '/BlogPost'
+    public static readonly BlogPostLabelEndpoint = '/BlogPostLabel'
 
     public static readonly ExternalSourceEndpoint = '/ExternalTrackSource'
     public static readonly StravaClientIdEndpoint = '/StravaClientId'
