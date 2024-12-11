@@ -13,6 +13,7 @@ export const LongTapMapLocationConverter: FunctionComponent = () => {
     const selectedTracks = useAppSelector((state) => state.track.tracks.filter(t => t.selected) ?? []);
     const isContributor = useAppSelector((state) => state.auth.user?.roles.includes(Roles.Contributor) ?? false);
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
+    const isTourSelected = useAppSelector((state) => state.tour.selectedTour !== undefined);
 
     const map = useMap();
 
@@ -35,7 +36,7 @@ export const LongTapMapLocationConverter: FunctionComponent = () => {
     }
 
     if (mapState.releasePosition) {
-        mapClickEnd(dispatch, mapState, selectedTracks, isContributor, isEditingBlogPost);
+        mapClickEnd(dispatch, mapState, selectedTracks, isContributor, isEditingBlogPost, isTourSelected);
         if (mapState.isDraggingMarker) {
             const coordinates = tapPositionToCoordinates(mapState.releasePosition)
             markerDragEnd(dispatch, coordinates, selectedTracks);

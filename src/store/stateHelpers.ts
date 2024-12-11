@@ -87,10 +87,11 @@ export const mapClickEnd = (dispatch: AppDispatch,
     mapState: IMapState,
     selectedTracks: TrackEntity[],
     isContributor: boolean,
-    isEditingBlogPost: boolean
+    isEditingBlogPost: boolean,
+    isTourSelected: boolean
 ) => {
 
-    if (mapState.isDraggingMarker) {
+    if (mapState.isDraggingMarker || !isTourSelected) {
         return;
     }
 

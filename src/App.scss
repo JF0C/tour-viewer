@@ -2,6 +2,7 @@ $primary: #1c1d25;
 $primary-half: #1c1d258f;
 $secondary: rgb(64, 59, 51);
 $button-font-color: #1976d2;
+$light-font-color: rgba(255, 255, 255, 0.5);
 
 $mobile-info-bar-height: 40vh;
 $desktop-info-bar-width: 300px;
@@ -95,7 +96,7 @@ td {
 }
 
 .MuiTextField-root label {
-  color: rgba(255, 255, 255, 0.5);
+  color: $light-font-color;
 }
 
 .MuiSelect-select.MuiInputBase-input {
@@ -105,7 +106,7 @@ td {
 
 .MuiFormControl-root label {
   font-size: 16px;
-  color:rgba(255, 255, 255, 0.5);
+  color: $light-font-color;
 }
 
 .MuiFormControl-root .MuiInputBase-root {
