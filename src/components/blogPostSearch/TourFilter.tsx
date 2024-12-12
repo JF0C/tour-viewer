@@ -1,7 +1,8 @@
+import { Button, TextField } from "@mui/material";
 import { FunctionComponent, useState } from "react";
-import { Button, Modal, TextField } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setBlogPostSearchFilter } from "../../store/blogPostStateReducer";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { ModalBaseLayout } from "../shared/ModalBaseLayout";
 import { TourListBase } from "../tourView/TourListBase";
 
 export const TourFilter: FunctionComponent = () => {
@@ -28,23 +29,19 @@ export const TourFilter: FunctionComponent = () => {
     return <>
         <TextField sx={{ width: '100px' }} label="Tour" size="small" className="no-input-text-field"
             value={blogPostState.filter.tourName ?? 'All'} onClick={() => setOpen(true)} />
-        <Modal open={open} onClose={() => setOpen(false)}>
-            <div id="modal-background" onClick={onBackgroundClick} className="flex flex-col items-center justify-center h-full">
-                <div className="base-modal flex flex-col justify-center border border-solid rounded-lg text-white p-4">
-                    <div className="flex flex-row flex-wrap max-w-80">
-                        <TourListBase>
-                            {
-                                tours.map(t => <Button key={t.id} onClick={() => setTourFilter(t.id, t.name)}>
-                                    {t.name}
-                                </Button>)
-                            }
-                        </TourListBase>
-                    </div>
-                    <div className="flex flex-row justify-between">
-                        <Button onClick={() => setTourFilter(undefined, undefined)}>All</Button>
-                        <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    </div>
-                </div>
+        <ModalBaseLayout open={open} openChange={setOpen} bottomRow={
+            <div className="flex flex-row justify-between">
+                <Button onClick={() => setTourFilter(undefined, undefined)}>All</Button>
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
             </div>
-        </Modal></>
+        }>
+            <TourListBase>
+                {
+                    tours.map(t => <Button key={t.id} onClick={() => setTourFilter(t.id, t.name)}>
+                        {t.name}
+                    </Button>)
+                }
+            </TourListBase>
+        </ModalBaseLayout>
+    </>
 }

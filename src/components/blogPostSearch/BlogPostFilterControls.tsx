@@ -8,6 +8,7 @@ import { AuthorSelector } from "./AuthorSelector";
 import { DateRangePicker } from "./DateRangePicker";
 import { BlogPostTitleFilter } from "./BlogPostTitleFilter";
 import { TourFilter } from "./TourFilter";
+import { LabelsFilter } from "./LabelsFilter";
 
 export const BlogPostFilterControls: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ export const BlogPostFilterControls: FunctionComponent = () => {
             <BlogPostTitleFilter />
             <TourFilter />
             <AuthorSelector />
+            <LabelsFilter />
             <DateRangePicker />
         </div>
     </div>

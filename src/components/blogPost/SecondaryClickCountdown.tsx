@@ -6,6 +6,7 @@ import { useState } from "react";
 import { isAllowedToCreate } from "../../store/stateHelpers";
 
 export const SecondaryClickCountdown = () => {
+    const isShowingTours = useAppSelector((state) => state.view.mapMode === 'tours')
     const mapState = useAppSelector((state) => state.map);
     const position = mapState.clickedEvent.location;
     const clickedTime = mapState.clickedEvent.time;
@@ -16,7 +17,7 @@ export const SecondaryClickCountdown = () => {
     const [points, setPoints] = useState<LatLng[]>([]);
     const [running, setRunning] = useState(false);
 
-    if (!position || !canEdit || isDraggingMarker) {
+    if (!position || !canEdit || isDraggingMarker || !isShowingTours) {
         if (points.length > 0) {
             setPoints([]);
         }

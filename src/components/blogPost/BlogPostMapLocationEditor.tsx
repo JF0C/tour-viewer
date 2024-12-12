@@ -17,7 +17,9 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
     const isTourSelected = useAppSelector((state) => state.tour.selectedTour !== undefined);
     const mapState = useAppSelector((state) => state.map);
-    const barState = useAppSelector((state) => state.view.dataSelectorBarState);
+    const viewState = useAppSelector((state) => state.view);
+    const barState = viewState.dataSelectorBarState;
+    const isShowingTours = viewState.mapMode === 'tours';
 
     const map = useMap();
 
@@ -50,7 +52,7 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
             dispatch(setZoomLevel(e.target._zoom));
         },
         mouseup() {
-            mapClickEnd(dispatch, mapState, selectedTracks, isContributor, isEditingBlogPost, isTourSelected);
+            mapClickEnd(dispatch, mapState, selectedTracks, isTourSelected && isShowingTours, isContributor, isEditingBlogPost);
         }
     });
 

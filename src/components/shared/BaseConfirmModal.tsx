@@ -1,5 +1,6 @@
 import { Button, Modal } from "@mui/material";
 import { FunctionComponent, ReactElement, useState } from "react";
+import { ModalBaseLayout } from "./ModalBaseLayout";
 
 export type BaseConfirmModalProps = {
     children?: ReactElement | string;
@@ -38,27 +39,25 @@ export const BaseConfirmModal: FunctionComponent<BaseConfirmModalProps> = (props
                 {props.buttonContent}
             </Button>
         </div>
-        <Modal open={modalOpenExt} onClose={() => (setModalOpen(false))}>
-            <div className="flex flex-col items-center justify-center h-full">
-                <div className="base-modal flex flex-col justify-center border border-solid rounded-lg text-white p-4">
-                    <div onClick={onSelection} className="flex flex-row flex-wrap max-w-80">
-                        {props.children}
-                    </div>
-                    <div className={`flex flex-row items-center ${props.hideCancel ? 'justify-center' : 'justify-between'}`}>
-                        {
-                            !props.hideCancel ?
-                                <Button color={props.cancelType ?? 'primary'} onClick={() => { props.onCancel?.(); setModalOpen(false); }}>
-                                    {props.cancelText ?? 'Cancel'}
-                                </Button>
-                                : <></>
-                        }
-                        <Button disabled={props.disableConfirm} color={props.confirmType ?? 'primary'} onClick={
-                            () => { setModalOpen(false); props.onConfirm(); }}>
-                            {props.confirmText ?? 'Confirm'}
+        <ModalBaseLayout open={modalOpenExt} openChange={setModalOpen}
+            bottomRow={
+                <div className={`flex flex-row w-full ${props.hideCancel ? 'justify-center' : 'justify-between'}`}>
+                {
+                    !props.hideCancel ?
+                        <Button color={props.cancelType ?? 'primary'} onClick={() => { props.onCancel?.(); setModalOpen(false); }}>
+                            {props.cancelText ?? 'Cancel'}
                         </Button>
-                    </div>
-                </div>
+                        : <></>
+                }
+                    <Button disabled={props.disableConfirm} color={props.confirmType ?? 'primary'} onClick={
+                        () => { setModalOpen(false); props.onConfirm(); }}>
+                        {props.confirmText ?? 'Confirm'}
+                    </Button>
+                </div>}
+        >
+            <div onClick={onSelection} className="flex flex-row flex-wrap">
+                {props.children}
             </div>
-        </Modal>
+        </ModalBaseLayout>
     </>
 }

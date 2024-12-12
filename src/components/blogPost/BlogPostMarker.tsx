@@ -60,7 +60,7 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
                 <div className="font-bold text-xl">
                     {props.blogPost.title}
                 </div>
-                <ImageSwipeContainer allowFullSizeView images={props.blogPost.images?.map(i => i.imageId) ?? []}/>
+                <ImageSwipeContainer rounded allowFullSizeView images={props.blogPost.images?.map(i => i.imageId) ?? []}/>
                 {
                     props.blogPost.message ?
                     <div className="pt-2 max-w-48 text-left flex-none truncate">

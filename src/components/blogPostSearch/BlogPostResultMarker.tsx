@@ -18,8 +18,8 @@ export const BlogPostResultMarker: FunctionComponent<BlogPostResultMarkerProps> 
                 <div className="w-full text-center text-xl font-bold">
                     {props.blogPost.title}
                 </div>
-                <ImageSwipeContainer images={props.blogPost.images.map(i => i.imageId)} />
-                <div className="max-w-32 truncate">
+                <ImageSwipeContainer rounded allowFullSizeView images={props.blogPost.images.map(i => i.imageId)} />
+                <div className="max-w-48 truncate">
                     {props.blogPost.message}
                 </div>
             </div>

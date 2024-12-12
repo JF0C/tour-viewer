@@ -25,7 +25,7 @@ export const blogpostRequestToUrl = (request: BlogpostPageRequestDto) => {
     if (request.bounds) {
         requestUrl += `&bounds={"north":${request.bounds.north},"south":${request.bounds.south},"west":${request.bounds.west},"east":${request.bounds.east}}`
     }
-    if (request.labels) {
+    if (request.labels && request.labels.length > 0) {
         requestUrl += `&labels=[${request.labels.map(l => `"${l}"`).join(',')}]`
     }
     return requestUrl;

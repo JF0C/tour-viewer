@@ -74,12 +74,12 @@ export const loadUserDetail = (dispatch: AppDispatch, detailedUser: UserDetailDt
 export const mapClickEnd = (dispatch: AppDispatch,
     mapState: IMapState,
     selectedTracks: TrackEntity[],
+    canEdit: boolean,
     isContributor: boolean,
-    isEditingBlogPost: boolean,
-    isTourSelected: boolean
+    isEditingBlogPost: boolean
 ) => {
 
-    if (mapState.isDraggingMarker || !isTourSelected) {
+    if (mapState.isDraggingMarker || !canEdit) {
         return;
     }
 

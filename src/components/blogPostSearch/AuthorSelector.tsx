@@ -6,6 +6,7 @@ import { searchBlogPostRequest } from "../../store/blogPostThunk";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { UserSearch } from "../user/UserSearch";
 import { UserSearchResult } from "../user/UserSearchResult";
+import { ModalBaseLayout } from "../shared/ModalBaseLayout";
 
 export const AuthorSelector: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -25,29 +26,22 @@ export const AuthorSelector: FunctionComponent = () => {
         }));
     }
 
-    const onBackgroundClick = (e: any) => {
-        if (e.target.id === 'modal-background') {
-            setOpen(false);
-        }
-    }
-
     return <>
         <TextField sx={{ width: '100px' }} label="Author" size="small" className="no-input-text-field"
             value={searchFilter.authorName ?? 'All'} onClick={() => setOpen(true)} />
-        <Modal open={open} onClose={() => setOpen(false)}>
-            <div id="modal-background" onClick={onBackgroundClick} className="flex flex-col items-center justify-center h-full">
-                <div className="base-modal flex flex-col justify-center border border-solid rounded-lg text-white p-4">
-                    <div className="flex flex-row flex-wrap max-w-80">
-                        <UserSearch>
-                            <UserSearchResult onUserSelected={userSelected} />
-                        </UserSearch>
-                    </div>
-                    <div className="flex flex-row justify-between">
-                        <Button onClick={() => userSelected({username: undefined!, id: undefined!})}>All</Button>
-                        <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    </div>
+        <ModalBaseLayout open={open} openChange={setOpen}
+            bottomRow={
+                <div className="flex flex-row justify-between">
+                    <Button onClick={() => userSelected({ username: undefined!, id: undefined! })}>All</Button>
+                    <Button onClick={() => setOpen(false)}>Cancel</Button>
                 </div>
+            }
+        >
+            <div className="flex flex-row flex-wrap">
+                <UserSearch>
+                    <UserSearchResult onUserSelected={userSelected} />
+                </UserSearch>
             </div>
-        </Modal>
+        </ModalBaseLayout>
     </>
 }
