@@ -9,6 +9,7 @@ import { DateRangePicker } from "./DateRangePicker";
 import { BlogPostTitleFilter } from "./BlogPostTitleFilter";
 import { TourFilter } from "./TourFilter";
 import { LabelsFilter } from "./LabelsFilter";
+import { SearchPagination } from "./SearchPagination";
 
 export const BlogPostFilterControls: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -21,7 +22,7 @@ export const BlogPostFilterControls: FunctionComponent = () => {
     return <div className="info-bar-content flex flex-col" >
         <div className="p-2 flex flex-row justify-between text-xl items-center bg-primary mb-2">
             <div className="font-bold flex-1">
-                {blogPostState.blogPosts.length} of {blogPostState.pagination.totalItems} Posts
+                Blog Post Filter
             </div>
             <div className="flex flex-row">
                 <Button onClick={close} style={{ minWidth: '20px' }}>
@@ -35,6 +36,7 @@ export const BlogPostFilterControls: FunctionComponent = () => {
             <AuthorSelector />
             <LabelsFilter />
             <DateRangePicker />
+            <SearchPagination />
         </div>
     </div>
 }

@@ -117,6 +117,10 @@ export const BlogPostSlice = createSlice({
         },
         setBlogPostSearchFilter(state, action: PayloadAction<BlogPostSearchFilter>) {
             state.filter = action.payload;
+        },
+        setBlogPostSearchPagination(state, action: PayloadAction<{page?: number, count?: number}>) {
+            state.pagination.page = action.payload.page ?? state.pagination.page;
+            state.pagination.itemsPerPage = action.payload.count ?? state.pagination.itemsPerPage;
         }
     },
     extraReducers: (builder) => {
@@ -311,5 +315,6 @@ export const {
     resetCoordinatesChanged,
     setSelectedBlogpost,
     setFullSizeImages,
-    setBlogPostSearchFilter
+    setBlogPostSearchFilter,
+    setBlogPostSearchPagination
 } = BlogPostSlice.actions
