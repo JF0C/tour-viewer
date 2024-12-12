@@ -118,6 +118,11 @@ export const tourStateSlice = createSlice({
         },
         setTourSearchFilter(state, action: PayloadAction<TourSearchFilter>) {
             state.tourSearchFilter = action.payload;
+            // state.toursLoaded = false;
+        },
+        setTourPagination(state, action: PayloadAction<{page?: number, count?: number}>) {
+            state.tourPagination.page = action.payload.page ?? state.tourPagination.page;
+            state.tourPagination.itemsPerPage = action.payload.count ?? state.tourPagination.itemsPerPage;
         }
     },
     extraReducers: (builder) => {
@@ -148,7 +153,6 @@ export const tourStateSlice = createSlice({
                     setDateNumbers(track);
                 }
             }
-            state.tourPagination.page = action.payload.page;
             state.tourPagination.totalItems = action.payload.totalItems;
             state.tourPagination.totalPages = action.payload.totalPages;
             state.toursLoaded = true;
@@ -249,5 +253,6 @@ export const {
     clearTracksToMerge,
     addTrackToMerge,
     removeTrackToMerge,
-    setTourSearchFilter
+    setTourSearchFilter,
+    setTourPagination
 } = tourStateSlice.actions;

@@ -28,16 +28,18 @@ export const TourPreviewPagination: FunctionComponent = () => {
             </div>
         </div>
         {
-            tourState.loading ? <LoadingSpinner /> :
-                <div className="p-2 flex flex-col gap-2">
-                    <TourFilterControls />
-                    <div className="flex flex-row flex-wrap gap-2 py-2">
-                        {
-                            tourState.tours.map((t, i) => <SearchResultItem key={'tour-result-' + t.id} index={i} tour={t} />)
-                        }
-                    </div>
-                    <TourSearchPagination />
-                </div>
+            <div className="p-2 flex flex-col gap-2">
+                <TourFilterControls />
+                {
+                    tourState.loading ? <LoadingSpinner /> :
+                        <div className="flex flex-row flex-wrap gap-2 py-2">
+                            {
+                                tourState.tours.map((t, i) => <SearchResultItem key={'tour-result-' + t.id} index={i} tour={t} />)
+                            }
+                        </div>
+                }
+                <TourSearchPagination />
+            </div>
         }
     </div>
 }

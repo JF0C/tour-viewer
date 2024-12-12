@@ -1,17 +1,17 @@
-import { FunctionComponent, useMemo } from "react";
+import { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { TourSearchFilter } from "../../data/tourSearchFilter";
 import { searchTours } from "../../store/tourThunk";
-import { FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Button, TextField } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { setTourSearchFilter } from "../../store/tourStateReducer";
 import { AthleteSelector } from "./AthleteSelector";
+import { TourNameFilter } from "./TourNameFilter";
 
 export const TourFilterControls: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tourState = useAppSelector((state) => state.tour);
-
     const [years, months] = useMemo(() => {
         const years: number[] = [];
         const maxYear = (new Date()).getFullYear() + 3;
@@ -25,14 +25,28 @@ export const TourFilterControls: FunctionComponent = () => {
 
     const search = (filter: TourSearchFilter) => {
         dispatch(setTourSearchFilter(filter));
-        dispatch(searchTours({
-            page: 1,
-            count: tourState.tourPagination.itemsPerPage,
-            ...filter
-        }));
     }
 
+    useEffect(() => {
+        
+        const request = {
+            ...tourState.tourSearchFilter,
+            page: tourState.tourPagination.page,
+            count: tourState.tourPagination.itemsPerPage
+        }
+        console.log(request);
+        dispatch(searchTours(request));
+    }, [
+        tourState.tourPagination.itemsPerPage,
+        tourState.tourPagination.page,
+        tourState.tourSearchFilter.month,
+        tourState.tourSearchFilter.year,
+        tourState.tourSearchFilter.participantId,
+        tourState.tourSearchFilter.name,
+    ])
+
     return <div className="flex flex-row flex-wrap gap-2">
+        <TourNameFilter />
         <div className="flex flex-row">
             <FormControl fullWidth size="small">
                 <InputLabel id="year-select-label">Year</InputLabel>
@@ -41,11 +55,13 @@ export const TourFilterControls: FunctionComponent = () => {
                     id="tour-year-select"
                     value={tourState.tourSearchFilter.year ?? 0}
                     label="Year"
-                    onChange={(e) => search({
+                    onChange={(e) => {
+                        console.log('setting year');
+                        search({
                         ...tourState.tourSearchFilter,
                         year: e.target.value === 0 ? undefined : Number(e.target.value),
                         month: e.target.value === 0 ? undefined : tourState.tourSearchFilter.month
-                    })}
+                    })}}
                 >
                     <MenuItem value={0}>All</MenuItem>
                     {
@@ -74,10 +90,12 @@ export const TourFilterControls: FunctionComponent = () => {
                             id="tour-month-select"
                             value={tourState.tourSearchFilter.month ?? 0}
                             label="Month"
-                            onChange={(e) => search({
+                            onChange={(e) => {
+                                console.log('setting month')
+                                search({
                                 ...tourState.tourSearchFilter,
                                 month: e.target.value === 0 ? undefined : Number(e.target.value)
-                            })}
+                            })}}
                         >
                             <MenuItem value={0}>All</MenuItem>
                             {

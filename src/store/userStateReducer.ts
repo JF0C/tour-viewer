@@ -5,7 +5,6 @@ import { PaginationState } from "./paginationState";
 import { searchUsers } from "./userThunk";
 import { searchToursForUser } from "./tourThunk";
 import { searchBlogPostsForUser } from "./blogPostThunk";
-import { setDateNumbers } from "./stateHelpers";
 
 export interface IUserState {
     users?: UserReferenceDto[];
@@ -18,7 +17,7 @@ const initialState: IUserState = {
     userPagination: {
         page: 1,
         itemsPerPage: 10,
-        totalPages: 1,
+        totalPages: 2,
         totalItems: 1
     }
 }
@@ -36,6 +35,10 @@ export const userStateSlice = createSlice({
                 toursPerPage: 10,
                 blogPostsPerPage: 10
             }
+        },
+        setUserPagination(state, action: PayloadAction<{page?: number, count?: number}>) {
+            state.userPagination.page = action.payload.page ?? state.userPagination.page;
+            state.userPagination.itemsPerPage = action.payload.count ?? state.userPagination.itemsPerPage;   
         }
     },
     extraReducers: (builder) => {
@@ -85,5 +88,6 @@ export const userStateSlice = createSlice({
 export const userStateReducer = userStateSlice.reducer;
 
 export const {
-    setUserDetail
+    setUserDetail,
+    setUserPagination
 } = userStateSlice.actions;

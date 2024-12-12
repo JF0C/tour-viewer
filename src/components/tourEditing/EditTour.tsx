@@ -6,7 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
 import { millisToUtcDate } from "../../converters/dateConverters";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setEditingTour, setEditingTourName, setEditingTourStartDate } from "../../store/tourStateReducer";
+import { setEditingTour, setEditingTourName, setEditingTourStartDate, setSelectedTourId } from "../../store/tourStateReducer";
 import { changeTourStartDateRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "../../store/tourThunk";
 import { clearTracks, resetBoundsSet } from "../../store/trackStateReducer";
 import { loadTrackRequest } from "../../store/trackThunk";
@@ -70,10 +70,8 @@ export const EditTour: FunctionComponent = () => {
     const deleteTour = () => {
         dispatch(deleteTourRequest(tourState.editingTour.id))
             .unwrap().then(() => {
-                dispatch(searchTours({
-                    page: pagination.page,
-                    count: pagination.itemsPerPage
-                })).then(() => navigate(Paths.HomePage));
+                dispatch(setSelectedTourId(undefined));
+                navigate(Paths.HomePage);
             })
     }
 

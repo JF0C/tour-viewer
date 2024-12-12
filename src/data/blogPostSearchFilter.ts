@@ -8,4 +8,6 @@ export type BlogPostSearchFilter = {
     authorName?: string
     bounds?: GeoBounds
     labels?: string[]
+    fromDate?: number
+    toDate?: number
 }

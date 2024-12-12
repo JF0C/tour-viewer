@@ -18,8 +18,9 @@ export const TourList: FunctionComponent<TourListProps> = (props) => {
     }
 
     if (tourState.tours.length === 0 && !tourState.loading) {
-        dispatch(searchTours({ page: tourState.tourPagination.page, count: tourState.tourPagination.itemsPerPage }))
+        changePage(tourState.tourPagination.page);
     }
+    
     if (tourState.loading) {
         return <LoadingSpinner />
     }

@@ -1,8 +1,10 @@
 import { Input, Pagination } from "@mui/material";
-import { FunctionComponent, ReactNode, useState } from "react";
+import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { searchUsers } from "../../store/userThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { useDebounce } from "use-debounce";
+import { setUserPagination } from "../../store/userStateReducer";
 
 export type UserSearchProps = {
     children: ReactNode
@@ -12,42 +14,26 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (props) => {
     const dispatch = useAppDispatch();
     const userState = useAppSelector((state) => state.user);
     const [usernameFilter, setUsernameFilter] = useState('');
-    const [lastSearchTime, setLastSearchTime] = useState(0);
     const debounceInterval = 1000;
+    const [debouncedUsernameFilter] = useDebounce(usernameFilter, debounceInterval);
 
     const changePage = (page: number) => {
-        dispatch(searchUsers({
+        dispatch(setUserPagination({
             page: page,
-            count: userState.userPagination.itemsPerPage,
-            username: usernameFilter
+            count: userState.userPagination.itemsPerPage
         }));
     }
 
-    const filterUsers = (username: string) => {
-        setUsernameFilter(username);
-        const currentTime = Date.now();
-        if (currentTime < lastSearchTime + debounceInterval) {
-            return;
-        }
-        setLastSearchTime(currentTime);
-        const request = {
-            page: userState.userPagination.page,
-            count: userState.userPagination.itemsPerPage,
-            username: username
-        }
-        console.log(request);
-        dispatch(searchUsers(request));
-    }
-
-    if (userState.users === undefined && !userState.loading) {
+    useEffect(() => {
         dispatch(searchUsers({
             page: userState.userPagination.page,
             count: userState.userPagination.itemsPerPage,
-            username: usernameFilter
+            username: debouncedUsernameFilter
         }));
-    }
+    }, [debouncedUsernameFilter, userState.userPagination.page, userState.userPagination.itemsPerPage])
+
     return <div className="w-56">
-        <Input placeholder="Search user" value={usernameFilter} onChange={e => filterUsers(e.target.value)} />
+        <Input placeholder="Search user" value={usernameFilter} onChange={e => setUsernameFilter(e.target.value)} />
         {
             userState.loading ? <LoadingSpinner /> :
                 <>

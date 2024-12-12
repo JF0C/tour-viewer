@@ -31,6 +31,9 @@ const viewStateSlice = createSlice({
         },
         setMenubarOpen(state, action: PayloadAction<boolean>) {
             state.menubarOpen = action.payload;
+        },
+        setMapMode(state, action: PayloadAction<'tours' | 'blogPosts'>) {
+            state.mapMode = action.payload;
         }
     }
 })
@@ -40,6 +43,7 @@ export const {
     setInfobarOpen,
     setInfoBarLarge,
     setMenubarOpen,
-    setDataBarState
+    setDataBarState,
+    setMapMode
 } = viewStateSlice.actions;
 

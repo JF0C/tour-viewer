@@ -7,14 +7,16 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setSelectedBlogpost } from "../../store/blogPostStateReducer";
 import { setInfobarOpen } from "../../store/viewStateReducer";
 import { TourPreviewPagination } from "../tourSearch/TourSearch";
+import { BlogPostFilterControls } from "../blogPostSearch/BlogPostFilterControls";
 
 export const Infobar: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
     const selectedBlogPost = useAppSelector((state) => state.blog.selectedBlogPost);
     const tourIsSelected = useAppSelector((state) => state.tour.selectedTour);
-    const infoBarVisible = useAppSelector((state) => state.view.infobarOpen) || isEditingBlogPost || Boolean(selectedBlogPost);
-    const infoBarLarge = useAppSelector((state) => state.view.infobarLarge);
+    const viewState = useAppSelector((state) => state.view);
+    const infoBarVisible = viewState.infobarOpen || isEditingBlogPost || Boolean(selectedBlogPost);
+    const infoBarLarge = viewState.infobarLarge;
 
     const isMobile = window.innerWidth < 768;
 
@@ -37,6 +39,7 @@ export const Infobar: FunctionComponent = () => {
             {
                 isEditingBlogPost ? <BlogPostEditor /> :
                 selectedBlogPost !== undefined ? <BlogPostDetails blogPost={selectedBlogPost} /> :
+                viewState.mapMode === 'blogPosts' ? <BlogPostFilterControls /> :
                 tourIsSelected ? <TourDataSwipeContainer /> :
                 <TourPreviewPagination />
             }
