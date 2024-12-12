@@ -6,6 +6,8 @@ import { Button } from "@mui/material";
 import { setInfobarOpen } from "../../store/viewStateReducer";
 import { AuthorSelector } from "./AuthorSelector";
 import { DateRangePicker } from "./DateRangePicker";
+import { BlogPostTitleFilter } from "./BlogPostTitleFilter";
+import { TourFilter } from "./TourFilter";
 
 export const BlogPostFilterControls: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -26,7 +28,11 @@ export const BlogPostFilterControls: FunctionComponent = () => {
                 </Button>
             </div>
         </div>
-        <AuthorSelector />
-        <DateRangePicker />
+        <div className="flex flex-row flex-wrap gap-2 p-2">
+            <BlogPostTitleFilter />
+            <TourFilter />
+            <AuthorSelector />
+            <DateRangePicker />
+        </div>
     </div>
 }

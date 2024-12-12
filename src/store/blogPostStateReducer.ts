@@ -253,8 +253,6 @@ export const BlogPostSlice = createSlice({
                     setDateNumbers(c);
                 }
             }
-            state.pagination.page = action.payload.page;
-            state.pagination.itemsPerPage = action.meta.arg.count;
             state.pagination.totalPages = action.payload.totalPages;
             state.pagination.totalItems = action.payload.totalItems;
         });

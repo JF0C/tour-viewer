@@ -5,6 +5,7 @@ import { searchUsers } from "../../store/userThunk";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { useDebounce } from "use-debounce";
 import { setUserPagination } from "../../store/userStateReducer";
+import { Timeouts } from "../../constants/Timeouts";
 
 export type UserSearchProps = {
     children: ReactNode
@@ -14,8 +15,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (props) => {
     const dispatch = useAppDispatch();
     const userState = useAppSelector((state) => state.user);
     const [usernameFilter, setUsernameFilter] = useState('');
-    const debounceInterval = 1000;
-    const [debouncedUsernameFilter] = useDebounce(usernameFilter, debounceInterval);
+    const [debouncedUsernameFilter] = useDebounce(usernameFilter, Timeouts.DebounceTime);
 
     const changePage = (page: number) => {
         dispatch(setUserPagination({

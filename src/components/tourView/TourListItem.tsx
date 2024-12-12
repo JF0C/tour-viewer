@@ -14,7 +14,7 @@ import { faSquare, faCheckSquare } from "@fortawesome/free-regular-svg-icons";
 
 export type TourListItemProps = {
     tour: TourDto;
-    onSelected: () => void;
+    onSelected: (tour: TourDto) => void;
 }
 
 export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
@@ -30,14 +30,14 @@ export const TourListItem: FunctionComponent<TourListItemProps> = (props) => {
         dispatch(loadTourRequest(tourId))
             .unwrap()
             .catch()
-            .then(() => props.onSelected?.())
+            .then(() => props.onSelected?.(props.tour))
     }
     const editTour = (tourId: number) => {
         dispatch(loadTourRequest(tourId))
             .unwrap()
             .catch()
             .then((tour) => {
-                props.onSelected?.();
+                props.onSelected?.(props.tour);
                 dispatch(setEditingTour(tour))
                 navigate(Paths.EditTourPage);
             })

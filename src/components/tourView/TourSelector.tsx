@@ -20,7 +20,7 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
     const [open, setOpen] = useState(false);
     const [, storeSelectedTourId] = useSelectedTourId();
 
-    const deselectTour = () => {
+    const showAllTours = () => {
         setOpen(false);
         storeSelectedTourId(null);
         dispatch(setSelectedTourId(0));
@@ -29,7 +29,7 @@ export const TourSelector: FunctionComponent<TourSelectorProps> = (props) => {
 
     return <BaseConfirmModal onConfirm={() => setOpen(false)} 
             onOpen={() => setOpen(true)} open={open} 
-            cancelText='Show All' onCancel={deselectTour}
+            cancelText='Show All' onCancel={showAllTours}
             confirmText='Done'
             buttonContent={<div>
                 {

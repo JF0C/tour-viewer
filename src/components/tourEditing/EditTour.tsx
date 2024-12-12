@@ -21,7 +21,6 @@ import { TrackList } from "./TrackList";
 
 export const EditTour: FunctionComponent = () => {
     const dispatch = useAppDispatch();
-    const pagination = useAppSelector((state) => state.tour.tourPagination);
     const navigate = useNavigate();
     const tourState = useAppSelector((state) => state.tour);
 

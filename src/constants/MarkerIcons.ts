@@ -96,7 +96,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly postWhite = L.icon({
+    public static readonly blogPost = L.icon({
         iconUrl: markerIconBlogPost,
         shadowUrl: markerShadow,
         iconSize: [25, 41],
@@ -105,7 +105,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly postNew = L.icon({
+    public static readonly blogPostNew = L.icon({
         iconUrl: markerIconMoveTo,
         shadowUrl: markerShadow,
         iconSize: [25, 41],
@@ -114,7 +114,7 @@ export class MarkerIcons {
         shadowSize: [41, 41]
     });
 
-    public static readonly postOld = L.icon({
+    public static readonly blogPostOld = L.icon({
         iconUrl: markerIconMoveFrom,
         shadowUrl: markerShadow,
         iconSize: [25, 41],

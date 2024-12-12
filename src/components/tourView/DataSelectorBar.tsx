@@ -1,12 +1,14 @@
+import { faComment, faMap } from "@fortawesome/free-regular-svg-icons";
+import { faChevronDown, faChevronRight, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { setDataBarState, setMapMode } from "../../store/viewStateReducer";
 import { TourSelector } from "./TourSelector";
 import { TrackSelector } from "./TrackSelector";
-import { Button } from "@mui/material";
-import { setDataBarState, setMapMode } from "../../store/viewStateReducer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { faComment, faMap } from "@fortawesome/free-regular-svg-icons";
+import { useSelectedTourId } from "../../hooks/selectedTourHook";
+import { setSelectedTourId, resetSelectedTour } from "../../store/tourStateReducer";
 
 
 export const TourSelectorBar: FunctionComponent = () => {
@@ -23,19 +25,24 @@ export const TourSelectorBar: FunctionComponent = () => {
         dispatch(setDataBarState('show'));
     }
 
+    const showBlogPosts = () => {
+        dispatch(setMapMode('blogPosts'));
+    }
+
     return <>
         <div id='data-selector-bar-content' className={`flex flex-row w-full absolute justify-center ${barState}`}>
             <div style={{ zIndex: 1000 }} className="selector-field rounded-md border-black flex flex-row flex-wrap">
                 <div className={`${barState} flex flex-row flex-wrap`}>
                     {
                         viewState.mapMode === 'tours' ?
-                            <>
-                                <Button onClick={() => dispatch(setMapMode('blogPosts'))} sx={{ minWidth: '40px' }}>
+                            <div className="flex flex-row items-center">
+                                <Button onClick={showBlogPosts} sx={{ minWidth: '40px' }}>
                                     <FontAwesomeIcon icon={faComment} />
                                 </Button>
+                                <FontAwesomeIcon icon={faEllipsisVertical}/>
                                 <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
                                 <TrackSelector />
-                            </>
+                            </div>
                             :
                             <Button onClick={() => dispatch(setMapMode('tours'))} sx={{ minWidth: '40px' }}>
                                 <FontAwesomeIcon icon={faMap} />

@@ -23,12 +23,6 @@ export const AuthorSelector: FunctionComponent = () => {
             authorName: user.username,
             author: user.id
         }));
-        dispatch(searchBlogPostRequest({
-            page: 1,
-            count: blogPostState.pagination.itemsPerPage,
-            ...searchFilter,
-            author: user.id
-        }))
     }
 
     const onBackgroundClick = (e: any) => {
@@ -38,8 +32,8 @@ export const AuthorSelector: FunctionComponent = () => {
     }
 
     return <>
-        <TextField sx={{ width: '100px' }} label="Author" size="small" className="author-select-field"
-            value={searchFilter.author ?? 'All'} onClick={() => setOpen(true)} />
+        <TextField sx={{ width: '100px' }} label="Author" size="small" className="no-input-text-field"
+            value={searchFilter.authorName ?? 'All'} onClick={() => setOpen(true)} />
         <Modal open={open} onClose={() => setOpen(false)}>
             <div id="modal-background" onClick={onBackgroundClick} className="flex flex-col items-center justify-center h-full">
                 <div className="base-modal flex flex-col justify-center border border-solid rounded-lg text-white p-4">

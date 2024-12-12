@@ -22,7 +22,7 @@ export const DateRangePicker: FunctionComponent = () => {
     }
 
     
-    return <div>
+    return <div className="flex flex-row flex-wrap gap-2">
         <CustomDatePicker onChange={setFromDate} label="From" value={new Date(blogPostState.filter.fromDate ?? Date.now())}/>
         <CustomDatePicker onChange={setToDate} label="To" value={new Date(blogPostState.filter.toDate ?? Date.now())}/>
     </div>

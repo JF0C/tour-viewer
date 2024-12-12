@@ -29,7 +29,7 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
     const markerRef = useRef<any>(null);
 
     if (editingId === props.blogPost.id && markerPosition) {
-        return <Marker icon={MarkerIcons.postOld}
+        return <Marker icon={MarkerIcons.blogPostOld}
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]} />
     }
 
@@ -52,7 +52,7 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
         dispatch(setMarkerReferenceId());
     }
 
-    return <Marker icon={MarkerIcons.postWhite} ref={markerRef} 
+    return <Marker icon={MarkerIcons.blogPost} ref={markerRef} 
         eventHandlers={{click: loadDetails}}
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]}>
         <Popup className="marker-popup">
