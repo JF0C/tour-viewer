@@ -43,14 +43,17 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         props.closeSidebar();
         dispatch(setEditingBlogpost({
             id: 0,
-            trackId: tour.tracks[0].id,
-            trackFileReference: tour.tracks[0].fileReference,
+            track: null!,
             title: '',
             message: '',
-            latitude: mapCenter.latitude,
-            longitude: mapCenter.longitude,
+            coordinates: {
+                latitude: mapCenter.latitude,
+                longitude: mapCenter.longitude
+            },
             images: [],
-            labels: []
+            labels: [],
+            created: 0,
+            author: null!
         }));
         dispatch(setMarkerPosition({
             latitude: mapCenter.latitude,
