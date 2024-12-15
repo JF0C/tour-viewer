@@ -7,4 +7,5 @@ export type BlogpostPageRequestDto = {
     author?: number
     bounds?: GeoBounds
     labels?: string[]
+    countries?: number[]
 } & PageRequestDto

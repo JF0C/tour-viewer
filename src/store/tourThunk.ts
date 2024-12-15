@@ -23,6 +23,9 @@ export const tourRequestToUrl = (request: TourPageRequestDto) => {
     if (request.participantId || request.participantId === 0) {
         requestUrl += `&participant=${request.participantId}`;
     }
+    if (request.countries) {
+        requestUrl += `&countries=${JSON.stringify(request.countries)}`
+    }
     return requestUrl;
 }
 

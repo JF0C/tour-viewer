@@ -5,4 +5,5 @@ export type TourPageRequestDto = {
     year?: number
     month?: number
     name?: string
+    countries?: number[]
 } & PageRequestDto
