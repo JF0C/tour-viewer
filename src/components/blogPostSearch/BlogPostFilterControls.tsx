@@ -10,6 +10,7 @@ import { BlogPostTitleFilter } from "./BlogPostTitleFilter";
 import { TourFilter } from "./TourFilter";
 import { LabelsFilter } from "./LabelsFilter";
 import { SearchPagination } from "./SearchPagination";
+import { CountryFilter } from "./CountryFilter";
 
 export const BlogPostFilterControls: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -35,6 +36,7 @@ export const BlogPostFilterControls: FunctionComponent = () => {
             <TourFilter />
             <AuthorSelector />
             <LabelsFilter />
+            <CountryFilter />
             <DateRangePicker />
             <SearchPagination />
         </div>

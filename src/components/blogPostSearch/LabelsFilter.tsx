@@ -47,7 +47,7 @@ export const LabelsFilter: FunctionComponent = () => {
                         }
                     </div>
                     :
-                    <>Filter Labels</>
+                    <>Labels</>
             }
         </Button>
         <ModalBaseLayout open={open} openChange={setOpen} bottomRow={

@@ -1,3 +1,4 @@
+import { CountryDto } from "../dtos/shared/countryDto"
 import { GeoBounds } from "./geoBounds"
 
 export type BlogPostSearchFilter = {
@@ -8,6 +9,7 @@ export type BlogPostSearchFilter = {
     authorName?: string
     bounds?: GeoBounds
     labels?: string[]
+    countries?: number[]
     fromDate?: number
     toDate?: number
 }

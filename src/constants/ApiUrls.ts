@@ -20,6 +20,8 @@ export class ApiUrls
     public static readonly AdminEndpoint = '/Admin'
     public static readonly AdminRolesEndpoint = '/Admin/Roles'
 
+    public static readonly CountryEndpoint = '/Country'
+
     public static readonly AuthenticationEndpoint = '/Authentication'
     public static readonly PasswordEndpoint = '/Authentication/Password'
     public static readonly ValidateCodeEndpoint = '/Authentication/Validate'
