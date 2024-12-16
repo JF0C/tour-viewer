@@ -37,13 +37,23 @@ export const LabelsFilter: FunctionComponent = () => {
         }));
     }
 
+    const resetLabelFilter = () => {
+        dispatch(setBlogPostSearchFilter({
+            ...blogPostState.filter,
+            labels: undefined
+        }));
+    }
+
     return <div>
         <Button onClick={() => setOpen(true)}>
             {
                 selectedLabels.length ?
                     <div className="flex flex-row flex-wrap gap-2">
+                        <BlogPostLabel label={selectedLabels[0]} />
                         {
-                            selectedLabels.map(l => <BlogPostLabel key={'label-toggle-' + l} label={l} />)
+                            selectedLabels.length > 1 ? 
+                            <BlogPostLabel label={`+ ${selectedLabels.length - 1}`} />
+                            :<></>
                         }
                     </div>
                     :
@@ -51,7 +61,8 @@ export const LabelsFilter: FunctionComponent = () => {
             }
         </Button>
         <ModalBaseLayout open={open} openChange={setOpen} bottomRow={
-            <div className="flex flex-row justify-center w-full">
+            <div className="flex flex-row justify-between w-full">
+                <Button onClick={() => { setOpen(false); resetLabelFilter(); }}>Reset</Button>
                 <Button onClick={() => setOpen(false)}>Done</Button>
             </div>
         }>

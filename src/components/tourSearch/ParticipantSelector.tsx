@@ -3,11 +3,10 @@ import { FunctionComponent, useState } from "react";
 import { UserReferenceDto } from "../../dtos/user/userReferenceDto";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setTourSearchFilter } from "../../store/tourStateReducer";
-import { searchTours } from "../../store/tourThunk";
 import { UserSearch } from "../user/UserSearch";
 import { UserSearchResult } from "../user/UserSearchResult";
 
-export const AthleteSelector: FunctionComponent = () => {
+export const ParticipantSelector: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tourState = useAppSelector((state) => state.tour);
     const searchFilter = tourState.tourSearchFilter;
@@ -32,7 +31,7 @@ export const AthleteSelector: FunctionComponent = () => {
     }
 
     return <>
-        <TextField sx={{ width: '100px' }} label="User Filter" size="small" className="athlete-select-field"
+        <TextField sx={{ width: '100px' }} label="Participant" size="small" className="athlete-select-field"
             value={searchFilter.participantName ?? 'All'} onClick={() => setOpen(true)} />
         <Modal open={open} onClose={() => setOpen(false)}>
             <div id="modal-background" onClick={onBackgroundClick} className="flex flex-col items-center justify-center h-full">

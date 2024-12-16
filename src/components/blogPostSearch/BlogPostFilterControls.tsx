@@ -10,7 +10,8 @@ import { BlogPostTitleFilter } from "./BlogPostTitleFilter";
 import { TourFilter } from "./TourFilter";
 import { LabelsFilter } from "./LabelsFilter";
 import { SearchPagination } from "./SearchPagination";
-import { CountryFilter } from "./CountryFilter";
+import { CountryFilter } from "../shared/CountryFilter/CountryFilter";
+import { setBlogPostSearchFilter } from "../../store/blogPostStateReducer";
 
 export const BlogPostFilterControls: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -36,7 +37,12 @@ export const BlogPostFilterControls: FunctionComponent = () => {
             <TourFilter />
             <AuthorSelector />
             <LabelsFilter />
-            <CountryFilter />
+            <CountryFilter
+                stateSliceSelector={(state) => state.blog} 
+                countriesSelector={(state) => state.blog.filter.countries ?? []}
+                setCountries={(dispatch, blogPostState, countries) => {
+                    dispatch(setBlogPostSearchFilter({...blogPostState.filter, countries: countries}))
+                }} />
             <DateRangePicker />
             <SearchPagination />
         </div>

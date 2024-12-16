@@ -20,7 +20,8 @@ export const LabelToggle: FunctionComponent<LabelToggleProps> = (props) => {
         }
     }
 
-    return <div className="flex flex-row justify-between gap-2 text-lg" onClick={toggleSelected}>
+    return <div className="flex flex-row justify-between gap-2 text-lg cursor-pointer"
+        onClick={toggleSelected}>
         <div>
             {props.label}
         </div>

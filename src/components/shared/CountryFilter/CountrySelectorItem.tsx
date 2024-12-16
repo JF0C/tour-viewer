@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { CountryDto } from "../../dtos/shared/countryDto";
+import { CountryDto } from "../../../dtos/shared/countryDto";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 
