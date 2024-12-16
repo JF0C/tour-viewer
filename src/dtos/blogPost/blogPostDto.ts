@@ -1,5 +1,6 @@
 import { CommentDto } from "../comment/commentDto"
 import { CoordinatesDto } from "../shared/coordinatesDto"
+import { CountryDto } from "../shared/countryDto"
 import { EntityBaseDto } from "../shared/entityBaseDto"
 import { ImageReferenceDto } from "../shared/imageReferenceDto"
 import { TrackDto } from "../track/trackDto"
@@ -12,6 +13,7 @@ export type BlogPostDto = EntityBaseDto & {
     images: ImageReferenceDto[],
     coordinates: CoordinatesDto,
     author: UserReferenceDto,
+    country: CountryDto,
     comments?: CommentDto[],
     labels: string[]
 }

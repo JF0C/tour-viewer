@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
 import { CreateBlogPostDto } from "../dtos/blogPost/createBlogPostDto";
-import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest, searchBlogPostRequest } from "./blogPostThunk";
+import { changeBlogPostCountryRequest, changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest, searchBlogPostRequest } from "./blogPostThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
 import { deleteImageRequest, uploadImageRequest } from "./filesThunk";
 import { PaginationState } from "./paginationState";
@@ -283,6 +283,16 @@ export const BlogPostSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(removeLabelFromBlogPostRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(changeBlogPostCountryRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(changeBlogPostCountryRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(changeBlogPostCountryRequest.rejected, (state) => {
             state.loading = false;
         });
 

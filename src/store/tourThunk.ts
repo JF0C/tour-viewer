@@ -7,6 +7,7 @@ import { RenameTourDto } from "../dtos/tour/renameTourDto";
 import { TourDto } from "../dtos/tour/tourDto";
 import { TourPageRequestDto } from "../dtos/tour/tourPageRequestDto";
 import { createDeleteThunk, createGetThunk, createPostThunk, createPutThunk } from "./thunkBase";
+import { ChangeTourCountryDto } from "../dtos/tour/changeTourCountryDto";
 
 export const tourRequestToUrl = (request: TourPageRequestDto) => {
     var requestUrl = `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}` +
@@ -76,6 +77,18 @@ export const removeParticipantRequest = createDeleteThunk<ChangeParticipantDto>(
     'remove-participant',
     (removeParticipant) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${removeParticipant.tourId}/Participant`,
     (removeParticipant) => JSON.stringify(removeParticipant.participantId)
+);
+
+export const addCountryRequest = createPutThunk<ChangeTourCountryDto>(
+    'add-country',
+    (request) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${request.tourId}/Country`,
+    (request) => JSON.stringify(request.countryId)
+);
+
+export const removeCountryRequest = createDeleteThunk<ChangeTourCountryDto>(
+    'remove-country',
+    (request) => `${ApiUrls.BaseUrl + ApiUrls.TourEndpoint}/${request.tourId}/Country`,
+    (request) => JSON.stringify(request.countryId)
 );
 
 export const deleteTourRequest = createDeleteThunk<number>(

@@ -1,3 +1,4 @@
+import { CountryDto } from "../shared/countryDto";
 import { EntityBaseDto } from "../shared/entityBaseDto";
 import { TrackPointDto } from "../shared/trackPointDto";
 import { TrackDto } from "../track/trackDto";
@@ -8,6 +9,7 @@ export type TourDto = EntityBaseDto & {
     startDate: number;
     tracks: TrackDto[];
     author?: UserReferenceDto;
+    countries: CountryDto[];
     previewTrack: TrackPointDto[];
     participants: UserReferenceDto[];
 }

@@ -11,6 +11,7 @@ import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 import { BlogPostComments } from "./BlogPostComments";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { BlogPostLabel } from "./BlogPostLabel";
+import { CountryLabel } from "../shared/CountryFilter/CountryLabel";
 
 export type BlogPostDetailsProps = {
     blogPost: BlogPostDto
@@ -46,6 +47,7 @@ export const BlogPostDetails: FunctionComponent<BlogPostDetailsProps> = (props) 
                 {
                     props.blogPost.labels.map(l => <BlogPostLabel label={l} />)
                 }
+                <CountryLabel label={props.blogPost.country.code} />
             </div>
             <div className="pb-2">
                 {props.blogPost.message}

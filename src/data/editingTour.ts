@@ -1,3 +1,4 @@
+import { CountryDto } from "../dtos/shared/countryDto";
 import { EditTrackDto } from "../dtos/track/editTrackDto";
 import { UserReferenceDto } from "../dtos/user/userReferenceDto";
 
@@ -6,6 +7,7 @@ export type EditingTour = {
     name: string;
     startDate: number;
     participants: UserReferenceDto[];
+    countries: CountryDto[];
     tracks: EditTrackDto[];
     tracksToMerge: string[];
 }

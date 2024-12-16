@@ -1,6 +1,7 @@
 import { ApiUrls } from "../constants/ApiUrls";
 import { BlogPostDto } from "../dtos/blogPost/blogPostDto";
 import { BlogpostPageRequestDto } from "../dtos/blogPost/blogPostPageRequestDto";
+import { ChangeBlogPostCountryDto } from "../dtos/blogPost/changeBlogPostCountryDto";
 import { ChangeBlogPostLocationDto } from "../dtos/blogPost/changeBlogPostLocationDto";
 import { ChangeBlogPostMessageDto } from "../dtos/blogPost/changeBlogPostMessageDto";
 import { ChangeBlogPostTitleDto } from "../dtos/blogPost/changeBlogPostTitleDto";
@@ -53,7 +54,7 @@ export const createBlogPostRequest = createPostThunk<number, CreateBlogPostDto>(
     async (response) => Number(await response.text())
 );
 
-export const changeBlogPostTitleRequest = createPutThunk< ChangeBlogPostTitleDto>(
+export const changeBlogPostTitleRequest = createPutThunk<ChangeBlogPostTitleDto>(
     'change-blogpost-title',
     (changeTitle) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeTitle.id}/Title`,
     (changeTitle) => JSON.stringify(changeTitle.title)
@@ -63,6 +64,12 @@ export const changeBlogPostMessageRequest = createPutThunk<ChangeBlogPostMessage
     'change-blogpost-message',
     (changeMessage) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeMessage.id}/Message`,
     (changeMessage) => JSON.stringify(changeMessage.message)
+);
+
+export const changeBlogPostCountryRequest = createPutThunk<ChangeBlogPostCountryDto>(
+    'change-blogpost-country',
+    (changeCountry) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${changeCountry.blogPostId}/Country`,
+    (changeCountry) => JSON.stringify(changeCountry.countryId ?? null)
 );
 
 export const changeBlogPostLocationRequest = createPutThunk<ChangeBlogPostLocationDto>(

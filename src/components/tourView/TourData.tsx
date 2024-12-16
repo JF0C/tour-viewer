@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { InfobarMaxButton } from "../shared/InfobarMaxButton";
 import { Participant } from "../tourEditing/Participant";
 import { setInfobarOpen } from "../../store/viewStateReducer";
+import { CountryLabel } from "../shared/CountryFilter/CountryLabel";
 
 export const TourData: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -101,6 +102,9 @@ export const TourData: FunctionComponent = () => {
                                 {
                                     tour?.participants.map(p =>
                                         <Participant key={'participant-' + p.id} user={p} linkToProfile canRemove={false} />)
+                                }
+                                {
+                                    tour?.countries.map(c => <CountryLabel label={c.code}/>)
                                 }
 
                             </div>

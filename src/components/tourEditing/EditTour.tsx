@@ -7,7 +7,7 @@ import { Paths } from "../../constants/Paths";
 import { millisToUtcDate } from "../../converters/dateConverters";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setEditingTour, setEditingTourName, setEditingTourStartDate, setSelectedTourId } from "../../store/tourStateReducer";
-import { changeTourStartDateRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "../../store/tourThunk";
+import { addCountryRequest, changeTourStartDateRequest, deleteTourRequest, loadTourRequest, removeCountryRequest, renameTourRequest, searchTours } from "../../store/tourThunk";
 import { clearTracks, resetBoundsSet } from "../../store/trackStateReducer";
 import { loadTrackRequest } from "../../store/trackThunk";
 import { BigFormLayout } from "../layout/BigFormLayout";
@@ -17,6 +17,7 @@ import { EditableNameLabel } from "../shared/EditableNameLabel";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { TourParticipants } from "./TourParticipants";
 import { TrackList } from "./TrackList";
+import { CountrySelector } from "../shared/CountryFilter/CountrySelector";
 
 
 export const EditTour: FunctionComponent = () => {
@@ -29,8 +30,8 @@ export const EditTour: FunctionComponent = () => {
             .unwrap()
             .catch()
             .then(() => dispatch(setEditingTourName(name)))
-
     }
+
     const changeTourStartDate = (ticks: number) => {
         dispatch(changeTourStartDateRequest({
             tourId: tourState.editingTour.id,
@@ -39,6 +40,24 @@ export const EditTour: FunctionComponent = () => {
             .unwrap()
             .catch()
             .then(() => dispatch(setEditingTourStartDate(ticks)))
+    }
+
+    const addCountryToTour = (countryId: number) => {
+        dispatch((addCountryRequest({tourId: tourState.editingTour.id, countryId: countryId})))
+            .unwrap()
+            .then(() => dispatch(loadTourRequest(tourState.editingTour.id))
+                .unwrap()
+                .then((t) => dispatch(setEditingTour(t)))
+            )
+    }
+
+    const removeCountryFromTour = (countryId: number) => {
+        dispatch((removeCountryRequest({tourId: tourState.editingTour.id, countryId: countryId})))
+            .unwrap()
+            .then(() => dispatch(loadTourRequest(tourState.editingTour.id))
+                .unwrap()
+                .then((t) => dispatch(setEditingTour(t)))
+            )
     }
 
     if (tourState.loading) {
@@ -116,6 +135,11 @@ export const EditTour: FunctionComponent = () => {
             </tbody>
         </table>
         <TourParticipants />
+        <CountrySelector
+            addCountry={addCountryToTour}
+            removeCountry={removeCountryFromTour}
+            selectedCountries={tourState.editingTour.countries.map(c => c.id)}
+        />
         <div className="flex flex-row flex-wrap">
             <NavLink to={Paths.KomootTourStartPage}>
                 <Button>
@@ -143,4 +167,3 @@ export const EditTour: FunctionComponent = () => {
         <TrackList onReload={reloadTour} />
     </BigFormLayout>
 }
-

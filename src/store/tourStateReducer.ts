@@ -7,7 +7,7 @@ import { UserReferenceDto } from "../dtos/user/userReferenceDto";
 import { loadBlogPostDetailRequest } from "./blogPostThunk";
 import { PaginationState } from "./paginationState";
 import { setDateNumbers } from "./stateHelpers";
-import { createTourRequest, deleteTourRequest, loadTourRequest, renameTourRequest, searchTours } from "./tourThunk";
+import { addCountryRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeCountryRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 
 export interface ITourState {
@@ -40,7 +40,8 @@ const initialState: ITourState = {
         startDate: 0,
         participants: [],
         tracks: [],
-        tracksToMerge: []
+        tracksToMerge: [],
+        countries: []
     }
 }
 
@@ -72,7 +73,8 @@ export const tourStateSlice = createSlice({
                 startDate: 0,
                 participants: [],
                 tracks: [],
-                tracksToMerge: []
+                tracksToMerge: [],
+                countries: []
             };
         },
         setEditingTourName(state, action: PayloadAction<string>) {
@@ -95,6 +97,7 @@ export const tourStateSlice = createSlice({
             state.editingTour.name = action.payload.name;
             state.editingTour.participants = action.payload.participants;
             state.editingTour.startDate = action.payload.startDate;
+            state.editingTour.countries = action.payload.countries;
             state.editingTour.tracks = action.payload.tracks.map(t => {
                 return {
                     tourId: action.payload!.id,
@@ -223,6 +226,26 @@ export const tourStateSlice = createSlice({
             state.loading = false;
         })
         builder.addCase(createTrackRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(addCountryRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(addCountryRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(addCountryRequest.rejected, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(removeCountryRequest.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(removeCountryRequest.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(removeCountryRequest.rejected, (state) => {
             state.loading = false;
         });
 

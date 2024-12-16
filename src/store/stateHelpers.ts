@@ -107,6 +107,7 @@ export const mapClickEnd = (dispatch: AppDispatch,
                     fileReference: track?.fileReference ?? '',
                     blogPosts: []
                 },
+                country: {code:'XX', name:'none', id:0},
                 labels: [],
                 created: 0
             }));

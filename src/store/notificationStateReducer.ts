@@ -2,8 +2,8 @@ import { createSlice, SerializedError } from "@reduxjs/toolkit";
 import { enqueueSnackbar } from "notistack";
 import { addRoleRequest, changeUsernameAdmin, deleteUser, loadAvailableRoles, loadUsersAdmin, removeRoleRequest, validateUserAdmin } from "./adminThunk";
 import { accessCodeRequest, changePasswordRequest, loginRequest, logoutRequest, resetPasswordRequest, validateCodeRequest } from "./authThunk";
-import { changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest, searchBlogPostRequest } from "./blogPostThunk";
-import { addParticipantRequest, changeTourStartDateRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeParticipantRequest, renameTourRequest, searchTours } from "./tourThunk";
+import { changeBlogPostCountryRequest, changeBlogPostLocationRequest, changeBlogPostMessageRequest, changeBlogPostTitleRequest, changeBlogPostTrackRequest, createBlogPostRequest, deleteBlogPostRequest, loadBlogPostDetailRequest, searchBlogPostRequest } from "./blogPostThunk";
+import { addCountryRequest, addParticipantRequest, changeTourStartDateRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeCountryRequest, removeParticipantRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { changeUsernameRequest, deleteUserRequest, registerRequest } from "./userThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
@@ -88,6 +88,14 @@ export const NotificationSlice = createSlice({
             snackError('removing participant', action.error);
         });
 
+        builder.addCase(addCountryRequest.rejected, (_state, action) => {
+            snackError('adding country', action.error);
+        });
+
+        builder.addCase(removeCountryRequest.rejected, (_state, action) => {
+            snackError('removing country', action.error);
+        });
+
         builder.addCase(loadTourRequest.rejected, (_state, action) => {
             snackError('loading tour', action.error);
         });
@@ -140,6 +148,10 @@ export const NotificationSlice = createSlice({
 
         builder.addCase(changeBlogPostLocationRequest.rejected, (_state, action) => {
             snackError('changing blog post location', action.error);
+        });
+
+        builder.addCase(changeBlogPostCountryRequest.rejected, (_state, action) => {
+            snackError('changing blog post country', action.error);
         });
 
         builder.addCase(changeBlogPostTrackRequest.rejected, (_state, action) => {
