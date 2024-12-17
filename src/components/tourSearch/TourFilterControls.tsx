@@ -34,7 +34,6 @@ export const TourFilterControls: FunctionComponent = () => {
             page: tourState.tourPagination.page,
             count: tourState.tourPagination.itemsPerPage
         }
-        console.log(request);
         dispatch(searchTours(request));
     }, [
         tourState.tourPagination.itemsPerPage,
@@ -57,7 +56,6 @@ export const TourFilterControls: FunctionComponent = () => {
                     value={tourState.tourSearchFilter.year ?? 0}
                     label="Year"
                     onChange={(e) => {
-                        console.log('setting year');
                         search({
                             ...tourState.tourSearchFilter,
                             year: e.target.value === 0 ? undefined : Number(e.target.value),
@@ -93,7 +91,6 @@ export const TourFilterControls: FunctionComponent = () => {
                             value={tourState.tourSearchFilter.month ?? 0}
                             label="Month"
                             onChange={(e) => {
-                                console.log('setting month')
                                 search({
                                     ...tourState.tourSearchFilter,
                                     month: e.target.value === 0 ? undefined : Number(e.target.value)

@@ -24,7 +24,6 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
     var initialIndex = 0;
     if (props.selectedImage) {
         initialIndex = props.images.indexOf(props.selectedImage);
-        console.log('initial image: ' + props.selectedImage);
     }
 
     const [index, setIndex] = useState(initialIndex);

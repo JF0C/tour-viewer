@@ -12,7 +12,6 @@ export const TourNameFilter: FunctionComponent = () => {
     const [debouncedName] = useDebounce(nameFilter, Timeouts.DebounceTime);
 
     if (debouncedName !== tourState.tourSearchFilter.name) {
-        console.log('setting tour name filter');
         dispatch(setTourSearchFilter({
             ...tourState.tourSearchFilter,
             name: debouncedName

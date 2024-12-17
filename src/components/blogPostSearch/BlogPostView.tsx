@@ -9,7 +9,6 @@ export const BlogPostView: FunctionComponent = () => {
     const blogPostState = useAppSelector((state) => state.blog);
 
     useEffect(() => {
-        console.log('loading blog posts');
         dispatch(searchBlogPostRequest({
             ...blogPostState.filter,
             page: blogPostState.pagination.page,

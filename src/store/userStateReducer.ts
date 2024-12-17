@@ -51,7 +51,6 @@ export const userStateSlice = createSlice({
             state.userPagination.page = action.payload.page;
             state.userPagination.totalPages = action.payload.totalPages;
             state.loading = false;
-            console.log(action.payload)
         });
         builder.addCase(searchUsers.rejected, (state) => {
             state.loading = false;

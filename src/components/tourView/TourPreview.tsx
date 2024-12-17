@@ -25,7 +25,6 @@ export const TourPreview: FunctionComponent<TourPreviewProps> = (props) => {
     const map = useMap();
 
     const loadFullTour = () => {
-        console.log('loading tour');
         dispatch(clearTracks());
         dispatch(setEditingBlogpost(undefined));
         dispatch(setSelectedTourId(props.tour.id));

@@ -73,7 +73,6 @@ export const komootSlice = createSlice({
             state.loading = true;
         });
         builder.addCase(komootToursRequest.fulfilled, (state, action) => {
-            console.log(action.payload)
             state.komootTourData = action.payload;
             state.tourPagination.page = action.payload.page.number + 1;
             state.tourPagination.totalItems = Math.max(
