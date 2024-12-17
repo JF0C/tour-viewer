@@ -13,6 +13,7 @@ export type CountryFilterSelectorProps = {
     selectedCountries: number[];
     addCountry: (id: number) => void;
     removeCountry: (id: number) => void;
+    onlyCountriesInUse: boolean;
 }
 
 export const CountryFilterSelector: FunctionComponent<CountryFilterSelectorProps> = (props) => {
@@ -30,6 +31,7 @@ export const CountryFilterSelector: FunctionComponent<CountryFilterSelectorProps
     }
 
     const filteredCountries = systemState.countries
+        .filter(c => c.inUse || !props.onlyCountriesInUse)
         .filter(c => c.name.toLowerCase().includes(countryInput)
             || c.code.toLowerCase().includes(countryInput))
 

@@ -3,9 +3,10 @@ import { loadCountriesRequest } from "../../../store/systemThunk";
 import { CountrySelector } from "./CountrySelector";
 
 export type CountryFilterProps<T> = {
-    stateSliceSelector: (state: RootState) => T
-    countriesSelector: (state: RootState) => number[]
-    setCountries: (dispatch: AppDispatch, stateSlice: T, countries: number[] | undefined) => void
+    stateSliceSelector: (state: RootState) => T;
+    countriesSelector: (state: RootState) => number[];
+    setCountries: (dispatch: AppDispatch, stateSlice: T, countries: number[] | undefined) => void;
+    onlyCountriesInUse: boolean;
 }
 
 export function CountryFilter<T>(props: CountryFilterProps<T>) {
@@ -41,7 +42,7 @@ export function CountryFilter<T>(props: CountryFilterProps<T>) {
         props.setCountries(dispatch, slice, newCountries.length === 0 ? undefined : newCountries);
     }
 
-    return <CountrySelector selectedCountries={countries}
+    return <CountrySelector onlyCountriesInUse={props.onlyCountriesInUse} selectedCountries={countries}
         addCountry={addCountryToFilter} removeCountry={removeCountryFromFilter}
         resetCountries={resetCountryFilter} />
 }

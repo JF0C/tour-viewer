@@ -7,10 +7,11 @@ import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { loadCountriesRequest } from "../../../store/systemThunk";
 
 export type CountrySelectorProps = {
-    selectedCountries: number[]
-    addCountry: (countryId: number) => void
-    removeCountry: (countryId: number) => void
-    resetCountries?: () => void
+    selectedCountries: number[];
+    addCountry: (countryId: number) => void;
+    removeCountry: (countryId: number) => void;
+    resetCountries?: () => void;
+    onlyCountriesInUse: boolean;
 }
 
 export const CountrySelector: FunctionComponent<CountrySelectorProps> = (props) => {
@@ -58,7 +59,7 @@ export const CountrySelector: FunctionComponent<CountrySelectorProps> = (props) 
             <Button onClick={() => setOpen(false)}>Done</Button>
         </div>
     }>
-        <CountryFilterSelector selectedCountries={props.selectedCountries}
+        <CountryFilterSelector onlyCountriesInUse={props.onlyCountriesInUse} selectedCountries={props.selectedCountries}
             addCountry={props.addCountry} removeCountry={props.removeCountry}
         />
     </ModalBaseLayout>

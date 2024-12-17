@@ -38,6 +38,7 @@ export const BlogPostFilterControls: FunctionComponent = () => {
             <AuthorSelector />
             <LabelsFilter />
             <CountryFilter
+                onlyCountriesInUse
                 stateSliceSelector={(state) => state.blog} 
                 countriesSelector={(state) => state.blog.filter.countries ?? []}
                 setCountries={(dispatch, blogPostState, countries) => {

@@ -119,7 +119,7 @@ export const TourFilterControls: FunctionComponent = () => {
                 : <></>
         }
         <ParticipantSelector />
-        <CountryFilter
+        <CountryFilter onlyCountriesInUse
             stateSliceSelector={(state) => state.tour}
             countriesSelector={(state) => state.tour.tourSearchFilter.countries ?? []}
             setCountries={(dispatch, tourState, countries) => {

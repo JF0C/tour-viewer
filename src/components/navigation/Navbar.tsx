@@ -50,7 +50,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                 latitude: mapCenter.latitude,
                 longitude: mapCenter.longitude
             },
-            country: {code: 'XX', name: 'none', id:0},
+            country: {code: 'XX', name: 'none', id:0, inUse: true},
             images: [],
             labels: [],
             created: 0,

@@ -136,6 +136,7 @@ export const EditTour: FunctionComponent = () => {
         </table>
         <TourParticipants />
         <CountrySelector
+            onlyCountriesInUse={false}
             addCountry={addCountryToTour}
             removeCountry={removeCountryFromTour}
             selectedCountries={tourState.editingTour.countries.map(c => c.id)}
