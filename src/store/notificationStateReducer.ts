@@ -7,7 +7,7 @@ import { addCountryRequest, addParticipantRequest, changeTourStartDateRequest, c
 import { changeTrackNameRequest, changeTrackPositionRequest, createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { changeUsernameRequest, deleteUserRequest, registerRequest } from "./userThunk";
 import { createCommentRequest, deleteCommentRequest, editCommentRequest } from "./commentThunk";
-import { getAppVersion } from "./systemThunk";
+import { blogPostDataJobRequest, cleanupImagesAndTracks, countryInUseJobRequest, getAppVersion, tourDataJobRequest } from "./systemThunk";
 import { komootLoginRequest, komootToursRequest } from "./komootThunk";
 import { addLabelToBlogPostRequest, createLabelRequest, deleteLabelRequest, loadBlogPostLabelsRequest, removeLabelFromBlogPostRequest } from "./blogPostLabelThunk";
 
@@ -263,6 +263,36 @@ export const NotificationSlice = createSlice({
 
         builder.addCase(loadBlogPostLabelsRequest.rejected, (_state, action) => {
             snackError('loading blog post labels');
+        });
+
+        builder.addCase(cleanupImagesAndTracks.fulfilled, (_state, action) => {
+            if (action.meta.arg === false) {
+                enqueueSnackbar('Finished cleaning up Images and Tracks', { variant: 'success' });
+            }
+        });
+        builder.addCase(cleanupImagesAndTracks.rejected, () => {
+            snackError('cleaning up Images and Tracks');
+        });
+
+        builder.addCase(tourDataJobRequest.fulfilled, () => {
+            enqueueSnackbar('Finished adding missing countries to tours', { variant: 'success' });
+        });
+        builder.addCase(tourDataJobRequest.rejected, () => {
+            snackError('adding missing countries to tours');
+        });
+
+        builder.addCase(blogPostDataJobRequest.fulfilled, () => {
+            enqueueSnackbar('Finished adding countries and tour times to blogposts', { variant: 'success' });
+        });
+        builder.addCase(blogPostDataJobRequest.rejected, () => {
+            snackError('adding countries and tour times to blogposts');
+        });
+
+        builder.addCase(countryInUseJobRequest.fulfilled, () => {
+            enqueueSnackbar('Finished checking if countries are used', { variant: 'success' });
+        });
+        builder.addCase(countryInUseJobRequest.rejected, () => {
+            snackError('checking if countries are used');
         });
     }
 });

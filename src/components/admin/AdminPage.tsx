@@ -1,20 +1,19 @@
-import { FunctionComponent } from "react";
-import { UserList } from "./userList";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { UserDetail } from "./userDetail";
-import { LoadingSpinner } from "../shared/LoadingSpinner";
-import { loadAvailableRoles, loadUsersAdmin } from "../../store/adminThunk";
 import { Button } from "@mui/material";
-import { Roles } from "../../constants/Rolenames";
+import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/Paths";
+import { Roles } from "../../constants/Rolenames";
+import { loadAvailableRoles, loadUsersAdmin } from "../../store/adminThunk";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { resetBoundsSet } from "../../store/trackStateReducer";
 import { BigFormLayout } from "../layout/BigFormLayout";
-import { BaseConfirmModal } from "../shared/BaseConfirmModal";
-import { cleanupImagesAndTracks } from "../../store/systemThunk";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBroom } from "@fortawesome/free-solid-svg-icons";
-import { CleanupView } from "./cleanupView";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { CleanupButton } from "./cleanupButton";
+import { UserDetail } from "./userDetail";
+import { UserList } from "./userList";
+import { AddMissingTourCountries } from "./addMissingTourCountries";
+import { AddBlogPostData } from "./addBlogPostData";
+import { CountriesInUseButton } from "./countriesInUseButton";
 
 export const AdminPage: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -44,14 +43,6 @@ export const AdminPage: FunctionComponent = () => {
         navigate(Paths.HomePage);
     }
 
-    const dryRunCleanup = () => {
-        dispatch(cleanupImagesAndTracks(true));
-    }
-
-    const cleanup = () => {
-        dispatch(cleanupImagesAndTracks(false));
-    }
-
     return <BigFormLayout
         buttons={
             <>
@@ -68,10 +59,14 @@ export const AdminPage: FunctionComponent = () => {
             <UserList />
             <UserDetail />
         </div>
-        <BaseConfirmModal onOpen={dryRunCleanup} onConfirm={cleanup} confirmType='warning'
-            confirmText={'Cleanup'}
-            buttonContent={<Button><FontAwesomeIcon icon={faBroom} />&nbsp;Cleanup Images and Tracks</Button>}>
-                <CleanupView />
-        </BaseConfirmModal>
+        <div>
+            <div className="font-bold pt-4 border-bottom">
+                Manually run Cron Jobs
+            </div>
+            <CleanupButton />
+            <AddMissingTourCountries />
+            <AddBlogPostData />
+            <CountriesInUseButton />
+        </div>
     </BigFormLayout>
 }

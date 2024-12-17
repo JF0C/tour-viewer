@@ -7,6 +7,9 @@ export class ApiUrls
 
     public static readonly VersionEndpoint = '/System/Version'
     public static readonly CleanupEndpoint = '/System/ManualCleanup'
+    public static readonly TourDataJobEndpoint = '/System/ManualTourDataJob'
+    public static readonly BlogPostDataJobEndpoint = 'System/ManualBlogPostDataJob'
+    public static readonly CountryInUseJobEndpoint = 'System/ManualCountryInUseJob'
 
     public static readonly ImageEndpoint = '/img'
     public static readonly ImageControlEndpoint = '/Image'

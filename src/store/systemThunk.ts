@@ -19,3 +19,21 @@ export const loadCountriesRequest = createGetThunk<CountryDto[], void>(
     () => `${ApiUrls.BaseUrl + ApiUrls.CountryEndpoint}`,
     async (response) => await response.json()
 )
+
+export const tourDataJobRequest = createGetThunk<void, void>(
+    'tour-data-job',
+    () => `${ApiUrls.BaseUrl + ApiUrls.TourDataJobEndpoint}`,
+    async () => {}
+)
+
+export const blogPostDataJobRequest = createGetThunk<void, void>(
+    'blogpost-data-job',
+    () => `${ApiUrls.BaseUrl + ApiUrls.BlogPostDataJobEndpoint}`,
+    async () => {}
+)
+
+export const countryInUseJobRequest = createGetThunk<void, void>(
+    'country-in-use-job',
+    () => `${ApiUrls.BaseUrl + ApiUrls.CountryInUseJobEndpoint}`,
+    async () => {}
+)
