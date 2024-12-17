@@ -1,12 +1,10 @@
 import { faBroom } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@mui/material";
-import { cleanup } from "@testing-library/react";
 import { FunctionComponent } from "react";
-import { BaseConfirmModal } from "../shared/BaseConfirmModal";
-import { CleanupView } from "./cleanupView";
 import { useAppDispatch } from "../../store/store";
 import { cleanupImagesAndTracks } from "../../store/systemThunk";
+import { BaseConfirmModal } from "../shared/BaseConfirmModal";
+import { CleanupView } from "./cleanupView";
 
 export const CleanupButton: FunctionComponent = () => {
     const dispatch = useAppDispatch();

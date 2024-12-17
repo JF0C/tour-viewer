@@ -1,9 +1,8 @@
 import { faFlag } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
 import { useAppDispatch } from "../../store/store";
-import { blogPostDataJobRequest } from "../../store/systemThunk";
+import { countryInUseJobRequest } from "../../store/systemThunk";
 import { BaseConfirmModal } from "../shared/BaseConfirmModal";
 
 export const CountriesInUseButton: FunctionComponent = () => {
@@ -15,7 +14,7 @@ export const CountriesInUseButton: FunctionComponent = () => {
                 Check country usage
             </>
         }
-        onConfirm={() => dispatch(blogPostDataJobRequest())}
+        onConfirm={() => dispatch(countryInUseJobRequest())}
     >
         <div>
             Check for all countries, whether they are referenced by any tour or blog post.
