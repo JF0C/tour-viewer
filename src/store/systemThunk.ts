@@ -37,3 +37,15 @@ export const countryInUseJobRequest = createGetThunk<void, void>(
     () => `${ApiUrls.BaseUrl + ApiUrls.CountryInUseJobEndpoint}`,
     async () => {}
 )
+
+export const blogPostsWithoutTimeRequest = createGetThunk<number[], void>(
+    'blog-posts-without-time',
+    () => `${ApiUrls.BaseUrl}/BlogPost/BlogPostsWithoutTime`,
+    async (response) => await response.json()
+)
+
+export const toursWithoutCountry = createGetThunk<number[], void>(
+    'tours-without-country',
+    () => `${ApiUrls.BaseUrl}/Tour/ToursWithoutCountry`,
+    async (response) => await response.json()
+)
