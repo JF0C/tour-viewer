@@ -11,11 +11,7 @@ import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { CleanupButton } from "./cleanupButton";
 import { UserDetail } from "./userDetail";
 import { UserList } from "./userList";
-import { AddMissingTourCountries } from "./addMissingTourCountries";
-import { AddBlogPostData } from "./addBlogPostData";
 import { CountriesInUseButton } from "./countriesInUseButton";
-import { BlogPostsWithoutTime } from "./blogPostsWithoutTime";
-import { ToursWithoutCountry } from "./toursWithoutCountry";
 
 export const AdminPage: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -66,11 +62,7 @@ export const AdminPage: FunctionComponent = () => {
                 Manually run Cron Jobs
             </div>
             <CleanupButton />
-            <AddMissingTourCountries />
-            <AddBlogPostData />
             <CountriesInUseButton />
-            <BlogPostsWithoutTime />
-            <ToursWithoutCountry />
         </div>
     </BigFormLayout>
 }

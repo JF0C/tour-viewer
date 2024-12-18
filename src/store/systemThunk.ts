@@ -20,32 +20,9 @@ export const loadCountriesRequest = createGetThunk<CountryDto[], void>(
     async (response) => await response.json()
 )
 
-export const tourDataJobRequest = createGetThunk<void, void>(
-    'tour-data-job',
-    () => `${ApiUrls.BaseUrl + ApiUrls.TourDataJobEndpoint}`,
-    async () => {}
-)
-
-export const blogPostDataJobRequest = createGetThunk<void, void>(
-    'blogpost-data-job',
-    () => `${ApiUrls.BaseUrl + ApiUrls.BlogPostDataJobEndpoint}`,
-    async () => {}
-)
-
 export const countryInUseJobRequest = createGetThunk<void, void>(
     'country-in-use-job',
     () => `${ApiUrls.BaseUrl + ApiUrls.CountryInUseJobEndpoint}`,
     async () => {}
 )
 
-export const blogPostsWithoutTimeRequest = createGetThunk<number[], void>(
-    'blog-posts-without-time',
-    () => `${ApiUrls.BaseUrl}/BlogPost/BlogPostsWithoutTime`,
-    async (response) => await response.json()
-)
-
-export const toursWithoutCountry = createGetThunk<number[], void>(
-    'tours-without-country',
-    () => `${ApiUrls.BaseUrl}/Tour/ToursWithoutCountry`,
-    async (response) => await response.json()
-)
