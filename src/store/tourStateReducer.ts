@@ -9,6 +9,7 @@ import { PaginationState } from "./paginationState";
 import { setDateNumbers } from "./stateHelpers";
 import { addCountryRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeCountryRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
+import { CountryDto } from "../dtos/shared/countryDto";
 
 export interface ITourState {
     loading: boolean;
@@ -107,6 +108,16 @@ export const tourStateSlice = createSlice({
                     data: t.fileReference
                 }
             })
+        },
+        addCountryToEditingTour(state, action: PayloadAction<CountryDto>) {
+            if (state.editingTour.countries.find(c => c.id === action.payload.id)) {
+                return;
+            }
+            state.editingTour.countries.push(action.payload);
+        },
+        removeCountryFromEditingTour(state, action: PayloadAction<number>) {
+            state.editingTour.countries = state.editingTour.countries
+                .filter(c => c.id !== action.payload);
         },
         clearTracksToMerge(state) {
             state.editingTour.tracksToMerge = [];
@@ -277,5 +288,7 @@ export const {
     addTrackToMerge,
     removeTrackToMerge,
     setTourSearchFilter,
-    setTourPagination
+    setTourPagination,
+    addCountryToEditingTour,
+    removeCountryFromEditingTour
 } = tourStateSlice.actions;
