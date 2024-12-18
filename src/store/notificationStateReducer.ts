@@ -112,7 +112,7 @@ export const NotificationSlice = createSlice({
             enqueueSnackbar(`Created Track ${action.meta.arg.name}`, { variant: 'success' });
         });
         builder.addCase(createTrackRequest.rejected, (_state, action) => {
-            snackError('creating track', action.error);
+            snackError(`creating track ${action.meta.arg.name}`, action.error);
         });
 
         builder.addCase(deleteTrackRequest.rejected, (_state, action) => {

@@ -10,6 +10,7 @@ import { setDateNumbers } from "./stateHelpers";
 import { addCountryRequest, createTourRequest, deleteTourRequest, loadTourRequest, removeCountryRequest, renameTourRequest, searchTours } from "./tourThunk";
 import { createTrackRequest, deleteTrackRequest } from "./trackThunk";
 import { CountryDto } from "../dtos/shared/countryDto";
+import { TrackUploadItem } from "../data/trackUploadItem";
 
 export interface ITourState {
     loading: boolean;
@@ -42,7 +43,8 @@ const initialState: ITourState = {
         participants: [],
         tracks: [],
         tracksToMerge: [],
-        countries: []
+        countries: [],
+        tracksToUpload: []
     }
 }
 
@@ -75,7 +77,8 @@ export const tourStateSlice = createSlice({
                 participants: [],
                 tracks: [],
                 tracksToMerge: [],
-                countries: []
+                countries: [],
+                tracksToUpload: []
             };
         },
         setEditingTourName(state, action: PayloadAction<string>) {
@@ -137,6 +140,33 @@ export const tourStateSlice = createSlice({
         setTourPagination(state, action: PayloadAction<{page?: number, count?: number}>) {
             state.tourPagination.page = action.payload.page ?? state.tourPagination.page;
             state.tourPagination.itemsPerPage = action.payload.count ?? state.tourPagination.itemsPerPage;
+        },
+        setTracksToUpload(state, action: PayloadAction<TrackUploadItem[]>) {
+            state.editingTour.tracksToUpload = action.payload;
+        },
+        setTrackToUploadName(state, action: PayloadAction<{id: number, name: string}>) {
+            const track = state.editingTour.tracksToUpload.find(t => t.id === action.payload.id);
+            if (track) {
+                track.name = action.payload.name;
+            }
+        },
+        setTrackToUploadTourPosition(state, action: PayloadAction<{id: number, position: number}>) {
+            const track = state.editingTour.tracksToUpload.find(t => t.id === action.payload.id);
+            if (track) {
+                track.tourPosition = action.payload.position;
+            }
+        },
+        setTrackToUploadValid(state, action: PayloadAction<{id: number, valid: boolean}>) {
+            const track = state.editingTour.tracksToUpload.find(t => t.id === action.payload.id);
+            if (track) {
+                track.isValid = action.payload.valid;
+            }
+        },
+        removeTrackToUpload(state, action: PayloadAction<number>) {
+            state.editingTour.tracksToUpload = state.editingTour.tracksToUpload.filter(t => t.id !== action.payload);
+        },
+        clearTracksToUpload(state) {
+            state.editingTour.tracksToUpload = [];
         }
     },
     extraReducers: (builder) => {
@@ -230,14 +260,26 @@ export const tourStateSlice = createSlice({
             state.loading = false;
         })
 
-        builder.addCase(createTrackRequest.pending, (state) => {
-            state.loading = true;
+        builder.addCase(createTrackRequest.pending, (state, action) => {
+            const track = state.editingTour.tracksToUpload
+                .find(t => t.id === action.meta.arg.id);
+            if (track) {
+                track.state = 'loading'
+            }
         })
-        builder.addCase(createTrackRequest.fulfilled, (state) => {
-            state.loading = false;
+        builder.addCase(createTrackRequest.fulfilled, (state, action) => {
+            const track = state.editingTour.tracksToUpload
+                .find(t => t.id === action.meta.arg.id);
+            if (track) {
+                track.state = 'finished'
+            }
         })
-        builder.addCase(createTrackRequest.rejected, (state) => {
-            state.loading = false;
+        builder.addCase(createTrackRequest.rejected, (state, action) => {
+            const track = state.editingTour.tracksToUpload
+                .find(t => t.id === action.meta.arg.id);
+            if (track) {
+                track.state = 'error'
+            }
         });
 
         builder.addCase(addCountryRequest.pending, (state) => {
@@ -290,5 +332,11 @@ export const {
     setTourSearchFilter,
     setTourPagination,
     addCountryToEditingTour,
-    removeCountryFromEditingTour
+    removeCountryFromEditingTour,
+    setTracksToUpload,
+    setTrackToUploadName,
+    setTrackToUploadTourPosition,
+    setTrackToUploadValid,
+    removeTrackToUpload,
+    clearTracksToUpload
 } = tourStateSlice.actions;

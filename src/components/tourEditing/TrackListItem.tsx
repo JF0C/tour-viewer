@@ -30,7 +30,6 @@ export const TrackListItem: FunctionComponent<TrackListItemProps> = (props) => {
             .unwrap()
             .then(() => {
                 props.onDataChanged();
-                setTimeout(() => props.onDataChanged(), 500);
             })
     }
 

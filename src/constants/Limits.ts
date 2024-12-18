@@ -1,3 +1,3 @@
 export class Limits {
-    public static readonly MaxGpxFilesForDownload = 20
+    public static readonly MaxGpxFilesForDownload = 10
 }

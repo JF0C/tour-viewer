@@ -1,7 +1,8 @@
 import { FunctionComponent } from "react";
 import { useAppSelector } from "../../store/store";
-import { NewTrackItem } from "./NewTrackItem";
+import { UploadTrackItem } from "./UploadTrackItem";
 import { TrackListItem } from "./TrackListItem";
+import { TracksToUpload } from "./TracksToUpload";
 
 export type TrackListProps = {
     onReload?: () => void
@@ -37,7 +38,7 @@ export const TrackList: FunctionComponent<TrackListProps> = (props) => {
                 tour.tracks.map(t => <TrackListItem key={'track-item-' + t.id} track={t} 
                     onDataChanged={() => props.onReload?.()} />)
             }
-            <NewTrackItem onDataChanged={() => props.onReload?.()} initialPosition={nextTrackPosition} tourId={tour.id} />
+            <TracksToUpload />
         </tbody>
     </table>
 }
