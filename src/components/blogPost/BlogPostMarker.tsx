@@ -10,7 +10,7 @@ import { setMarkerReferenceId } from "../../store/mapStateReducer";
 import { isAllowedToEditBlogpost } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ImageSwipeContainer } from "./ImageSwipeContainer";
-import { setEditingBlogpost, setSelectedBlogPost } from "../../store/blogPostStateReducer";
+import { setEditingBlogpost, setOpenedBlogPost, setSelectedBlogPost } from "../../store/blogPostStateReducer";
 
 export type BlogPostMarkerProps = {
     blogPost: BlogPostDto
@@ -33,10 +33,18 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]} />
     }
 
-    const loadDetails = () => {
-        dispatch(loadBlogPostDetailRequest(props.blogPost.id))
-            .unwrap()
-            .then(b => setBlogPost(b));
+    const loadDetails = (e: any) => {
+        if (!blogPost) {
+            dispatch(loadBlogPostDetailRequest(props.blogPost.id))
+                .unwrap()
+                .then(b => {
+                    setBlogPost(b);
+                    dispatch(setOpenedBlogPost(b));
+            });
+        }
+        if (blogPost && blogPostState.openedBlogPost?.id !== blogPost.id) {
+            dispatch(setOpenedBlogPost(blogPost));
+        }
     }
 
     const openDetails = () => {
@@ -55,8 +63,8 @@ export const BlogPostMarker: FunctionComponent<BlogPostMarkerProps> = (props) =>
     return <Marker icon={MarkerIcons.blogPost} ref={markerRef} 
         eventHandlers={{click: loadDetails}}
         position={[props.blogPost.coordinates.latitude, props.blogPost.coordinates.longitude]}>
-        <Popup className="marker-popup">
-            <div className="flex flex-col justify-center items-center">
+        <Popup className="marker-popup" >
+            <div id={"blog-post-popup-" + blogPost?.id} className="flex flex-col justify-center items-center">
                 <div className="font-bold text-xl">
                     {props.blogPost.title}
                 </div>

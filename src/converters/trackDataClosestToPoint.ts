@@ -18,6 +18,24 @@ export const trackClosestToPoint = (tracks: TrackEntity[], point: CoordinatesDto
     return closestTrack;
 }
 
+export const locationDistanceFromStart = (track: TrackEntity, coordinates: CoordinatesDto): number => {
+    const points = track.data.points;
+    var closestIndex = 0;
+    var distance = pointDistance(points[0], coordinates);
+    const cumulativeTravel = new Array<number>(points.length);
+    cumulativeTravel[0] = points[0].distance;
+    for (let k = 1; k < points.length; k++) {
+        const p = points[k];
+        cumulativeTravel[k] = cumulativeTravel[k - 1] + p.distance;
+        const currentDistance = pointDistance(p, coordinates);
+        if (currentDistance < distance) {
+            distance = currentDistance;
+            closestIndex = k;
+        }
+    }
+    return cumulativeTravel[closestIndex];
+}
+
 const pointDistance = (point: TrackPoint, coordinates: CoordinatesDto) => {
     return (point.latitude - coordinates.latitude) ** 2 + (point.longitude - coordinates.longitude) ** 2;
 }

@@ -39,6 +39,23 @@ $desktop-info-bar-width: 300px;
   background-color: $secondary;
 }
 
+.bg-highlight {
+  background-color: $button-font-color;
+}
+
+.progress-bar-active-section {
+  background-color: red;
+  transition: all .2s ease-in-out;
+}
+
+.progress-bar-details {
+  top: 10px;
+  background-color: $primary-half;
+  min-width: 100px;
+  font-size: medium;
+  transition: all .2s ease-in-out;
+}
+
 .App-link {
   color: #61dafb;
 }

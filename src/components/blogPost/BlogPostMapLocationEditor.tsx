@@ -5,7 +5,7 @@ import { MarkerIcons } from "../../constants/MarkerIcons";
 import { Roles } from "../../constants/Rolenames";
 import { coordinatesToLatLng, latLngToCoordinates } from "../../converters/coordinatesConverter";
 import { setClickedEvent, setMapBounds, setMapCenter, setMarkerDragging, setZoomLevel } from "../../store/mapStateReducer";
-import { mapClickEnd, markerDragEnd } from "../../store/stateHelpers";
+import { checkBlogPostOpen, mapClickEnd, markerDragEnd } from "../../store/stateHelpers";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/viewStateReducer";
 import { latLngToGeoBounds } from "../../converters/bounds";
@@ -15,6 +15,7 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
     const selectedTracks = useAppSelector((state) => state.track.tracks.filter(t => t.selected) ?? []);
     const isContributor = useAppSelector((state) => state.auth.user?.roles.includes(Roles.Contributor) ?? false);
     const isEditingBlogPost = useAppSelector((state) => state.blog.editingBlogPost !== undefined);
+    const openedBlogPost = useAppSelector((state) => state.blog.openedBlogPost);
     const isTourSelected = useAppSelector((state) => state.tour.selectedTour !== undefined);
     const mapState = useAppSelector((state) => state.map);
     const viewState = useAppSelector((state) => state.view);
@@ -53,6 +54,7 @@ export const BlogPostMapLocationEditor: FunctionComponent = () => {
         },
         mouseup() {
             mapClickEnd(dispatch, mapState, selectedTracks, isTourSelected && isShowingTours, isContributor, isEditingBlogPost);
+            checkBlogPostOpen(dispatch, openedBlogPost);
         }
     });
 

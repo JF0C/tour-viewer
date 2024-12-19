@@ -8,7 +8,7 @@ import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
 import { EntityBaseDto } from "../dtos/shared/entityBaseDto";
 import { TourDto } from "../dtos/tour/tourDto";
 import { UserDetailDto } from "../dtos/user/userDetailDto";
-import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setEditingBlogpost } from "./blogPostStateReducer";
+import { changeEditingBlogpostPosition, changeEditingBlogpostTrack, setEditingBlogpost, setOpenedBlogPost } from "./blogPostStateReducer";
 import { loadBlogPostDetailRequest, searchBlogPostsForUser } from "./blogPostThunk";
 import { IMapState, setClickedEvent, setMarkerDragging, setMarkerPosition } from "./mapStateReducer";
 import { AppDispatch, RootState } from "./store";
@@ -93,6 +93,17 @@ export const createNewBlogPost = (dispatch: AppDispatch, coordinates: Coordinate
         labels: [],
         created: 0
     }));
+}
+
+export const checkBlogPostOpen = (dispatch: AppDispatch, blogPost?: BlogPostDto) => {
+    setTimeout(() => {
+        if (!blogPost) {
+            return;
+        }
+        if (document.getElementsByClassName('marker-popup').length === 0) {
+            dispatch(setOpenedBlogPost());
+        }
+    }, 500)
 }
 
 export const mapClickEnd = (dispatch: AppDispatch,

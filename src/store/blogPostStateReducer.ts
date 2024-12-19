@@ -12,6 +12,7 @@ import { addLabelToBlogPostRequest, loadBlogPostLabelsRequest, removeLabelFromBl
 export interface IBlogPostState {
     loading: boolean;
     editingBlogPost?: CreateBlogPostDto;
+    openedBlogPost?: BlogPostDto;
     selectedBlogPost?: BlogPostDto;
     coordinatesChanged: boolean;
     fullSizeImages: string[];
@@ -47,6 +48,9 @@ export const BlogPostSlice = createSlice({
     name: 'blogpostState',
     initialState: initialState,
     reducers: {
+        setOpenedBlogPost(state, action: PayloadAction<BlogPostDto | undefined>) {
+            state.openedBlogPost = action.payload;
+        },
         setSelectedBlogPost(state, action: PayloadAction<BlogPostDto | undefined>) {
             state.selectedBlogPost = action.payload;
         },
@@ -315,6 +319,7 @@ export const BlogPostSlice = createSlice({
 export const blogPostStateReducer = BlogPostSlice.reducer;
 
 export const {
+    setOpenedBlogPost,
     setSelectedBlogPost,
     setEditingBlogpost,
     changeEditingBlogpostPosition,

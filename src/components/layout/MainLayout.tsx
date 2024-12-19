@@ -12,6 +12,7 @@ import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { AppBarContent } from "./AppBarContent";
 import { Infobar } from "./Infobar";
 import { Menubar } from "./Menubar";
+import { TourProgressbar } from "./TourProgressbar";
 
 export type MainLayoutProps = {
     children: ReactNode
@@ -58,6 +59,7 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
         <AppBar sx={{ backgroundColor: '#201f23', zIndex: 5000 }}>
             <CustomizedSnackbar />
             <AppBarContent />
+            <TourProgressbar />
         </AppBar>
         <TourSelectorBar />
         <div className="h-12 flex-none">
