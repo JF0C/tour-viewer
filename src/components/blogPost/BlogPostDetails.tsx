@@ -12,6 +12,7 @@ import { BlogPostComments } from "./BlogPostComments";
 import { LoadingSpinner } from "../shared/LoadingSpinner";
 import { BlogPostLabel } from "./BlogPostLabel";
 import { CountryLabel } from "../shared/CountryFilter/CountryLabel";
+import { fullDateString } from "../../converters/dateConverters";
 
 export type BlogPostDetailsProps = {
     blogPost: BlogPostDto
@@ -56,6 +57,9 @@ export const BlogPostDetails: FunctionComponent<BlogPostDetailsProps> = (props) 
                 <div className="w-44 md:w-full">
                     <ImageSwipeContainer images={props.blogPost.images.map(i => i.imageId)} />
                 </div>
+            </div>
+            <div className="w-full text-center text-sm">
+                {fullDateString(new Date(props.blogPost.tourTime))}
             </div>
             <BlogPostComments blogPost={props.blogPost}/>
         </div>

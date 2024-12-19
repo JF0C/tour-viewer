@@ -56,64 +56,66 @@ export const ImageSwipeContainer: FunctionComponent<ImageSwipeContainerProps> = 
         onChangeIndex={(index) => setIndex(index)}>
         {
             props.images.map(i =>
-                <div key={i} className="h-full flex flex-col justify-center items-center">
-                    <img key={i} style={{ pointerEvents: 'none' }}
-                        className={`swipe-container-image full-size-image ${props.rounded ? 'rounded-lg' : ''}`}
-                        src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
+                <div className="flex flex-row w-full justify-center">
+                    <div key={i} className="h-full w-fit relative flex flex-col justify-center items-center">
+                        <img key={i} style={{ pointerEvents: 'none' }}
+                            className={`swipe-container-image full-size-image ${props.rounded ? 'rounded-lg' : ''}`}
+                            src={`${ApiUrls.BaseUrl}/img/${i}.jpg`} alt={i} />
 
-                    <div className={`absolute top-0 h-full w-full group`}>
-                        {
-                            props.onClose ?
-                                <div className="absolute top-0 right-0">
-                                    <Button variant='contained' onClick={() => props.onClose?.()}>
-                                        <FontAwesomeIcon icon={faX} />
-                                    </Button>
-                                </div>
-                                : <></>
-                        }
-                        {
-                            props.allowFullSizeView ?
-                                <div className="absolute top-0 w-full h-full flex justify-center items-center">
-                                    <div onClick={() => showFullSize(i)} className="mx-8 h-full w-full cursor-pointer
+                        <div className={`absolute top-0 h-full w-full group`}>
+                            {
+                                props.onClose ?
+                                    <div className="absolute top-0 right-0">
+                                        <Button variant='contained' onClick={() => props.onClose?.()}>
+                                            <FontAwesomeIcon icon={faX} />
+                                        </Button>
+                                    </div>
+                                    : <></>
+                            }
+                            {
+                                props.allowFullSizeView ?
+                                    <div className="absolute top-0 w-full h-full flex justify-center items-center">
+                                        <div onClick={() => showFullSize(i)} className="mx-8 h-full w-full cursor-pointer
                                         pointer-cursor flex justify-center items-center">
-                                        <FontAwesomeIcon size='2xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" icon={faImage} />
+                                            <FontAwesomeIcon size='2xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" icon={faImage} />
+                                        </div>
                                     </div>
-                                </div>
-                                : <></>
-                        }
-                        {
-                            index > 0 ?
-                                <div className="absolute top-0 h-full flex flex-col justify-center">
-                                    <div className="cursor-pointer p-2" onClick={previousImage} style={{color: 'white'}}>
-                                        <FontAwesomeIcon size='xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" 
-                                            icon={faChevronLeft} />
+                                    : <></>
+                            }
+                            {
+                                index > 0 ?
+                                    <div className="absolute top-0 h-full flex flex-col justify-center">
+                                        <div className="cursor-pointer p-2" onClick={previousImage} style={{ color: 'white' }}>
+                                            <FontAwesomeIcon size='xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out"
+                                                icon={faChevronLeft} />
+                                        </div>
                                     </div>
-                                </div>
-                                : <></>
-                        }
-                        {
-                            props.onDelete ?
-                                <div className="absolute bottom-0 w-full h-12 flex">
-                                    <div className="mx-8 h-full w-full flex justify-center items-center">
-                                        <ConfirmModal buttonContent={<FontAwesomeIcon icon={faTrash} />}
-                                            onConfirm={() => props.onDelete?.(i)}
-                                            type='error'
-                                            message="Do you really want to delete this image?"
-                                        />
+                                    : <></>
+                            }
+                            {
+                                props.onDelete ?
+                                    <div className="absolute bottom-0 w-full h-12 flex">
+                                        <div className="mx-8 h-full w-full flex justify-center items-center">
+                                            <ConfirmModal buttonContent={<FontAwesomeIcon icon={faTrash} />}
+                                                onConfirm={() => props.onDelete?.(i)}
+                                                type='error'
+                                                message="Do you really want to delete this image?"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                : <></>
-                        }
-                        {
-                            index < (imageCount - 1) ?
-                                <div className="absolute top-0 right-0 h-full flex flex-col justify-center">
-                                    <div className="cursor-pointer p-2" onClick={nextImage} style={{color: 'white'}}>
-                                        <FontAwesomeIcon size='xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out" 
-                                            icon={faChevronRight} />
+                                    : <></>
+                            }
+                            {
+                                index < (imageCount - 1) ?
+                                    <div className="absolute top-0 right-0 h-full flex flex-col justify-center">
+                                        <div className="cursor-pointer p-2" onClick={nextImage} style={{ color: 'white' }}>
+                                            <FontAwesomeIcon size='xl' className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out"
+                                                icon={faChevronRight} />
+                                        </div>
                                     </div>
-                                </div>
-                                : <></>
-                        }
+                                    : <></>
+                            }
+                        </div>
                     </div>
                 </div>
             )

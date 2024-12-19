@@ -32,6 +32,12 @@ export const blogpostRequestToUrl = (request: BlogpostPageRequestDto) => {
     if (request.countries) {
         requestUrl += `&countries=${JSON.stringify(request.countries)}`;
     }
+    if (request.fromDate) {
+        requestUrl += `&after=${request.fromDate}`;
+    }
+    if (request.toDate) {
+        requestUrl += `&before=${request.toDate}`;
+    }
     return requestUrl;
 }
 
@@ -40,6 +46,7 @@ export const loadBlogPostDetailRequest = createGetThunk<BlogPostDto, number>(
     (blogPostId) => `${ApiUrls.BaseUrl + ApiUrls.BlogPostEndpoint}/${blogPostId}`,
     async (response) => {
         const blogPost = await response.json();
+        blogPost.tourTime = new Date(blogPost.tourTime).valueOf();
         for (let c of blogPost.comments ?? []) {
             setDateNumbers(c);
         }

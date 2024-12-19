@@ -71,6 +71,30 @@ export const loadUserDetail = (dispatch: AppDispatch, detailedUser: UserDetailDt
     }))
 }
 
+export const createNewBlogPost = (dispatch: AppDispatch, coordinates: CoordinatesDto, selectedTracks: TrackEntity[]) => {
+    const track = trackClosestToPoint(selectedTracks, coordinates);
+    dispatch(setEditingBlogpost({
+        id: 0,
+        author: { username: '', id: 0 },
+        coordinates: coordinates,
+        title: '',
+        message: '',
+        images: [],
+        tourTime: 0,
+        track: {
+            id: track?.id ?? 0,
+            created: 0,
+            tourPosition: track?.tourPosition ?? 0,
+            name: track?.data.name ?? '',
+            fileReference: track?.fileReference ?? '',
+            blogPosts: []
+        },
+        country: { code: 'XX', name: 'none', id: 0, inUse: true },
+        labels: [],
+        created: 0
+    }));
+}
+
 export const mapClickEnd = (dispatch: AppDispatch,
     mapState: IMapState,
     selectedTracks: TrackEntity[],
@@ -87,30 +111,7 @@ export const mapClickEnd = (dispatch: AppDispatch,
     if (timeDelta > Timeouts.CreateBlogPostHold && isContributor && mapState.clickedEvent.location) {
         dispatch(setMarkerPosition(mapState.clickedEvent.location));
         if (!isEditingBlogPost) {
-            const track = trackClosestToPoint(selectedTracks, mapState.clickedEvent.location);
-
-            dispatch(setEditingBlogpost({
-                id: 0,
-                author: { username: '', id: 0 },
-                coordinates: {
-                    latitude: mapState.clickedEvent.location.latitude,
-                    longitude: mapState.clickedEvent.location.longitude,
-                },
-                title: '',
-                message: '',
-                images: [],
-                track: {
-                    id: track?.id ?? 0,
-                    created: 0,
-                    tourPosition: track?.tourPosition ?? 0,
-                    name: track?.data.name ?? '',
-                    fileReference: track?.fileReference ?? '',
-                    blogPosts: []
-                },
-                country: {code:'XX', name:'none', id:0, inUse: true},
-                labels: [],
-                created: 0
-            }));
+            createNewBlogPost(dispatch, mapState.clickedEvent.location, selectedTracks);
         }
         else {
             dispatch(changeEditingBlogpostPosition(mapState.clickedEvent.location));
@@ -125,7 +126,7 @@ export const markerDragEnd = (dispatch: AppDispatch,
 ) => {
     dispatch(changeEditingBlogpostPosition(endPosition));
     dispatch(setMarkerPosition(endPosition));
-    
+
     const track = trackClosestToPoint(selectedTracks, endPosition);
 
     dispatch(changeEditingBlogpostTrack({

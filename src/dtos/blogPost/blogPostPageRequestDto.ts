@@ -8,4 +8,6 @@ export type BlogpostPageRequestDto = {
     bounds?: GeoBounds
     labels?: string[]
     countries?: number[]
+    fromDate?: number
+    toDate?: number
 } & PageRequestDto

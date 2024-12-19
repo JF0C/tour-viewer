@@ -52,7 +52,7 @@ export const TracksToUpload: FunctionComponent = () => {
             <td colSpan={4}>
                 <div>
                     <AddTracksButton disabled={!enableUploadActions} />
-                    <Button disabled={!enableUploadActions} onClick={clearUploads} color='warning'>
+                    <Button disabled={!enableUploadActions || tracks.length === 0} onClick={clearUploads} color='warning'>
                         <div className="flex flex-row items-center">
                             <FontAwesomeIcon icon={faXmarkCircle} />
                             <div className="hidden md:block">&nbsp;Clear</div>

@@ -16,7 +16,8 @@ export const AddTracksButton: FunctionComponent<AddTracksButtonProps> = (props) 
     const dispatch = useAppDispatch();
     const editingTour = useAppSelector((state) => state.tour.editingTour);
     const selectedFiles = editingTour.tracksToUpload;
-    const maxTourPosition = Math.max(...editingTour.tracks.map(t => t.tourPosition)) + 1;
+    const maxTourPosition = editingTour.tracks.length === 0 ? 1 :
+        (Math.max(...editingTour.tracks.map(t => t.tourPosition)) + 1);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const filesSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { Paths } from '../../constants/Paths';
 import { Roles } from '../../constants/Rolenames';
 import { setEditingBlogpost } from '../../store/blogPostStateReducer';
-import { isAllowedToCreate } from '../../store/stateHelpers';
+import { createNewBlogPost, isAllowedToCreate } from '../../store/stateHelpers';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { resetEditingTour, setEditingTour } from '../../store/tourStateReducer';
 import { resetBoundsSet } from '../../store/trackStateReducer';
@@ -26,6 +26,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
     const isAdmin = user?.roles.includes(Roles.Admin);
     const isContributor = user?.roles.includes(Roles.Contributor);
     const tour = useAppSelector((state) => state.tour.selectedTour);
+    const tracks = useAppSelector((state) => state.track.tracks);
     const canEdit = useAppSelector((state) => isAllowedToCreate(state));
     const mapCenter = useAppSelector((state) => state.map.mapCenter);
 
@@ -40,22 +41,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
         if (!mapCenter || !tour) {
             return;
         }
-        props.closeSidebar();
-        dispatch(setEditingBlogpost({
-            id: 0,
-            track: null!,
-            title: '',
-            message: '',
-            coordinates: {
-                latitude: mapCenter.latitude,
-                longitude: mapCenter.longitude
-            },
-            country: {code: 'XX', name: 'none', id:0, inUse: true},
-            images: [],
-            labels: [],
-            created: 0,
-            author: null!
-        }));
+        createNewBlogPost(dispatch, mapCenter, tracks)
         dispatch(setMarkerPosition({
             latitude: mapCenter.latitude,
             longitude: mapCenter.longitude

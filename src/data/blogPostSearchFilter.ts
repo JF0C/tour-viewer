@@ -1,4 +1,3 @@
-import { CountryDto } from "../dtos/shared/countryDto"
 import { GeoBounds } from "./geoBounds"
 
 export type BlogPostSearchFilter = {

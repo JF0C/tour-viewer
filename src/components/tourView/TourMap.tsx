@@ -69,16 +69,18 @@ export const TourMap: FunctionComponent = () => {
                 if (k > 0) {
                     const lastPoints = selectedTracks[k - 1].data.points;
                     const lastPoint = lastPoints[lastPoints.length - 1];
-                    const start: CoordinatesDto = {
-                        latitude: track.data.points[0].latitude,
-                        longitude: track.data.points[0].longitude
-                    };
-                    const end: CoordinatesDto = {
-                        latitude: lastPoint.latitude,
-                        longitude: lastPoint.longitude
-                    };
-                    const distance = haversine(end, start);
-                    showStartMarker ||= distance > 10000;
+                    if ((track?.data?.points?.length ?? 0) > 0) {
+                        const start: CoordinatesDto = {
+                            latitude: track.data.points[0].latitude,
+                            longitude: track.data.points[0].longitude
+                        };
+                        const end: CoordinatesDto = {
+                            latitude: lastPoint.latitude,
+                            longitude: lastPoint.longitude
+                        };
+                        const distance = haversine(end, start);
+                        showStartMarker ||= distance > 10000;
+                    }
                 }
                 tracks.push(<TrackLine key={track.fileReference} dataColor={showDataColor} track={track} startMarker={showStartMarker} />);
             }
