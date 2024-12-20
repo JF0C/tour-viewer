@@ -1,15 +1,13 @@
-import { LatLng } from "leaflet";
 import { FunctionComponent, ReactNode } from "react";
-import { Marker, Polyline, Popup } from "react-leaflet";
-import { MarkerIcons } from "../../constants/MarkerIcons";
-import { geoToLatLngBounds } from "../../converters/bounds";
-import { boundsFromLatLngTrack } from "../../converters/bounds";
+import { Polyline } from "react-leaflet";
+import { boundsFromLatLngTrack, geoToLatLngBounds } from "../../converters/bounds";
 import { trackInMapBounds } from "../../converters/trackInMapBounds";
 import { TrackEntity } from "../../data/trackEntity";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setBounds } from "../../store/trackStateReducer";
-import { TrackArrow } from "./TrackArrow";
 import { DataColoredTrackLine } from "./DataColoredTrackLine";
+import { TrackArrow } from "./TrackArrow";
+import { TrackLimitMarker } from "./TrackLimitMarker";
 
 export type TrackLineProps = {
     track: TrackEntity,
@@ -92,28 +90,10 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
         }
         {
             props.startMarker ?
-                <Marker icon={MarkerIcons.blue}
-                    position={[props.track.data.points[0].latitude,
-                    props.track.data.points[0].longitude]}>
-                    <Popup>
-                        <div className="flex flex-col justify-center items-center">
-                            <div className="font-bold text-xl">
-                                {startLabel}
-                            </div>
-                        </div>
-                    </Popup>
-                </Marker>
+                <TrackLimitMarker coordinates={props.track.data.points[0]} label={startLabel} track={props.track} />
                 : <></>
         }
-        <Marker icon={MarkerIcons.blue} position={new LatLng(lastPoint.latitude, lastPoint.longitude)}>
-            <Popup>
-                <div className="flex flex-col justify-center items-center">
-                    <div className="font-bold text-xl">
-                        {endLabel}
-                    </div>
-                </div>
-            </Popup>
-        </Marker>
+        <TrackLimitMarker coordinates={lastPoint} label={endLabel} track={props.track} />
         {
             arrows
         }

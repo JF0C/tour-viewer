@@ -83,12 +83,10 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                                 &nbsp;Edit Tour
                             </Button>
                         </NavLink>
-                        <div className='md:hidden'>
-                            <Button onClick={createBlogPost}>
-                                <FontAwesomeIcon icon={faImage} />
-                                &nbsp;Add Post
-                            </Button>
-                        </div>
+                        <Button onClick={createBlogPost}>
+                            <FontAwesomeIcon icon={faImage} />
+                            &nbsp;Add Post
+                        </Button>
                     </>
                     : <></>
             }

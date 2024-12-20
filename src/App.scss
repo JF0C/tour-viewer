@@ -44,16 +44,21 @@ $desktop-info-bar-width: 300px;
 }
 
 .progress-bar-active-section {
-  background-color: red;
+  background-color: white;
   transition: all .2s ease-in-out;
 }
 
+.progress-bar-details-anchor {
+  transition: all .2s ease-in-out;
+  top: 8px;
+}
+
 .progress-bar-details {
-  top: 10px;
+  transition: all .2s ease-in-out;
   background-color: $primary-half;
-  min-width: 100px;
   font-size: medium;
   transition: all .2s ease-in-out;
+  width: 150px;
 }
 
 .App-link {

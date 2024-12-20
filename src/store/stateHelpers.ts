@@ -100,7 +100,8 @@ export const checkBlogPostOpen = (dispatch: AppDispatch, blogPost?: BlogPostDto)
         if (!blogPost) {
             return;
         }
-        if (document.getElementsByClassName('marker-popup').length === 0) {
+        if (document.getElementsByClassName('marker-popup').length === 0 &&
+        document.getElementsByClassName('leaflet-popup-content').length === 0) {
             dispatch(setOpenedBlogPost());
         }
     }, 500)

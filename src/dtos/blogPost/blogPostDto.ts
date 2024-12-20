@@ -7,14 +7,14 @@ import { TrackDto } from "../track/trackDto"
 import { UserReferenceDto } from "../user/userReferenceDto"
 
 export type BlogPostDto = EntityBaseDto & {
-    title: string,
-    track: TrackDto,
-    message: string,
-    images: ImageReferenceDto[],
-    coordinates: CoordinatesDto,
-    author: UserReferenceDto,
-    tourTime: number,
-    country: CountryDto,
-    comments?: CommentDto[],
-    labels: string[]
+    title: string;
+    track: TrackDto;
+    message: string;
+    images: ImageReferenceDto[];
+    coordinates: CoordinatesDto;
+    author: UserReferenceDto;
+    tourTime: number;
+    country: CountryDto;
+    comments?: CommentDto[];
+    labels: string[];
 }

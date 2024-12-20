@@ -1,5 +1,5 @@
 import { faComment, faMap } from "@fortawesome/free-regular-svg-icons";
-import { faChevronDown, faChevronRight, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
@@ -7,8 +7,6 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState, setMapMode } from "../../store/viewStateReducer";
 import { TourSelector } from "./TourSelector";
 import { TrackSelector } from "./TrackSelector";
-import { useSelectedTourId } from "../../hooks/selectedTourHook";
-import { setSelectedTourId, resetSelectedTour } from "../../store/tourStateReducer";
 
 
 export const TourSelectorBar: FunctionComponent = () => {
@@ -31,7 +29,7 @@ export const TourSelectorBar: FunctionComponent = () => {
 
     return <>
         <div id='data-selector-bar-content' className={`flex flex-row w-full absolute justify-center ${barState}`}>
-            <div style={{ zIndex: 1000 }} className="selector-field rounded-md border-black flex flex-row flex-wrap">
+            <div style={{ zIndex: 6000 }} className="selector-field rounded-md border-black flex flex-row flex-wrap">
                 <div className={`${barState} flex flex-row flex-wrap`}>
                     {
                         viewState.mapMode === 'tours' ?
@@ -52,7 +50,7 @@ export const TourSelectorBar: FunctionComponent = () => {
             </div>
         </div>
         <div id='data-selector-bar-handle' className={`flex flex-row w-full absolute justify-center ${barState}`}>
-            <div onMouseEnter={expandBar} id='selector-bar-inner-handle' style={{ zIndex: 1000 }}
+            <div onMouseEnter={expandBar} id='selector-bar-inner-handle' style={{ zIndex: 6000 }}
                 className={`selector-field rounded-md border-black ${barState}`}>
                 <Button sx={{ minWidth: '20px', minHeight: '10px' }} onClick={expandBar}>
                     <FontAwesomeIcon icon={faChevronDown} />

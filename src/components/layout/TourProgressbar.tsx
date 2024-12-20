@@ -51,6 +51,11 @@ export const TourProgressbar: FunctionComponent = () => {
         data.length = selectedTrack.data.distance;
         data.title = selectedTrack.data.name;
     }
+    else {
+        data.start = 0;
+        data.length = totalDistance;
+        data.title = tourState.selectedTour.name
+    }
 
     if (blogPostState.openedBlogPost) {
         setDataForBlogPost(blogPostState.openedBlogPost.title,

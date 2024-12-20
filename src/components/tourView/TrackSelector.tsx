@@ -4,16 +4,21 @@ import { MenuItem, Select } from "@mui/material";
 import { FunctionComponent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { selectTracks } from "../../store/trackStateReducer";
+import { setOpenedBlogPost } from "../../store/blogPostStateReducer";
 
 export const TrackSelector: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tracks = useAppSelector((state) => state.tour.selectedTour?.tracks);
+    const openedBlogPost = useAppSelector((state) => state.blog.openedBlogPost);
 
     if (!tracks) {
         return <></>
     }
 
     const selectTrack = (fileReference: string) => {
+        if (openedBlogPost) {
+            dispatch(setOpenedBlogPost());
+        }
         if (fileReference === 'all') {
             dispatch(selectTracks(tracks.map(t => t.fileReference)))
         }
