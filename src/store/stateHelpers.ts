@@ -107,7 +107,8 @@ export const checkBlogPostOpen = (dispatch: AppDispatch, blogPost?: BlogPostDto)
     }, 500)
 }
 
-export const mapClickEnd = (dispatch: AppDispatch,
+export const mapClickEnd = (
+    dispatch: AppDispatch,
     mapState: IMapState,
     selectedTracks: TrackEntity[],
     canEdit: boolean,

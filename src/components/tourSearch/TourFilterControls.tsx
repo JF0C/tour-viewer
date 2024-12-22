@@ -13,6 +13,7 @@ import { CountryFilter } from "../shared/CountryFilter/CountryFilter";
 export const TourFilterControls: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const tourState = useAppSelector((state) => state.tour);
+    const isLoggedIn = useAppSelector((state) => Boolean(state.auth.user));
     const [years, months] = useMemo(() => {
         const years: number[] = [];
         const maxYear = (new Date()).getFullYear() + 3;
@@ -29,6 +30,9 @@ export const TourFilterControls: FunctionComponent = () => {
     }
 
     useEffect(() => {
+        if (!isLoggedIn) {
+            return;
+        }
         const request = {
             ...tourState.tourSearchFilter,
             page: tourState.tourPagination.page,
@@ -42,7 +46,8 @@ export const TourFilterControls: FunctionComponent = () => {
         tourState.tourSearchFilter.year,
         tourState.tourSearchFilter.participantId,
         tourState.tourSearchFilter.name,
-        tourState.tourSearchFilter.countries
+        tourState.tourSearchFilter.countries,
+        isLoggedIn
     ])
 
     return <div className="flex flex-row flex-wrap gap-2">
