@@ -1,13 +1,15 @@
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronCircleDown, faChevronRight, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { MenuItem, Select } from "@mui/material";
-import { FunctionComponent } from "react";
+import { Button, MenuItem, Select } from "@mui/material";
+import { FunctionComponent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { selectTracks } from "../../store/trackStateReducer";
 import { setOpenedBlogPost } from "../../store/blogPostStateReducer";
+import { ModalBaseLayout } from "../shared/ModalBaseLayout";
 
 export const TrackSelector: FunctionComponent = () => {
     const dispatch = useAppDispatch();
+    const [open, setOpen] = useState(false);
     const tracks = useAppSelector((state) => state.tour.selectedTour?.tracks);
     const openedBlogPost = useAppSelector((state) => state.blog.openedBlogPost);
 
@@ -27,23 +29,30 @@ export const TrackSelector: FunctionComponent = () => {
         }
     }
 
-    return <div className="track-selector flex flex-row flex-wrap items-center">
-        <FontAwesomeIcon icon={faChevronRight} />
-        <Select
-            labelId="track-select-label"
-            id="track-select"
-            defaultValue='all'
-            label="Track"
-            size='small'
-            sx={{ color: 'rgb(25, 118, 210)' }}
-            onChange={(e) => selectTrack(e.target.value)}
-        >
-            <MenuItem value={'all'}>All</MenuItem>
-            {
-                tracks.map(t => <MenuItem key={'track-select-' + t.fileReference} value={t.fileReference}>
-                    {t.tourPosition} - {t.name}
-                </MenuItem>)
+    return <>
+        <Button onClick={() => setOpen(true)}>
+            <FontAwesomeIcon className="text-white" icon={faChevronCircleDown} />
+        </Button>
+        <ModalBaseLayout open={open} openChange={setOpen}
+            bottomRow={
+                <Button onClick={() => setOpen(false)}>
+                    <FontAwesomeIcon icon={faXmark} />
+                    &nbsp;Close
+                </Button>
             }
-        </Select>
-    </div>
+        >
+            <div className="flex flex-col items-start">
+                <Button onClick={() => selectTrack('all')}>
+                    All
+                </Button>
+                {
+                    tracks.map(t => <Button key={'track-select-' + t.fileReference} onClick={() => selectTrack(t.fileReference)}>
+                        <div className="max-w-80 truncate">
+                            {t.name}
+                        </div>
+                    </Button>)
+                }
+            </div>
+        </ModalBaseLayout>
+    </>
 }

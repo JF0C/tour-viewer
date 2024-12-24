@@ -1,15 +1,19 @@
 import { FunctionComponent, useState } from "react";
 import { ProgressbarParams } from "../../data/progressbarParams";
-import { useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronLeft, faChevronRight, faLock } from "@fortawesome/free-solid-svg-icons";
+import { setProgressDetails } from "../../store/viewStateReducer";
 
 export type ProgressbarActiveSectionProps = {
     data: ProgressbarParams;
-    showDetails?: boolean;
 }
 
 export const ProgressbarActiveSection: FunctionComponent<ProgressbarActiveSectionProps> = (props) => {
+    const dispatch = useAppDispatch();
     const [leftState, setLeftState] = useState(74);
-    const [showDetails, setShowDetails] = useState(props.showDetails ?? false);
+    const progressDetails = useAppSelector((state) => state.view.progressDetails);
+    const [showDetails, setShowDetails] = useState(progressDetails);
     const tourState = useAppSelector((state) => state.tour);
     const trackState = useAppSelector((state) => state.track);
 
@@ -24,14 +28,14 @@ export const ProgressbarActiveSection: FunctionComponent<ProgressbarActiveSectio
     }
 
 
-    if (props.showDetails && !showDetails) {
+    if (progressDetails && !showDetails) {
         setShowDetails(true);
     }
 
     if (left !== leftState) {
         setLeftState(left);
         setShowDetails(true);
-        setTimeout(() => setShowDetails(props.showDetails ?? false), 5000)
+        setTimeout(() => setShowDetails(progressDetails ?? false), 5000)
     }
 
     const width = Math.max(minWidth, props.data.length / props.data.totalDistance * 100);
@@ -49,12 +53,39 @@ export const ProgressbarActiveSection: FunctionComponent<ProgressbarActiveSectio
             left: `${left.toFixed(2)}%`,
             width: `${width.toFixed(2)}%`
         }}>
+            <div className="absolute w-full flex flex-row justify-center transition-all"
+                style={{
+                    top: showDetails ? '-250px' : '8px'
+                }}
+            >
+                <div className="bg-primary-half rounded-md px-2 flex flex-row gap-2">
+                    <div className="cursor-pointer">
+                        <FontAwesomeIcon icon={faChevronLeft} />
+                    </div>
+                    <div className="cursor-pointer" onClick={() => setShowDetails(true)}>
+                        <FontAwesomeIcon icon={faChevronDown} />
+                    </div>
+                    <div className="cursor-pointer">
+                        <FontAwesomeIcon icon={faChevronRight} />
+                    </div>
+                </div>
+            </div>
         </div>
-        <div className={`relative progress-bar-details-anchor flex flex-row justify-center ${showDetails ? '' : 'opacity-0'}`} style={{
-            left: `min(max(75px, ${(left + width/2).toFixed(2)}%), calc(100vw - 75px))`,
+        <div className="relative progress-bar-details-anchor flex flex-row justify-center" style={{
+            left: `min(max(75px, ${(left + width / 2).toFixed(2)}%), calc(100vw - 75px))`,
+            top: showDetails ? '8px' : '-250px',
             width: 0
-        }} onClick={() => setShowDetails(false)}>
-            <div className="progress-bar-details rounded-md p-2">
+        }} onClick={() => dispatch(setProgressDetails(!progressDetails))}>
+            <div className={`progress-bar-details rounded-md p-2 ${progressDetails ? 'border-2' : ''}`}>
+                {
+                    progressDetails ?
+                        <div className="w-full flex flex-row justify-center relative h-2">
+                            <div className="absolute" style={{ top: '-10px' }}>
+                                <FontAwesomeIcon size='xs' icon={faLock} />
+                            </div>
+                        </div>
+                        : <></>
+                }
                 <div>{props.data.title}</div>
                 <div>{positionText}&nbsp;km</div>
             </div>

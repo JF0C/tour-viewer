@@ -35,12 +35,20 @@ $desktop-info-bar-width: 300px;
   background-color: $primary;
 }
 
+.bg-primary-half {
+  background-color: $primary-half;
+}
+
 .bg-secondary {
   background-color: $secondary;
 }
 
 .bg-highlight {
   background-color: $button-font-color;
+}
+
+.transition-all {
+  transition: all .2s ease-in-out;
 }
 
 .progress-bar-active-section {
@@ -50,7 +58,6 @@ $desktop-info-bar-width: 300px;
 
 .progress-bar-details-anchor {
   transition: all .2s ease-in-out;
-  top: 8px;
 }
 
 .progress-bar-details {

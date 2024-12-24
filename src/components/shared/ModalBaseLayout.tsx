@@ -17,7 +17,7 @@ export const ModalBaseLayout: FunctionComponent<ModalBaseLayoutProps> = (props) 
 
     return <Modal open={props.open} onClose={() => props.openChange(false)}>
         <div id="modal-background" onClick={onBackgroundClick} className="flex flex-col items-center justify-center h-full">
-            <div className="base-modal flex flex-col justify-center border border-solid rounded-lg text-white p-4 max-w-80">
+            <div className="base-modal flex flex-col justify-center border border-solid rounded-lg text-white p-4 max-w-96">
                 <div>
                     {props.children}
                 </div>

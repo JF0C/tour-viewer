@@ -4,6 +4,7 @@ export interface IViewState {
     menubarOpen: boolean;
     infobarOpen: boolean;
     infobarLarge: boolean;
+    progressDetails: boolean;
     mapMode: 'tours' | 'blogPosts';
     dataSelectorBarState: 'show' | 'small' | 'hide';
 }
@@ -12,6 +13,7 @@ const initialState: IViewState = {
     menubarOpen: false,
     infobarOpen: false,
     infobarLarge: false,
+    progressDetails: false,
     mapMode: 'tours',
     dataSelectorBarState: 'hide'
 }
@@ -34,6 +36,9 @@ const viewStateSlice = createSlice({
         },
         setMapMode(state, action: PayloadAction<'tours' | 'blogPosts'>) {
             state.mapMode = action.payload;
+        },
+        setProgressDetails(state, action: PayloadAction<boolean>) {
+            state.progressDetails = action.payload;
         }
     }
 })
@@ -44,6 +49,7 @@ export const {
     setInfoBarLarge,
     setMenubarOpen,
     setDataBarState,
-    setMapMode
+    setMapMode,
+    setProgressDetails
 } = viewStateSlice.actions;
 

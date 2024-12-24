@@ -1,18 +1,21 @@
 import { FunctionComponent, useState } from "react";
-import { useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { ProgressbarParams } from "../../data/progressbarParams";
 import { locationDistanceFromStart } from "../../converters/trackDataClosestToPoint";
 import { ProgressbarActiveSection } from "./ProgressbarActiveSection";
 import { CoordinatesDto } from "../../dtos/shared/coordinatesDto";
+import { setProgressDetails } from "../../store/viewStateReducer";
 
 export const TourProgressbar: FunctionComponent = () => {
-    const blogPostView = useAppSelector((state) => state.view.mapMode !== 'tours')
+    const dispatch = useAppDispatch();
+    const viewState = useAppSelector((state) => state.view);
+    const blogPostView = viewState.mapMode !== 'tours';
+    const showDetails = viewState.progressDetails;
     const tourState = useAppSelector((state) => state.tour);
     const allTracks = useAppSelector((state) => state.track.tracks);
     const selectedTracks = allTracks.filter(t => t.selected);
     const selectedTrack = selectedTracks.length === 1 ? selectedTracks[0] : undefined;
     const blogPostState = useAppSelector((state) => state.blog);
-    const [showDetails, setShowDetails] = useState(false);
 
     if (!tourState.selectedTour || allTracks.length === 0 || blogPostView) {
         return <></>
@@ -77,10 +80,10 @@ export const TourProgressbar: FunctionComponent = () => {
     }
 
     if (data.length === 0 && data.start === 0 && showDetails) {
-        setShowDetails(false);
+        dispatch(setProgressDetails(false));
     }
 
-    return <div className="relative h-1 w-full bottom-0 bg-highlight" onClick={() => setShowDetails(!showDetails)}>
-        <ProgressbarActiveSection data={data} showDetails={showDetails}/>
+    return <div className="relative h-1 w-full bottom-0 bg-highlight">
+        <ProgressbarActiveSection data={data}/>
     </div>
 }

@@ -83,22 +83,24 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                                 &nbsp;Edit Tour
                             </Button>
                         </NavLink>
-                        <Button onClick={createBlogPost}>
-                            <FontAwesomeIcon icon={faImage} />
-                            &nbsp;Add Post
-                        </Button>
+                        <a>
+                            <Button onClick={createBlogPost}>
+                                <FontAwesomeIcon icon={faImage} />
+                                &nbsp;Add Post
+                            </Button>
+                        </a>
                     </>
                     : <></>
             }
             {
                 isContributor ?
-                <NavLink to={Paths.BlogPostLabelsPage} onClick={props.closeSidebar}>
-                    <Button>
-                        <FontAwesomeIcon icon={faTags}/>
-                        &nbsp;Manage Labels
-                    </Button>
-                </NavLink>
-                :<></>
+                    <NavLink to={Paths.BlogPostLabelsPage} onClick={props.closeSidebar}>
+                        <Button>
+                            <FontAwesomeIcon icon={faTags} />
+                            &nbsp;Manage Labels
+                        </Button>
+                    </NavLink>
+                    : <></>
             }
             {
                 isAdmin ?
@@ -110,7 +112,7 @@ export const Navbar: FunctionComponent<NavbarProps> = (props) => {
                     </NavLink>
                     : <></>
             }
-        <MapSelector />
+            <MapSelector />
         </div>
         <VersionInfo />
     </ul>

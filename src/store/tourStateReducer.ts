@@ -32,7 +32,7 @@ const initialState: ITourState = {
         page: 1,
         totalItems: 1,
         totalPages: 1,
-        itemsPerPage: 10
+        itemsPerPage: 6
     },
     tourSearchFilter: {},
     radioGroups: [],

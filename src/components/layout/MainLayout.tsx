@@ -61,7 +61,6 @@ export const MainLayout: FunctionComponent<MainLayoutProps> = (props) => {
             <AppBarContent />
             <TourProgressbar />
         </AppBar>
-        <TourSelectorBar />
         <div className="h-12 flex-none">
         </div>
         <div className="flex-1 flex flex-col md:flex-row flex-wrap overflow-y-scroll">

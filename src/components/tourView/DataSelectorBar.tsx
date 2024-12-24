@@ -38,7 +38,7 @@ export const TourSelectorBar: FunctionComponent = () => {
                                     <FontAwesomeIcon icon={faComment} />
                                 </Button>
                                 <FontAwesomeIcon icon={faEllipsisVertical}/>
-                                <TourSelector title={tour?.name ?? 'Select Tour'} onSelected={() => { }} />
+                                <TourSelector title={tour?.name ?? 'Select Tour'} />
                                 <TrackSelector />
                             </div>
                             :
