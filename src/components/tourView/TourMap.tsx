@@ -7,7 +7,7 @@ import { CoordinatesDto } from "../../dtos/shared/coordinatesDto";
 import { useMapProvider } from "../../hooks/mapProviderHook";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setDataBarState } from "../../store/viewStateReducer";
-import { startLoadingTrack } from "../../store/trackStateReducer";
+import { addTrackMarkerReference, startLoadingTrack } from "../../store/trackStateReducer";
 import { loadTrackRequest } from "../../store/trackThunk";
 import { BlogPostMapLocationEditor } from "../blogPost/BlogPostMapLocationEditor";
 import { BlogPostMarker } from "../blogPost/BlogPostMarker";
@@ -21,6 +21,7 @@ import { TourBounds } from "./TourBounds";
 import { TourPreview } from "./TourPreview";
 import { TrackLine } from "./TrackLine";
 import { BlogPostView } from "../blogPostSearch/BlogPostView";
+import { locationDistanceFromStart, previousTracksDistance } from "../../converters/trackDataClosestToPoint";
 
 export const TourMap: FunctionComponent = () => {
     const dispatch = useAppDispatch();
@@ -63,6 +64,7 @@ export const TourMap: FunctionComponent = () => {
             const firstTrackName = selectedTracks.length > 0 ? selectedTracks[0].fileReference : '';
             const tracks = [];
             const showDataColor = selectedTracks.length === 1 && viewState.infobarOpen;
+            let markerCount = 0;
             for (let k = 0; k < selectedTracks.length; k++) {
                 const track = selectedTracks[k];
                 let showStartMarker = track.fileReference === firstTrackName;
@@ -82,13 +84,30 @@ export const TourMap: FunctionComponent = () => {
                         showStartMarker ||= distance > 10000;
                     }
                 }
-                tracks.push(<TrackLine key={track.fileReference} dataColor={showDataColor} track={track} startMarker={showStartMarker} />);
+                const startMarkerId = showStartMarker ? markerCount++ : undefined;
+                const markerId = markerCount++;
+                tracks.push(<TrackLine key={track.fileReference}
+                    startMarker={startMarkerId}
+                    id={markerId}
+                    dataColor={showDataColor} track={track} />);
             }
             content = <>{tracks}</>;
             for (let t of (tour?.tracks ?? [])) {
-                if (selectedTracks.find(ts => ts.fileReference === t.fileReference)?.selected) {
+                const trackEntity = selectedTracks.find(ts => ts.fileReference === t.fileReference);
+                if (trackEntity?.selected) {
                     for (let b of t.blogPosts) {
                         blogPosts.push(b);
+                        if (!trackState.markerReferences.find(r => r.type === 'blogPost' && r.id === b.id)) {
+                            dispatch(addTrackMarkerReference({
+                                id: b.id,
+                                title: b.title,
+                                type: 'blogPost',
+                                tourDistance: previousTracksDistance(trackState.tracks, t.tourPosition) + 
+                                    locationDistanceFromStart(trackEntity, b.coordinates),
+                                selected: false,
+                                coordinates: b.coordinates
+                            }));
+                        }
                     }
                 }
             }
@@ -101,7 +120,6 @@ export const TourMap: FunctionComponent = () => {
         });
         content = <>{previews}</>
     }
-    const blogPostElements: any[] = blogPosts.map(b => <BlogPostMarker key={b.id} blogPost={b} />)
 
     return <LongTapMapEventProvider>
         <MapContainer center={[48.136805, 11.578965]} zoom={13} zoomControl={false}
@@ -113,7 +131,7 @@ export const TourMap: FunctionComponent = () => {
             />
             <MarkerClusterGroup polygonOptions={{ smoothFactor: 1, noClip: true }}>
                 {
-                    blogPostElements
+                    blogPosts.map(b => <BlogPostMarker key={b.id} blogPost={b} />)
                 }
             </MarkerClusterGroup>
             <TourBounds />

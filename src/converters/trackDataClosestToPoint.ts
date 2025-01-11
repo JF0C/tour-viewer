@@ -18,6 +18,13 @@ export const trackClosestToPoint = (tracks: TrackEntity[], point: CoordinatesDto
     return closestTrack;
 }
 
+export const previousTracksDistance = (tracks: TrackEntity[], tourPosition: number): number => {
+    const beforeDistances = tracks
+        .filter(t => t.tourPosition < tourPosition)
+        .map(t => t.data.distance);
+    return beforeDistances.length > 0 ? beforeDistances.reduce((a, b) => a + b) : 0;
+}
+
 export const locationDistanceFromStart = (track: TrackEntity, coordinates: CoordinatesDto): number => {
     const points = track.data.points;
     var closestIndex = 0;

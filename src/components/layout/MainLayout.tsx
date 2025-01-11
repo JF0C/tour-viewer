@@ -8,7 +8,6 @@ import { setDataBarState } from "../../store/viewStateReducer";
 import { loadTourRequest, searchTours } from "../../store/tourThunk";
 import { loadLoggedInUser } from "../../store/userThunk";
 import { CustomizedSnackbar } from "../shared/CustomizedSnackbar";
-import { TourSelectorBar } from "../tourView/DataSelectorBar";
 import { AppBarContent } from "./AppBarContent";
 import { Infobar } from "./Infobar";
 import { Menubar } from "./Menubar";

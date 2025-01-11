@@ -27,14 +27,14 @@ export const BlogPostListItem: FunctionComponent<BlogPostListItemProps> = (props
                     .then(() =>
                         setTimeout(() => {
                             dispatch(setTargetCoordinates(props.blogPost.coordinates));
-                            dispatch(setMarkerReferenceId(props.blogPost.id));
+                            dispatch(setMarkerReferenceId({id: props.blogPost.id, type: 'blogPost'}));
                         }, 1000)
                     );
             }
         }
         else {
             dispatch(setTargetCoordinates(props.blogPost.coordinates));
-            dispatch(setMarkerReferenceId(props.blogPost.id));
+            dispatch(setMarkerReferenceId({id: props.blogPost.id, type: 'blogPost'}));
         }
         navigate(Paths.HomePage);
     }

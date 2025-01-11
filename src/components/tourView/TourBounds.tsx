@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setBoundsSet, setTargetCoordinates } from "../../store/trackStateReducer";
 import { LatLng, LatLngBounds } from "leaflet";
 import { Layers } from "../../constants/Layers";
+import { Timeouts } from "../../constants/Timeouts";
 
 
 export const TourBounds: FunctionComponent = () => {
@@ -50,7 +51,10 @@ export const TourBounds: FunctionComponent = () => {
     else {
         const coord = trackState.targetCoordinates;
         if (coord) {
-            map.flyTo(new LatLng(coord.latitude, coord.longitude), 14);
+            map.flyTo(new LatLng(coord.latitude, coord.longitude), 14, {
+                animate: true,
+                duration: Timeouts.FlyToDuration
+            });
             dispatch(setTargetCoordinates());
         }
     }

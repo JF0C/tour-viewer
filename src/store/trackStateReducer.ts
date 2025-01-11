@@ -4,10 +4,13 @@ import { CoordinatesDto } from "../dtos/shared/coordinatesDto";
 import { TrackEntity } from "../data/trackEntity";
 import { GeoBounds } from "../data/geoBounds";
 import { Color } from "../data/color";
+import { TrackMarkerData } from "../data/trackMarkerReference";
+import { loadTourRequest } from "./tourThunk";
 
 export interface ITrackState {
     loading: boolean;
     boundsSet: boolean;
+    markerReferences: TrackMarkerData[];
     dataPointLocation?: CoordinatesDto;
     targetCoordinates?: CoordinatesDto;
     tracks: TrackEntity[];
@@ -24,6 +27,7 @@ const initialState: ITrackState = {
     loading: false,
     boundsSet: false,
     tracks: [],
+    markerReferences: [],
     graphData: {
         min: 0,
         max: 0,
@@ -112,6 +116,22 @@ export const trackStateSlice = createSlice({
         },
         setGraphDataSource(state, action: PayloadAction<'velocity' | 'elevation' | 'slope' | undefined>) {
             state.graphData.selectedValue = action.payload;
+        },
+        addTrackMarkerReference(state, action: PayloadAction<TrackMarkerData>) {
+            if (!state.markerReferences.find(r => r.id === action.payload.id && r.type === action.payload.type)) {
+                state.markerReferences.push(action.payload);
+                state.markerReferences.sort((a, b) => a.tourDistance - b.tourDistance);
+            }
+        },
+        selectMarkerReference(state, action: PayloadAction<{id: number, type: 'blogPost' | 'limitMarker'} | undefined>) {
+            for (let markerReference of state.markerReferences) {
+                if (markerReference.id === action.payload?.id && markerReference.type === action.payload?.type) {
+                    markerReference.selected = true;
+                }
+                else {
+                    markerReference.selected = false;
+                }
+            }
         }
     },
     extraReducers: (builder) => {
@@ -197,6 +217,10 @@ export const trackStateSlice = createSlice({
         builder.addCase(createTrackRequest.rejected, (state) => {
             state.loading = false;
         });
+
+        builder.addCase(loadTourRequest.fulfilled, (state) => {
+            state.markerReferences = [];
+        });
     }
 });
 
@@ -211,5 +235,7 @@ export const {
     setTargetCoordinates,
     setDataPointLocation,
     setGraphDataBounds,
-    setGraphDataSource
+    setGraphDataSource,
+    addTrackMarkerReference,
+    selectMarkerReference
 } = trackStateSlice.actions;

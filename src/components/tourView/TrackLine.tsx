@@ -4,15 +4,17 @@ import { boundsFromLatLngTrack, geoToLatLngBounds } from "../../converters/bound
 import { trackInMapBounds } from "../../converters/trackInMapBounds";
 import { TrackEntity } from "../../data/trackEntity";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setBounds } from "../../store/trackStateReducer";
+import { addTrackMarkerReference, setBounds } from "../../store/trackStateReducer";
 import { DataColoredTrackLine } from "./DataColoredTrackLine";
 import { TrackArrow } from "./TrackArrow";
 import { TrackLimitMarker } from "./TrackLimitMarker";
+import { previousTracksDistance } from "../../converters/trackDataClosestToPoint";
 
 export type TrackLineProps = {
+    id: number,
     track: TrackEntity,
     color?: string,
-    startMarker?: boolean,
+    startMarker?: number,
     dataColor?: boolean
 }
 
@@ -48,6 +50,25 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
         startLabel = startLabel.trimEnd();
         endLabel = parts[1];
         endLabel = endLabel.trimStart();
+    }
+
+    dispatch(addTrackMarkerReference({
+        id: props.id,
+        title: endLabel,
+        type: 'limitMarker',
+        tourDistance: previousTracksDistance(trackState.tracks, props.track.tourPosition) + props.track.data.distance - 1,
+        selected: false,
+        coordinates: lastPoint
+    }));
+    if (props.startMarker !== undefined) {
+        dispatch(addTrackMarkerReference({
+            id: props.startMarker,
+            title: startLabel,
+            type: 'limitMarker',
+            tourDistance: previousTracksDistance(trackState.tracks, props.track.tourPosition),
+            selected: false,
+            coordinates: props.track.data.points[0]
+        }));
     }
 
     const arrows: ReactNode[] = [];
@@ -89,11 +110,11 @@ export const TrackLine: FunctionComponent<TrackLineProps> = (props) => {
                 <Polyline positions={pointSource.map(p => [p.latitude, p.longitude])} color={trackColor} />
         }
         {
-            props.startMarker ?
-                <TrackLimitMarker coordinates={props.track.data.points[0]} label={startLabel} track={props.track} />
+            props.startMarker !== undefined ?
+                <TrackLimitMarker id={props.startMarker} coordinates={props.track.data.points[0]} label={startLabel} track={props.track} />
                 : <></>
         }
-        <TrackLimitMarker coordinates={lastPoint} label={endLabel} track={props.track} />
+        <TrackLimitMarker id={props.id} coordinates={lastPoint} label={endLabel} track={props.track} />
         {
             arrows
         }
